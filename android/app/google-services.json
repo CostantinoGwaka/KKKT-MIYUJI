@@ -1,16 +1,16 @@
 {
   "project_info": {
     "project_number": "521734412987",
-    "firebase_url": "https://kkkt-kinyerezi-default-rtdb.firebaseio.com",
-    "project_id": "kkkt-kinyerezi",
-    "storage_bucket": "kkkt-kinyerezi.appspot.com"
+    "firebase_url": "https://kkkt-miyuji-default-rtdb.firebaseio.com",
+    "project_id": "kkkt-miyuji",
+    "storage_bucket": "kkkt-miyuji.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:521734412987:android:adca3ecb9f787a54f9e79e",
         "android_client_info": {
-          "package_name": "app.kinyerezi"
+          "package_name": "app.miyuji"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "app.kinyerezi"
+                "bundle_id": "app.miyuji"
               }
             }
           ]
@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:521734412987:android:ff02f22a5f062ebaf9e79e",
         "android_client_info": {
-          "package_name": "com.example.kinyerezi"
+          "package_name": "com.example.miyuji"
         }
       },
       "oauth_client": [
@@ -71,7 +71,7 @@
               "client_id": "521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "app.kinyerezi"
+                "bundle_id": "app.miyuji"
               }
             }
           ]

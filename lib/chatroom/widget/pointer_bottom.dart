@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class PointerBottom extends StatelessWidget {
-  const PointerBottom({ key }) : super(key: key);
+  const PointerBottom({key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Positioned(
+    return Positioned(
       bottom: deviceHeight(context) / 10,
       right: 10,
       child: Card(

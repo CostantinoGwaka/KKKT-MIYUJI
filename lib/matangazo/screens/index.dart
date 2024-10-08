@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/matukio/screens/single_post_screen.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/image.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/models/matangazo.dart';
+import 'package:miyuji/matukio/screens/single_post_screen.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/image.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/models/matangazo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -23,7 +23,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   List<Matangazo> listmatangazo = <Matangazo>[];
 
   Future<List<Matangazo>> getMatangazoNew() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_matangazo.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_matangazo.php";
     final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var matangazoList = <Matangazo>[];
@@ -170,13 +170,13 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ImagePreview(
-                                      img: 'http://kinyerezikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
+                                      img: 'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
                                       fit: BoxFit.fill,
                                       width: double.infinity,
                                       height: 200,
                                     ),
                                     // Image.network(
-                                    //   'http://kinyerezikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
+                                    //   'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
                                     //   fit: BoxFit.fill,
                                     //   width: double.infinity,
                                     //   height: 200,

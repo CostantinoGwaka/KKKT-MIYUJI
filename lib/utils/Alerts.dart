@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kinyerezi/usajili/screens/index.dart';
+import 'package:miyuji/usajili/screens/index.dart';
 
 class Alerts {
   static Future<void> show(context, title, message) async {
@@ -66,8 +66,7 @@ class Alerts {
                       flex: 8,
                       child: Text(
                         title,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       )),
                 ],
               ),

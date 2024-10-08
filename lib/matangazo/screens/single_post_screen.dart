@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class SingleTangazoScreen extends StatefulWidget {
   const SingleTangazoScreen({Key key}) : super(key: key);
@@ -44,7 +44,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
                 background: Hero(
                   tag: "msimu",
                   child: Image.asset(
-                    "assets/images/kinyerezi_2.jpg",
+                    "assets/images/miyuji_2.jpg",
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),

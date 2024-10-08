@@ -1,4 +1,4 @@
-package app.kinyerezi;
+package app.miyuji;
 
 import io.flutter.plugin.common.PluginRegistry;
 import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin;

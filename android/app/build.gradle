@@ -53,7 +53,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "app.kinyerezi"
+        applicationId "app.miyuji"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -66,7 +66,7 @@ android {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
-            // storeFile file("kinyerezi.jks")
+            // storeFile file("miyuji.jks")
             storePassword keystoreProperties['storePassword']
        }
     }

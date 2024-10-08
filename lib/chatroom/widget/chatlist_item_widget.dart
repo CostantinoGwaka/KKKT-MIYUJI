@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:kinyerezi/chatroom/screen/chat_section_screen.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/chatroom/screen/chat_section_screen.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 enum MessageType { normal, photo, video, document, contact }
 

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/bloc/addReply.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
+import 'package:miyuji/bloc/addReply.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:provider/provider.dart';
-import 'package:kinyerezi/home/screens/index.dart';
+import 'package:miyuji/home/screens/index.dart';
 
 // var host;
 

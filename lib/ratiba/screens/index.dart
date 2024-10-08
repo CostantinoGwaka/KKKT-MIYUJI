@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/models/akaunti.dart';
-import 'package:kinyerezi/models/ratiba_ibada.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/models/akaunti.dart';
+import 'package:miyuji/models/ratiba_ibada.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -21,9 +21,8 @@ class RatibaZaIbada extends StatefulWidget {
 
 class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<IbadaRatiba>> getRatiba() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_ibada.php";
-    final response =
-        await http.post(myApi, headers: {'Accept': 'application/json'});
+    String myApi = "http://miyujikkkt.or.tz/api/get_ibada.php";
+    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <IbadaRatiba>[];
     var baraza;
@@ -47,9 +46,8 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
 
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     print("data heere 1");
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_akaunti.php";
-    final response =
-        await http.post(myApi, headers: {'Accept': 'application/json'});
+    String myApi = "http://miyujikkkt.or.tz/api/get_akaunti.php";
+    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <AkauntiUsharikaPodo>[];
     var baraza;
@@ -147,10 +145,8 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                       onRefresh: _pullRefresh,
                       child: FutureBuilder(
                         future: getRatiba(),
-                        builder: (context,
-                            AsyncSnapshot<List<IbadaRatiba>> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
+                        builder: (context, AsyncSnapshot<List<IbadaRatiba>> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 50.0),
                               child: Center(
@@ -223,8 +219,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   child: Card(
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: MyColors.white, width: 2.0),
+                                      side: BorderSide(color: MyColors.white, width: 2.0),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: GestureDetector(
@@ -233,10 +228,8 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         height: 100,
                                         margin: EdgeInsets.only(bottom: 10),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
                                             Container(
                                               margin: EdgeInsets.only(
@@ -246,97 +239,65 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                               ),
                                               child: Row(children: <Widget>[
                                                 Container(
-                                                  margin:
-                                                      EdgeInsets.only(left: 10),
+                                                  margin: EdgeInsets.only(left: 10),
                                                   child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
                                                       Container(
                                                         width: 290,
                                                         child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
                                                             Row(
                                                               children: [
                                                                 Column(
-                                                                  children: <
-                                                                      Widget>[
+                                                                  children: <Widget>[
                                                                     Container(
-                                                                      height:
-                                                                          50,
-                                                                      child:
-                                                                          CircleAvatar(
-                                                                        backgroundColor:
-                                                                            MyColors.white,
+                                                                      height: 50,
+                                                                      child: CircleAvatar(
+                                                                        backgroundColor: MyColors.white,
                                                                         // backgroundImage: AssetImage("assets/images/viongozi.png"),
-                                                                        child: Image
-                                                                            .asset(
+                                                                        child: Image.asset(
                                                                           "assets/images/kanisa.png",
                                                                           // color: MyColors.primaryLight,
-                                                                          height:
-                                                                              70,
+                                                                          height: 70,
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                manualSpacer(
-                                                                    step: 5),
+                                                                manualSpacer(step: 5),
                                                                 Text(
                                                                   "${snapshot.data[index].jina}",
                                                                   maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      false,
-                                                                  style: GoogleFonts
-                                                                      .montserrat(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: MyColors
-                                                                        .primaryLight,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  softWrap: false,
+                                                                  style: GoogleFonts.montserrat(
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: MyColors.primaryLight,
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
-                                                            manualStepper(
-                                                                step: 10),
+                                                            manualStepper(step: 10),
                                                             Row(
                                                               children: [
                                                                 // Icon(
                                                                 //   Icons.watch,
                                                                 //   color: MyColors.primaryLight,
                                                                 // ),
-                                                                manualSpacer(
-                                                                    step: 5),
+                                                                manualSpacer(step: 5),
                                                                 Text(
                                                                   "${snapshot.data[index].muda}",
                                                                   maxLines: 1,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  softWrap:
-                                                                      false,
-                                                                  style: GoogleFonts
-                                                                      .montserrat(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    color: MyColors
-                                                                        .primaryLight,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  softWrap: false,
+                                                                  style: GoogleFonts.montserrat(
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.normal,
+                                                                    color: MyColors.primaryLight,
                                                                   ),
                                                                 ),
                                                               ],
@@ -384,10 +345,8 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                       onRefresh: _pullRefresh,
                       child: FutureBuilder(
                         future: getAkaunti(),
-                        builder: (context,
-                            AsyncSnapshot<List<AkauntiUsharikaPodo>> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
+                        builder: (context, AsyncSnapshot<List<AkauntiUsharikaPodo>> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 50.0),
                               child: Center(
@@ -460,8 +419,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   child: Card(
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: MyColors.white, width: 2.0),
+                                      side: BorderSide(color: MyColors.white, width: 2.0),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: GestureDetector(
@@ -470,39 +428,30 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         height: 100,
                                         margin: EdgeInsets.only(bottom: 10),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
                                             GestureDetector(
                                               onTap: () {
                                                 Clipboard.setData(
                                                   new ClipboardData(
-                                                    text:
-                                                        "${snapshot.data[index].namba}",
+                                                    text: "${snapshot.data[index].namba}",
                                                   ),
                                                 ).then((_) {
-                                                  Scaffold.of(context)
-                                                      .showSnackBar(
+                                                  Scaffold.of(context).showSnackBar(
                                                     SnackBar(
-                                                      content: Text(
-                                                          "Nambari ya akaunti imenakiliwa"),
+                                                      content: Text("Nambari ya akaunti imenakiliwa"),
                                                     ),
                                                   );
                                                 });
                                               },
                                               child: ListTile(
                                                 leading: CircleAvatar(
-                                                  backgroundColor:
-                                                      MyColors.white,
+                                                  backgroundColor: MyColors.white,
                                                   child: Image.asset(
-                                                    snapshot.data[index].jina ==
-                                                            "VODACOM"
+                                                    snapshot.data[index].jina == "VODACOM"
                                                         ? "assets/payicons/mpesa.png"
-                                                        : snapshot.data[index]
-                                                                    .jina ==
-                                                                "TIGO PESA"
+                                                        : snapshot.data[index].jina == "TIGO PESA"
                                                             ? "assets/payicons/tigopesa.png"
                                                             : "assets/payicons/cash.png",
                                                     height: 50,
@@ -510,15 +459,11 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                 ),
                                                 title: Text(
                                                   "${snapshot.data[index].jina}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1,
+                                                  style: Theme.of(context).textTheme.bodyText1,
                                                 ),
                                                 trailing: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       "${snapshot.data[index].namba}",

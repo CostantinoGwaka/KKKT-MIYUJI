@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/models/matangazo.dart';
-import 'package:kinyerezi/models/video_kwaya.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/models/matangazo.dart';
+import 'package:miyuji/models/video_kwaya.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 List<dynamic> videoList = [];
@@ -29,7 +29,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     setState(() {
       load = true;
     });
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_video_kwaya.php/";
+    String myApi = "http://miyujikkkt.or.tz/api/get_video_kwaya.php/";
     final response = await http.post(myApi, headers: {
       'Accept': 'application/json',
     }, body: {

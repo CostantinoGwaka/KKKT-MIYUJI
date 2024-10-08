@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/bloc/addReply.dart';
-import 'package:kinyerezi/chatroom/cloud/media_handler.dart';
-import 'package:kinyerezi/utils/inputs.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/bloc/addReply.dart';
+import 'package:miyuji/chatroom/cloud/media_handler.dart';
+import 'package:miyuji/utils/inputs.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:provider/provider.dart';
-
 
 class ImageCaption extends StatefulWidget {
   final File imagefile;
@@ -37,9 +36,7 @@ class _ImageCaptionState extends State<ImageCaption> {
           Positioned(
             bottom: 40,
             child: Container(
-              decoration: new BoxDecoration(
-                  color: Colors.white60,
-                  borderRadius: BorderRadius.circular(10)),
+              decoration: new BoxDecoration(color: Colors.white60, borderRadius: BorderRadius.circular(10)),
               // padding: EdgeInsets.all(4),
               width: deviceWidth(context),
               child: Row(
@@ -48,13 +45,12 @@ class _ImageCaptionState extends State<ImageCaption> {
                   Expanded(
                     child: InputField(
                       controller: caption,
-                      label:"andika ujumbe wako",
+                      label: "andika ujumbe wako",
                     ),
                   ),
                   Container(
                     decoration: new BoxDecoration(
-                      shape: BoxShape
-                          .circle, // You can use like this way or like the below line
+                      shape: BoxShape.circle, // You can use like this way or like the below line
                       //borderRadius: new BorderRadius.circular(30.0),
                       color: Colors.green,
                     ),
@@ -73,8 +69,7 @@ class _ImageCaptionState extends State<ImageCaption> {
                           caption.text,
                         ).whenComplete(
                           () {
-                            Provider.of<AddReplyData>(context, listen: false)
-                                .unsetReply();
+                            Provider.of<AddReplyData>(context, listen: false).unsetReply();
                           },
                         );
                       },

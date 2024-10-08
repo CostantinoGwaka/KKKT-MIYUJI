@@ -5,14 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/chatroom/cloud/cloud.dart';
-import 'package:kinyerezi/chatroom/cloud/firebase_notification.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/usajili/screens/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/chatroom/cloud/cloud.dart';
+import 'package:miyuji/chatroom/cloud/firebase_notification.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/usajili/screens/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
   Future<void> checkGetMyData(String member_no) async {
     //get my data
 
-    String mydataApi = "http://kinyerezikkkt.or.tz/api/get_mydata.php/";
+    String mydataApi = "http://miyujikkkt.or.tz/api/get_mydata.php/";
 
     final response = await http.post(
       mydataApi,
@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
   Future<void> checkMtumish(String member_no) async {
     // //check mtumishi permission
 
-    String mtumishApi = "http://kinyerezikkkt.or.tz/api/check_mtumish.php/";
+    String mtumishApi = "http://miyujikkkt.or.tz/api/check_mtumish.php/";
     final response2 = await http.post(
       mtumishApi,
       headers: {'Accept': 'application/json'},
@@ -85,12 +85,13 @@ class _LoginState extends State<Login> {
         isregistered = true;
       });
 
-      return Fluttertoast.showToast(msg: "Tafadhari weka taarifa zote", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM, backgroundColor: MyColors.primaryLight, textColor: Colors.white);
+      return Fluttertoast.showToast(
+          msg: "Tafadhari weka taarifa zote", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM, backgroundColor: MyColors.primaryLight, textColor: Colors.white);
     }
 
     FireibaseClass.getUserToken().then((tokens) async {
       print("user token $tokens");
-      String myApi = "http://kinyerezikkkt.or.tz/api/login.php/";
+      String myApi = "http://miyujikkkt.or.tz/api/login.php/";
       final response = await http.post(
         myApi,
         headers: {'Accept': 'application/json'},

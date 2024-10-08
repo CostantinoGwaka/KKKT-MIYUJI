@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/models/watumishi_washarika.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/models/watumishi_washarika.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,7 +20,7 @@ class WatumishiScreen extends StatefulWidget {
 
 class _WatumishiScreenState extends State<WatumishiScreen> {
   Future<List<WatumishiUsharika>> getWatumishiWasharika() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_watumishi.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_watumishi.php";
     final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <WatumishiUsharika>[];

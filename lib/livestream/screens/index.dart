@@ -3,9 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/models/livestream.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/models/livestream.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -28,7 +28,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
       load = true;
     });
     print("dataz");
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_streamId.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_streamId.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {

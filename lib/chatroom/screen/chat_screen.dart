@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kinyerezi/chatroom/screen/chat_list_screen.dart';
-import 'package:kinyerezi/chatroom/widget/new_chat_bottom_sheet.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/chatroom/screen/chat_list_screen.dart';
+import 'package:miyuji/chatroom/widget/new_chat_bottom_sheet.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'dart:math' as math;
 
 import 'package:provider/provider.dart';

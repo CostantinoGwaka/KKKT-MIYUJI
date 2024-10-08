@@ -2,17 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:kinyerezi/bloc/addReply.dart';
-import 'package:kinyerezi/chatroom/cloud/message_handler.dart';
-import 'package:kinyerezi/chatroom/widget/reply_navigator.dart';
-import 'package:kinyerezi/models/message.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/bloc/addReply.dart';
+import 'package:miyuji/chatroom/cloud/message_handler.dart';
+import 'package:miyuji/chatroom/widget/reply_navigator.dart';
+import 'package:miyuji/models/message.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-
+import 'package:miyuji/home/screens/index.dart';
 
 class MessageInput extends StatefulWidget {
   final String friendId;

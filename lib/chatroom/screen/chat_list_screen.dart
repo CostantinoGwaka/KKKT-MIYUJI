@@ -4,12 +4,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:kinyerezi/chatroom/widget/chatlist_item_widget.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/chatroom/widget/chatlist_item_widget.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:kinyerezi/home/screens/index.dart';
+import 'package:miyuji/home/screens/index.dart';
 
 // var host;
 var query;

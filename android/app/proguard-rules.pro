@@ -1,1 +1,1 @@
- -keep class app.kinyerezi { *; }
+ -keep class app.miyuji { *; }

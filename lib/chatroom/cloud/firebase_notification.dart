@@ -3,7 +3,7 @@ import 'dart:convert';
 import './local_notification.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:kinyerezi/models/message.dart';
+import 'package:miyuji/models/message.dart';
 
 const String FIREBASE_API_KEY =
     "AAAA8UdPgfc:APA91bEdD2_3efaG6aYBiog4VRll4IFJwcMokUNknGZWGIObncUUY93oKNhZivjH8eZggbMEkGwNn4_Kmp1Dk6Vncc80_HMlNR5wbe0JJSczsL0lCJsRclwMPjur_jryZ1h92bWcd44X";

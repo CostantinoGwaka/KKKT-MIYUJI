@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:kinyerezi/utils/ApiUrl.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/chatroom/cloud/cloud.dart';
-import 'package:kinyerezi/chatroom/cloud/firebase_notification.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/usajili/screens/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/chatroom/cloud/cloud.dart';
+import 'package:miyuji/chatroom/cloud/firebase_notification.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/usajili/screens/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   @override
@@ -56,9 +56,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
@@ -108,11 +106,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: TextField(
         controller: oldp,
         keyboardType: TextInputType.text,
-        style: GoogleFonts.poppins(
-            fontSize: 20,
-            color: Colors.black,
-            letterSpacing: 0.24,
-            fontWeight: FontWeight.w500),
+        style: GoogleFonts.poppins(fontSize: 20, color: Colors.black, letterSpacing: 0.24, fontWeight: FontWeight.w500),
         decoration: InputDecoration(
           hintText: "Neno la siri lazamani",
           hintStyle: TextStyle(
@@ -198,16 +192,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Future<void> updatePassword(
-      String member_no, String oldpassword, String newpassword) async {
+  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
     //get my data
-    Alerts.showProgressDialog(
-        context, "Tafadhari Subiri,neno lako linabadilishwa");
+    Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
       _status = true;
     });
 
-    String mydataApi = "http://kinyerezikkkt.or.tz/api/change_password.php";
+    String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
       mydataApi,
@@ -331,14 +323,10 @@ Widget _passCode(context) {
           InkWell(
             child: Text(
               "Jisajili",
-              style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline),
+              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationScreen()));
             },
           )
         ],
@@ -347,10 +335,7 @@ Widget _passCode(context) {
       InkWell(
         child: Text(
           "Rudi nyuma",
-          style: GoogleFonts.montserrat(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline),
+          style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
         ),
         onTap: () {
           Navigator.of(context).pop();

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/akaunti/screens/index.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/akaunti/screens/index.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/my_colors.dart';
 
 class MapendekezoScreen extends StatefulWidget {
   @override
@@ -48,9 +48,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
@@ -102,10 +100,9 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     String suggestion,
   ) async {
     //get my data
-    Alerts.showProgressDialog(
-        context, "Tafadhari Subiri,inatuma maoni yako...");
+    Alerts.showProgressDialog(context, "Tafadhari Subiri,inatuma maoni yako...");
 
-    String mydataApi = "http://kinyerezikkkt.or.tz/api/mapendekezo.php";
+    String mydataApi = "http://miyujikkkt.or.tz/api/mapendekezo.php";
 
     final response = await http.post(
       mydataApi,
@@ -126,8 +123,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
         });
 
         Navigator.of(context).pop();
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
         return Fluttertoast.showToast(
           msg: "Maoni yako yamepokelewa, Ahsante",
           toastLength: Toast.LENGTH_LONG,

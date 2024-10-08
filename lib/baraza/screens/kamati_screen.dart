@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/baraza/screens/viongozi_kamati_screen.dart';
-import 'package:kinyerezi/models/kamatiusharika.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/baraza/screens/viongozi_kamati_screen.dart';
+import 'package:miyuji/models/kamatiusharika.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -24,7 +24,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
   List<KamatiUsharika> listkamati = <KamatiUsharika>[];
 
   Future<List<KamatiUsharika>> getMatangazoNew() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_kamati.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_kamati.php";
     final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var kamatilist = <KamatiUsharika>[];

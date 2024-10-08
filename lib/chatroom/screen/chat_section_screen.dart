@@ -7,25 +7,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kinyerezi/bloc/addReply.dart';
-import 'package:kinyerezi/bloc/pointer.dart';
-import 'package:kinyerezi/chatroom/cloud/cloud.dart';
-import 'package:kinyerezi/chatroom/cloud/media_handler.dart';
-import 'package:kinyerezi/chatroom/widget/message_bubble.dart';
-import 'package:kinyerezi/chatroom/widget/message_input.dart';
-import 'package:kinyerezi/models/message.dart';
-import 'package:kinyerezi/models/recent_chat.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/bloc/addReply.dart';
+import 'package:miyuji/bloc/pointer.dart';
+import 'package:miyuji/chatroom/cloud/cloud.dart';
+import 'package:miyuji/chatroom/cloud/media_handler.dart';
+import 'package:miyuji/chatroom/widget/message_bubble.dart';
+import 'package:miyuji/chatroom/widget/message_input.dart';
+import 'package:miyuji/models/message.dart';
+import 'package:miyuji/models/recent_chat.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import './imagecaption_screen.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-
+import 'package:miyuji/home/screens/index.dart';
 
 class ChatSectionScreen extends StatefulWidget {
   const ChatSectionScreen({Key key, this.fullname, this.picture, this.fromFriends = false, this.friendId, this.deptId, this.token}) : super(key: key);
@@ -184,7 +183,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
         Cloud.add(
           serverPath: "RecentChat/" + "${host['member_no']}" + "/" + "${widget.friendId}",
           value: RecentChat(
-                  lastMessage: "Karibu KKKT KINYEREZI",
+                  lastMessage: "Karibu KKKT miyuji",
                   fullName: widget.fullname,
                   picUrl: widget.picture,
                   color: "pink",
@@ -258,11 +257,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                     ),
                     child: Stack(children: [
                       StreamBuilder(
-                        stream: FirebaseDatabase.instance
-                            .reference()
-                            .child("Messages/${host['member_no']}/${widget.friendId}")
-                            .orderByChild('createdAt')
-                            .onValue,
+                        stream: FirebaseDatabase.instance.reference().child("Messages/${host['member_no']}/${widget.friendId}").orderByChild('createdAt').onValue,
                         builder: (_, snap) {
                           if (snap.hasData) {
                             var _data = [];
@@ -318,8 +313,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                           //bottom of message bubble
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                (host['member_no'] != snap['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
+                                            mainAxisAlignment: (host['member_no'] != snap['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(top: 5.0, right: 10, left: 10),

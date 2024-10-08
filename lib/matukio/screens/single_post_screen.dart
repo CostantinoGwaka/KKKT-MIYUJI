@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:intl/intl.dart';
 
 class SinglePostScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                 background: Hero(
                   tag: "msimu",
                   child: Image.network(
-                    "http://kinyerezikkkt.or.tz/admin/matangazo/${widget.postdata.image}",
+                    "http://miyujikkkt.or.tz/admin/matangazo/${widget.postdata.image}",
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),

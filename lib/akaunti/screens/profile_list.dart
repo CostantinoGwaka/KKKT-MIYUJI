@@ -1,4 +1,4 @@
-import 'package:kinyerezi/akaunti/screens/constant.dart';
+import 'package:miyuji/akaunti/screens/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -39,8 +39,7 @@ class ProfileListItem extends StatelessWidget {
           SizedBox(width: 15),
           Text(
             this.text,
-            style: kTitleTextStyle.copyWith(
-                fontWeight: FontWeight.w500, fontFamily: "Poppins"),
+            style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500, fontFamily: "Poppins"),
           ),
           Spacer(),
           if (this.hasNavigation)

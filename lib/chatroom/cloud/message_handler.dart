@@ -1,4 +1,4 @@
-import 'package:kinyerezi/models/message.dart';
+import 'package:miyuji/models/message.dart';
 import './cloud.dart';
 import './firebase_notification.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -12,8 +12,7 @@ import 'package:firebase_database/firebase_database.dart';
 // }
 
 class HandleMessageFunction {
-  static sendNormalText(
-      {Message message, String receiverId, String senderId, String token}) {
+  static sendNormalText({Message message, String receiverId, String senderId, String token}) {
     Cloud.add(
       serverPath: "Messages/$senderId/$receiverId/${message.messageId}",
       value: {
@@ -62,8 +61,7 @@ class HandleMessageFunction {
     // var incomingMessage = message;
     print("this is message: $message");
     Cloud.add(
-      serverPath:
-          "Messages/${message.friendId}/${message.hostId}/${message.messageId}",
+      serverPath: "Messages/${message.friendId}/${message.hostId}/${message.messageId}",
       value: {
         "receiverId": message.friendId,
         "senderId": message.hostId,

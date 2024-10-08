@@ -4,11 +4,11 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kinyerezi/jumuiyazetu/screens/viongozi_wajumuiya_screen.dart';
-import 'package:kinyerezi/models/Jumuiya.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/jumuiyazetu/screens/viongozi_wajumuiya_screen.dart';
+import 'package:miyuji/models/Jumuiya.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class JumuiyaZetu extends StatefulWidget {
 
 class _JumuiyaZetuState extends State<JumuiyaZetu> {
   Future<List<JumuiyaData>> getJumuiya() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/getjumuiya.php";
+    String myApi = "http://miyujikkkt.or.tz/api/getjumuiya.php";
     final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <JumuiyaData>[];

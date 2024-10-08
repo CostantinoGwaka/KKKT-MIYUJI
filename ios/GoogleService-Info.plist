@@ -13,11 +13,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>app.kinyerezi</string>
+	<string>app.miyuji</string>
 	<key>PROJECT_ID</key>
-	<string>kkkt-kinyerezi</string>
+	<string>kkkt-miyuji</string>
 	<key>STORAGE_BUCKET</key>
-	<string>kkkt-kinyerezi.appspot.com</string>
+	<string>kkkt-miyuji.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>GOOGLE_APP_ID</key>
 	<string>1:521734412987:ios:08c739cd0c05ccbef9e79e</string>
 	<key>DATABASE_URL</key>
-	<string>https://kkkt-kinyerezi-default-rtdb.firebaseio.com</string>
+	<string>https://kkkt-miyuji-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

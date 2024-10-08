@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/matukio/screens/single_post_screen.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/matukio/screens/single_post_screen.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
 
 class MatukioScreen extends StatefulWidget {
   const MatukioScreen({Key key}) : super(key: key);
@@ -57,7 +57,7 @@ class _MatukioScreenState extends State<MatukioScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              'assets/images/kinyerezi.jpg',
+                              'assets/images/miyuji.jpg',
                               fit: BoxFit.fill,
                               width: double.infinity,
                               height: 200,

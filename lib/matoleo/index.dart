@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/Utility.dart';
-import 'package:kinyerezi/utils/dimension.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/Utility.dart';
+import 'package:miyuji/utils/dimension.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 
 class MatoleoScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class MatoleoScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<MatoleoScreen> {
   Future<dynamic> getSadakaZako() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_sadaka.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -44,7 +44,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaAhadi() async {
     print("dataz");
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_jumla_ahadi_sadaka.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_jumla_ahadi_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -69,7 +69,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaJengo() async {
     print("dataz");
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_jumla_jengo_sadaka.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_jumla_jengo_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -140,16 +140,14 @@ class _ChatScreenState extends State<MatoleoScreen> {
           body: SingleChildScrollView(
             physics: NeverScrollableScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 15.0, vertical: jtdeviceHeight(context) / 8),
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: jtdeviceHeight(context) / 8),
               child: Column(
                 children: [
                   SizedBox(
                     height: jtdeviceHeight(context) / 5,
                     width: jtdeviceWidth(context),
                     child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),
@@ -163,10 +161,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               children: [
                                 Text(
                                   "Ahadi",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -175,22 +170,15 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(),
                                 Text(
                                   "Tsh ${currency.format(int.parse(data['ahadi']))}",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
                                       ),
                                 ),
-                                jtmanualStepper(
-                                    step: jtdeviceHeight(context) ~/ 30),
+                                jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
                                 Text(
                                   "Jengo",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -199,10 +187,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(),
                                 Text(
                                   "Tsh ${currency.format(int.parse(data['jengo']))}",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
                                       ),
@@ -215,10 +200,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               children: [
                                 Text(
                                   "",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -229,16 +211,12 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                   //Error number 2
                                   future: getJumlaAhadi(),
                                   builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
                                       return Text("...");
                                     } else if (snapshot.hasData) {
                                       return Text(
                                         "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .headline2
-                                            .copyWith(
+                                        style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                               fontSize: 17,
                                               color: MyColors.primaryLight,
                                             ),
@@ -248,14 +226,10 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     }
                                   },
                                 ),
-                                jtmanualStepper(
-                                    step: jtdeviceHeight(context) ~/ 30),
+                                jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
                                 Text(
                                   "",
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline2
-                                      .copyWith(
+                                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -266,16 +240,12 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                   //Error number 2
                                   future: getJumlaJengo(),
                                   builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
                                       return Text("...");
                                     } else if (snapshot.hasData) {
                                       return Text(
                                         "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .headline2
-                                            .copyWith(
+                                        style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                                               fontSize: 17,
                                               color: MyColors.primaryLight,
                                             ),
@@ -314,8 +284,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               //Error number 2
                               future: getSadakaZako(),
                               builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 50.0),
                                     child: Center(
@@ -344,8 +313,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                       ),
                                     ),
                                   );
-                                } else if (snapshot.hasError ||
-                                    !snapshot.hasData) {
+                                } else if (snapshot.hasError || !snapshot.hasData) {
                                   return Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
@@ -354,8 +322,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                           padding: const EdgeInsets.all(10.0),
                                           child: Column(
                                             children: [
-                                              Lottie.asset(
-                                                  'assets/animation/nodata.json'),
+                                              Lottie.asset('assets/animation/nodata.json'),
                                               SizedBox(
                                                 height: 10.0,
                                               ),
@@ -365,8 +332,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 13.0,
-                                                    color:
-                                                        MyColors.primaryLight,
+                                                    color: MyColors.primaryLight,
                                                   ),
                                                 ),
                                               )
@@ -389,60 +355,31 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                             width: jtdeviceWidth(context),
                                             child: Card(
                                                 elevation: 0,
-                                                color:
-                                                    Theme.of(context).cardColor,
+                                                color: Theme.of(context).cardColor,
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10.0),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                                   child: Column(
                                                     children: [
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
                                                             "Ahadi",
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .subtitle1
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        14),
+                                                            style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14),
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Row(
                                                               children: [
                                                                 Text(
                                                                   "TZS ",
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .subtitle1
-                                                                      .copyWith(
-                                                                          fontSize:
-                                                                              10),
+                                                                  style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 10),
                                                                 ),
                                                                 Text(
-                                                                  currency.format(
-                                                                      int.parse(
-                                                                          snapshot.data[index]
-                                                                              [
-                                                                              'ahadi'])),
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .subtitle1
-                                                                      .copyWith(
-                                                                        fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
+                                                                  currency.format(int.parse(snapshot.data[index]['ahadi'])),
+                                                                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                                        fontSize: 17,
+                                                                        fontWeight: FontWeight.w500,
                                                                       ),
                                                                 )
                                                               ],
@@ -451,51 +388,25 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                         ],
                                                       ),
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
                                                             "Jengo",
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .subtitle1
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        14),
+                                                            style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 14),
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Row(
                                                               children: [
                                                                 Text(
                                                                   "TZS ",
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .subtitle1
-                                                                      .copyWith(
-                                                                          fontSize:
-                                                                              10),
+                                                                  style: Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 10),
                                                                 ),
                                                                 Text(
-                                                                  currency.format(
-                                                                      int.parse(
-                                                                          snapshot.data[index]
-                                                                              [
-                                                                              'jengo'])),
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .subtitle1
-                                                                      .copyWith(
-                                                                        fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
+                                                                  currency.format(int.parse(snapshot.data[index]['jengo'])),
+                                                                  style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                                        fontSize: 17,
+                                                                        fontWeight: FontWeight.w500,
                                                                       ),
                                                                 )
                                                               ],
@@ -505,44 +416,23 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                       ),
                                                       jtmanualStepper(step: 8),
                                                       Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 8.0),
+                                                        padding: const EdgeInsets.only(right: 8.0),
                                                         child: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Text(
                                                               "",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .subtitle1
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                              style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                                    fontSize: 14,
+                                                                    fontWeight: FontWeight.bold,
                                                                   ),
                                                             ),
                                                             Text(
                                                               "2022-03-13",
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .subtitle1
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                              style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                                                    fontSize: 12,
+                                                                    fontWeight: FontWeight.bold,
                                                                   ),
                                                             ),
                                                           ],

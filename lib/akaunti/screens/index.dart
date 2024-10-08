@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:kinyerezi/akaunti/screens/change_password.dart';
-import 'package:kinyerezi/akaunti/screens/constant.dart';
-import 'package:kinyerezi/akaunti/screens/mapendekezo_screen.dart';
-import 'package:kinyerezi/akaunti/screens/profile_list.dart';
-import 'package:kinyerezi/matoleo/index.dart';
-import 'package:kinyerezi/register_login/screens/login.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/dimension.dart';
+import 'package:miyuji/akaunti/screens/change_password.dart';
+import 'package:miyuji/akaunti/screens/constant.dart';
+import 'package:miyuji/akaunti/screens/mapendekezo_screen.dart';
+import 'package:miyuji/akaunti/screens/profile_list.dart';
+import 'package:miyuji/matoleo/index.dart';
+import 'package:miyuji/register_login/screens/login.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/dimension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -29,8 +29,7 @@ class ProfilePage extends StatefulWidget {
   MapScreenState createState() => MapScreenState();
 }
 
-class MapScreenState extends State<ProfilePage>
-    with SingleTickerProviderStateMixin {
+class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
   bool _status = false;
   final FocusNode myFocusNode = FocusNode();
   bool _isObscureOld = true;
@@ -117,16 +116,14 @@ class MapScreenState extends State<ProfilePage>
     super.dispose();
   }
 
-  Future<void> updatePassword(
-      String member_no, String oldpassword, String newpassword) async {
+  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
     //get my data
-    Alerts.showProgressDialog(
-        context, "Tafadhari Subiri,neno lako linabadilishwa");
+    Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
       _status = true;
     });
 
-    String mydataApi = "http://kinyerezikkkt.or.tz/api/change_password.php";
+    String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
       mydataApi,
@@ -241,8 +238,7 @@ class MapScreenState extends State<ProfilePage>
                     );
                   }
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,
@@ -268,17 +264,12 @@ class MapScreenState extends State<ProfilePage>
                 textColor: Colors.white,
                 color: MyColors.primaryDark,
                 onPressed: () async {
-                  Alerts.showProgressDialog(
-                      context, "Inatoka kwenye akaunt yako");
+                  Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
 
-                  await LocalStorage.removeItem("member_no")
-                      .whenComplete(() async {
-                    await LocalStorage.removeItem("mydata")
-                        .whenComplete(() async {
-                      await LocalStorage.removeItem("mtumishi")
-                          .whenComplete(() {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomePage()));
+                  await LocalStorage.removeItem("member_no").whenComplete(() async {
+                    await LocalStorage.removeItem("mydata").whenComplete(() async {
+                      await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
                           msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -291,8 +282,7 @@ class MapScreenState extends State<ProfilePage>
                     });
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,
@@ -353,8 +343,7 @@ class AvatarImage extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 25.0,
-                          backgroundImage: NetworkImage(
-                              "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
+                          backgroundImage: NetworkImage("https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
                           backgroundColor: Colors.transparent,
                         ),
                         manualSpacer(step: 5),
@@ -365,8 +354,7 @@ class AvatarImage extends StatelessWidget {
                                 children: [
                                   Text(
                                     "Karibu,",
-                                    style:
-                                        TextStyles.headline(context).copyWith(
+                                    style: TextStyles.headline(context).copyWith(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: MyColors.primaryLight,
@@ -381,22 +369,19 @@ class AvatarImage extends StatelessWidget {
                                   ),
                                   manualStepper(step: 10),
                                   Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                         "No. Ahadi : ",
-                                        style: TextStyles.headline(context)
-                                            .copyWith(
+                                        style: TextStyles.headline(context).copyWith(
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                           color: MyColors.primaryLight,
                                         ),
                                       ),
                                       Text(
-                                        (data == null ||
-                                                data['namba_ya_ahadi'] == null)
+                                        (data == null || data['namba_ya_ahadi'] == null)
                                             ? host != null
                                                 ? host['member_no']
                                                 : "N/A"
@@ -422,9 +407,7 @@ class AvatarImage extends StatelessWidget {
                                   manualSpacer(step: 5),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) => Login()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
                                     },
                                     child: Text(
                                       'Ingia Akaunti',
@@ -437,8 +420,7 @@ class AvatarImage extends StatelessWidget {
                                     style: ElevatedButton.styleFrom(
                                       primary: MyColors.primaryLight,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            12), // <-- Radius
+                                        borderRadius: BorderRadius.circular(12), // <-- Radius
                                       ),
                                     ),
                                   ),
@@ -462,15 +444,12 @@ class AvatarImage extends StatelessWidget {
                                   children: [
                                     manualSpacer(step: 20),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Mtaa wako,",
-                                          style: TextStyles.headline(context)
-                                              .copyWith(
+                                          style: TextStyles.headline(context).copyWith(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: MyColors.primaryLight,
@@ -478,9 +457,7 @@ class AvatarImage extends StatelessWidget {
                                         ),
                                         manualStepper(step: 2),
                                         Text(
-                                          (data == null ||
-                                                  data['namba_ya_ahadi'] ==
-                                                      null)
+                                          (data == null || data['namba_ya_ahadi'] == null)
                                               ? host != null
                                                   ? host['member_no']
                                                   : "N/A"
@@ -494,18 +471,14 @@ class AvatarImage extends StatelessWidget {
                                     ),
                                     manualSpacer(step: 50),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
                                               "Ahadi : ",
-                                              style:
-                                                  TextStyles.headline(context)
-                                                      .copyWith(
+                                              style: TextStyles.headline(context).copyWith(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                                 color: MyColors.primaryLight,
@@ -513,10 +486,7 @@ class AvatarImage extends StatelessWidget {
                                             ),
                                             //
                                             Text(
-                                              (data == null ||
-                                                      data['ahadi'] == null)
-                                                  ? "N/A"
-                                                  : "${money.format(int.parse(data['ahadi']))} Tsh",
+                                              (data == null || data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
                                               style: GoogleFonts.montserrat(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -529,19 +499,14 @@ class AvatarImage extends StatelessWidget {
                                           children: [
                                             Text(
                                               "Jengo : ",
-                                              style:
-                                                  TextStyles.headline(context)
-                                                      .copyWith(
+                                              style: TextStyles.headline(context).copyWith(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                                 color: MyColors.primaryLight,
                                               ),
                                             ),
                                             Text(
-                                              (data == null ||
-                                                      data['jengo'] == null)
-                                                  ? "N/A"
-                                                  : "${money.format(int.parse(data['jengo']))}  Tsh",
+                                              (data == null || data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))}  Tsh",
                                               style: GoogleFonts.montserrat(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -587,7 +552,7 @@ class AvatarImage extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: SingleChildScrollView(
                           child: Text(
-                            "Karibu, kwenye mfumo wa KKKT KINYEREZI mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
+                            "Karibu, kwenye mfumo wa KKKT miyuji mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -688,8 +653,7 @@ class ProfileListItems extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ChangePasswordScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
             },
             child: ProfileListItem(
               icon: LineAwesomeIcons.cog,
@@ -698,11 +662,10 @@ class ProfileListItems extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              String result =
-                  "https://play.google.com/store/apps/details?id=app.kinyerezi";
+              String result = "https://play.google.com/store/apps/details?id=app.miyuji";
               if (result != null) {
                 Share.share(
-                    "Pakua Application yetu mpya ya KKKT KINYEREZI uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
+                    "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
               }
             },
             child: ProfileListItem(
@@ -712,8 +675,7 @@ class ProfileListItems extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MapendekezoScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MapendekezoScreen()));
             },
             child: ProfileListItem(
               icon: LineAwesomeIcons.question,
@@ -728,8 +690,7 @@ class ProfileListItems extends StatelessWidget {
               await LocalStorage.removeItem("member_no").whenComplete(() async {
                 await LocalStorage.removeItem("mydata").whenComplete(() async {
                   await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                     SystemNavigator.pop();
                     return Fluttertoast.showToast(
                       msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -757,15 +718,13 @@ class ProfileListItems extends StatelessWidget {
                 Text(
                   "Crafted By iSoftTz",
                   style: GoogleFonts.gochiHand(
-                    textStyle: TextStyle(
-                        color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
                   ),
                 ),
                 Text(
                   "© 2022",
                   style: GoogleFonts.gochiHand(
-                    textStyle: TextStyle(
-                        color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
                   ),
                 ),
               ],
@@ -787,21 +746,18 @@ class AppBarButton extends StatelessWidget {
     return Container(
       width: 55,
       height: 55,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: kAppPrimaryColor,
-          boxShadow: [
-            BoxShadow(
-              color: kLightBlack,
-              offset: Offset(1, 1),
-              blurRadius: 10,
-            ),
-            BoxShadow(
-              color: kWhite,
-              offset: Offset(-1, -1),
-              blurRadius: 10,
-            ),
-          ]),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: kAppPrimaryColor, boxShadow: [
+        BoxShadow(
+          color: kLightBlack,
+          offset: Offset(1, 1),
+          blurRadius: 10,
+        ),
+        BoxShadow(
+          color: kWhite,
+          offset: Offset(-1, -1),
+          blurRadius: 10,
+        ),
+      ]),
       child: Icon(
         icon,
         color: fCL,

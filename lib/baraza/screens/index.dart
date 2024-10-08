@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kinyerezi/baraza/screens/baraza_wazee_screen.dart';
-import 'package:kinyerezi/baraza/screens/kamati_screen.dart';
-import 'package:kinyerezi/baraza/screens/walimu_screen.dart';
-import 'package:kinyerezi/baraza/screens/watumishi_screen.dart';
-import 'package:kinyerezi/models/barazalawazee.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/baraza/screens/baraza_wazee_screen.dart';
+import 'package:miyuji/baraza/screens/kamati_screen.dart';
+import 'package:miyuji/baraza/screens/walimu_screen.dart';
+import 'package:miyuji/baraza/screens/watumishi_screen.dart';
+import 'package:miyuji/models/barazalawazee.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class BarazaLaWazee extends StatefulWidget {
   const BarazaLaWazee({Key key}) : super(key: key);
@@ -51,7 +51,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                 background: Hero(
                   tag: "msimu",
                   child: Image.asset(
-                    "assets/images/kinyerezi_2.jpg",
+                    "assets/images/miyuji_2.jpg",
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -225,8 +225,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => KamatiUsharikaScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => KamatiUsharikaScreen()));
                               },
                               child: Container(
                                 decoration: BoxDecoration(

@@ -3,29 +3,29 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:kinyerezi/akaunti/screens/_old_index.dart';
-import 'package:kinyerezi/baraza/screens/index.dart';
-import 'package:kinyerezi/chatroom/screen/chat_screen.dart';
-import 'package:kinyerezi/jumuiyazetu/screens/index.dart';
-import 'package:kinyerezi/kwayazetu/screens/index.dart';
-import 'package:kinyerezi/livestream/screens/index.dart';
-import 'package:kinyerezi/mahubiri/screens/index.dart';
-import 'package:kinyerezi/matangazo/screens/index.dart';
-import 'package:kinyerezi/matoleo/index.dart';
-import 'package:kinyerezi/models/neno_lasiku.dart';
-import 'package:kinyerezi/neno/screens/index.dart';
-import 'package:kinyerezi/ratiba/screens/index.dart';
-import 'package:kinyerezi/register_login/screens/login.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/uongozi/screens/index.dart';
-import 'package:kinyerezi/usajili/screens/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/dimension.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/akaunti/screens/_old_index.dart';
+import 'package:miyuji/baraza/screens/index.dart';
+import 'package:miyuji/chatroom/screen/chat_screen.dart';
+import 'package:miyuji/jumuiyazetu/screens/index.dart';
+import 'package:miyuji/kwayazetu/screens/index.dart';
+import 'package:miyuji/livestream/screens/index.dart';
+import 'package:miyuji/mahubiri/screens/index.dart';
+import 'package:miyuji/matangazo/screens/index.dart';
+import 'package:miyuji/matoleo/index.dart';
+import 'package:miyuji/models/neno_lasiku.dart';
+import 'package:miyuji/neno/screens/index.dart';
+import 'package:miyuji/ratiba/screens/index.dart';
+import 'package:miyuji/register_login/screens/login.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/uongozi/screens/index.dart';
+import 'package:miyuji/usajili/screens/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/dimension.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:kinyerezi/utils/no_auth.dart';
+import 'package:miyuji/utils/no_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../akaunti/screens/index.dart';
@@ -73,9 +73,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<NenoLaSikuData>> getRatiba() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_nenolasiku.php";
-    final response =
-        await http.post(myApi, headers: {'Accept': 'application/json'});
+    String myApi = "http://miyujikkkt.or.tz/api/get_nenolasiku.php";
+    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <NenoLaSikuData>[];
     var baraza;
@@ -175,8 +174,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildMenu(BuildContext context) {
     return GridView.builder(
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: menuList?.length,
       scrollDirection: Axis.vertical,
       physics: NeverScrollableScrollPhysics(),
@@ -301,26 +299,19 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             //check naviagtio
             if (menuList[index]['pushTo'] == "BARAZA WAZEE") {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => BarazaLaWazee()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BarazaLaWazee()));
             } else if (menuList[index]['pushTo'] == "MUBASHARA") {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LiveYoutubePlayer()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LiveYoutubePlayer()));
             } else if (menuList[index]['pushTo'] == "MATANGAZO") {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MatangazoScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatangazoScreen()));
             } else if (menuList[index]['pushTo'] == "JISAJILI MSHARIKA") {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationScreen()));
             } else if (menuList[index]['pushTo'] == "KWAYA ZETU") {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => KwayaZetu()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => KwayaZetu()));
             } else if (menuList[index]['pushTo'] == "MAZUNGUMZO") {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => ChatScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
             } else if (menuList[index]['pushTo'] == "JUMUIYA ZETU") {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => ChatScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
             }
           },
           child: Card(
@@ -336,33 +327,24 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     //check naviagtio
                     if (menuList[index]['pushTo'] == "BARAZA WAZEE") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BarazaLaWazee()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => BarazaLaWazee()));
                     } else if (menuList[index]['pushTo'] == "MUBASHARA") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LiveYoutubePlayer()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LiveYoutubePlayer()));
                     } else if (menuList[index]['pushTo'] == "MATANGAZO") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MatangazoScreen()));
-                    } else if (menuList[index]['pushTo'] ==
-                        "JISAJILI MSHARIKA") {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatangazoScreen()));
+                    } else if (menuList[index]['pushTo'] == "JISAJILI MSHARIKA") {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => RegistrationScreen()),
+                        MaterialPageRoute(builder: (context) => RegistrationScreen()),
                       );
                     } else if (menuList[index]['pushTo'] == "KWAYA ZETU") {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => KwayaZetu()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => KwayaZetu()));
                     } else if (menuList[index]['pushTo'] == "MAZUNGUMZO") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ChatScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
                     } else if (menuList[index]['pushTo'] == "JUMUIYA ZETU") {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => JumuiyaZetu()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => JumuiyaZetu()));
                     }
                   },
-                  iconSize:
-                      (menuList[index]['pushTo'] == "MUBASHARA") ? 60 : 20,
+                  iconSize: (menuList[index]['pushTo'] == "MUBASHARA") ? 60 : 20,
                   icon: Image.asset(
                     menuList[index]['image'],
                     color: MyColors.primaryLight,
@@ -409,7 +391,7 @@ class _HomePageState extends State<HomePage> {
                       height: 30,
                       child: Center(
                         child: Text(
-                          "KKKT KINYEREZI",
+                          "KKKT miyuji",
                           style: GoogleFonts.montserrat(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -446,33 +428,25 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       CircleAvatar(
                                         radius: 25.0,
-                                        backgroundImage: NetworkImage(
-                                            "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
+                                        backgroundImage: NetworkImage("https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
                                         backgroundColor: Colors.transparent,
                                       ),
                                       manualSpacer(step: 5),
                                       ((host != null))
                                           ? Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Karibu,",
-                                                  style: TextStyles.headline(
-                                                          context)
-                                                      .copyWith(
+                                                  style: TextStyles.headline(context).copyWith(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
-                                                    color:
-                                                        MyColors.primaryLight,
+                                                    color: MyColors.primaryLight,
                                                   ),
                                                 ),
                                                 Text(
-                                                  host != null
-                                                      ? "${host['fname']}"
-                                                      : "N/A",
+                                                  host != null ? "${host['fname']}" : "N/A",
                                                   style: GoogleFonts.montserrat(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
@@ -480,38 +454,26 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                                 manualStepper(step: 10),
                                                 Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       "No. Ahadi : ",
-                                                      style:
-                                                          TextStyles.headline(
-                                                                  context)
-                                                              .copyWith(
+                                                      style: TextStyles.headline(context).copyWith(
                                                         fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: MyColors
-                                                            .primaryLight,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: MyColors.primaryLight,
                                                       ),
                                                     ),
                                                     Text(
-                                                      (data == null ||
-                                                              data['namba_ya_ahadi'] ==
-                                                                  null)
+                                                      (data == null || data['namba_ya_ahadi'] == null)
                                                           ? host != null
-                                                              ? host[
-                                                                  'member_no']
+                                                              ? host['member_no']
                                                               : "N/A"
                                                           : "${data['namba_ya_ahadi']}",
-                                                      style: GoogleFonts
-                                                          .montserrat(
+                                                      style: GoogleFonts.montserrat(
                                                         fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
                                                   ],
@@ -530,31 +492,20 @@ class _HomePageState extends State<HomePage> {
                                                 manualSpacer(step: 5),
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    Login()));
+                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
                                                   },
                                                   child: Text(
                                                     'Ingia Akaunti',
-                                                    style:
-                                                        GoogleFonts.montserrat(
+                                                    style: GoogleFonts.montserrat(
                                                       fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       color: MyColors.white,
                                                     ),
                                                   ),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    primary:
-                                                        MyColors.primaryLight,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12), // <-- Radius
+                                                  style: ElevatedButton.styleFrom(
+                                                    primary: MyColors.primaryLight,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(12), // <-- Radius
                                                     ),
                                                   ),
                                                 ),
@@ -578,81 +529,52 @@ class _HomePageState extends State<HomePage> {
                                                 children: [
                                                   manualSpacer(step: 20),
                                                   Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Text(
                                                         "Jumuiya yako,",
-                                                        style:
-                                                            TextStyles.headline(
-                                                                    context)
-                                                                .copyWith(
+                                                        style: TextStyles.headline(context).copyWith(
                                                           fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: MyColors
-                                                              .primaryLight,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: MyColors.primaryLight,
                                                         ),
                                                       ),
                                                       manualStepper(step: 2),
                                                       Text(
-                                                        (data == null ||
-                                                                data['namba_ya_ahadi'] ==
-                                                                    null)
+                                                        (data == null || data['namba_ya_ahadi'] == null)
                                                             ? host != null
-                                                                ? host[
-                                                                    'member_no']
+                                                                ? host['member_no']
                                                                 : "N/A"
                                                             : "${data['jina_la_jumuiya']}",
-                                                        style: GoogleFonts
-                                                            .montserrat(
+                                                        style: GoogleFonts.montserrat(
                                                           fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontWeight: FontWeight.bold,
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                   manualSpacer(step: 50),
                                                   Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Row(
                                                         children: [
                                                           Text(
                                                             "Ahadi : ",
-                                                            style: TextStyles
-                                                                    .headline(
-                                                                        context)
-                                                                .copyWith(
+                                                            style: TextStyles.headline(context).copyWith(
                                                               fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: MyColors
-                                                                  .primaryLight,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: MyColors.primaryLight,
                                                             ),
                                                           ),
                                                           //
                                                           Text(
-                                                            (data == null ||
-                                                                    data['ahadi'] ==
-                                                                        null)
-                                                                ? "N/A"
-                                                                : "${money.format(int.parse(data['ahadi']))} Tsh",
-                                                            style: GoogleFonts
-                                                                .montserrat(
+                                                            (data == null || data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
+                                                            style: GoogleFonts.montserrat(
                                                               fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              fontWeight: FontWeight.bold,
                                                             ),
                                                           ),
                                                         ],
@@ -662,30 +584,17 @@ class _HomePageState extends State<HomePage> {
                                                         children: [
                                                           Text(
                                                             "Jengo : ",
-                                                            style: TextStyles
-                                                                    .headline(
-                                                                        context)
-                                                                .copyWith(
+                                                            style: TextStyles.headline(context).copyWith(
                                                               fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: MyColors
-                                                                  .primaryLight,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: MyColors.primaryLight,
                                                             ),
                                                           ),
                                                           Text(
-                                                            (data == null ||
-                                                                    data['jengo'] ==
-                                                                        null)
-                                                                ? "N/A"
-                                                                : "${money.format(int.parse(data['jengo']))}  Tsh",
-                                                            style: GoogleFonts
-                                                                .montserrat(
+                                                            (data == null || data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))}  Tsh",
+                                                            style: GoogleFonts.montserrat(
                                                               fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              fontWeight: FontWeight.bold,
                                                             ),
                                                           ),
                                                         ],
@@ -697,27 +606,21 @@ class _HomePageState extends State<HomePage> {
                                             )
                                           : Container(
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Taarifa zako za Ahadi zitaonekana hapa.",
-                                                    style:
-                                                        GoogleFonts.montserrat(
+                                                    style: GoogleFonts.montserrat(
                                                       fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
                                                     "Baada ya usajili.",
-                                                    style:
-                                                        GoogleFonts.montserrat(
+                                                    style: GoogleFonts.montserrat(
                                                       fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -734,7 +637,7 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: SingleChildScrollView(
                                         child: Text(
-                                          "Karibu, kwenye mfumo wa KKKT KINYEREZI mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
+                                          "Karibu, kwenye mfumo wa KKKT miyuji mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
                                           style: GoogleFonts.montserrat(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -750,10 +653,7 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MatoleoScreen()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatoleoScreen()));
                                     },
                                     child: Text(
                                       'Matoleo yako',
@@ -766,8 +666,7 @@ class _HomePageState extends State<HomePage> {
                                     style: ElevatedButton.styleFrom(
                                       primary: MyColors.primaryLight,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            12), // <-- Radius
+                                        borderRadius: BorderRadius.circular(12), // <-- Radius
                                       ),
                                     ),
                                   ),
@@ -806,11 +705,8 @@ class _HomePageState extends State<HomePage> {
                             Divider(),
                             FutureBuilder(
                               future: getRatiba(),
-                              builder: (context,
-                                  AsyncSnapshot<List<NenoLaSikuData>>
-                                      snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                              builder: (context, AsyncSnapshot<List<NenoLaSikuData>> snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(
                                     child: Column(
                                       children: [
@@ -824,8 +720,7 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   );
-                                } else if (snapshot.hasError ||
-                                    !snapshot.hasData) {
+                                } else if (snapshot.hasError || !snapshot.hasData) {
                                   return Center(
                                     child: Padding(
                                       padding: const EdgeInsets.all(50.0),
@@ -833,19 +728,14 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           SizedBox(
                                             height: 30,
-                                            child: Lottie.asset(
-                                                'assets/animation/load_neno.json',
-                                                height: 20),
+                                            child: Lottie.asset('assets/animation/load_neno.json', height: 20),
                                           ),
                                           SizedBox(
                                             height: 2.0,
                                           ),
                                           Text(
                                             "Hakuna taarifa zilizopatiakana",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12.0,
-                                                color: Colors.black38),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, color: Colors.black38),
                                           )
                                         ],
                                       ),
@@ -879,8 +769,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment.bottomLeft,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => NenoLaSiku()));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => NenoLaSiku()));
                                 },
                                 child: Text(
                                   'Tazama yote',
@@ -917,7 +806,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Center(
                               child: Image.asset(
-                                "assets/images/kinyerezi.jpg",
+                                "assets/images/miyuji.jpg",
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                               ),
@@ -955,8 +844,7 @@ class _HomePageState extends State<HomePage> {
                                             'Mahubiri ya tarehe 23-02-2021',
                                             textAlign: TextAlign.center,
                                             style: GoogleFonts.montserrat(
-                                              fontSize:
-                                                  deviceHeight(context) / 50,
+                                              fontSize: deviceHeight(context) / 50,
                                               fontWeight: FontWeight.bold,
                                               color: MyColors.white,
                                             ),
@@ -964,8 +852,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                     ),
-                                    manualStepper(
-                                        step: deviceWidth(context) ~/ 50),
+                                    manualStepper(step: deviceWidth(context) ~/ 50),
                                     Text(
                                       'Na Mch. Moses',
                                       textAlign: TextAlign.center,
@@ -975,16 +862,12 @@ class _HomePageState extends State<HomePage> {
                                         color: MyColors.white,
                                       ),
                                     ),
-                                    manualStepper(
-                                        step: deviceWidth(context) ~/ 50),
+                                    manualStepper(step: deviceWidth(context) ~/ 50),
                                     Align(
                                       alignment: Alignment.center,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MahubiriScreen()));
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MahubiriScreen()));
                                         },
                                         child: Text(
                                           'Tazama zote',
@@ -997,8 +880,7 @@ class _HomePageState extends State<HomePage> {
                                         style: ElevatedButton.styleFrom(
                                           primary: MyColors.primaryLight,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                12), // <-- Radius
+                                            borderRadius: BorderRadius.circular(12), // <-- Radius
                                           ),
                                         ),
                                       ),

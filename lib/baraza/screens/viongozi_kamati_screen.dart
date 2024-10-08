@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/models/viongozi_kamati.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/models/viongozi_kamati.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +22,7 @@ class ViongoziWaKamati extends StatefulWidget {
 class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
   Future<List<ViongoziKamati>> getWatumishiWasharika() async {
     print("kamati data ${widget.kamati.id}");
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_kamati_viongozi_id.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_kamati_viongozi_id.php";
     final response = await http.post(
       myApi,
       body: {

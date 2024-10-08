@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:kinyerezi/chatroom/cloud/cloud.dart';
-import 'package:kinyerezi/chatroom/cloud/firebase_notification.dart';
-import 'package:kinyerezi/models/message.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
+import 'package:miyuji/chatroom/cloud/cloud.dart';
+import 'package:miyuji/chatroom/cloud/firebase_notification.dart';
+import 'package:miyuji/models/message.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as path;
 import './message_handler.dart';
@@ -31,8 +31,7 @@ class MediaHandler {
 
     //upload image to server
     if (message.type == "photo") {}
-    final firebase_storage.Reference _ref =
-        firebase_storage.FirebaseStorage.instance.ref().child('Message${message.type}/$id-${_image.path.split('/').last}');
+    final firebase_storage.Reference _ref = firebase_storage.FirebaseStorage.instance.ref().child('Message${message.type}/$id-${_image.path.split('/').last}');
 
     //upload task listen when upload image to server
     UploadTask uploadTask = _ref.putFile(_image);

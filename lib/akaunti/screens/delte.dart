@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
@@ -15,8 +15,7 @@ class ProfilePage extends StatefulWidget {
   MapScreenState createState() => MapScreenState();
 }
 
-class MapScreenState extends State<ProfilePage>
-    with SingleTickerProviderStateMixin {
+class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
   bool _status = false;
   final FocusNode myFocusNode = FocusNode();
   bool _isObscureOld = true;
@@ -82,8 +81,7 @@ class MapScreenState extends State<ProfilePage>
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: 5.0),
-                          child:
-                              new Stack(fit: StackFit.loose, children: <Widget>[
+                          child: new Stack(fit: StackFit.loose, children: <Widget>[
                             new Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,8 +92,7 @@ class MapScreenState extends State<ProfilePage>
                                     decoration: new BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: new DecorationImage(
-                                        image: new ExactAssetImage(
-                                            'assets/images/profile.png'),
+                                        image: new ExactAssetImage('assets/images/profile.png'),
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -123,8 +120,7 @@ class MapScreenState extends State<ProfilePage>
                   ),
                   new Center(
                     child: Padding(
-                        padding:
-                            EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                        padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                         child: new Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
@@ -160,23 +156,18 @@ class MapScreenState extends State<ProfilePage>
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 25.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         new Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             new Text(
                                               'Taarifa zako',
-                                              style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
@@ -194,29 +185,24 @@ class MapScreenState extends State<ProfilePage>
                                   thickness: 2,
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 25.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         new Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             new Text(
                                               'Jina Kamili',
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 2.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
@@ -232,29 +218,24 @@ class MapScreenState extends State<ProfilePage>
                                   thickness: 2,
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 25.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         new Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             new Text(
                                               'Namba ya Ahadi',
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 2.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
@@ -270,37 +251,30 @@ class MapScreenState extends State<ProfilePage>
                                   thickness: 2,
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 25.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         new Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             new Text(
                                               'Jumuiya',
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 2.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
                                         new Flexible(
                                           child: Text(
-                                            (data == null ||
-                                                    data['namba_ya_ahadi'] ==
-                                                        null)
+                                            (data == null || data['namba_ya_ahadi'] == null)
                                                 ? host != null
                                                     ? host['member_no']
                                                     : "N/A"
@@ -317,20 +291,16 @@ class MapScreenState extends State<ProfilePage>
                                   thickness: 2,
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 25.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(
                                           child: Container(
                                             child: new Text(
                                               'Neno la siri',
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           flex: 2,
@@ -347,17 +317,14 @@ class MapScreenState extends State<ProfilePage>
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 2.0),
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Flexible(
                                           child: Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10.0),
+                                            padding: EdgeInsets.only(right: 10.0),
                                             child: Column(
                                               children: [
                                                 new TextField(
@@ -370,46 +337,34 @@ class MapScreenState extends State<ProfilePage>
                                                   ),
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
-                                                    hintText:
-                                                        "Neno la siri la zamani",
+                                                    hintText: "Neno la siri la zamani",
                                                     hintStyle: TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
+                                                      borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
+                                                      borderSide: BorderSide(color: Colors.white),
                                                     ),
                                                     suffixIcon: IconButton(
                                                       icon: Icon(
-                                                        _isObscureOld
-                                                            ? Icons.visibility
-                                                            : Icons
-                                                                .visibility_off,
+                                                        _isObscureOld ? Icons.visibility : Icons.visibility_off,
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
-                                                          _isObscureOld =
-                                                              !_isObscureOld;
+                                                          _isObscureOld = !_isObscureOld;
                                                         });
                                                       },
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Theme.of(context).primaryColor,
                                                     ),
                                                   ),
                                                   obscureText: _isObscureOld,
@@ -425,46 +380,34 @@ class MapScreenState extends State<ProfilePage>
                                                   ),
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
-                                                    hintText:
-                                                        "Neno la siri jipya",
+                                                    hintText: "Neno la siri jipya",
                                                     hintStyle: TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                    enabledBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
+                                                      borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
+                                                    focusedBorder: OutlineInputBorder(
+                                                      borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white),
+                                                      borderSide: BorderSide(color: Colors.white),
                                                     ),
                                                     suffixIcon: IconButton(
                                                       icon: Icon(
-                                                        _isObscureNew
-                                                            ? Icons.visibility
-                                                            : Icons
-                                                                .visibility_off,
+                                                        _isObscureNew ? Icons.visibility : Icons.visibility_off,
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
-                                                          _isObscureNew =
-                                                              !_isObscureNew;
+                                                          _isObscureNew = !_isObscureNew;
                                                         });
                                                       },
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
+                                                      color: Theme.of(context).primaryColor,
                                                     ),
                                                   ),
                                                   obscureText: _isObscureNew,
@@ -507,16 +450,14 @@ class MapScreenState extends State<ProfilePage>
     super.dispose();
   }
 
-  Future<void> updatePassword(
-      String member_no, String oldpassword, String newpassword) async {
+  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
     //get my data
-    Alerts.showProgressDialog(
-        context, "Tafadhari Subiri,neno lako linabadilishwa");
+    Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
       _status = true;
     });
 
-    String mydataApi = "http://kinyerezikkkt.or.tz/api/change_password.php";
+    String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
       mydataApi,
@@ -631,8 +572,7 @@ class MapScreenState extends State<ProfilePage>
                     );
                   }
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,
@@ -658,17 +598,12 @@ class MapScreenState extends State<ProfilePage>
                 textColor: Colors.white,
                 color: MyColors.primaryDark,
                 onPressed: () async {
-                  Alerts.showProgressDialog(
-                      context, "Inatoka kwenye akaunt yako");
+                  Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
 
-                  await LocalStorage.removeItem("member_no")
-                      .whenComplete(() async {
-                    await LocalStorage.removeItem("mydata")
-                        .whenComplete(() async {
-                      await LocalStorage.removeItem("mtumishi")
-                          .whenComplete(() {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomePage()));
+                  await LocalStorage.removeItem("member_no").whenComplete(() async {
+                    await LocalStorage.removeItem("mydata").whenComplete(() async {
+                      await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
                           msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -681,8 +616,7 @@ class MapScreenState extends State<ProfilePage>
                     });
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,

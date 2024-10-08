@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/models/barazalawazee.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:miyuji/models/barazalawazee.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:intl/intl.dart';
@@ -20,7 +20,7 @@ class BarazaWazeeScreen extends StatefulWidget {
 
 class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
   Future<List<BarazaLaWazeeData>> getBarazaWaZee() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/get_barazawazee.php";
+    String myApi = "http://miyujikkkt.or.tz/api/get_barazawazee.php";
     final response = await http.post(myApi, headers: {'Accept': 'application/json'});
 
     var barazaList = <BarazaLaWazeeData>[];

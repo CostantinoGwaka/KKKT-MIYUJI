@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
-import 'package:kinyerezi/register_login/screens/login.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
+import 'package:miyuji/register_login/screens/login.dart';
 
 class NoAuthBanner extends StatelessWidget {
   const NoAuthBanner({Key key}) : super(key: key);
@@ -53,8 +53,7 @@ class NoAuthBanner extends StatelessWidget {
                   children: [
                     FlatButton(
                       onPressed: () async {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Login()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
                       },
                       padding: EdgeInsets.symmetric(
                         vertical: 10,

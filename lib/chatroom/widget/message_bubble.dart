@@ -8,18 +8,16 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kinyerezi/bloc/addReply.dart';
-import 'package:kinyerezi/chatroom/cloud/cloud.dart';
-import 'package:kinyerezi/chatroom/widget/image_holder.dart';
-import 'package:kinyerezi/shared/localstorage/index.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/bloc/addReply.dart';
+import 'package:miyuji/chatroom/cloud/cloud.dart';
+import 'package:miyuji/chatroom/widget/image_holder.dart';
+import 'package:miyuji/shared/localstorage/index.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:kinyerezi/home/screens/index.dart';
-
-
+import 'package:miyuji/home/screens/index.dart';
 
 class MessageBubble extends StatefulWidget {
   final Function scrollTo;
@@ -140,12 +138,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}")
-                        .whenComplete(
-                      () => {
-                        Cloud.delete(
-                            serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}")
-                      },
+                    Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}").whenComplete(
+                      () => {Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}")},
                     );
                   },
                 ),

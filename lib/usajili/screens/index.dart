@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:kinyerezi/models/Jumuiya.dart';
-import 'package:kinyerezi/utils/Alerts.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
-import 'package:kinyerezi/home/screens/index.dart';
+import 'package:miyuji/models/Jumuiya.dart';
+import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
+import 'package:miyuji/home/screens/index.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key key}) : super(key: key);
@@ -70,7 +70,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   int pagecontrolnumber;
 
   void getUsajiliId() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/getusajiliid.php";
+    String myApi = "http://miyujikkkt.or.tz/api/getusajiliid.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -136,7 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getJumuiyaApi() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/getjumuiya.php";
+    String myApi = "http://miyujikkkt.or.tz/api/getjumuiya.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -162,7 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getKatibu() async {
-    String myApi = "http://kinyerezikkkt.or.tz/api/getkatibu.php";
+    String myApi = "http://miyujikkkt.or.tz/api/getkatibu.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -466,7 +466,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _krid,
   ) async {
     Alerts.showProgressDialog(context, "Tafadhari subiri");
-    String myApi = "http://kinyerezikkkt.or.tz/api/jisajili.php/";
+    String myApi = "http://miyujikkkt.or.tz/api/jisajili.php/";
 
     var now = new DateTime.now();
 
@@ -582,17 +582,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     } else {
       Navigator.pop(context);
 
-     return Fluttertoast.showToast(
-          msg: "Server Error Please Try Again Later",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
+      return Fluttertoast.showToast(
+        msg: "Server Error Please Try Again Later",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: MyColors.primaryLight,
+        textColor: Colors.white,
+      );
     }
     // try {
     //   final response = await http.post(
-    //     "http://kinyerezikkkt.or.tz/api/jisajili.php/",
+    //     "http://miyujikkkt.or.tz/api/jisajili.php/",
     //     // headers: {
     //     //   "Content-Type": "application/json",
     //     // },

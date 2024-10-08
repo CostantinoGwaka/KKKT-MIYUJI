@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kinyerezi/kwayazetu/screens/video_list_screen.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/kwayazetu/screens/video_list_screen.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class KwayaZetu extends StatefulWidget {
   const KwayaZetu({Key key}) : super(key: key);
@@ -66,8 +66,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 0)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 0)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -141,8 +140,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 1)));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 1)));
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
@@ -221,8 +219,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 2)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 2)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -298,8 +295,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 3)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 3)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -375,8 +371,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 4)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 4)));
                               },
                               child: Container(
                                 decoration: BoxDecoration(

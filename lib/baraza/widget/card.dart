@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kinyerezi/utils/TextStyles.dart';
-import 'package:kinyerezi/utils/my_colors.dart';
-import 'package:kinyerezi/utils/spacer.dart';
+import 'package:miyuji/utils/TextStyles.dart';
+import 'package:miyuji/utils/my_colors.dart';
+import 'package:miyuji/utils/spacer.dart';
 
 class CardBaraza extends StatelessWidget {
   const CardBaraza({Key key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
