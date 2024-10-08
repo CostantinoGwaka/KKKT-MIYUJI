@@ -11,6 +11,8 @@ import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   MapScreenState createState() => MapScreenState();
 }
@@ -31,7 +33,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
   void checkLogin() async {
     LocalStorage.getStringItem('member_no').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           host = mydata;
@@ -40,7 +42,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     });
 
     LocalStorage.getStringItem('mydata').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           data = mydata;
@@ -55,7 +57,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
         body: Container(
       color: Colors.white,
       child: ListView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         children: <Widget>[
           Center(
             child: Padding(
@@ -72,27 +74,27 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                       color: MyColors.primaryLight,
                     ),
                   ),
-                  new Container(
+                  Container(
                     height: 180.0,
                     color: Colors.white,
-                    child: new Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 5.0),
-                          child: new Stack(fit: StackFit.loose, children: <Widget>[
-                            new Row(
+                          padding: const EdgeInsets.only(top: 5.0),
+                          child: Stack(fit: StackFit.loose, children: <Widget>[
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                new Container(
+                                Container(
                                     width: 120.0,
                                     height: 120.0,
-                                    decoration: new BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
-                                      image: new DecorationImage(
-                                        image: new ExactAssetImage('assets/images/profile.png'),
+                                      image: DecorationImage(
+                                        image: ExactAssetImage('assets/images/profile.png'),
                                         fit: BoxFit.cover,
                                       ),
                                     )),
@@ -118,14 +120,14 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                       ],
                     ),
                   ),
-                  new Center(
+                  Center(
                     child: Padding(
-                        padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                        child: new Row(
+                        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                        child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            new Flexible(
-                              child: new Text(
+                            Flexible(
+                              child: Text(
                                 '${host['fname']} - ${host['member_no']}',
                                 style: GoogleFonts.montserrat(
                                   fontSize: 15,
@@ -142,30 +144,30 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: MyColors.white, width: 2.0),
+                        side: const BorderSide(color: MyColors.white, width: 2.0),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: new Container(
-                          color: Color(0xffFFFFFF),
+                        child: Container(
+                          color: const Color(0xffFFFFFF),
                           child: Padding(
-                            padding: EdgeInsets.only(bottom: 5.0),
-                            child: new Column(
+                            padding: const EdgeInsets.only(bottom: 5.0),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Padding(
+                                const Padding(
                                     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                                    child: new Row(
+                                    child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Column(
+                                        Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
+                                            Text(
                                               'Taarifa zako',
                                               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                             ),
@@ -181,19 +183,19 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                         // )
                                       ],
                                     )),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
-                                Padding(
+                                const Padding(
                                     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                                    child: new Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Column(
+                                        Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
+                                            Text(
                                               'Jina Kamili',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
@@ -202,31 +204,31 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                                    child: new Row(
+                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Flexible(
-                                          child: new Text(
+                                        Flexible(
+                                          child: Text(
                                             '${host['fname']}',
-                                            style: TextStyle(fontSize: 13.0),
+                                            style: const TextStyle(fontSize: 13.0),
                                           ),
                                         ),
                                       ],
                                     )),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
-                                Padding(
+                                const Padding(
                                     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                                    child: new Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Column(
+                                        Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
+                                            Text(
                                               'Namba ya Ahadi',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
@@ -235,31 +237,31 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                                    child: new Row(
+                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Flexible(
+                                        Flexible(
                                           child: Text(
                                             '${host['member_no']}',
-                                            style: TextStyle(fontSize: 13.0),
+                                            style: const TextStyle(fontSize: 13.0),
                                           ),
                                         ),
                                       ],
                                     )),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
-                                Padding(
+                                const Padding(
                                     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                                    child: new Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Column(
+                                        Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            new Text(
+                                            Text(
                                               'Jumuiya',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
@@ -268,11 +270,11 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                                    child: new Row(
+                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: <Widget>[
-                                        new Flexible(
+                                        Flexible(
                                           child: Text(
                                             (data == null || data['namba_ya_ahadi'] == null)
                                                 ? host != null
@@ -287,23 +289,23 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                         ),
                                       ],
                                     )),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                                    child: new Row(
+                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(
+                                          flex: 2,
                                           child: Container(
-                                            child: new Text(
+                                            child: const Text(
                                               'Neno la siri',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                          flex: 2,
                                         ),
                                         // Expanded(
                                         //   child: Container(
@@ -317,17 +319,18 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                       ],
                                     )),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                                    child: new Row(
+                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Flexible(
+                                          flex: 2,
                                           child: Padding(
-                                            padding: EdgeInsets.only(right: 10.0),
+                                            padding: const EdgeInsets.only(right: 10.0),
                                             child: Column(
                                               children: [
-                                                new TextField(
+                                                TextField(
                                                   controller: oldp,
                                                   style: GoogleFonts.poppins(
                                                     fontSize: 20,
@@ -338,18 +341,18 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
                                                     hintText: "Neno la siri la zamani",
-                                                    hintStyle: TextStyle(
+                                                    hintStyle: const TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder: OutlineInputBorder(
+                                                    enabledBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
                                                       borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder: OutlineInputBorder(
+                                                    focusedBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
@@ -370,7 +373,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                                   obscureText: _isObscureOld,
                                                 ),
                                                 manualStepper(step: 5),
-                                                new TextField(
+                                                TextField(
                                                   controller: newp,
                                                   style: GoogleFonts.poppins(
                                                     fontSize: 20,
@@ -381,18 +384,18 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
                                                     hintText: "Neno la siri jipya",
-                                                    hintStyle: TextStyle(
+                                                    hintStyle: const TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder: OutlineInputBorder(
+                                                    enabledBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
                                                       borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder: OutlineInputBorder(
+                                                    focusedBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
@@ -415,7 +418,6 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                               ],
                                             ),
                                           ),
-                                          flex: 2,
                                         ),
                                         // Flexible(
                                         //   child: new TextField(
@@ -450,7 +452,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     super.dispose();
   }
 
-  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
+  Future<void> updatePassword(String memberNo, String oldpassword, String newpassword) async {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
@@ -465,9 +467,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
         'Accept': 'application/json',
       },
       body: {
-        "member_no": "$member_no",
-        "oldpassword": "$oldpassword",
-        "newpassword": "$newpassword",
+        "member_no": memberNo,
+        "oldpassword": oldpassword,
+        "newpassword": newpassword,
       },
     );
 
@@ -530,27 +532,28 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
   Widget _getActionButtons() {
     return Padding(
-      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
-      child: new Row(
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
+      child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Expanded(
+            flex: 2,
             child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: RaisedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.edit,
                       color: Colors.white,
                       size: 16.0,
                     ),
                     manualSpacer(step: 5),
-                    new Text("Badili"),
+                    const Text("Badili"),
                   ],
                 ),
                 textColor: Colors.white,
@@ -572,27 +575,27 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     );
                   }
                 },
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
-            flex: 2,
           ),
           Expanded(
+            flex: 2,
             child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: RaisedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.exit_to_app,
                       color: Colors.white,
                       size: 16.0,
                     ),
                     manualSpacer(step: 5),
-                    new Text("Toka"),
+                    const Text("Toka"),
                   ],
                 ),
                 textColor: Colors.white,
@@ -602,8 +605,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
                   await LocalStorage.removeItem("member_no").whenComplete(() async {
                     await LocalStorage.removeItem("mydata").whenComplete(() async {
+                      // ignore: void_checks
                       await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
                           msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -616,10 +620,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     });
                   });
                 },
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
-            flex: 2,
           ),
         ],
       ),
@@ -627,11 +630,11 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   }
 
   Widget _getEditIcon() {
-    return new GestureDetector(
-      child: new CircleAvatar(
+    return GestureDetector(
+      child: const CircleAvatar(
         backgroundColor: Colors.red,
         radius: 14.0,
-        child: new Icon(
+        child: Icon(
           Icons.edit,
           color: Colors.white,
           size: 16.0,

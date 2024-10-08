@@ -7,12 +7,11 @@ import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BarazaWazeeScreen extends StatefulWidget {
-  const BarazaWazeeScreen({Key key}) : super(key: key);
+  const BarazaWazeeScreen({Key? key}) : super(key: key);
 
   @override
   _BarazaWazeeScreenState createState() => _BarazaWazeeScreenState();
@@ -57,7 +56,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -90,7 +89,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -123,7 +122,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -144,7 +143,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Card(
@@ -154,7 +153,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                     ),
                     child: ListTile(
                       title: Text(
-                        "${snapshot.data[index].fname}",
+                        snapshot.data![index].fname,
                         style: TextStyles.caption(context).copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -162,7 +161,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                         ),
                       ),
                       subtitle: Text(
-                        "${snapshot.data[index].nambaYaSimu}",
+                        snapshot.data![index].nambaYaSimu,
                         style: TextStyles.caption(context).copyWith(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -178,12 +177,12 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                       ),
                       trailing: InkWell(
                         onTap: () {
-                          launch("tel://${snapshot.data[index].nambaYaSimu}");
+                          launch("tel://${snapshot.data![index].nambaYaSimu}");
                         },
                         child: CircleAvatar(
                           backgroundColor: MyColors.primaryLight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Icon(
                               Icons.call,
                               size: 20,
@@ -197,7 +196,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

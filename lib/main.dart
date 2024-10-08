@@ -26,25 +26,27 @@ void main() async {
           ),
         ],
         // child: DevicePreview(builder: (context) => MyApp()),
-        child: MyApp(),
+        child: const MyApp(),
       ),
     );
   });
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.white,
         statusBarIconBrightness: Brightness.dark,
         statusBarColor: MyColors.white,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );

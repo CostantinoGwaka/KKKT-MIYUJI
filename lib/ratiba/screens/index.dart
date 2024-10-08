@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/models/akaunti.dart';
 import 'package:miyuji/models/ratiba_ibada.dart';
-import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class RatibaZaIbada extends StatefulWidget {
-  const RatibaZaIbada({Key key}) : super(key: key);
+  const RatibaZaIbada({Key? key}) : super(key: key);
 
   @override
   _RatibaZaIbadaState createState() => _RatibaZaIbadaState();
@@ -159,7 +157,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                           'assets/animation/fetching.json',
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
@@ -190,7 +188,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             'assets/animation/nodata.json',
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10.0,
                                         ),
                                         Material(
@@ -211,7 +209,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               itemCount: snapshot.data.length,
                               itemBuilder: (_, index) {
                                 return Padding(
@@ -219,31 +217,31 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   child: Card(
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
-                                      side: BorderSide(color: MyColors.white, width: 2.0),
+                                      side: const BorderSide(color: MyColors.white, width: 2.0),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: GestureDetector(
                                       onTap: () {},
                                       child: Container(
                                         height: 100,
-                                        margin: EdgeInsets.only(bottom: 10),
+                                        margin: const EdgeInsets.only(bottom: 10),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
                                             Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                 left: 10,
                                                 top: 10,
                                                 bottom: 10,
                                               ),
                                               child: Row(children: <Widget>[
                                                 Container(
-                                                  margin: EdgeInsets.only(left: 10),
+                                                  margin: const EdgeInsets.only(left: 10),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
-                                                      Container(
+                                                      SizedBox(
                                                         width: 290,
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,7 +251,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                               children: [
                                                                 Column(
                                                                   children: <Widget>[
-                                                                    Container(
+                                                                    SizedBox(
                                                                       height: 50,
                                                                       child: CircleAvatar(
                                                                         backgroundColor: MyColors.white,
@@ -269,7 +267,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                                 ),
                                                                 manualSpacer(step: 5),
                                                                 Text(
-                                                                  "${snapshot.data[index].jina}",
+                                                                  snapshot.data![index].jina,
                                                                   maxLines: 2,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   softWrap: false,
@@ -290,7 +288,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                                 // ),
                                                                 manualSpacer(step: 5),
                                                                 Text(
-                                                                  "${snapshot.data[index].muda}",
+                                                                  snapshot.data![index].muda,
                                                                   maxLines: 1,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   softWrap: false,
@@ -319,7 +317,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                               },
                             );
                           } else {
-                            return Text("new videos");
+                            return const Text("new videos");
                           }
                         },
                       ),
@@ -359,7 +357,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                           'assets/animation/fetching.json',
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
@@ -390,7 +388,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             'assets/animation/nodata.json',
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10.0,
                                         ),
                                         Material(
@@ -411,7 +409,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                             );
                           } else if (snapshot.hasData) {
                             return ListView.builder(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               itemCount: snapshot.data.length,
                               itemBuilder: (_, index) {
                                 return Padding(
@@ -419,14 +417,14 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   child: Card(
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
-                                      side: BorderSide(color: MyColors.white, width: 2.0),
+                                      side: const BorderSide(color: MyColors.white, width: 2.0),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: GestureDetector(
                                       onTap: () {},
                                       child: Container(
                                         height: 100,
-                                        margin: EdgeInsets.only(bottom: 10),
+                                        margin: const EdgeInsets.only(bottom: 10),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -434,12 +432,12 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             GestureDetector(
                                               onTap: () {
                                                 Clipboard.setData(
-                                                  new ClipboardData(
-                                                    text: "${snapshot.data[index].namba}",
+                                                  ClipboardData(
+                                                    text: snapshot.data![index].namba,
                                                   ),
                                                 ).then((_) {
                                                   Scaffold.of(context).showSnackBar(
-                                                    SnackBar(
+                                                    const SnackBar(
                                                       content: Text("Nambari ya akaunti imenakiliwa"),
                                                     ),
                                                   );
@@ -449,26 +447,26 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                 leading: CircleAvatar(
                                                   backgroundColor: MyColors.white,
                                                   child: Image.asset(
-                                                    snapshot.data[index].jina == "VODACOM"
+                                                    snapshot.data![index].jina == "VODACOM"
                                                         ? "assets/payicons/mpesa.png"
-                                                        : snapshot.data[index].jina == "TIGO PESA"
+                                                        : snapshot.data![index].jina == "TIGO PESA"
                                                             ? "assets/payicons/tigopesa.png"
                                                             : "assets/payicons/cash.png",
                                                     height: 50,
                                                   ),
                                                 ),
                                                 title: Text(
-                                                  "${snapshot.data[index].jina}",
-                                                  style: Theme.of(context).textTheme.bodyText1,
+                                                  snapshot.data![index].jina,
+                                                  style: Theme.of(context).textTheme.bodyLarge,
                                                 ),
                                                 trailing: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.end,
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      "${snapshot.data[index].namba}",
+                                                      snapshot.data![index].namba,
                                                     ),
-                                                    Text(
+                                                    const Text(
                                                       "bonyeza kunakili",
                                                       style: TextStyle(
                                                         fontSize: 12,
@@ -518,9 +516,9 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             //                             // backgroundImage: AssetImage("assets/images/viongozi.png"),
                                             //                             child: Image
                                             //                                 .asset(
-                                            //                               snapshot.data[index].jina == "VODACOM"
+                                            //                               snapshot.data![index].jina == "VODACOM"
                                             //                                   ? "assets/payicons/mpesa.png"
-                                            //                                   : snapshot.data[index].jina == "TIGO PESA"
+                                            //                                   : snapshot.data![index].jina == "TIGO PESA"
                                             //                                       ? "assets/payicons/tigopesa.png"
                                             //                                       : "assets/payicons/cash.png",
                                             //                               // color: MyColors.primaryLight,
@@ -566,7 +564,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             //                               .spaceBetween,
                                             //                       children: [
                                             //                         Text(
-                                            //                           "Akaunti : ${snapshot.data[index].namba}",
+                                            //                           "Akaunti : ${snapshot.data![index].namba}",
                                             //                           maxLines:
                                             //                               1,
                                             //                           overflow:
@@ -594,7 +592,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             //                             .setData(
                                             //                           new ClipboardData(
                                             //                             text:
-                                            //                                 "${snapshot.data[index].namba}",
+                                            //                                 "${snapshot.data![index].namba}",
                                             //                           ),
                                             //                         ).then((_) {
                                             //                           Scaffold.of(
@@ -628,7 +626,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                               },
                             );
                           } else {
-                            return Text("new videos");
+                            return const Text("new videos");
                           }
                         },
                       ),

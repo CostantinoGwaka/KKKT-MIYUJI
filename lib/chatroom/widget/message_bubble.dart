@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:focused_menu/focused_menu.dart';
@@ -51,34 +51,32 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   _clearMyChat() async {
     LocalStorage.getStringItem('member_no').then((value) {
-      if (value != null) {
-        var mydata = jsonDecode(value);
-        host = mydata;
-      }
-    });
-    if (await DataConnectionChecker().hasConnection) {
-      await FirebaseDatabase.instance.reference().child('Messages/${host['member_no']}/${widget.message['receiverId']}').once().then(
-        (DataSnapshot snapshot) {
-          Map<dynamic, dynamic> values = snapshot.value;
-          values.forEach(
-            (i, value) => {Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}")},
-          );
-        },
-      ).whenComplete(
-        () {
-          Cloud.update(
-            checkSnap: false,
-            serverPath: "RecentChat/${host['member_no']}/${widget.message['receiverId']}",
-            value: {
-              "lastmessage": " ",
-              "unseen": 0,
-            },
-          );
-        },
-      );
-    } else {
-      //no internet connection
-    }
+      var mydata = jsonDecode(value);
+      host = mydata;
+        });
+    // if (await DataConnectionChecker().hasConnection) {
+    await FirebaseDatabase.instance.reference().child('Messages/${host['member_no']}/${widget.message['receiverId']}').once().then(
+      (DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach(
+          (i, value) {Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");},
+        );
+      },
+    ).whenComplete(
+      () {
+        Cloud.update(
+          checkSnap: false,
+          serverPath: "RecentChat/${host['member_no']}/${widget.message['receiverId']}",
+          value: {
+            "lastmessage": " ",
+            "unseen": 0,
+          },
+        );
+      },
+    );
+    // } else {
+    //   //no internet connection
+    // }
   }
 
   @override
@@ -95,13 +93,13 @@ class _MessageBubbleState extends State<MessageBubble> {
               menuWidth: MediaQuery.of(context).size.width * 0.50,
               blurSize: 5.0,
               menuItemExtent: 45,
-              menuBoxDecoration: BoxDecoration(
+              menuBoxDecoration: const BoxDecoration(
                 color: Colors.grey,
                 borderRadius: BorderRadius.all(
                   Radius.circular(15.0),
                 ),
               ),
-              duration: Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 100),
               animateMenuItems: true,
               blurBackgroundColor: Colors.black54,
               openWithTap: false, // Open Focused-Menu on Tap rather than Long Press
@@ -111,46 +109,46 @@ class _MessageBubbleState extends State<MessageBubble> {
               menuItems: <FocusedMenuItem>[
                 // Add Each FocusedMenuItem  for Menu Options
                 FocusedMenuItem(
-                    title: Text(
+                    title: const Text(
                       "Nakili",
                       style: TextStyle(
                         color: Colors.black,
                       ),
                     ),
-                    trailingIcon: Icon(
+                    trailingIcon: const Icon(
                       Icons.copy,
                       color: Colors.black,
                     ),
                     onPressed: () {
                       Clipboard.setData(
-                        new ClipboardData(text: '${widget.message['message']}'),
+                        ClipboardData(text: '${widget.message['message']}'),
                       );
                     }),
                 FocusedMenuItem(
-                  title: Text(
+                  title: const Text(
                     "Futa Ujumbe",
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
-                  trailingIcon: Icon(
+                  trailingIcon: const Icon(
                     Icons.delete,
                     color: Colors.black,
                   ),
                   onPressed: () {
                     Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}").whenComplete(
-                      () => {Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}")},
+                      () {Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}");},
                     );
                   },
                 ),
                 FocusedMenuItem(
-                  title: Text(
+                  title: const Text(
                     "Jibu",
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
-                  trailingIcon: Icon(
+                  trailingIcon: const Icon(
                     Icons.arrow_forward_ios_sharp,
                     color: Colors.black,
                   ),
@@ -163,11 +161,11 @@ class _MessageBubbleState extends State<MessageBubble> {
                   },
                 ),
                 FocusedMenuItem(
-                  title: Text(
+                  title: const Text(
                     "Futa jumbe zote",
                     style: TextStyle(color: Colors.redAccent),
                   ),
-                  trailingIcon: Icon(
+                  trailingIcon: const Icon(
                     Icons.clear,
                     color: Colors.redAccent,
                   ),
@@ -182,10 +180,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                   minWidth: 50,
                   maxWidth: deviceWidth(context) * 0.7,
                 ),
-                margin: EdgeInsets.only(bottom: 2.0, top: 2.0, left: 10, right: 10),
-                padding: widget.message['type'] == "text" ? EdgeInsets.all(5) : EdgeInsets.all(0),
+                margin: const EdgeInsets.only(bottom: 2.0, top: 2.0, left: 10, right: 10),
+                padding: widget.message['type'] == "text" ? const EdgeInsets.all(5) : const EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.grey,
                       blurRadius: 1.0,
@@ -195,12 +193,12 @@ class _MessageBubbleState extends State<MessageBubble> {
                   ],
                   color: (host['member_no'] != widget.message['senderId']) ? Colors.white : MyColors.primaryLight,
                   borderRadius: (host['member_no'] == widget.message['senderId'])
-                      ? BorderRadius.only(
+                      ? const BorderRadius.only(
                           bottomLeft: Radius.circular(10.0),
                           topLeft: Radius.circular(10.0),
                           bottomRight: Radius.circular(20.0),
                         )
-                      : BorderRadius.only(
+                      : const BorderRadius.only(
                           bottomLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0),
                           bottomRight: Radius.circular(10.0),
@@ -216,8 +214,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                                 onTap: widget.scrollTo,
                                 child: Container(
                                   width: deviceWidth(context) * 0.7,
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.only(bottom: 10),
+                                  padding: const EdgeInsets.all(10),
+                                  margin: const EdgeInsets.only(bottom: 10),
                                   constraints: BoxConstraints(
                                     minWidth: 50,
                                     maxWidth: deviceWidth(context) * 0.7,
@@ -233,7 +231,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     children: [
                                       Text(
                                         host['member_no'].toString() == widget.message["repliedContent"]['sender'] ? "Wewe" : "Mtumishi",
-                                        style: TextStyle(fontWeight: FontWeight.w900, color: Colors.green),
+                                        style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.green),
                                       ),
                                       Text(
                                         widget.message["repliedContent"]["message"],
@@ -268,7 +266,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                 },
                                 child: Card(
                                   color: Colors.grey[200],
-                                  margin: EdgeInsets.all(0.0),
+                                  margin: const EdgeInsets.all(0.0),
                                   elevation: 0,
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
@@ -286,7 +284,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                         Expanded(
                                             child: Text(
                                           "${widget.message['medianame']}",
-                                          style: TextStyle(color: Colors.black87, fontSize: 12),
+                                          style: const TextStyle(color: Colors.black87, fontSize: 12),
                                         )),
                                       ]),
                                     ]),
@@ -342,7 +340,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     },
                                   );
                                 },
-                                child: Container(
+                                child: SizedBox(
                                     width: deviceWidth(context) * 0.65,
                                     height: 200.0,
                                     child: Hero(

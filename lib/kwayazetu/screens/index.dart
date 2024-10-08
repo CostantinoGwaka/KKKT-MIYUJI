@@ -6,7 +6,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class KwayaZetu extends StatefulWidget {
-  const KwayaZetu({Key key}) : super(key: key);
+  const KwayaZetu({Key? key}) : super(key: key);
 
   @override
   _KwayaZetuState createState() => _KwayaZetuState();
@@ -18,7 +18,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -34,7 +34,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
       ),
       child: Stack(
         children: [
-          CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+          CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight(context) / 3,
@@ -66,10 +66,10 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 0)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideoListScreen(kwayaid: 0)));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -94,7 +94,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                                         // ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: MyColors.white,
 
                                             // gradient: LinearGradient(
@@ -140,12 +140,12 @@ class _KwayaZetuState extends State<KwayaZetu> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 1)));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideoListScreen(kwayaid: 1)));
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -153,7 +153,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                                 child: Card(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    side: BorderSide(color: MyColors.white, width: 2.0),
+                                    side: const BorderSide(color: MyColors.white, width: 2.0),
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   elevation: 10,
@@ -219,10 +219,10 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 2)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideoListScreen(kwayaid: 2)));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -247,7 +247,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                                         // ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: MyColors.white,
 
                                             // gradient: LinearGradient(
@@ -295,10 +295,10 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 3)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideoListScreen(kwayaid: 3)));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -306,7 +306,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                                 child: Card(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    side: BorderSide(color: MyColors.white, width: 2.0),
+                                    side: const BorderSide(color: MyColors.white, width: 2.0),
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   elevation: 10,
@@ -371,10 +371,10 @@ class _KwayaZetuState extends State<KwayaZetu> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoListScreen(kwayaid: 4)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VideoListScreen(kwayaid: 4)));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -399,7 +399,7 @@ class _KwayaZetuState extends State<KwayaZetu> {
                                         // ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: MyColors.white,
 
                                             // gradient: LinearGradient(

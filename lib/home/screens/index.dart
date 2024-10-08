@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:miyuji/akaunti/screens/_old_index.dart';
 import 'package:miyuji/baraza/screens/index.dart';
 import 'package:miyuji/chatroom/screen/chat_screen.dart';
 import 'package:miyuji/jumuiyazetu/screens/index.dart';
@@ -35,7 +34,7 @@ var data;
 var mtumishi;
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   String messageTitle = "Empty";
   String notificationAlert = "alert";
 
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage> {
 
   void checkLogin() async {
     LocalStorage.getStringItem('member_no').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           host = mydata;
@@ -109,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   void getdataLocal() async {
     LocalStorage.getStringItem('mydata').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           data = mydata;
@@ -118,7 +117,7 @@ class _HomePageState extends State<HomePage> {
     });
 
     LocalStorage.getStringItem('mtumishi').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mymtumishi = jsonDecode(value);
         setState(() {
           mtumishi = mymtumishi;
@@ -174,10 +173,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildMenu(BuildContext context) {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemCount: menuList?.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      itemCount: menuList.length,
       scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext cxt, int index) {
         // if ((mtumishi == null) &&
         //     (menuList[index]['name'] == "BARAZA LA WAZEE")) {
@@ -222,7 +221,7 @@ class _HomePageState extends State<HomePage> {
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(color: MyColors.white, width: 2.0),
+              side: const BorderSide(color: MyColors.white, width: 2.0),
             ),
             elevation: 2,
             child: Column(
@@ -260,7 +259,7 @@ class _HomePageState extends State<HomePage> {
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(color: MyColors.white, width: 2.0),
+              side: const BorderSide(color: MyColors.white, width: 2.0),
             ),
             elevation: 2,
             child: Column(
@@ -299,25 +298,25 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             //check naviagtio
             if (menuList[index]['pushTo'] == "BARAZA WAZEE") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BarazaLaWazee()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BarazaLaWazee()));
             } else if (menuList[index]['pushTo'] == "MUBASHARA") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LiveYoutubePlayer()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LiveYoutubePlayer()));
             } else if (menuList[index]['pushTo'] == "MATANGAZO") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatangazoScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatangazoScreen()));
             } else if (menuList[index]['pushTo'] == "JISAJILI MSHARIKA") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
             } else if (menuList[index]['pushTo'] == "KWAYA ZETU") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => KwayaZetu()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KwayaZetu()));
             } else if (menuList[index]['pushTo'] == "MAZUNGUMZO") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChatScreen()));
             } else if (menuList[index]['pushTo'] == "JUMUIYA ZETU") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChatScreen()));
             }
           },
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(color: MyColors.white, width: 2.0),
+              side: const BorderSide(color: MyColors.white, width: 2.0),
             ),
             elevation: 2,
             child: Column(
@@ -327,21 +326,21 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     //check naviagtio
                     if (menuList[index]['pushTo'] == "BARAZA WAZEE") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => BarazaLaWazee()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BarazaLaWazee()));
                     } else if (menuList[index]['pushTo'] == "MUBASHARA") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LiveYoutubePlayer()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LiveYoutubePlayer()));
                     } else if (menuList[index]['pushTo'] == "MATANGAZO") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatangazoScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatangazoScreen()));
                     } else if (menuList[index]['pushTo'] == "JISAJILI MSHARIKA") {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => RegistrationScreen()),
+                        MaterialPageRoute(builder: (context) => const RegistrationScreen()),
                       );
                     } else if (menuList[index]['pushTo'] == "KWAYA ZETU") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => KwayaZetu()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KwayaZetu()));
                     } else if (menuList[index]['pushTo'] == "MAZUNGUMZO") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChatScreen()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChatScreen()));
                     } else if (menuList[index]['pushTo'] == "JUMUIYA ZETU") {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => JumuiyaZetu()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const JumuiyaZetu()));
                     }
                   },
                   iconSize: (menuList[index]['pushTo'] == "MUBASHARA") ? 60 : 20,
@@ -370,12 +369,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final money = new NumberFormat("#,###.#", "en_US");
+    final money = NumberFormat("#,###.#", "en_US");
 
-    final List _children = [
+    final List children = [
       LayoutBuilder(builder: (context, constraint) {
         return SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -386,7 +385,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(top: deviceHeight(context) / 20),
-                    child: Container(
+                    child: SizedBox(
                       // decoration: BoxDecoration(color: MyColors.primaryLight),
                       height: 30,
                       child: Center(
@@ -401,9 +400,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: MyColors.white,
                     ),
                     width: double.infinity,
@@ -412,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
-                        side: BorderSide(color: MyColors.white, width: 1.0),
+                        side: const BorderSide(color: MyColors.white, width: 1.0),
                       ),
                       color: MyColors.white,
                       child: Column(
@@ -426,7 +425,7 @@ class _HomePageState extends State<HomePage> {
                                 Expanded(
                                   child: Row(
                                     children: [
-                                      CircleAvatar(
+                                      const CircleAvatar(
                                         radius: 25.0,
                                         backgroundImage: NetworkImage("https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
                                         backgroundColor: Colors.transparent,
@@ -492,20 +491,20 @@ class _HomePageState extends State<HomePage> {
                                                 manualSpacer(step: 5),
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
                                                   },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: MyColors.primaryLight,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(12), // <-- Radius
+                                                    ),
+                                                  ),
                                                   child: Text(
                                                     'Ingia Akaunti',
                                                     style: GoogleFonts.montserrat(
                                                       fontSize: 12,
                                                       fontWeight: FontWeight.bold,
                                                       color: MyColors.white,
-                                                    ),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    primary: MyColors.primaryLight,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(12), // <-- Radius
                                                     ),
                                                   ),
                                                 ),
@@ -653,8 +652,14 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MatoleoScreen()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatoleoScreen()));
                                     },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: MyColors.primaryLight,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                                      ),
+                                    ),
                                     child: Text(
                                       'Matoleo yako',
                                       style: GoogleFonts.montserrat(
@@ -663,22 +668,16 @@ class _HomePageState extends State<HomePage> {
                                         color: MyColors.white,
                                       ),
                                     ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: MyColors.primaryLight,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12), // <-- Radius
-                                      ),
-                                    ),
                                   ),
                                 )
-                              : SizedBox.shrink(),
+                              : const SizedBox.shrink(),
                         ],
                       ),
                     ),
                   ),
                   manualStepper(step: 10),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: MyColors.white,
                     ),
                     width: double.infinity,
@@ -687,7 +686,7 @@ class _HomePageState extends State<HomePage> {
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(color: MyColors.white, width: 1.0),
+                        side: const BorderSide(color: MyColors.white, width: 1.0),
                       ),
                       color: MyColors.white,
                       child: Padding(
@@ -702,7 +701,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.black,
                               ),
                             ),
-                            Divider(),
+                            const Divider(),
                             FutureBuilder(
                               future: getRatiba(),
                               builder: (context, AsyncSnapshot<List<NenoLaSikuData>> snapshot) {
@@ -730,10 +729,10 @@ class _HomePageState extends State<HomePage> {
                                             height: 30,
                                             child: Lottie.asset('assets/animation/load_neno.json', height: 20),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 2.0,
                                           ),
-                                          Text(
+                                          const Text(
                                             "Hakuna taarifa zilizopatiakana",
                                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, color: Colors.black38),
                                           )
@@ -742,15 +741,15 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 } else if (snapshot.hasData) {
-                                  return Container(
+                                  return SizedBox(
                                     height: 120,
                                     child: ListView.builder(
                                       padding: EdgeInsets.zero,
-                                      physics: BouncingScrollPhysics(),
+                                      physics: const BouncingScrollPhysics(),
                                       itemCount: snapshot.data.length,
                                       itemBuilder: (_, index) {
                                         return Text(
-                                          "${snapshot.data[index].neno}",
+                                          snapshot.data![index].neno,
                                           style: GoogleFonts.montserrat(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -761,7 +760,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 } else {
-                                  return Text("new videos");
+                                  return const Text("new videos");
                                 }
                               },
                             ),
@@ -769,7 +768,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment.bottomLeft,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => NenoLaSiku()));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NenoLaSiku()));
                                 },
                                 child: Text(
                                   'Tazama yote',
@@ -788,7 +787,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   manualStepper(step: 10),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: MyColors.white,
                     ),
                     width: double.infinity,
@@ -796,7 +795,7 @@ class _HomePageState extends State<HomePage> {
                     child: Card(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: MyColors.white, width: 1.0),
+                        side: const BorderSide(color: MyColors.white, width: 1.0),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       elevation: 2,
@@ -816,8 +815,8 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF343434).withOpacity(0.4),
-                                    Color(0xFF343434).withOpacity(0.15),
+                                    const Color(0xFF343434).withOpacity(0.4),
+                                    const Color(0xFF343434).withOpacity(0.15),
                                   ],
                                 ),
                               ),
@@ -867,20 +866,20 @@ class _HomePageState extends State<HomePage> {
                                       alignment: Alignment.center,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MahubiriScreen()));
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MahubiriScreen()));
                                         },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: MyColors.primaryLight,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(12), // <-- Radius
+                                          ),
+                                        ),
                                         child: Text(
                                           'Tazama zote',
                                           style: GoogleFonts.montserrat(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
                                             color: MyColors.white,
-                                          ),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: MyColors.primaryLight,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(12), // <-- Radius
                                           ),
                                         ),
                                       ),
@@ -899,7 +898,7 @@ class _HomePageState extends State<HomePage> {
                     width: double.infinity,
                     height: jtdeviceHeight(context) * .44,
                     color: Colors.white,
-                    padding: EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: buildMenu(context),
                   )
                 ],
@@ -908,11 +907,11 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       }),
-      (host == null) ? NoAuthBanner() : ViongoziWaKanisa(),
-      (host == null) ? NoAuthBanner() : RatibaZaIbada(),
-      (host == null) ? NoAuthBanner() : ProfilePage()
+      (host == null) ? const NoAuthBanner() : const ViongoziWaKanisa(),
+      (host == null) ? const NoAuthBanner() : const RatibaZaIbada(),
+      (host == null) ? const NoAuthBanner() : const ProfilePage()
     ];
-    void _onItemTapped(int index) {
+    void onItemTapped(int index) {
       setState(() {
         _currentIndex = index;
       });
@@ -921,7 +920,7 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: _children[_currentIndex],
+        body: children[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
@@ -932,43 +931,43 @@ class _HomePageState extends State<HomePage> {
           // currentIndex: _selectedIndex,
           // selectedItemColor: Colors.black,
           // iconSize: 40,
-          onTap: _onItemTapped,
+          onTap: onItemTapped,
           // elevation: 2,
           items: [
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: _currentIndex == 0
                   ? CircleAvatar(
                       backgroundColor: MyColors.primaryLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.home,
                         color: MyColors.white,
                       ),
                     )
-                  : Icon(Icons.home),
+                  : const Icon(Icons.home),
               label: "Nyumbani",
             ),
             BottomNavigationBarItem(
               icon: _currentIndex == 1
                   ? CircleAvatar(
                       backgroundColor: MyColors.primaryLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.people,
                         color: MyColors.white,
                       ),
                     )
-                  : Icon(Icons.people),
+                  : const Icon(Icons.people),
               label: 'Uongozi',
             ),
             BottomNavigationBarItem(
               icon: _currentIndex == 2
                   ? CircleAvatar(
                       backgroundColor: MyColors.primaryLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.extension,
                         color: MyColors.white,
                       ),
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.extension,
                     ),
               label: 'Mengineyo',
@@ -977,12 +976,12 @@ class _HomePageState extends State<HomePage> {
               icon: _currentIndex == 3
                   ? CircleAvatar(
                       backgroundColor: MyColors.primaryLight,
-                      child: Icon(
+                      child: const Icon(
                         Icons.person_outline_outlined,
                         color: MyColors.white,
                       ),
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.person_outline_outlined,
                     ),
               label: 'Akaunti',

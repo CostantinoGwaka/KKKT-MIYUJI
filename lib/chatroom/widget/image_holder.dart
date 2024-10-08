@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/utils/spacer.dart';
-import 'package:provider/provider.dart';
 
 class ImageView extends StatelessWidget {
   final String img;
@@ -11,7 +10,7 @@ class ImageView extends StatelessWidget {
   final double height;
 
   ///encapsulate a network image
-  ImageView({this.img, this.height, this.fit = BoxFit.cover, this.filter = false, this.filterColor = Colors.black45});
+  const ImageView({super.key, this.img, this.height, this.fit = BoxFit.cover, this.filter = false, this.filterColor = Colors.black45});
 
   @override
   Widget build(BuildContext context) {

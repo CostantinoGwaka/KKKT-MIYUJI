@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class NenoLaSiku extends StatefulWidget {
-  const NenoLaSiku({Key key}) : super(key: key);
+  const NenoLaSiku({Key? key}) : super(key: key);
 
   @override
   _NenoLaSikuState createState() => _NenoLaSikuState();
@@ -57,7 +57,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             SystemChrome.setPreferredOrientations([
               DeviceOrientation.portraitDown,
@@ -93,7 +93,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -126,7 +126,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -147,13 +147,13 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (cintext, index) {
                   return Card(
                     elevation: 2,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: MyColors.white,
                         width: 2.0,
                       ),
@@ -166,7 +166,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "${snapshot.data[index].neno}",
+                            snapshot.data![index].neno,
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                                   ),
                                   manualSpacer(step: 5),
                                   Text(
-                                    "${snapshot.data[index].tarehe}",
+                                    snapshot.data![index].tarehe,
                                     style: GoogleFonts.montserrat(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
@@ -227,7 +227,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

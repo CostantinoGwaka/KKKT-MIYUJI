@@ -19,7 +19,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -35,7 +35,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
       ),
       child: Stack(
         children: [
-          CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+          CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight(context) / 3,
@@ -73,7 +73,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: false,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontFamily: "Helvetica",
                                     color: Colors.black87,
@@ -82,11 +82,11 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                                 ),
                                 manualStepper(step: 5),
                                 Text(
-                                  "${DateFormat('dd-MM-yyyy').format(widget.postdata.tarehe)}",
+                                  DateFormat('dd-MM-yyyy').format(widget.postdata.tarehe),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: false,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 13,
                                     fontFamily: "Helvetica",
                                     color: Colors.black87,
@@ -99,13 +99,13 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.all(10),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "${widget.postdata.descp}",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black87,
                                   fontSize: 15,
                                   letterSpacing: 1.4,
@@ -119,7 +119,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 manualStepper(step: 5),
-                                Text(
+                                const Text(
                                   "Imetumwa na @admin",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

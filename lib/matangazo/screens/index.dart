@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 
 class MatangazoScreen extends StatefulWidget {
-  const MatangazoScreen({Key key}) : super(key: key);
+  const MatangazoScreen({Key? key}) : super(key: key);
 
   @override
   _MatangazoScreenState createState() => _MatangazoScreenState();
@@ -60,7 +59,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -93,7 +92,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -126,7 +125,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -147,20 +146,20 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Card(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(color: MyColors.white, width: 2.0),
+                      side: const BorderSide(color: MyColors.white, width: 2.0),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SinglePostScreen(postdata: snapshot.data[index])));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SinglePostScreen(postdata: snapshot.data![index])));
                       },
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Column(
                           children: <Widget>[
                             Stack(
@@ -170,13 +169,13 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ImagePreview(
-                                      img: 'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
+                                      img: 'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data![index].image}',
                                       fit: BoxFit.fill,
                                       width: double.infinity,
                                       height: 200,
                                     ),
                                     // Image.network(
-                                    //   'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data[index].image}',
+                                    //   'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data![index].image}',
                                     //   fit: BoxFit.fill,
                                     //   width: double.infinity,
                                     //   height: 200,
@@ -186,11 +185,11 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                               ],
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                              margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                               child: Row(children: <Widget>[
                                 Column(
                                   children: <Widget>[
-                                    Container(
+                                    const SizedBox(
                                       height: 35,
                                       child: CircleAvatar(
                                         backgroundImage: AssetImage("assets/images/logo.png"),
@@ -200,22 +199,22 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                   ],
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left: 10),
+                                  margin: const EdgeInsets.only(left: 10),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Container(
+                                      SizedBox(
                                         width: 290,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${snapshot.data[index].title}",
+                                              snapshot.data![index].title,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: false,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                                 fontFamily: "Helvetica",
                                                 color: Colors.black87,
@@ -223,11 +222,11 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "${DateFormat('dd-MM-yyyy').format(snapshot.data[index].tarehe)}",
+                                              DateFormat('dd-MM-yyyy').format(snapshot.data![index].tarehe),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: false,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                                 fontFamily: "Helvetica",
                                                 color: Colors.black87,
@@ -250,7 +249,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

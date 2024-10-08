@@ -32,26 +32,26 @@ class Message {
     this.caption,
   });
 
-  int mediasize;
-  bool readed;
-  String message;
-  String friendId;
-  String medianame;
-  String fullName;
-  String picUrl;
-  String docUrl;
-  String messageId;
-  String color;
-  int unseen;
-  String sentAt;
-  String createdAt;
-  String hostId;
-  bool reply;
-  String status;
-  String type;
-  bool access;
-  String caption;
-  Map<String, dynamic> repliedContent;
+  int? mediasize;
+  bool? readed;
+  String? message;
+  String? friendId;
+  String? medianame;
+  String? fullName;
+  String? picUrl;
+  String? docUrl;
+  String? messageId;
+  String? color;
+  int? unseen;
+  String? sentAt;
+  String? createdAt;
+  String? hostId;
+  bool? reply;
+  String? status;
+  String? type;
+  bool? access;
+  String? caption;
+  Map<String, dynamic>? repliedContent;
   var isDeletedBy;
   var readBy;
 
@@ -103,33 +103,34 @@ class Message {
         "caption": caption,
       };
 
-  handleSendMessage({String messageId, String convoId, String userId}) {
-    FirebaseDatabase.instance
-        .reference()
-        .child('Messages/' + userId + "/" + convoId + "/" + messageId)
-        .set({
-      "receiverId": friendId.toString(),
-      "senderId": convoId,
-      "picture": picUrl,
-      "document": docUrl,
-      "medianame": medianame,
-      "color": "pink",
-      "unseen": unseen,
-      "messageId": messageId,
-      "repliedContent": repliedContent,
-      "reply": reply,
-      "status": status,
-      "type": type,
-      "createdAt": DateTime.now().toString(),
-      "sentAt": DateTime.now().toString(),
-      "message": message,
-      "isDeletedBy": isDeletedBy,
-      "read": readed,
-      "readBy": readBy,
-      "access": access != null ? access : true,
-      "mediasize": mediasize,
-      "caption": caption,
-    });
+  handleSendMessage({
+    String? messageId,
+    String? convoId,
+    String? userId,
+  }) {
+    // FirebaseDatabase.instance.reference().child('Messages/' + userId + "/" + convoId + "/" + messageId).set({
+    //   "receiverId": friendId.toString(),
+    //   "senderId": convoId,
+    //   "picture": picUrl,
+    //   "document": docUrl,
+    //   "medianame": medianame,
+    //   "color": "pink",
+    //   "unseen": unseen,
+    //   "messageId": messageId,
+    //   "repliedContent": repliedContent,
+    //   "reply": reply,
+    //   "status": status,
+    //   "type": type,
+    //   "createdAt": DateTime.now().toString(),
+    //   "sentAt": DateTime.now().toString(),
+    //   "message": message,
+    //   "isDeletedBy": isDeletedBy,
+    //   "read": readed,
+    //   "readBy": readBy,
+    //   "access": access ?? true,
+    //   "mediasize": mediasize,
+    //   "caption": caption,
+    // });
 
     // .set(model.toMap());
   }

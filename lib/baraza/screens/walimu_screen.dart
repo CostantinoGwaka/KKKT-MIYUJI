@@ -12,7 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WalimuScreen extends StatefulWidget {
-  const WalimuScreen({Key key}) : super(key: key);
+  const WalimuScreen({Key? key}) : super(key: key);
 
   @override
   _WalimuScreenState createState() => _WalimuScreenState();
@@ -21,7 +21,7 @@ class WalimuScreen extends StatefulWidget {
 class _WalimuScreenState extends State<WalimuScreen> {
   Future<List<WalimuUsharika>> getWalimuWasharika() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_walimu.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <WalimuUsharika>[];
     var baraza;
@@ -57,7 +57,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -90,10 +90,10 @@ class _WalimuScreenState extends State<WalimuScreen> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Text(
+                        const Text(
                           "Ingapanga taarifa",
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, color: Colors.black38),
                         )
@@ -117,7 +117,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -138,7 +138,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Card(
@@ -155,10 +155,10 @@ class _WalimuScreenState extends State<WalimuScreen> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text("${snapshot.data[index].fname}"),
-                      subtitle: Text("${snapshot.data[index].wadhifa}"),
+                      title: Text(snapshot.data![index].fname),
+                      subtitle: Text(snapshot.data![index].wadhifa),
                       children: <Widget>[
-                        Divider(
+                        const Divider(
                           thickness: 1.0,
                           height: 1.0,
                         ),
@@ -177,7 +177,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      "${snapshot.data[index].wadhifa} : ",
+                                      "${snapshot.data![index].wadhifa} : ",
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -190,7 +190,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${snapshot.data[index].fname}",
+                                          snapshot.data![index].fname,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -198,7 +198,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                           ),
                                         ),
                                         Text(
-                                          "${snapshot.data[index].phoneNo}",
+                                          snapshot.data![index].phoneNo,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -210,12 +210,12 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
-                                        launch("tel://${snapshot.data[index].phoneNo}");
+                                        launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(
                                         backgroundColor: MyColors.primaryLight,
                                         radius: 20,
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.call,
                                           size: 20,
                                           color: MyColors.white,
@@ -225,7 +225,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                   ],
                                 ),
                                 manualStepper(step: 5),
-                                Divider(
+                                const Divider(
                                   thickness: 5,
                                 )
                               ],
@@ -238,7 +238,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

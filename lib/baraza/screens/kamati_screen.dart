@@ -12,20 +12,20 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class KamatiUsharikaScreen extends StatefulWidget {
-  const KamatiUsharikaScreen({Key key}) : super(key: key);
+  const KamatiUsharikaScreen({Key? key}) : super(key: key);
 
   @override
   _KamatiUsharikaScreenState createState() => _KamatiUsharikaScreenState();
 }
 
 class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
-  final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
+  final GlobalKey<ExpansionTileCardState> cardA = GlobalKey();
 
   List<KamatiUsharika> listkamati = <KamatiUsharika>[];
 
   Future<List<KamatiUsharika>> getMatangazoNew() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_kamati.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var kamatilist = <KamatiUsharika>[];
     var kamati;
@@ -61,7 +61,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -94,7 +94,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -127,7 +127,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -148,8 +148,8 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                physics: const BouncingScrollPhysics(),
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Material(
                     child: InkWell(
@@ -157,7 +157,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => ViongoziWaKamati(
-                              kamati: snapshot.data[index],
+                              kamati: snapshot.data![index],
                             ),
                           ),
                         );
@@ -190,7 +190,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        '${snapshot.data[index].jinaKamati}',
+                                        snapshot.data![index].jinaKamati,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: MyColors.primaryLight,
@@ -211,7 +211,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

@@ -12,9 +12,9 @@ import 'package:firebase_database/firebase_database.dart';
 // }
 
 class HandleMessageFunction {
-  static sendNormalText({Message message, String receiverId, String senderId, String token}) {
+  static sendNormalText({Message? message, String? receiverId, String? senderId, String token}) {
     Cloud.add(
-      serverPath: "Messages/$senderId/$receiverId/${message.messageId}",
+      serverPath: "Messages/$senderId/$receiverId/${message!.messageId}",
       value: {
         "receiverId": receiverId,
         "senderId": message.hostId,

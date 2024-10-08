@@ -5,7 +5,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class SingleTangazoScreen extends StatefulWidget {
-  const SingleTangazoScreen({Key key}) : super(key: key);
+  const SingleTangazoScreen({Key? key}) : super(key: key);
 
   @override
   _SingleTangazoScreenState createState() => _SingleTangazoScreenState();
@@ -17,7 +17,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -33,7 +33,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
       ),
       child: Stack(
         children: [
-          CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+          CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight(context) / 3,
@@ -66,7 +66,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "POST TITLE POST TITLE POST TITLE",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -79,7 +79,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
                                   ),
                                 ),
                                 manualStepper(step: 5),
-                                Text(
+                                const Text(
                                   "12-02-2021 09:30 AM",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -97,9 +97,9 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
-                            child: Align(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.all(10),
+                            child: const Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Kwa kawaida, maneno “neno la Mungu” yanawakilisha ujumbe kutoka kwa Mungu au mkusanyo wa ujumbe huo. (Luka 11:28) Katika sehemu chache, “Neno la Mungu” au “Neno” hutumiwa kuwakilisha cheo cha mtu.​—Ufunuo 19:13; Yohana 1:​14. Ujumbe kutoka kwa Mungu. Mara nyingi manabii walisema kwamba ujumbe ambao walitoa ulikuwa Neno la Mungu. Kwa mfano, Yeremia alianza ujumbe wake wa kinabii kwa kusema “neno la Yehova likaanza kunijia.” (Yeremia 1:4, 11, 13; 2:1) Kabla ya kumwambia Sauli kwamba Mungu alikuwa amemchagua kuwa mfalme, nabii Samweli alisema hivi: “Simama tuli sasa ili nikuambie neno la Mungu.”​—1 Samweli 9:27.Cheo cha mtu. Pia “Neno” linaonekana katika Biblia likiwa cheo cha Yesu Kristo, akiwa roho mbinguni na pia akiwa mwanadamu duniani. Fikiria sababu kadhaa za kufikia mkataa huo: Kwa kawaida, maneno “neno la Mungu” yanawakilisha ujumbe kutoka kwa Mungu au mkusanyo wa ujumbe huo. (Luka 11:28) Katika sehemu chache, “Neno la Mungu” au “Neno” hutumiwa kuwakilisha cheo cha mtu.​—Ufunuo 19:13; Yohana 1:​14. Ujumbe kutoka kwa Mungu. Mara nyingi manabii walisema kwamba ujumbe ambao walitoa ulikuwa Neno la Mungu. Kwa mfano, Yeremia alianza ujumbe wake wa kinabii kwa kusema “neno la Yehova likaanza kunijia.” (Yeremia 1:4, 11, 13; 2:1) Kabla ya kumwambia Sauli kwamba Mungu alikuwa amemchagua kuwa mfalme, nabii Samweli alisema hivi: “Simama tuli sasa ili nikuambie neno la Mungu.”​—1 Samweli 9:27.Cheo cha mtu. Pia “Neno” linaonekana katika Biblia likiwa cheo cha Yesu Kristo, akiwa roho mbinguni na pia akiwa mwanadamu duniani. Fikiria sababu kadhaa za kufikia mkataa huo:",
@@ -117,7 +117,7 @@ class _SingleTangazoScreenState extends State<SingleTangazoScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 manualStepper(step: 5),
-                                Text(
+                                const Text(
                                   "Imetumwa na @admin",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

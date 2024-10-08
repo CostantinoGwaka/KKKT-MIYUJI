@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViongoziWaKamati extends StatefulWidget {
   final dynamic kamati;
-  const ViongoziWaKamati({Key key, this.kamati}) : super(key: key);
+  const ViongoziWaKamati({Key? key, this.kamati}) : super(key: key);
 
   @override
   _ViongoziWaKamatiState createState() => _ViongoziWaKamatiState();
@@ -24,7 +24,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
     print("kamati data ${widget.kamati.id}");
     String myApi = "http://miyujikkkt.or.tz/api/get_kamati_viongozi_id.php";
     final response = await http.post(
-      myApi,
+      myApi as Uri,
       body: {
         "kamati_id": widget.kamati.id,
       },
@@ -67,7 +67,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -100,7 +100,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -134,7 +134,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                 'assets/animation/nodata.json',
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10.0,
                             ),
                             Material(
@@ -156,8 +156,8 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                physics: const BouncingScrollPhysics(),
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 2,
@@ -173,10 +173,10 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text("${snapshot.data[index].fname}"),
-                      subtitle: Text("${snapshot.data[index].wadhifaName}"),
+                      title: Text(snapshot.data![index].fname),
+                      subtitle: Text(snapshot.data![index].wadhifaName),
                       children: <Widget>[
-                        Divider(
+                        const Divider(
                           thickness: 1.0,
                           height: 1.0,
                         ),
@@ -195,7 +195,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      "${snapshot.data[index].wadhifaName} : ",
+                                      "${snapshot.data![index].wadhifaName} : ",
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -208,7 +208,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${snapshot.data[index].fname}",
+                                          snapshot.data![index].fname,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                           ),
                                         ),
                                         Text(
-                                          "${snapshot.data[index].phoneNo}",
+                                          snapshot.data![index].phoneNo,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -228,12 +228,13 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
-                                        launch("tel://${snapshot.data[index].phoneNo}");
+                                        // ignore: deprecated_member_use
+                                        launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(
                                         backgroundColor: MyColors.primaryLight,
                                         radius: 20,
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.call,
                                           size: 20,
                                           color: MyColors.white,
@@ -243,7 +244,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                   ],
                                 ),
                                 manualStepper(step: 5),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
                                 Row(
@@ -259,7 +260,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      "${snapshot.data[index].kamatiName}",
+                                      snapshot.data![index].kamatiName,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -269,7 +270,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     manualSpacer(step: 5),
                                   ],
                                 ),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
                                 Row(
@@ -285,7 +286,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      "${snapshot.data[index].tarehe}",
+                                      snapshot.data![index].tarehe,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -295,7 +296,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     manualSpacer(step: 5),
                                   ],
                                 ),
-                                Divider(
+                                const Divider(
                                   thickness: 3,
                                 )
                               ],
@@ -308,7 +309,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

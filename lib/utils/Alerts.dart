@@ -15,7 +15,7 @@ class Alerts {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Kubali"),
+              child: const Text("Kubali"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -30,16 +30,16 @@ class Alerts {
     return showDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: new Text(title),
-        content: new Text(message),
+        title: Text(title),
+        content: Text(message),
         actions: <Widget>[
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: Text("Jisajili"),
+            child: const Text("Jisajili"),
             onPressed: () {
               Navigator.pop(context);
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => RegistrationScreen()),
+                MaterialPageRoute(builder: (context) => const RegistrationScreen()),
               );
             },
           ),
@@ -58,15 +58,15 @@ class Alerts {
               content: Flex(
                 direction: Axis.horizontal,
                 children: <Widget>[
-                  CupertinoActivityIndicator(),
-                  Padding(
+                  const CupertinoActivityIndicator(),
+                  const Padding(
                     padding: EdgeInsets.only(left: 15),
                   ),
                   Flexible(
                       flex: 8,
                       child: Text(
                         title,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       )),
                 ],
               ),
@@ -83,17 +83,17 @@ class Alerts {
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Ujaingia kwenye akaunti"),
-          content: Text("Unatakiwa kuingia kwenye akaunti yako"),
+          title: const Text("Ujaingia kwenye akaunti"),
+          content: const Text("Unatakiwa kuingia kwenye akaunti yako"),
           actions: <Widget>[
             TextButton(
-              child: Text("Funga"),
+              child: const Text("Funga"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Ingia"),
+              child: const Text("Ingia"),
               onPressed: () {
                 Navigator.of(context).pop();
                 // Navigator.pushNamed(context, LoginScreen.routeName);
@@ -111,17 +111,17 @@ class Alerts {
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Aujalipia"),
-          content: Text("Unatakiwa uwe umeingia kwenye akauinti yako"),
+          title: const Text("Aujalipia"),
+          content: const Text("Unatakiwa uwe umeingia kwenye akauinti yako"),
           actions: <Widget>[
             TextButton(
-              child: Text("Funga"),
+              child: const Text("Funga"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Jiunge"),
+              child: const Text("Jiunge"),
               onPressed: () {
                 Navigator.of(context).pop();
                 // Navigator.pushNamed(context, SubscriptionScreen.routeName);
@@ -139,17 +139,17 @@ class Alerts {
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Subscribe"),
-          content: Text("Jiunge"),
+          title: const Text("Subscribe"),
+          content: const Text("Jiunge"),
           actions: <Widget>[
             TextButton(
-              child: Text("Funga"),
+              child: const Text("Funga"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Jiunge"),
+              child: const Text("Jiunge"),
               onPressed: () {
                 Navigator.of(context).pop();
                 // Navigator.pushNamed(context, SubscriptionScreen.routeName);

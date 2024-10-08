@@ -1,13 +1,13 @@
 class RecentChat {
-  final String lastMessage;
-  final String fullName;
-  final String picUrl;
-  final String docUrl;
-  final String color;
-  final String messageId;
-  final Map unseen;
-  final String time;
-  final String friendId;
+  final String? lastMessage;
+  final String? fullName;
+  final String? picUrl;
+  final String? docUrl;
+  final String? color;
+  final String? messageId;
+  final Map? unseen;
+  final String? time;
+  final String? friendId;
 
   RecentChat({
     this.messageId,
@@ -31,7 +31,7 @@ class RecentChat {
       "lastmessage": lastMessage,
       "unseen": unseen,
       "time": time,
-      "messageId":messageId
+      "messageId": messageId
     };
   }
 }

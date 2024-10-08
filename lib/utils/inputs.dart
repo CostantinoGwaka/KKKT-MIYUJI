@@ -52,7 +52,7 @@ class InputField extends StatelessWidget {
 
   ///inputs for all texts committed
   InputField(
-      {this.labelColor,
+      {super.key, this.labelColor,
       this.allowPre = false,
       this.minLines,
       this.textStyle,
@@ -115,7 +115,7 @@ class InputField extends StatelessWidget {
             floatingLabelBehavior: float,
             filled: filled,
             prefix: Text(
-              '${pre ?? ' '}',
+              pre ?? ' ',
               style: TextStyle(fontSize: labelSize),
               textScaleFactor: 1,
             ),
@@ -135,7 +135,7 @@ class InputField extends StatelessWidget {
                     prefixIcon,
                   ),
             suffixIcon: suffixIcon,
-            labelText: "${label ?? ' '}",
+            labelText: label ?? ' ',
             labelStyle: TextStyle(fontSize: labelSize, color: labelColor)),
       ),
     );

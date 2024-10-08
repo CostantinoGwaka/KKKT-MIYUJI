@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/chatroom/cloud/cloud.dart';
-import 'package:miyuji/chatroom/cloud/firebase_notification.dart';
 import 'package:miyuji/home/screens/index.dart';
 import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/usajili/screens/index.dart';
@@ -15,6 +11,8 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
@@ -31,10 +29,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black, //change your color here
         ),
-        title: Text(
+        title: const Text(
           "Badili neno la siri",
           style: TextStyle(
             color: Colors.black,
@@ -56,11 +54,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,16 +67,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   child: Text("Badili Neno Lako La Siri",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
-                        color: Color(0xff205072),
+                        color: const Color(0xff205072),
                         fontWeight: FontWeight.w500,
                       )),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _inputField1(),
                 _inputField2(),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _loginbtn(context),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -89,7 +87,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Widget _inputField1() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
@@ -102,12 +100,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         ],
       ),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         controller: oldp,
         keyboardType: TextInputType.text,
         style: GoogleFonts.poppins(fontSize: 20, color: Colors.black, letterSpacing: 0.24, fontWeight: FontWeight.w500),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "Neno la siri lazamani",
           hintStyle: TextStyle(
             color: Color(0xffA6B0BD),
@@ -134,7 +132,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   Widget _inputField2() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
@@ -147,7 +145,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         ],
       ),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         style: GoogleFonts.poppins(
           fontSize: 20,
@@ -158,18 +156,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         controller: newp,
         decoration: InputDecoration(
           hintText: "Neno la siri jipya",
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Color(0xffA6B0BD),
           ),
           fillColor: Colors.white,
           filled: true,
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(20),
             ),
             borderSide: BorderSide(color: Colors.white),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
@@ -192,7 +190,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
   }
 
-  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
+  Future<Future<bool?>> updatePassword(
+    String? memberNo,
+    String? oldpassword,
+    String? newpassword,
+  ) async {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
@@ -202,14 +204,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
-      mydataApi,
+      mydataApi as Uri,
       headers: {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": "$member_no",
-        "oldpassword": "$oldpassword",
-        "newpassword": "$newpassword",
+        "member_no": memberNo,
+        "oldpassword": oldpassword,
+        "newpassword": newpassword,
       },
     );
 
@@ -274,7 +276,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     // ignore: deprecated_member_use
     return Center(
       // ignore: deprecated_member_use
-      child: FlatButton(
+      child: ElevatedButton(
         onPressed: () async {
           if (oldp.text.isEmpty || newp.text.isEmpty) {
             return Fluttertoast.showToast(
@@ -288,13 +290,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             await updatePassword(host['member_no'], oldp.text, newp.text);
           }
         },
-        padding: EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 80,
-        ),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(20.0),
-        ),
+        // padding: EdgeInsets.symmetric(
+        //   vertical: 10,
+        //   horizontal: 80,
+        // ),
+        // shape: new RoundedRectangleBorder(
+        //   borderRadius: new BorderRadius.circular(20.0),
+        // ),
         child: Text(
           "Badili",
           style: GoogleFonts.montserrat(
@@ -304,7 +306,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        color: MyColors.primaryLight,
+        // color: MyColors.primaryLight,
       ),
     );
   }
@@ -326,7 +328,7 @@ Widget _passCode(context) {
               style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
             },
           )
         ],

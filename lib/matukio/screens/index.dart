@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/matukio/screens/single_post_screen.dart';
@@ -7,7 +5,7 @@ import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 
 class MatukioScreen extends StatefulWidget {
-  const MatukioScreen({Key key}) : super(key: key);
+  const MatukioScreen({Key? key}) : super(key: key);
 
   @override
   _MatukioScreenState createState() => _MatukioScreenState();
@@ -19,7 +17,7 @@ class _MatukioScreenState extends State<MatukioScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -35,19 +33,19 @@ class _MatukioScreenState extends State<MatukioScreen> {
       ),
       child: ListView.builder(
         itemCount: 20,
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Card(
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: MyColors.white, width: 2.0),
+              side: const BorderSide(color: MyColors.white, width: 2.0),
               borderRadius: BorderRadius.circular(15),
             ),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SinglePostScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SinglePostScreen()));
               },
               child: Container(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 child: Column(
                   children: <Widget>[
                     Stack(
@@ -67,11 +65,11 @@ class _MatukioScreenState extends State<MatukioScreen> {
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                      margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                       child: Row(children: <Widget>[
                         Column(
                           children: <Widget>[
-                            Container(
+                            const SizedBox(
                               height: 35,
                               child: CircleAvatar(
                                 backgroundImage: AssetImage("assets/images/logo.png"),
@@ -81,11 +79,11 @@ class _MatukioScreenState extends State<MatukioScreen> {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Column(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
+                              SizedBox(
                                 width: 290,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

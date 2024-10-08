@@ -4,7 +4,6 @@ import 'package:miyuji/akaunti/screens/change_password.dart';
 import 'package:miyuji/akaunti/screens/constant.dart';
 import 'package:miyuji/akaunti/screens/mapendekezo_screen.dart';
 import 'package:miyuji/akaunti/screens/profile_list.dart';
-import 'package:miyuji/matoleo/index.dart';
 import 'package:miyuji/register_login/screens/login.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/dimension.dart';
@@ -25,6 +24,8 @@ import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   MapScreenState createState() => MapScreenState();
 }
@@ -32,8 +33,8 @@ class ProfilePage extends StatefulWidget {
 class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
   bool _status = false;
   final FocusNode myFocusNode = FocusNode();
-  bool _isObscureOld = true;
-  bool _isObscureNew = true;
+  final bool _isObscureOld = true;
+  final bool _isObscureNew = true;
   TextEditingController oldp = TextEditingController();
   TextEditingController newp = TextEditingController();
 
@@ -46,7 +47,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
   void checkLogin() async {
     LocalStorage.getStringItem('member_no').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           host = mydata;
@@ -55,7 +56,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     });
 
     LocalStorage.getStringItem('mydata').then((value) {
-      if (value.isNotEmpty && value != null) {
+      if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
           data = mydata;
@@ -68,7 +69,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kAppPrimaryColor,
-      body: Stack(
+      body: const Stack(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(25),
@@ -116,7 +117,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     super.dispose();
   }
 
-  Future<void> updatePassword(String member_no, String oldpassword, String newpassword) async {
+  Future<void> updatePassword(String memberNo, String oldpassword, String newpassword) async {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
@@ -126,14 +127,14 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
-      mydataApi,
+      mydataApi as Uri,
       headers: {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": "$member_no",
-        "oldpassword": "$oldpassword",
-        "newpassword": "$newpassword",
+        "member_no": memberNo,
+        "oldpassword": oldpassword,
+        "newpassword": newpassword,
       },
     );
 
@@ -196,31 +197,32 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
   Widget _getActionButtons() {
     return Padding(
-      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
-      child: new Row(
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
+      child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Expanded(
+            flex: 2,
             child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.edit,
                       color: Colors.white,
                       size: 16.0,
                     ),
                     manualSpacer(step: 5),
-                    new Text("Badili"),
+                    const Text("Badili"),
                   ],
                 ),
-                textColor: Colors.white,
-                color: Colors.green,
+                // textColor: Colors.white,
+                // color: Colors.green,
                 onPressed: () {
                   // setState(() {
                   //   _status = true;
@@ -238,27 +240,27 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     );
                   }
                 },
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
-            flex: 2,
           ),
           Expanded(
+            flex: 2,
             child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.exit_to_app,
                       color: Colors.white,
                       size: 16.0,
                     ),
                     manualSpacer(step: 5),
-                    new Text("Toka"),
+                    const Text("Toka"),
                   ],
                 ),
                 textColor: Colors.white,
@@ -269,7 +271,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                   await LocalStorage.removeItem("member_no").whenComplete(() async {
                     await LocalStorage.removeItem("mydata").whenComplete(() async {
                       await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
                           msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -282,10 +284,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     });
                   });
                 },
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
-            flex: 2,
           ),
         ],
       ),
@@ -293,11 +294,11 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   }
 
   Widget _getEditIcon() {
-    return new GestureDetector(
-      child: new CircleAvatar(
+    return GestureDetector(
+      child: const CircleAvatar(
         backgroundColor: Colors.red,
         radius: 14.0,
-        child: new Icon(
+        child: Icon(
           Icons.edit,
           color: Colors.white,
           size: 16.0,
@@ -313,9 +314,11 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 }
 
 class AvatarImage extends StatelessWidget {
+  const AvatarImage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final money = new NumberFormat("#,###.#", "en_US");
+    final money = NumberFormat("#,###.#", "en_US");
 
     return Container(
       decoration: BoxDecoration(
@@ -327,7 +330,7 @@ class AvatarImage extends StatelessWidget {
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
-          side: BorderSide(color: MyColors.white, width: 1.0),
+          side: const BorderSide(color: MyColors.white, width: 1.0),
         ),
         color: MyColors.white,
         child: Column(
@@ -341,7 +344,7 @@ class AvatarImage extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 25.0,
                           backgroundImage: NetworkImage("https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
                           backgroundColor: Colors.transparent,
@@ -407,20 +410,20 @@ class AvatarImage extends StatelessWidget {
                                   manualSpacer(step: 5),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
                                     },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: MyColors.primaryLight,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                                      ),
+                                    ),
                                     child: Text(
                                       'Ingia Akaunti',
                                       style: GoogleFonts.montserrat(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                         color: MyColors.white,
-                                      ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: MyColors.primaryLight,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12), // <-- Radius
                                       ),
                                     ),
                                   ),
@@ -600,18 +603,18 @@ class SocialIcon extends StatelessWidget {
   final IconData iconData;
   final Function onPressed;
 
-  SocialIcon({this.color, this.iconData, this.onPressed});
+  const SocialIcon({super.key, this.color, this.iconData, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
-      padding: EdgeInsets.only(left: 20.0),
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
       child: Container(
         width: 45.0,
         height: 45.0,
         decoration: BoxDecoration(shape: BoxShape.circle, color: color),
         child: RawMaterialButton(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           onPressed: onPressed,
           child: Icon(iconData, color: Colors.white),
         ),
@@ -621,6 +624,8 @@ class SocialIcon extends StatelessWidget {
 }
 
 class ProfileListItems extends StatelessWidget {
+  const ProfileListItems({super.key});
+
   _launchURL() async {
     String url = Platform.isIOS ? 'tel://0659515042' : 'tel:0659515042';
     if (await canLaunch(url)) {
@@ -640,33 +645,32 @@ class ProfileListItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         children: <Widget>[
           InkWell(
             onTap: () {
               _launchURL();
             },
-            child: ProfileListItem(
+            child: const ProfileListItem(
               icon: LineAwesomeIcons.question_circle,
               text: 'Msaada/Maelezo',
             ),
           ),
           InkWell(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChangePasswordScreen()));
             },
+            // ignore: prefer_const_constructors
             child: ProfileListItem(
-              icon: LineAwesomeIcons.cog,
+              icon: LineAwesomeIcons.sleigh_solid,
               text: 'Badili Neno La Siri',
             ),
           ),
           InkWell(
             onTap: () {
               String result = "https://play.google.com/store/apps/details?id=app.miyuji";
-              if (result != null) {
-                Share.share(
-                    "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
-              }
+              Share.share(
+                  "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
             },
             child: ProfileListItem(
               icon: LineAwesomeIcons.user_plus,
@@ -675,7 +679,7 @@ class ProfileListItems extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MapendekezoScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapendekezoScreen()));
             },
             child: ProfileListItem(
               icon: LineAwesomeIcons.question,
@@ -690,7 +694,7 @@ class ProfileListItems extends StatelessWidget {
               await LocalStorage.removeItem("member_no").whenComplete(() async {
                 await LocalStorage.removeItem("mydata").whenComplete(() async {
                   await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                     SystemNavigator.pop();
                     return Fluttertoast.showToast(
                       msg: "Umefanikiwa kutoka kwenye akaunt yako",
@@ -718,13 +722,13 @@ class ProfileListItems extends StatelessWidget {
                 Text(
                   "Crafted By iSoftTz",
                   style: GoogleFonts.gochiHand(
-                    textStyle: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: const TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
                   ),
                 ),
                 Text(
                   "© 2022",
                   style: GoogleFonts.gochiHand(
-                    textStyle: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: const TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
                   ),
                 ),
               ],
@@ -737,9 +741,9 @@ class ProfileListItems extends StatelessWidget {
 }
 
 class AppBarButton extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
 
-  const AppBarButton({this.icon});
+  const AppBarButton({super.key, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -749,12 +753,12 @@ class AppBarButton extends StatelessWidget {
       decoration: BoxDecoration(shape: BoxShape.circle, color: kAppPrimaryColor, boxShadow: [
         BoxShadow(
           color: kLightBlack,
-          offset: Offset(1, 1),
+          offset: const Offset(1, 1),
           blurRadius: 10,
         ),
         BoxShadow(
           color: kWhite,
-          offset: Offset(-1, -1),
+          offset: const Offset(-1, -1),
           blurRadius: 10,
         ),
       ]),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AddReplyData extends ChangeNotifier {
-  List _reply = [];
+  final List _reply = [];
 
   List get getReplyData => _reply;
 

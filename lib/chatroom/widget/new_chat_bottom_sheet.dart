@@ -4,12 +4,13 @@ import 'package:miyuji/chatroom/screen/chat_section_screen.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
 class NewChatBottomSheet extends StatelessWidget {
   var readBy = [];
+
+  NewChatBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,8 @@ class NewChatBottomSheet extends StatelessWidget {
                       )
                     },
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
@@ -66,13 +67,13 @@ class NewChatBottomSheet extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundImage: AssetImage("assets/images/profile.png"),
                           ),
                           manualSpacer(),
                           Text(
                             "${listItem[index]["type"]}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                             ),
                           ),
@@ -91,7 +92,7 @@ class NewChatBottomSheet extends StatelessWidget {
               child: Container(
                 child: Column(
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       height: deviceHeight(context) * .2,
                       child: Lottie.asset(
                         'assets/animation/loadchat.json',

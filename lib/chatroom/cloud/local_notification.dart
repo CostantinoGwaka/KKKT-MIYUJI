@@ -4,67 +4,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import './message_handler.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-    BehaviorSubject<ReceivedNotification>();
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
 
-final BehaviorSubject<String> selectNotificationSubject =
-    BehaviorSubject<String>();
+final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
 
-const MethodChannel platform =
-    MethodChannel('dexterx.dev/flutter_local_notifications_example');
+const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');
 
 class ReceivedNotification {
   ReceivedNotification({
-    @required this.id,
-    @required this.title,
-    @required this.body,
-    @required this.payload,
+    this.id,
+    this.title,
+    this.body,
+    this.payload,
   });
 
-  final int id;
-  final String title;
-  final String body;
-  final String payload;
+  final int? id;
+  final String? title;
+  final String? body;
+  final String? payload;
 }
 
 class LocalNotification {
   static void requestPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
           alert: true,
           badge: true,
           sound: true,
         );
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            MacOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
           alert: true,
           badge: true,
           sound: true,
         );
   }
 
-  static void configureDidReceiveLocalNotificationSubject(
-      {BuildContext context}) {
-    didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {
+  static void configureDidReceiveLocalNotificationSubject({required BuildContext context}) {
+    didReceiveLocalNotificationSubject.stream.listen((ReceivedNotification receivedNotification) async {
       await showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body)
-              : null,
+          title: receivedNotification.title != null ? Text(receivedNotification!.title) : null,
+          content: receivedNotification.body != null ? Text(receivedNotification.body) : null,
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
@@ -92,9 +75,7 @@ class LocalNotification {
     });
   }
 
-  static Future onDidReceiveLocalNotification(
-      int id, String title, String body, String payload,
-      {BuildContext context}) async {
+  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload, {BuildContext context}) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
       context: context,
@@ -104,7 +85,7 @@ class LocalNotification {
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: Text('Ok'),
+            child: const Text('Ok'),
             onPressed: () async {
               Navigator.of(context, rootNavigator: true).pop();
               // await Navigator.push(
@@ -120,11 +101,8 @@ class LocalNotification {
     );
   }
 
-  static Future selectNotification(String payload,
-      {BuildContext context}) async {
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-    }
+  static Future selectNotification(String payload, {BuildContext context}) async {
+    debugPrint('notification payload: $payload');
     // await Navigator.push(
     //   context,
     //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
@@ -132,31 +110,19 @@ class LocalNotification {
   }
 
   static Future<void> intialize() async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_stat_onesignal_default.png');
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final MacOSInitializationSettings initializationSettingsMacOS =
-        MacOSInitializationSettings();
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('ic_stat_onesignal_default.png');
+    final IOSInitializationSettings initializationSettingsIOS = const IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    const MacOSInitializationSettings initializationSettingsMacOS = MacOSInitializationSettings();
     final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: initializationSettingsMacOS);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: initializationSettingsMacOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
-  static Future<void> showNotification(
-      {String title, String description}) async {
-    FlutterLocalNotificationsPlugin localNotifPlugin =
-        new FlutterLocalNotificationsPlugin();
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+  static Future<void> showNotification({String title, String description}) async {
+    FlutterLocalNotificationsPlugin localNotifPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel_id',
       'channel_name',
       'channel_description',
@@ -168,8 +134,7 @@ class LocalNotification {
       // largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
     );
     // var iOSChannelSpecifics = IOSNotificationDetails();
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
     localNotifPlugin.show(
       0,
       title,

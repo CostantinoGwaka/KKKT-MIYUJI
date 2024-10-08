@@ -92,7 +92,7 @@ class LocalNotification {
         actions: [
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: Text('Ok'),
+            child: const Text('Ok'),
             onPressed: () async {
               Navigator.of(context, rootNavigator: true).pop();
               print("clicked 2");
@@ -111,10 +111,8 @@ class LocalNotification {
   }
 
   static Future selectNotification(String payload, {BuildContext context}) async {
-    if (payload != null) {
-      debugPrint('notification payload: $payload');
-    }
-    // await Navigator.push(
+    debugPrint('notification payload: $payload');
+      // await Navigator.push(
     //   context,
     //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
     // );
@@ -126,15 +124,15 @@ class LocalNotification {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_stat_onesignal_default.png');
     final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final MacOSInitializationSettings initializationSettingsMacOS = MacOSInitializationSettings();
+        const IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    const MacOSInitializationSettings initializationSettingsMacOS = MacOSInitializationSettings();
     final InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: initializationSettingsMacOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
   static Future<void> showNotification({String title, String description}) async {
-    FlutterLocalNotificationsPlugin localNotifPlugin = new FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin localNotifPlugin = FlutterLocalNotificationsPlugin();
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'channel_id',
       'channel_name',

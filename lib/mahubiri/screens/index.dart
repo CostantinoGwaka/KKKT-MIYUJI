@@ -7,6 +7,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 /// Creates list of video players
 class MahubiriScreen extends StatefulWidget {
+  const MahubiriScreen({super.key});
+
   @override
   _MahubiriScreenState createState() => _MahubiriScreenState();
 }
@@ -37,7 +39,7 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             SystemChrome.setPreferredOrientations([
               DeviceOrientation.portraitDown,
@@ -56,7 +58,7 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
         ),
       ),
       child: ListView.separated(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Card(
             shape: RoundedRectangleBorder(
@@ -69,11 +71,11 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
                 key: ObjectKey(_controllers[index]),
                 controller: _controllers[index],
                 actionsPadding: const EdgeInsets.only(left: 16.0),
-                bottomActions: [
+                bottomActions: const [
                   CurrentPosition(),
-                  const SizedBox(width: 10.0),
+                  SizedBox(width: 10.0),
                   ProgressBar(isExpanded: true),
-                  const SizedBox(width: 10.0),
+                  SizedBox(width: 10.0),
                   RemainingDuration(),
                   FullScreenButton(),
                 ],

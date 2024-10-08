@@ -22,4 +22,4 @@ double deviceWidth(BuildContext context) {
 }
 
 //physics
-ScrollPhysics physics = BouncingScrollPhysics();
+ScrollPhysics physics = const BouncingScrollPhysics();

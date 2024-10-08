@@ -5,7 +5,7 @@ import 'package:miyuji/utils/spacer.dart';
 import 'package:miyuji/register_login/screens/login.dart';
 
 class NoAuthBanner extends StatelessWidget {
-  const NoAuthBanner({Key key}) : super(key: key);
+  const NoAuthBanner({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class NoAuthBanner extends StatelessWidget {
               SizedBox(
                   height: deviceHeight(context) * 0.4,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
+                    padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Center(
                       child: Image.asset('assets/images/lock.png'),
                     ),
                   )),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
                 child: Center(
                   child: Text(
                     "Umezuiliwa",
@@ -33,8 +33,8 @@ class NoAuthBanner extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   "Tafadhali Ingia kwa akaunti yako kuendelea",
                   style: TextStyle(
@@ -44,7 +44,7 @@ class NoAuthBanner extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
@@ -53,14 +53,14 @@ class NoAuthBanner extends StatelessWidget {
                   children: [
                     FlatButton(
                       onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
                       },
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 80,
                       ),
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Text(
                         "Ingia",

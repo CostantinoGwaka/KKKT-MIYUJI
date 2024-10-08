@@ -13,7 +13,7 @@ class LanguageButtonDirection {
 }
 
 class LanguageButton extends StatefulWidget {
-  LanguageButton({
+  const LanguageButton({super.key, 
     @required this.language,
     @required this.direction,
     @required this.isSelected,
@@ -49,7 +49,7 @@ class _LanguageButtonState extends State<LanguageButton> {
     if (widget.direction == LanguageButtonDirection.left) {
       return leftRoundedCorners;
     } else if (widget.direction == LanguageButtonDirection.right) {
-      return BorderRadius.only(
+      return const BorderRadius.only(
         bottomRight: Radius.circular(8),
         topRight: Radius.circular(8),
       );
@@ -64,7 +64,7 @@ class _LanguageButtonState extends State<LanguageButton> {
     if (widget.direction == LanguageButtonDirection.left) {
       return leftMargin;
     } else if (widget.direction == LanguageButtonDirection.right) {
-      return EdgeInsets.only(right: 4, bottom: 5);
+      return const EdgeInsets.only(right: 4, bottom: 5);
     } else {
       return leftMargin;
     }
@@ -80,7 +80,7 @@ class _LanguageButtonState extends State<LanguageButton> {
           height: 60,
           margin: _addMargins(),
           decoration: BoxDecoration(
-            color: widget.isSelected ? Colors.red : Color(0xFFededed),
+            color: widget.isSelected ? Colors.red : const Color(0xFFededed),
             borderRadius: _displaysRoundedCorners(),
           ),
           child: Center(

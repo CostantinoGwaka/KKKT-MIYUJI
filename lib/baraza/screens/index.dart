@@ -1,18 +1,15 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:miyuji/baraza/screens/baraza_wazee_screen.dart';
 import 'package:miyuji/baraza/screens/kamati_screen.dart';
 import 'package:miyuji/baraza/screens/walimu_screen.dart';
 import 'package:miyuji/baraza/screens/watumishi_screen.dart';
-import 'package:miyuji/models/barazalawazee.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class BarazaLaWazee extends StatefulWidget {
-  const BarazaLaWazee({Key key}) : super(key: key);
+  const BarazaLaWazee({Key? key}) : super(key: key);
 
   @override
   _BarazaLaWazeeState createState() => _BarazaLaWazeeState();
@@ -24,7 +21,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -40,7 +37,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
       ),
       child: Stack(
         children: [
-          CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+          CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight(context) / 3,
@@ -76,7 +73,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                 // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WatumishiScreen()));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -84,7 +81,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                 child: Card(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    side: BorderSide(color: MyColors.white, width: 2.0),
+                                    side: const BorderSide(color: MyColors.white, width: 2.0),
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   elevation: 10,
@@ -146,12 +143,12 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BarazaWazeeScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BarazaWazeeScreen()));
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -176,7 +173,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                         // ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: MyColors.white,
 
                                             // gradient: LinearGradient(
@@ -225,10 +222,10 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => KamatiUsharikaScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KamatiUsharikaScreen()));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -236,7 +233,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                 child: Card(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    side: BorderSide(color: MyColors.white, width: 2.0),
+                                    side: const BorderSide(color: MyColors.white, width: 2.0),
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   elevation: 10,
@@ -301,10 +298,10 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WatumishiScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WatumishiScreen()));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -329,7 +326,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                         // ),
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: MyColors.white,
 
                                             // gradient: LinearGradient(
@@ -377,10 +374,10 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WalimuScreen()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WalimuScreen()));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: MyColors.white,
                                 ),
                                 width: double.infinity,
@@ -388,7 +385,7 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                                 child: Card(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    side: BorderSide(color: MyColors.white, width: 2.0),
+                                    side: const BorderSide(color: MyColors.white, width: 2.0),
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   elevation: 10,

@@ -7,24 +7,23 @@ import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'dart:math' as math;
 
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key key}) : super(key: key);
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
-  static const List<IconData> icons = const [Icons.sms, Icons.phone];
+  static const List<IconData> icons = [Icons.sms, Icons.phone];
 
   @override
   void initState() {
-    _controller = new AnimationController(
+    _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
@@ -33,10 +32,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   void resetBtn() {
     //reset button
-    if (_controller.isDismissed) {
-      _controller.forward();
+    if (_controller!.isDismissed) {
+      _controller!.forward();
     } else {
-      _controller.reverse();
+      _controller!.reverse();
     }
   }
 
@@ -45,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           leading: GestureDetector(
-            child: Icon(Icons.arrow_back_ios),
+            child: const Icon(Icons.arrow_back_ios),
             onTap: () {
               SystemChrome.setPreferredOrientations([
                 DeviceOrientation.portraitDown,
@@ -64,24 +63,24 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           ),
         ),
         child: Scaffold(
-          body: ChatListScreen(),
-          floatingActionButton: new Column(
+          body: const ChatListScreen(),
+          floatingActionButton: Column(
             mainAxisSize: MainAxisSize.min,
-            children: new List.generate(icons.length, (int index) {
-              Widget child = new Container(
+            children: List.generate(icons.length, (int index) {
+              Widget child = Container(
                 height: 70.0,
                 width: 56.0,
                 alignment: FractionalOffset.topCenter,
-                child: new ScaleTransition(
-                  scale: new CurvedAnimation(
+                child: ScaleTransition(
+                  scale: CurvedAnimation(
                     parent: _controller,
-                    curve: new Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.easeOut),
+                    curve: Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.easeOut),
                   ),
-                  child: new FloatingActionButton(
+                  child: FloatingActionButton(
                     heroTag: null,
                     backgroundColor: MyColors.primaryLight,
                     mini: true,
-                    child: new Icon(icons[index], color: MyColors.white),
+                    child: Icon(icons[index], color: MyColors.white),
                     onPressed: () {
                       if (index == 0) {
                         resetBtn();
@@ -112,16 +111,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               return child;
             }).toList()
               ..add(
-                new FloatingActionButton(
+                FloatingActionButton(
                   backgroundColor: MyColors.primaryLight,
                   heroTag: null,
-                  child: new AnimatedBuilder(
+                  child: AnimatedBuilder(
                     animation: _controller,
                     builder: (BuildContext context, Widget child) {
-                      return new Transform(
-                        transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
+                      return Transform(
+                        transform: Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
                         alignment: FractionalOffset.center,
-                        child: new Icon(_controller.isDismissed ? Icons.add : Icons.close),
+                        child: Icon(_controller.isDismissed ? Icons.add : Icons.close),
                       );
                     },
                   ),

@@ -12,7 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WatumishiScreen extends StatefulWidget {
-  const WatumishiScreen({Key key}) : super(key: key);
+  const WatumishiScreen({Key? key}) : super(key: key);
 
   @override
   _WatumishiScreenState createState() => _WatumishiScreenState();
@@ -57,7 +57,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -90,7 +90,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -123,7 +123,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                               'assets/animation/nodata.json',
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10.0,
                           ),
                           Material(
@@ -144,7 +144,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Card(
@@ -161,10 +161,10 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text("${snapshot.data[index].fname}"),
-                      subtitle: Text("${snapshot.data[index].wadhifa}"),
+                      title: Text(snapshot.data![index].fname),
+                      subtitle: Text(snapshot.data![index].wadhifa),
                       children: <Widget>[
-                        Divider(
+                        const Divider(
                           thickness: 1.0,
                           height: 1.0,
                         ),
@@ -183,7 +183,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      "${snapshot.data[index].wadhifa} : ",
+                                      "${snapshot.data![index].wadhifa} : ",
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -196,7 +196,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${snapshot.data[index].fname}",
+                                          snapshot.data![index].fname,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -204,7 +204,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                           ),
                                         ),
                                         Text(
-                                          "${snapshot.data[index].phoneNo}",
+                                          snapshot.data![index].phoneNo,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -216,12 +216,12 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
-                                        launch("tel://${snapshot.data[index].phoneNo}");
+                                        launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(
                                         backgroundColor: MyColors.primaryLight,
                                         radius: 20,
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.call,
                                           size: 20,
                                           color: MyColors.white,
@@ -231,7 +231,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                   ],
                                 ),
                                 manualStepper(step: 5),
-                                Divider(
+                                const Divider(
                                   thickness: 5,
                                 )
                               ],
@@ -244,7 +244,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

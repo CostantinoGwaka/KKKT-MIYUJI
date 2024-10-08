@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:miyuji/models/matangazo.dart';
 import 'package:miyuji/models/video_kwaya.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
@@ -36,7 +35,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       "kwaya_id": '${widget.kwayaid}',
     });
 
-    var matangazoList = new Map();
+    var matangazoList = {};
     var tangazo;
 
     if (response.statusCode == 200) {
@@ -90,7 +89,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -113,7 +112,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
         ),
       ),
       child: ListView.separated(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return Card(
             shape: RoundedRectangleBorder(
@@ -126,11 +125,11 @@ class _VideoListScreenState extends State<VideoListScreen> {
                 key: ObjectKey(_controllers[index]),
                 controller: _controllers[index],
                 actionsPadding: const EdgeInsets.only(left: 16.0),
-                bottomActions: [
+                bottomActions: const [
                   CurrentPosition(),
-                  const SizedBox(width: 10.0),
+                  SizedBox(width: 10.0),
                   ProgressBar(isExpanded: true),
-                  const SizedBox(width: 10.0),
+                  SizedBox(width: 10.0),
                   RemainingDuration(),
                   FullScreenButton(),
                 ],

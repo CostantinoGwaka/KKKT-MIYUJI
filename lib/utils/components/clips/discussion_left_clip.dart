@@ -10,7 +10,7 @@ class DiscussionLeftClip extends CustomClipper<Path> {
     path.arcToPoint(
       Offset(size.width, size.height),
       clockwise: false,
-      radius: Radius.elliptical(70, 60),
+      radius: const Radius.elliptical(70, 60),
     );
 
     path.lineTo(0.0, size.height);

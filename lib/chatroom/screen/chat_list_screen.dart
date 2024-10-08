@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:miyuji/chatroom/widget/chatlist_item_widget.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
@@ -15,6 +12,8 @@ import 'package:miyuji/home/screens/index.dart';
 var query;
 
 class ChatListScreen extends StatefulWidget {
+  const ChatListScreen({super.key});
+
   @override
   _ChatListScreenState createState() => _ChatListScreenState();
 }
@@ -89,7 +88,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   child: Container(
                     child: Column(
                       children: <Widget>[
-                        Container(
+                        SizedBox(
                           height: deviceHeight(context) * .2,
                           child: Lottie.asset(
                             'assets/animation/nochat.json',
@@ -111,7 +110,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
             }
           } else {
             return Center(
-              child: Container(
+              child: SizedBox(
                 height: 280,
                 child: Lottie.asset(
                   'assets/animation/fetching.json',

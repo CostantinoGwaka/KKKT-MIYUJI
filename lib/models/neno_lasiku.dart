@@ -15,9 +15,9 @@ class NenoLaSikuData {
     this.tarehe,
   });
 
-  String id;
-  String neno;
-  DateTime tarehe;
+  String? id;
+  String? neno;
+  DateTime? tarehe;
 
   factory NenoLaSikuData.fromJson(Map<String, dynamic> json) => NenoLaSikuData(
         id: json["id"],

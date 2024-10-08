@@ -15,6 +15,8 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -25,7 +27,7 @@ class _LoginState extends State<Login> {
   bool isregistered = false;
   bool _isObscure = true;
 
-  Future<void> checkGetMyData(String member_no) async {
+  Future<void> checkGetMyData(String memberNo) async {
     //get my data
 
     String mydataApi = "http://miyujikkkt.or.tz/api/get_mydata.php/";
@@ -34,7 +36,7 @@ class _LoginState extends State<Login> {
       mydataApi,
       headers: {'Accept': 'application/json'},
       body: {
-        "member_no": "$member_no",
+        "member_no": memberNo,
       },
     );
 
@@ -52,7 +54,7 @@ class _LoginState extends State<Login> {
     //end here
   }
 
-  Future<void> checkMtumish(String member_no) async {
+  Future<void> checkMtumish(String memberNo) async {
     // //check mtumishi permission
 
     String mtumishApi = "http://miyujikkkt.or.tz/api/check_mtumish.php/";
@@ -60,7 +62,7 @@ class _LoginState extends State<Login> {
       mtumishApi,
       headers: {'Accept': 'application/json'},
       body: {
-        "member_no": "$member_no",
+        "member_no": memberNo,
       },
     );
 
@@ -78,9 +80,9 @@ class _LoginState extends State<Login> {
     // //end here
   }
 
-  Future<dynamic> login(String member_no, String password) async {
+  Future<dynamic> login(String memberNo, String password) async {
     Alerts.showProgressDialog(context, "Tafadhari Subiri,Inatafuta akaunti yako");
-    if (member_no == "" || password == "") {
+    if (memberNo == "" || password == "") {
       setState(() {
         isregistered = true;
       });
@@ -96,9 +98,9 @@ class _LoginState extends State<Login> {
         myApi,
         headers: {'Accept': 'application/json'},
         body: {
-          "member_no": "$member_no",
-          "password": "$password",
-          "token": "$tokens",
+          "member_no": memberNo,
+          "password": password,
+          "token": tokens,
         },
       );
 
@@ -141,15 +143,15 @@ class _LoginState extends State<Login> {
 
           await LocalStorage.setStringItem("member_no", mtumishi);
 
-          await checkGetMyData(member_no);
+          await checkGetMyData(memberNo);
 
-          await checkMtumish(member_no);
+          await checkMtumish(memberNo);
 
           //remove loader
           Navigator.of(context).pop();
           //end here
 
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
 
           return Fluttertoast.showToast(
             msg: "Umefanikiwa kuingia kwenye akaunti",
@@ -242,11 +244,11 @@ class _LoginState extends State<Login> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,16 +257,16 @@ class _LoginState extends State<Login> {
                   child: Text("Ingia Kwenye Akaunti",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
-                        color: Color(0xff205072),
+                        color: const Color(0xff205072),
                         fontWeight: FontWeight.w500,
                       )),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _inputField1(),
                 _inputField2(),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _loginbtn(context),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 _passCode(context)
               ],
             ),
@@ -276,7 +278,7 @@ class _LoginState extends State<Login> {
 
   Widget _inputField1() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
@@ -289,13 +291,13 @@ class _LoginState extends State<Login> {
           ),
         ],
       ),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         controller: memberController,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         style: GoogleFonts.poppins(fontSize: 20, color: Colors.black, letterSpacing: 0.24, fontWeight: FontWeight.w500),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "Namba yako ya Ahadi",
           hintStyle: TextStyle(
             color: Color(0xffA6B0BD),
@@ -321,7 +323,7 @@ class _LoginState extends State<Login> {
 
   Widget _inputField2() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
@@ -334,7 +336,7 @@ class _LoginState extends State<Login> {
           ),
         ],
       ),
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         style: GoogleFonts.poppins(
           fontSize: 20,
@@ -345,18 +347,18 @@ class _LoginState extends State<Login> {
         controller: passwordController,
         decoration: InputDecoration(
           hintText: "Neno la siri",
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Color(0xffA6B0BD),
           ),
           fillColor: Colors.white,
           filled: true,
-          enabledBorder: OutlineInputBorder(
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(20),
             ),
             borderSide: BorderSide(color: Colors.white),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
@@ -397,12 +399,12 @@ class _LoginState extends State<Login> {
             await login(memberController.text, passwordController.text);
           }
         },
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 80,
         ),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(20.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: Text(
           "Ingia",
@@ -435,7 +437,7 @@ Widget _passCode(context) {
               style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
             },
           )
         ],

@@ -10,9 +10,9 @@ class DiscussionRightClip extends CustomClipper<Path> {
     path.lineTo(0.0, size.height);
 
     path.arcToPoint(
-      Offset(0.0, 0.0),
+      const Offset(0.0, 0.0),
       clockwise: false,
-      radius: Radius.elliptical(70, 60),
+      radius: const Radius.elliptical(70, 60),
     );
 
     path.close();

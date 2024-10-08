@@ -21,20 +21,18 @@ class MediaHandler {
   static var newmessage;
   static var mtumishi;
 
-  static uploadMedia(id, size, _image, widget, Message message, token, type) async {
+  static uploadMedia(id, size, image, widget, Message message, token, type) async {
     await LocalStorage.getStringItem('member_no').then((value) {
-      if (value != null) {
-        var mymtumishi = jsonDecode(value);
-        mtumishi = mymtumishi;
-      }
-    });
+      var mymtumishi = jsonDecode(value);
+      mtumishi = mymtumishi;
+        });
 
     //upload image to server
     if (message.type == "photo") {}
-    final firebase_storage.Reference _ref = firebase_storage.FirebaseStorage.instance.ref().child('Message${message.type}/$id-${_image.path.split('/').last}');
+    final firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('Message${message.type}/$id-${image.path.split('/').last}');
 
     //upload task listen when upload image to server
-    UploadTask uploadTask = _ref.putFile(_image);
+    UploadTask uploadTask = ref.putFile(image);
     uploadTask.snapshotEvents.listen((event) {
       // ignore: unused_local_variable
       int percentage = (((uploadTask.snapshot.bytesTransferred) / size) * 100).round();
@@ -44,16 +42,16 @@ class MediaHandler {
     uploadTask.then((res) async {
       res.ref.getDownloadURL().then((value) {
         //update picurl
-        updateMediaUrl(value, widget.friendId, id).whenComplete(() => {
-              newmessage = message,
-              message.picUrl = value,
-              HandleMessageFunction.saveIncomingMessage(message: message),
+        updateMediaUrl(value, widget.friendId, id).whenComplete(() {
+              newmessage = message;
+              message.picUrl = value;
+              HandleMessageFunction.saveIncomingMessage(message: message);
               FireibaseClass.sendNotification(
                 message: message,
                 token: token,
               ).catchError((err) {
                 print("error occured: $err");
-              }),
+              });
               Cloud.update(
                 checkSnap: false,
                 serverPath: "RecentChat/${mtumishi['member_no']}/${widget.friendId}",
@@ -62,7 +60,7 @@ class MediaHandler {
                   "unseen": 0,
                   "time": message.sentAt,
                 },
-              )
+              );
             });
       });
     });
@@ -80,19 +78,19 @@ class MediaHandler {
     BuildContext context,
     dynamic widget,
     List replyData,
-    File _image,
+    File image,
     String caption,
   ) async {
     print("here we go :caption $caption");
     //create file to be uploaded to the server
     //create message id
-    String id = Uuid().v4();
+    String id = const Uuid().v4();
 
     //media size
-    int size = await _image.length();
+    int size = await image.length();
 
     //media name
-    basNameWithExtension = path.basename(_image.path);
+    basNameWithExtension = path.basename(image.path);
     //IMAGE caption
     // AppNavigation.pushReplacement(
     //   context,
@@ -117,7 +115,7 @@ class MediaHandler {
         hostId: mtumishi['member_no'],
         reply: false,
         type: "photo",
-        repliedContent: (replyData.length > 0) ? replyData[0] : null,
+        repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
         caption: caption,
       ),
       receiverId: widget.friendId,
@@ -126,7 +124,7 @@ class MediaHandler {
       uploadMedia(
           id,
           size,
-          _image,
+          image,
           widget,
           Message(
             mediasize: size,
@@ -143,7 +141,7 @@ class MediaHandler {
             hostId: mtumishi['member_no'],
             reply: false,
             type: "photo",
-            repliedContent: (replyData.length > 0) ? replyData[0] : null,
+            repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
             caption: caption,
           ),
           widget.token,
@@ -153,27 +151,25 @@ class MediaHandler {
 
   static Future getDocument(BuildContext context, dynamic widget, String token, List replyData) async {
     print("hahahaahah : $replyData");
-    File _file = await FilePicker.getFile(
+    File file = await FilePicker.getFile(
       type: FileType.custom,
       allowedExtensions: ['pdf', '.doc', 'txt', 'xlsx'],
     );
-
-    if (_file == null) return;
-    if (_file.lengthSync() <= 8000000) {
+    if (file.lengthSync() <= 8000000) {
       //create file to be uploaded to the server
-      _image = await File(_file.path).create();
+      _image = await File(file.path).create();
 
       //create message id
-      String id = Uuid().v4();
+      String id = const Uuid().v4();
 
       //server time
       DateTime serverTime = Timestamp.now().toDate().toLocal();
 
       //media size
-      int size = await _file.length();
+      int size = await file.length();
 
       //media name
-      basNameWithExtension = path.basename(_file.path);
+      basNameWithExtension = path.basename(file.path);
 
       sendMedia(
         message: Message(
@@ -191,7 +187,7 @@ class MediaHandler {
           hostId: mtumishi['member_no'],
           reply: false,
           type: "document",
-          repliedContent: (replyData.length > 0) ? replyData[0] : null,
+          repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
         ),
         receiverId: widget.friendId,
         senderId: mtumishi['member_no'],
@@ -216,7 +212,7 @@ class MediaHandler {
               hostId: mtumishi['member_no'],
               reply: false,
               type: "document",
-              repliedContent: (replyData.length > 0) ? replyData[0] : null,
+              repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
             ),
             token,
             "document");

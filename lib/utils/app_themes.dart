@@ -10,7 +10,7 @@ String enumName(AppTheme anyEnum) {
 
 final appThemeData = {
   AppTheme.White: ThemeData(
-    dialogTheme: DialogTheme(
+    dialogTheme: const DialogTheme(
         titleTextStyle: TextStyle(
       color: Colors.black,
     )),
@@ -20,27 +20,27 @@ final appThemeData = {
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
       color: MyColors.primary,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: const CardTheme(
       color: Colors.white,
     ),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.black87,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
         color: Colors.white,
         fontSize: 20.0,
         fontFamily: 'WorkSans',
       ),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         color: Colors.black54,
         fontFamily: 'WorkSans',
       ),
-      subtitle2: TextStyle(
+      titleSmall: TextStyle(
         color: Colors.white70,
         fontFamily: 'WorkSans',
         fontSize: 18.0,
@@ -51,74 +51,74 @@ final appThemeData = {
     //scaffoldBackgroundColor: MyColors.grey_90,
     //primaryColor: MyColors.grey_90,
     brightness: Brightness.dark,
-    dialogTheme: DialogTheme(
+    dialogTheme: const DialogTheme(
         titleTextStyle: TextStyle(
       color: Colors.white,
     )),
-    bottomSheetTheme: BottomSheetThemeData(
+    bottomSheetTheme: const BottomSheetThemeData(
         //backgroundColor: MyColors.grey_90,
         ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: MyColors.grey_95,
     ),
-    bottomAppBarTheme: BottomAppBarTheme(color: MyColors.grey_95),
+    bottomAppBarTheme: const BottomAppBarTheme(color: MyColors.grey_95),
     appBarTheme: AppBarTheme(
       color: MyColors.primary,
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
       ),
     ),
     dividerColor: Colors.grey.shade800,
     //bottomAppBarTheme: BottomAppBarTheme(color: MyColors.grey_90),
-    cardTheme: CardTheme(
+    cardTheme: const CardTheme(
         //color: MyColors.grey_80,
         ),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.white,
     ),
-    textTheme: TextTheme(
-      headline6: TextStyle(
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
         color: Colors.white,
         fontSize: 20.0,
         fontFamily: 'WorkSans',
       ),
-      subtitle2: TextStyle(
+      titleSmall: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
         fontSize: 18.0,
       ),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      headline1: TextStyle(
+      displayLarge: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      subtitle1: TextStyle(
+      titleMedium: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      bodyText2: TextStyle(
+      bodyMedium: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         color: Colors.white,
         fontFamily: 'WorkSans',
       ),
-      overline: TextStyle(
+      labelSmall: TextStyle(
         color: Colors.white,
       ),
-      caption: TextStyle(
+      bodySmall: TextStyle(
         color: Colors.white,
       ),
     ),

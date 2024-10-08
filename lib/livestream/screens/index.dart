@@ -13,7 +13,7 @@ var videoId = '';
 
 class LiveYoutubePlayer extends StatefulWidget {
   final LiveStreams media;
-  LiveYoutubePlayer({Key key, this.media}) : super(key: key);
+  const LiveYoutubePlayer({Key key, this.media}) : super(key: key);
 
   @override
   _PlayerState createState() => _PlayerState();
@@ -59,7 +59,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
     });
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
+      flags: const YoutubePlayerFlags(
         mute: false,
         autoPlay: true,
         disableDragSeek: false,
@@ -76,21 +76,21 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
   @override
   void deactivate() {
     // Pauses video while navigating to next page.
-    _controller?.pause();
+    _controller.pause();
     super.deactivate();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _controller?.dispose();
+      _controller.dispose();
     }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _controller?.dispose();
+    _controller.dispose();
 
     super.dispose();
   }
@@ -100,7 +100,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -144,13 +144,13 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
                           child: YoutubePlayer(
                             controller: _controller,
                             showVideoProgressIndicator: true,
-                            bottomActions: <Widget>[
-                              const SizedBox(width: 14.0),
+                            bottomActions: const <Widget>[
+                              SizedBox(width: 14.0),
                               CurrentPosition(),
-                              const SizedBox(width: 8.0),
+                              SizedBox(width: 8.0),
                               ProgressBar(isExpanded: true),
                               RemainingDuration(),
-                              const PlaybackSpeedButton(),
+                              PlaybackSpeedButton(),
                             ],
                           ),
                         ),
@@ -166,7 +166,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.black,
         shape: BoxShape.rectangle,
         image: DecorationImage(

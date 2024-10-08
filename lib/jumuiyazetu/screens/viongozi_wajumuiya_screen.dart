@@ -4,7 +4,6 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/models/viongozi_jumuiya.dart';
-import 'package:miyuji/models/viongozi_kamati.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -68,7 +67,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -101,7 +100,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                             'assets/animation/fetching.json',
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Material(
@@ -135,7 +134,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                 'assets/animation/nodata.json',
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10.0,
                             ),
                             Material(
@@ -157,7 +156,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
               );
             } else if (snapshot.hasData) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {
                   return Card(
@@ -174,10 +173,10 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text("${snapshot.data[index].fname}"),
-                      subtitle: Text("${snapshot.data[index].wadhifa}"),
+                      title: Text(snapshot.data![index].fname),
+                      subtitle: Text(snapshot.data![index].wadhifa),
                       children: <Widget>[
-                        Divider(
+                        const Divider(
                           thickness: 1.0,
                           height: 1.0,
                         ),
@@ -196,7 +195,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      "${snapshot.data[index].wadhifa} : ",
+                                      "${snapshot.data![index].wadhifa} : ",
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -209,7 +208,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${snapshot.data[index].fname}",
+                                          snapshot.data![index].fname,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -217,7 +216,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                           ),
                                         ),
                                         Text(
-                                          "${snapshot.data[index].phoneNo}",
+                                          snapshot.data![index].phoneNo,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -229,12 +228,12 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
-                                        launch("tel://${snapshot.data[index].phoneNo}");
+                                        launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(
                                         backgroundColor: MyColors.primaryLight,
                                         radius: 20,
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.call,
                                           size: 20,
                                           color: MyColors.white,
@@ -244,7 +243,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                   ],
                                 ),
                                 manualStepper(step: 5),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
                                 Row(
@@ -260,7 +259,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      "${snapshot.data[index].jumuiya}",
+                                      snapshot.data![index].jumuiya,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -270,7 +269,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     manualSpacer(step: 5),
                                   ],
                                 ),
-                                Divider(
+                                const Divider(
                                   thickness: 2,
                                 ),
                                 Row(
@@ -286,7 +285,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      "${snapshot.data[index].tarehe}",
+                                      snapshot.data![index].tarehe,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -296,7 +295,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     manualSpacer(step: 5),
                                   ],
                                 ),
-                                Divider(
+                                const Divider(
                                   thickness: 3,
                                 )
                               ],
@@ -309,7 +308,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                 },
               );
             } else {
-              return Text("new videos");
+              return const Text("new videos");
             }
           },
         ),

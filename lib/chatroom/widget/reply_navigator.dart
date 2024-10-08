@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:provider/provider.dart';
 import 'package:miyuji/home/screens/index.dart';
 
@@ -39,7 +37,7 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[200], width: 1))),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
@@ -51,7 +49,7 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.reply_all,
                 textDirection: TextDirection.rtl,
                 color: Colors.green,
@@ -65,13 +63,13 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
                     children: [
                       Text(
                         widget.messageData['sender'] == host['member_no'] ? "Wewe" : "Mtumishi",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                       ),
                       () {
                         return Container(
                           child: Text(
                             '${widget.messageData['message']}',
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             overflow: TextOverflow.ellipsis,
                           ),
                         );
@@ -84,7 +82,7 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
                 onTap: () {
                   Provider.of<AddReplyData>(context, listen: false).unsetReply();
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.close,
                   color: Colors.green,
                 ),

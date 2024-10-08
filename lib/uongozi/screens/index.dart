@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class ViongoziWaKanisa extends StatefulWidget {
-  const ViongoziWaKanisa({Key key}) : super(key: key);
+  const ViongoziWaKanisa({Key? key}) : super(key: key);
 
   @override
   _ViongoziWaKanisaState createState() => _ViongoziWaKanisaState();
@@ -69,7 +69,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                   color: MyColors.primaryLight,
                 ),
               ),
-              Container(
+              SizedBox(
                 height: deviceHeight(context) / 1,
                 child: RefreshIndicator(
                   onRefresh: _pullRefresh,
@@ -90,7 +90,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                       'assets/animation/fetching.json',
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   Material(
@@ -123,7 +123,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                         'assets/animation/nodata.json',
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10.0,
                                     ),
                                     Material(
@@ -145,7 +145,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                       } else if (snapshot.hasData) {
                         return ListView.builder(
                           padding: EdgeInsets.zero,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data.length,
                           itemBuilder: (_, index) {
                             return Padding(
@@ -153,18 +153,18 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                               child: Card(
                                 elevation: 3,
                                 shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: MyColors.white, width: 2.0),
+                                  side: const BorderSide(color: MyColors.white, width: 2.0),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Container(
                                   height: 70,
-                                  margin: EdgeInsets.only(bottom: 10),
+                                  margin: const EdgeInsets.only(bottom: 10),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                           // left: 10,
                                           top: 10,
                                           bottom: 10,
@@ -172,7 +172,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                         child: Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
                                           Column(
                                             children: <Widget>[
-                                              Container(
+                                              SizedBox(
                                                 height: 50,
                                                 child: CircleAvatar(
                                                   backgroundColor: MyColors.white,
@@ -187,18 +187,18 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                             ],
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(left: 10),
+                                            margin: const EdgeInsets.only(left: 10),
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Container(
+                                                SizedBox(
                                                   width: 200,
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        "${snapshot.data[index].fname}",
+                                                        snapshot.data![index].fname,
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         softWrap: false,
@@ -210,7 +210,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                                       ),
                                                       manualStepper(step: 10),
                                                       Text(
-                                                        "${snapshot.data[index].wadhifa}",
+                                                        snapshot.data![index].wadhifa,
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         softWrap: false,
@@ -236,7 +236,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                           },
                         );
                       } else {
-                        return Text("error problem");
+                        return const Text("error problem");
                       }
                     },
                   ),

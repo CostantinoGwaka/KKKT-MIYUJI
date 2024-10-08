@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/akaunti/screens/index.dart';
 import 'package:miyuji/home/screens/index.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
 import 'package:miyuji/utils/my_colors.dart';
 
 class MapendekezoScreen extends StatefulWidget {
+  const MapendekezoScreen({super.key});
+
   @override
   _MapendekezoScreenState createState() => _MapendekezoScreenState();
 }
@@ -23,10 +23,10 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black, //change your color here
         ),
-        title: Text(
+        title: const Text(
           "Maoni/Mapendekezo",
           style: TextStyle(
             color: Colors.black,
@@ -48,11 +48,11 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,13 +68,13 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: xsuggestion,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      borderSide: const BorderSide(color: Colors.black, width: 2.0),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
@@ -84,9 +84,9 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                   maxLines: 10,
                   autofocus: true,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 _loginbtn(context),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -96,7 +96,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
   }
 
   Future<void> send_suggestion(
-    String member_no,
+    String memberNo,
     String suggestion,
   ) async {
     //get my data
@@ -110,8 +110,8 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": "$member_no",
-        "maoni": "$suggestion",
+        "member_no": memberNo,
+        "maoni": suggestion,
       },
     );
 
@@ -123,7 +123,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
         });
 
         Navigator.of(context).pop();
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
         return Fluttertoast.showToast(
           msg: "Maoni yako yamepokelewa, Ahsante",
           toastLength: Toast.LENGTH_LONG,
@@ -171,12 +171,12 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
             await send_suggestion(host['member_no'], xsuggestion.text);
           }
         },
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 10,
           horizontal: 80,
         ),
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(20.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: Text(
           "Tuma",

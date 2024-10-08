@@ -19,8 +19,8 @@ class ChatListItem extends StatefulWidget {
   final String friendId;
   final String detpId;
 
-  ChatListItem(
-      {@required this.name,
+  const ChatListItem(
+      {super.key, @required this.name,
       this.friendId,
       this.detpId,
       this.uid,
@@ -38,8 +38,8 @@ class ChatListItem extends StatefulWidget {
 }
 
 class _ChatListItemState extends State<ChatListItem> {
-  TextStyle media = TextStyle(fontSize: 14);
-  TextStyle small = TextStyle(fontSize: 10);
+  TextStyle media = const TextStyle(fontSize: 14);
+  TextStyle small = const TextStyle(fontSize: 10);
   double iconSize = 18;
   String token = null;
 
@@ -74,14 +74,14 @@ class _ChatListItemState extends State<ChatListItem> {
       //   child: ,
       // ),
       // onLongPress: widget.onLongPress,
-      leading: CircleAvatar(
+      leading: const CircleAvatar(
         radius: 30,
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage("assets/images/profile.png"),
         // child: _renderOnline(),
       ),
       title: Text(
-        "${widget.name}",
+        widget.name,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: deviceWidth(context) / 25),
       ),
       subtitle: _renderSubtitle(context),
@@ -132,12 +132,12 @@ class _ChatListItemState extends State<ChatListItem> {
           softWrap: false,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          strutStyle: StrutStyle(fontSize: 12.0),
+          strutStyle: const StrutStyle(fontSize: 12.0),
           text: TextSpan(
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               ),
-              text: "${widget.lastMessage}"),
+              text: widget.lastMessage),
         );
         break;
       case MessageType.photo:

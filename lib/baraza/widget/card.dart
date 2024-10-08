@@ -4,11 +4,11 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class CardBaraza extends StatelessWidget {
-  const CardBaraza({Key key}) : super(key: key);
+  const CardBaraza({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: deviceHeight(context) * 0.80,
       child: Column(
         children: [
@@ -17,7 +17,7 @@ class CardBaraza extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
             ),
             elevation: 5,
-            child: Container(
+            child: SizedBox(
               height: deviceHeight(context) * 0.10,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/utils/spacer.dart';
 
@@ -18,16 +17,16 @@ class PointerBottom extends StatelessWidget {
           ),
         ),
         child: CircleAvatar(
+          radius: deviceHeight(context) / 40,
+          backgroundColor: Colors.green[100],
           child: IconButton(
             onPressed: () {
               // _animate(
               //   time: 400,
               // );
             },
-            icon: Icon(Icons.arrow_circle_down),
+            icon: const Icon(Icons.arrow_circle_down),
           ),
-          radius: deviceHeight(context) / 40,
-          backgroundColor: Colors.green[100],
         ),
       ),
     );

@@ -42,7 +42,7 @@ class FocusedMenuHolder extends StatefulWidget {
 
 class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   GlobalKey containerKey = GlobalKey();
-  Offset childOffset = Offset(0, 0);
+  Offset childOffset = const Offset(0, 0);
   Size childSize;
 
   getOffset() {
@@ -51,7 +51,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
     Size size = renderBox.size;
     Offset offset = renderBox.localToGlobal(Offset.zero);
     setState(() {
-      this.childOffset = Offset(offset.dx, offset.dy);
+      childOffset = Offset(offset.dx, offset.dy);
       childSize = size;
     });
   }
@@ -79,7 +79,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
     await Navigator.push(
         context,
         PageRouteBuilder(
-            transitionDuration: widget.duration ?? Duration(milliseconds: 100),
+            transitionDuration: widget.duration ?? const Duration(milliseconds: 100),
             pageBuilder: (context, animation, secondaryAnimation) {
               animation = Tween(begin: 0.0, end: 1.0).animate(animation);
               return FadeTransition(
@@ -87,7 +87,6 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                   child: FocusedMenuDetails(
                     itemExtent: widget.menuItemExtent,
                     menuBoxDecoration: widget.menuBoxDecoration,
-                    child: widget.child,
                     childOffset: childOffset,
                     childSize: childSize,
                     menuItems: widget.menuItems,
@@ -97,6 +96,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
                     animateMenu: widget.animateMenuItems ?? true,
                     bottomOffsetHeight: widget.bottomOffsetHeight ?? 0,
                     menuOffset: widget.menuOffset ?? 0,
+                    child: widget.child,
                   ));
             },
             fullscreenDialog: true,
@@ -172,7 +172,7 @@ class FocusedMenuDetails extends StatelessWidget {
               top: topOffset,
               left: leftOffset,
               child: TweenAnimationBuilder(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 builder: (BuildContext context, dynamic value, Widget child) {
                   return Transform.scale(
                     scale: value,
@@ -189,8 +189,8 @@ class FocusedMenuDetails extends StatelessWidget {
                         color: Colors.grey.shade200,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(5.0)),
-                        boxShadow: [
-                          const BoxShadow(
+                        boxShadow: const [
+                          BoxShadow(
                               color: Colors.black38,
                               blurRadius: 10,
                               spreadRadius: 1)
@@ -201,7 +201,7 @@ class FocusedMenuDetails extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: menuItems.length,
                       padding: EdgeInsets.zero,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
                         FocusedMenuItem item = menuItems[index];
                         Widget listItem = GestureDetector(
@@ -256,7 +256,7 @@ class FocusedMenuDetails extends StatelessWidget {
               left: childOffset.dx,
               child: AbsorbPointer(
                 absorbing: true,
-                child: Container(
+                child: SizedBox(
                     width: childSize.width,
                     height: childSize.height,
                     child: child),

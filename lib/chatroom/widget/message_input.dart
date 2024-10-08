@@ -1,12 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:miyuji/bloc/addReply.dart';
 import 'package:miyuji/chatroom/cloud/message_handler.dart';
 import 'package:miyuji/chatroom/widget/reply_navigator.dart';
 import 'package:miyuji/models/message.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +17,7 @@ class MessageInput extends StatefulWidget {
   final String token;
   final String fullname;
   final ItemScrollController scrollTo;
-  MessageInput({
+  const MessageInput({super.key, 
     this.friendId,
     this.showSelectMedia,
     this.showIcon,
@@ -44,9 +41,9 @@ class _MessageInputState extends State<MessageInput> {
     //   }
     // });
     String textMessage = controller.text;
-    String id = Uuid().v4();
+    String id = const Uuid().v4();
     print("size# ${textMessage.length} $textMessage");
-    if (controller.text.isEmpty || textMessage == "" || textMessage == null || textMessage.length == 0) return;
+    if (controller.text.isEmpty || textMessage == "" || textMessage.isEmpty) return;
     HandleMessageFunction.sendNormalText(
       message: Message(
         access: true,
@@ -61,7 +58,7 @@ class _MessageInputState extends State<MessageInput> {
         hostId: host['member_no'],
         reply: false,
         type: "text",
-        repliedContent: (replyData.length > 0) ? replyData[0] : null,
+        repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
       ),
       receiverId: widget.friendId,
       senderId: host['member_no'],
@@ -75,7 +72,7 @@ class _MessageInputState extends State<MessageInput> {
 
     return Column(
       children: [
-        (context.watch<AddReplyData>().getReplyData.length > 0)
+        (context.watch<AddReplyData>().getReplyData.isNotEmpty)
             ? ReplyMessageIndicator(
                 messageData: context.watch<AddReplyData>().getReplyData[0],
               )
@@ -96,7 +93,7 @@ class _MessageInputState extends State<MessageInput> {
             //       ],
             //     ),
             //   )
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
         Row(
           children: [
             GestureDetector(
@@ -104,14 +101,14 @@ class _MessageInputState extends State<MessageInput> {
                 widget.showIcon();
               },
               child: Padding(
-                padding: EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(5.0),
                 child: SizedBox(
                   child: (widget.showSelectMedia)
-                      ? Icon(
+                      ? const Icon(
                           Icons.close,
                           size: 32,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.attach_file,
                           size: 30,
                         ),
@@ -120,13 +117,13 @@ class _MessageInputState extends State<MessageInput> {
             ),
             Expanded(
               child: Card(
-                margin: EdgeInsets.only(left: 2, right: 2, bottom: 8),
+                margin: const EdgeInsets.only(left: 2, right: 2, bottom: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: TextField(
                   controller: controller,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                   keyboardType: TextInputType.multiline,
@@ -134,7 +131,7 @@ class _MessageInputState extends State<MessageInput> {
                   minLines: 1,
                   // maxLength: 65000,
                   // maxLengthEnforced: true,
-                  decoration: new InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -149,17 +146,17 @@ class _MessageInputState extends State<MessageInput> {
               onTap: () => sendMessage(replyData).whenComplete(() {
                 widget.scrollTo.scrollTo(
                   index: 0,
-                  duration: Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 200),
                 );
                 controller.clear();
                 Provider.of<AddReplyData>(context, listen: false).unsetReply();
               }),
               child: Container(
-                padding: EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(5.0),
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: MyColors.primaryLight,
-                  child: Center(
+                  child: const Center(
                     child: Icon(Icons.send_rounded, color: Colors.white, size: 25),
                   ),
                 ),

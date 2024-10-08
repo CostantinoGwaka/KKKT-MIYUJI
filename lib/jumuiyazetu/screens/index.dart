@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,10 +10,9 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class JumuiyaZetu extends StatefulWidget {
-  const JumuiyaZetu({Key key}) : super(key: key);
+  const JumuiyaZetu({Key? key}) : super(key: key);
 
   @override
   _JumuiyaZetuState createState() => _JumuiyaZetuState();
@@ -59,7 +57,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           leading: GestureDetector(
-            child: Icon(Icons.arrow_back_ios),
+            child: const Icon(Icons.arrow_back_ios),
             onTap: () {
               SystemChrome.setPreferredOrientations([
                 DeviceOrientation.portraitDown,
@@ -99,7 +97,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                   'assets/animation/fetching.json',
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Material(
@@ -134,10 +132,10 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                 'assets/animation/nodata.json',
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10.0,
                             ),
-                            Text(
+                            const Text(
                               "Hakuna taarifa zi",
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, color: Colors.black38),
                             )
@@ -149,7 +147,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                 );
               } else if (snapshot.hasData) {
                 return ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {
                     return Material(
@@ -158,7 +156,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ViongoziJumuiya(
-                                jumuiya: snapshot.data[index],
+                                jumuiya: snapshot.data![index],
                               ),
                             ),
                           );
@@ -166,7 +164,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: MyColors.white,
                             ),
                             width: double.infinity,
@@ -191,7 +189,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                     // ),
                                     Container(
                                       width: double.infinity,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         color: MyColors.white,
                                         // gradient: LinearGradient(
                                         //   colors: [
@@ -212,7 +210,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              '${snapshot.data[index].jumuiyaName}',
+                                              snapshot.data![index].jumuiyaName,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: MyColors.primaryLight,
@@ -236,7 +234,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                   },
                 );
               } else {
-                return Text("new videos");
+                return const Text("new videos");
               }
             },
           ),

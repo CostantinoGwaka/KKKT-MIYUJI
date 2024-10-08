@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 class ImageCaption extends StatefulWidget {
   final File imagefile;
   var widgetData;
-  ImageCaption({this.imagefile, this.widgetData});
+  ImageCaption({super.key, this.imagefile, this.widgetData});
 
   @override
   _ImageCaptionState createState() => _ImageCaptionState();
 }
 
 class _ImageCaptionState extends State<ImageCaption> {
-  TextEditingController caption = new TextEditingController();
+  TextEditingController caption = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _ImageCaptionState extends State<ImageCaption> {
           Positioned(
             bottom: 40,
             child: Container(
-              decoration: new BoxDecoration(color: Colors.white60, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: Colors.white60, borderRadius: BorderRadius.circular(10)),
               // padding: EdgeInsets.all(4),
               width: deviceWidth(context),
               child: Row(
@@ -49,13 +49,13 @@ class _ImageCaptionState extends State<ImageCaption> {
                     ),
                   ),
                   Container(
-                    decoration: new BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle, // You can use like this way or like the below line
                       //borderRadius: new BorderRadius.circular(30.0),
                       color: Colors.green,
                     ),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.send,
                         color: Colors.white,
                       ),

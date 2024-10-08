@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Color kAppPrimaryColor = Colors.grey.shade200;
@@ -8,15 +7,15 @@ Color mCC = Colors.green.withOpacity(0.65);
 Color fCL = Colors.grey.shade600;
 
 
-IconData twitter = IconData(0xe900, fontFamily: "CustomIcons");
-IconData facebook = IconData(0xe901, fontFamily: "CustomIcons");
+IconData twitter = const IconData(0xe900, fontFamily: "CustomIcons");
+IconData facebook = const IconData(0xe901, fontFamily: "CustomIcons");
 IconData googlePlus =
-IconData(0xe902, fontFamily: "CustomIcons");
-IconData linkedin = IconData(0xe903, fontFamily: "CustomIcons");
+const IconData(0xe902, fontFamily: "CustomIcons");
+IconData linkedin = const IconData(0xe903, fontFamily: "CustomIcons");
 
 const kSpacingUnit = 10;
 
-final kTitleTextStyle = TextStyle(
+const kTitleTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w600,
 );
@@ -27,12 +26,12 @@ BoxDecoration avatarDecoration = BoxDecoration(
     boxShadow: [
       BoxShadow(
         color: kWhite,
-        offset: Offset(10, 10),
+        offset: const Offset(10, 10),
         blurRadius: 10,
       ),
       BoxShadow(
         color: kWhite,
-        offset: Offset(-10, -10),
+        offset: const Offset(-10, -10),
         blurRadius: 10,
       ),
     ]

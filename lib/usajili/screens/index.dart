@@ -13,7 +13,7 @@ import 'package:miyuji/utils/spacer.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({Key key}) : super(key: key);
+  const RegistrationScreen({Key? key}) : super(key: key);
   static const routeName = "/registrationscreen";
 
   @override
@@ -21,7 +21,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   String _halindoa = '';
   String _jinsiaYako = '';
   String _ndoa = '';
@@ -31,32 +31,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String msgErrorPhoneNumber2;
   String msgErrorPhoneNumber3;
 
-  TextEditingController jinaLaMsharika = new TextEditingController();
-  TextEditingController jinsia = new TextEditingController();
-  TextEditingController haliYaNdoa = new TextEditingController();
-  TextEditingController jinaLaMwenziWako = new TextEditingController();
-  TextEditingController nambaYaAhadi = new TextEditingController();
-  TextEditingController ainaYaNdoa = new TextEditingController();
-  TextEditingController jinaMtoto_1 = new TextEditingController();
-  TextEditingController tareheMtoto_1 = new TextEditingController();
-  TextEditingController uhusianoMtoto_1 = new TextEditingController();
-  TextEditingController jinaMtoto_2 = new TextEditingController();
-  TextEditingController tareheMtoto_2 = new TextEditingController();
-  TextEditingController uhusianoMtoto_2 = new TextEditingController();
-  TextEditingController jinaMtoto_3 = new TextEditingController();
-  TextEditingController tareheMtoto_3 = new TextEditingController();
-  TextEditingController uhusianoMtoto_3 = new TextEditingController();
-  TextEditingController nambaYaSimu = new TextEditingController();
-  TextEditingController jengo = new TextEditingController();
-  TextEditingController ahadi = new TextEditingController();
-  TextEditingController kazi = new TextEditingController();
-  TextEditingController elimu = new TextEditingController();
-  TextEditingController ujuzi = new TextEditingController();
-  TextEditingController mahaliPakazi = new TextEditingController();
-  TextEditingController jumuiyaUshiriki = new TextEditingController();
-  TextEditingController jinaLaJumuiya = new TextEditingController();
-  TextEditingController katibuJumuiya = new TextEditingController();
-  TextEditingController kamaUshiriki = new TextEditingController();
+  TextEditingController jinaLaMsharika = TextEditingController();
+  TextEditingController jinsia = TextEditingController();
+  TextEditingController haliYaNdoa = TextEditingController();
+  TextEditingController jinaLaMwenziWako = TextEditingController();
+  TextEditingController nambaYaAhadi = TextEditingController();
+  TextEditingController ainaYaNdoa = TextEditingController();
+  TextEditingController jinaMtoto_1 = TextEditingController();
+  TextEditingController tareheMtoto_1 = TextEditingController();
+  TextEditingController uhusianoMtoto_1 = TextEditingController();
+  TextEditingController jinaMtoto_2 = TextEditingController();
+  TextEditingController tareheMtoto_2 = TextEditingController();
+  TextEditingController uhusianoMtoto_2 = TextEditingController();
+  TextEditingController jinaMtoto_3 = TextEditingController();
+  TextEditingController tareheMtoto_3 = TextEditingController();
+  TextEditingController uhusianoMtoto_3 = TextEditingController();
+  TextEditingController nambaYaSimu = TextEditingController();
+  TextEditingController jengo = TextEditingController();
+  TextEditingController ahadi = TextEditingController();
+  TextEditingController kazi = TextEditingController();
+  TextEditingController elimu = TextEditingController();
+  TextEditingController ujuzi = TextEditingController();
+  TextEditingController mahaliPakazi = TextEditingController();
+  TextEditingController jumuiyaUshiriki = TextEditingController();
+  TextEditingController jinaLaJumuiya = TextEditingController();
+  TextEditingController katibuJumuiya = TextEditingController();
+  TextEditingController kamaUshiriki = TextEditingController();
 
   DateTime tareheMtotoOne, tareheMtotoTwo, tareheMtotoThree;
 
@@ -191,13 +191,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   _tareheMtotoOne(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: tareheMtotoOne != null ? tareheMtotoOne : DateTime.now(),
+      initialDate: tareheMtotoOne ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
+            colorScheme: const ColorScheme.dark(
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
               surface: Colors.blueGrey,
@@ -209,17 +209,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       },
     );
-    if (newSelectedDate != null) {
-      tareheMtotoOne = newSelectedDate;
-      tareheMtoto_1
-        ..text = DateFormat.yMMMd().format(tareheMtotoOne)
-        ..selection = TextSelection.fromPosition(
-          TextPosition(
-            offset: tareheMtoto_1.text.length,
-            affinity: TextAffinity.upstream,
-          ),
-        );
-    }
+    tareheMtotoOne = newSelectedDate;
+    tareheMtoto_1
+      ..text = DateFormat.yMMMd().format(tareheMtotoOne)
+      ..selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: tareheMtoto_1.text.length,
+          affinity: TextAffinity.upstream,
+        ),
+      );
   }
   //MTOTO ONE END HERE
 
@@ -227,13 +225,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   _tareheMtotoTwo(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: tareheMtotoTwo != null ? tareheMtotoTwo : DateTime.now(),
+      initialDate: tareheMtotoTwo ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
+            colorScheme: const ColorScheme.dark(
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
               surface: Colors.blueGrey,
@@ -245,17 +243,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       },
     );
-    if (newSelectedDate != null) {
-      tareheMtotoTwo = newSelectedDate;
-      tareheMtoto_2
-        ..text = DateFormat.yMMMd().format(tareheMtotoTwo)
-        ..selection = TextSelection.fromPosition(
-          TextPosition(
-            offset: tareheMtoto_2.text.length,
-            affinity: TextAffinity.upstream,
-          ),
-        );
-    }
+    tareheMtotoTwo = newSelectedDate;
+    tareheMtoto_2
+      ..text = DateFormat.yMMMd().format(tareheMtotoTwo)
+      ..selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: tareheMtoto_2.text.length,
+          affinity: TextAffinity.upstream,
+        ),
+      );
   }
   //MTOTO PILI
 
@@ -263,13 +259,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   _tareheMtotoThree(BuildContext context) async {
     DateTime newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: tareheMtotoThree != null ? tareheMtotoThree : DateTime.now(),
+      initialDate: tareheMtotoThree ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
+            colorScheme: const ColorScheme.dark(
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
               surface: Colors.blueGrey,
@@ -281,17 +277,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       },
     );
-    if (newSelectedDate != null) {
-      tareheMtotoThree = newSelectedDate;
-      tareheMtoto_3
-        ..text = DateFormat.yMMMd().format(tareheMtotoThree)
-        ..selection = TextSelection.fromPosition(
-          TextPosition(
-            offset: tareheMtoto_3.text.length,
-            affinity: TextAffinity.upstream,
-          ),
-        );
-    }
+    tareheMtotoThree = newSelectedDate;
+    tareheMtoto_3
+      ..text = DateFormat.yMMMd().format(tareheMtotoThree)
+      ..selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: tareheMtoto_3.text.length,
+          affinity: TextAffinity.upstream,
+        ),
+      );
   }
   //MTOTO TATU
 
@@ -323,6 +317,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     super.dispose();
   }
 
+  @override
   @protected
   @mustCallSuper
   void deactivate() {
@@ -331,55 +326,55 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   verifyFormAndSubmit() {
-    String _jinaLaMsharika = jinaLaMsharika.text;
-    String _haliYaNdoa = haliYaNdoa.text;
-    String _jinsia = jinsia.text;
-    String _jinaLaMwenziWako = jinaLaMwenziWako.text;
-    String _nambaYaAhadi = nambaYaAhadi.text;
-    String _ainaYaNdoa = ainaYaNdoa.text;
-    String _haliYaaNdoa = haliYaNdoa.text;
+    String jinaLaMsharika = jinaLaMsharika.text;
+    String haliYaNdoa = haliYaNdoa.text;
+    String jinsia = jinsia.text;
+    String jinaLaMwenziWako = jinaLaMwenziWako.text;
+    String nambaYaAhadi = nambaYaAhadi.text;
+    String ainaYaNdoa = ainaYaNdoa.text;
+    String haliYaaNdoa = haliYaNdoa.text;
 
-    String _jinaMtoto_1 = jinaMtoto_1.text;
-    String _tareheMtoto_1 = tareheMtoto_1.text;
-    String _uhusianoMtoto_1 = uhusianoMtoto_1.text;
+    String jinaMtoto_1 = jinaMtoto_1.text;
+    String tareheMtoto_1 = tareheMtoto_1.text;
+    String uhusianoMtoto_1 = uhusianoMtoto_1.text;
 
-    String _jinaMtoto_2 = jinaMtoto_2.text;
-    String _tareheMtoto_2 = tareheMtoto_2.text;
-    String _uhusianoMtoto_2 = uhusianoMtoto_2.text;
+    String jinaMtoto_2 = jinaMtoto_2.text;
+    String tareheMtoto_2 = tareheMtoto_2.text;
+    String uhusianoMtoto_2 = uhusianoMtoto_2.text;
 
-    String _jinaMtoto_3 = jinaMtoto_3.text;
-    String _tareheMtoto_3 = tareheMtoto_3.text;
-    String _uhusianoMtoto_3 = uhusianoMtoto_3.text;
+    String jinaMtoto_3 = jinaMtoto_3.text;
+    String tareheMtoto_3 = tareheMtoto_3.text;
+    String uhusianoMtoto_3 = uhusianoMtoto_3.text;
 
-    String _nambaYaSimu = nambaYaSimu.text;
-    String _jengo = jengo.text;
-    String _ahadi = ahadi.text;
-    String _kazi = kazi.text;
-    String _elimu = elimu.text;
-    String _ujuzi = ujuzi.text;
-    String _mahaliPakazi = mahaliPakazi.text;
+    String nambaYaSimu = nambaYaSimu.text;
+    String jengo = jengo.text;
+    String ahadi = ahadi.text;
+    String kazi = kazi.text;
+    String elimu = elimu.text;
+    String ujuzi = ujuzi.text;
+    String mahaliPakazi = mahaliPakazi.text;
 
-    String _jumuiyaUshiriki = jumuiyaUshiriki.text;
-    String _jinaLaJumuiya = jinaLaJumuiya.text;
-    String _idYaJumuiya = idYaJumuiya;
-    String _katibuJumuiya = katibuJumuiya.text;
-    String _kamaUshiriki = kamaUshiriki.text;
-    String _krid = krid;
+    String jumuiyaUshiriki = jumuiyaUshiriki.text;
+    String jinaLaJumuiya = jinaLaJumuiya.text;
+    String idYaJumuiya = idYaJumuiya;
+    String katibuJumuiya = katibuJumuiya.text;
+    String kamaUshiriki = kamaUshiriki.text;
+    String krid = krid;
 
     final String s = jinaLaMsharika.value.text;
     final List l = s.split(' ');
 
-    if (_jinaLaMsharika == "" ||
-        _nambaYaSimu == "" ||
+    if (jinaLaMsharika == "" ||
+        nambaYaSimu == "" ||
         // _jumuiyaUshiriki == "" ||
-        _ahadi == "" ||
-        _jengo == "" ||
-        _krid == "" ||
-        _jinsia == "") {
+        ahadi == "" ||
+        jengo == "" ||
+        krid == "" ||
+        jinsia == "") {
       Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia)");
-    } else if (_nambaYaSimu.length != 10 || !_nambaYaSimu.startsWith("0")) {
+    } else if (nambaYaSimu.length != 10 || !nambaYaSimu.startsWith("0")) {
       Alerts.show(context, "Kuna shida", "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).");
-    } else if (((_jumuiyaUshiriki != '' && _jumuiyaUshiriki == 'ndio') && (jinaLaJumuiya.text.isEmpty)) || katibuJumuiya.text.isEmpty) {
+    } else if (((jumuiyaUshiriki != '' && jumuiyaUshiriki == 'ndio') && (jinaLaJumuiya.text.isEmpty)) || katibuJumuiya.text.isEmpty) {
       Alerts.show(
         context,
         "Kuna shida",
@@ -401,106 +396,106 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
     } else {
       registerUser(
-        _jinaLaMsharika,
-        _jinsia,
-        _haliYaNdoa,
-        _jinaLaMwenziWako,
-        _nambaYaAhadi,
-        _ainaYaNdoa,
-        _haliYaaNdoa,
-        _jinaMtoto_1,
-        _tareheMtoto_1,
-        _uhusianoMtoto_1,
-        _jinaMtoto_2,
-        _tareheMtoto_2,
-        _uhusianoMtoto_2,
-        _jinaMtoto_3,
-        _tareheMtoto_3,
-        _uhusianoMtoto_3,
-        _nambaYaSimu,
-        _jengo,
-        _ahadi,
-        _kazi,
-        _elimu,
-        _ujuzi,
-        _mahaliPakazi,
-        _jumuiyaUshiriki,
-        _jinaLaJumuiya,
-        _idYaJumuiya,
-        _katibuJumuiya,
-        _kamaUshiriki,
-        _krid,
+        jinaLaMsharika,
+        jinsia,
+        haliYaNdoa,
+        jinaLaMwenziWako,
+        nambaYaAhadi,
+        ainaYaNdoa,
+        haliYaaNdoa,
+        jinaMtoto_1,
+        tareheMtoto_1,
+        uhusianoMtoto_1,
+        jinaMtoto_2,
+        tareheMtoto_2,
+        uhusianoMtoto_2,
+        jinaMtoto_3,
+        tareheMtoto_3,
+        uhusianoMtoto_3,
+        nambaYaSimu,
+        jengo,
+        ahadi,
+        kazi,
+        elimu,
+        ujuzi,
+        mahaliPakazi,
+        jumuiyaUshiriki,
+        jinaLaJumuiya,
+        idYaJumuiya,
+        katibuJumuiya,
+        kamaUshiriki,
+        krid,
       );
     }
   }
 
   Future<void> registerUser(
-    _jinaLaMsharika,
-    _jinsia,
-    _haliYaNdoa,
-    _jinaLaMwenziWako,
-    _nambaYaAhadi,
-    _ainaYaNdoa,
-    _haliYaaNdoa,
-    _jinaMtoto_1,
-    _tareheMtoto_1,
-    _uhusianoMtoto_1,
-    _jinaMtoto_2,
-    _tareheMtoto_2,
-    _uhusianoMtoto_2,
-    _jinaMtoto_3,
-    _tareheMtoto_3,
-    _uhusianoMtoto_3,
-    _nambaYaSimu,
-    _jengo,
-    _ahadi,
-    _kazi,
-    _elimu,
-    _ujuzi,
-    _mahaliPakazi,
-    _jumuiyaUshiriki,
-    _jinaLaJumuiya,
-    _idYaJumuiya,
-    _katibuJumuiya,
-    _kamaUshiriki,
-    _krid,
+    jinaLaMsharika,
+    jinsia,
+    haliYaNdoa,
+    jinaLaMwenziWako,
+    nambaYaAhadi,
+    ainaYaNdoa,
+    haliYaaNdoa,
+    jinaMtoto_1,
+    tareheMtoto_1,
+    uhusianoMtoto_1,
+    jinaMtoto_2,
+    tareheMtoto_2,
+    uhusianoMtoto_2,
+    jinaMtoto_3,
+    tareheMtoto_3,
+    uhusianoMtoto_3,
+    nambaYaSimu,
+    jengo,
+    ahadi,
+    kazi,
+    elimu,
+    ujuzi,
+    mahaliPakazi,
+    jumuiyaUshiriki,
+    jinaLaJumuiya,
+    idYaJumuiya,
+    katibuJumuiya,
+    kamaUshiriki,
+    krid,
   ) async {
     Alerts.showProgressDialog(context, "Tafadhari subiri");
     String myApi = "http://miyujikkkt.or.tz/api/jisajili.php/";
 
-    var now = new DateTime.now();
+    var now = DateTime.now();
 
     final response = await http.post(myApi, headers: {
       'Accept': 'application/json'
     }, body: {
-      "jina_la_msharika": "$_jinaLaMsharika",
-      "jinsia": "$_jinsia",
-      "hali_ya_ndoa": "$_haliYaNdoa",
-      "jina_la_mwenzi_wako": "$_jinaLaMwenziWako",
-      "namba_ya_ahadi": "$_nambaYaAhadi",
-      "aina_ya_ndoa": "$_ainaYaNdoa",
-      "jina_mtoto_1": "$_jinaMtoto_1",
-      "tarehe_mtoto_1": "$_tareheMtoto_1",
-      "uhusiano_mtoto_1": "$_uhusianoMtoto_1",
-      "jina_mtoto_2": "$_jinaMtoto_2",
-      "tarehe_mtoto_2": "$_tareheMtoto_2",
-      "uhusiano_mtoto_2": "$_uhusianoMtoto_2",
-      "jina_mtoto_3": "$_jinaMtoto_3",
-      "tarehe_mtoto_3": "$_tareheMtoto_3",
-      "uhusiano_mtoto_3": "$_uhusianoMtoto_3",
-      "namba_ya_simu": "$_nambaYaSimu",
-      "jengo": "$_jengo",
-      "ahadi": "$_ahadi",
-      "kazi": "$_kazi",
-      "elimu": "$_elimu",
-      "ujuzi": "$_ujuzi",
-      "mahali_pakazi": "$_mahaliPakazi",
-      "jumuiya_ushiriki": "$_jumuiyaUshiriki",
-      "jina_la_jumuiya": "$_jinaLaJumuiya",
-      "id_ya_jumuiya": "$_idYaJumuiya",
-      "katibu_jumuiya": "$_katibuJumuiya",
-      "kama_ushiriki": "$_kamaUshiriki",
-      "reg_year_id": "$_krid",
+      "jina_la_msharika": "$jinaLaMsharika",
+      "jinsia": "$jinsia",
+      "hali_ya_ndoa": "$haliYaNdoa",
+      "jina_la_mwenzi_wako": "$jinaLaMwenziWako",
+      "namba_ya_ahadi": "$nambaYaAhadi",
+      "aina_ya_ndoa": "$ainaYaNdoa",
+      "jina_mtoto_1": "$jinaMtoto_1",
+      "tarehe_mtoto_1": "$tareheMtoto_1",
+      "uhusiano_mtoto_1": "$uhusianoMtoto_1",
+      "jina_mtoto_2": "$jinaMtoto_2",
+      "tarehe_mtoto_2": "$tareheMtoto_2",
+      "uhusiano_mtoto_2": "$uhusianoMtoto_2",
+      "jina_mtoto_3": "$jinaMtoto_3",
+      "tarehe_mtoto_3": "$tareheMtoto_3",
+      "uhusiano_mtoto_3": "$uhusianoMtoto_3",
+      "namba_ya_simu": "$nambaYaSimu",
+      "jengo": "$jengo",
+      "ahadi": "$ahadi",
+      "kazi": "$kazi",
+      "elimu": "$elimu",
+      "ujuzi": "$ujuzi",
+      "mahali_pakazi": "$mahaliPakazi",
+      "jumuiya_ushiriki": "$jumuiyaUshiriki",
+      "jina_la_jumuiya": "$jinaLaJumuiya",
+      "id_ya_jumuiya": "$idYaJumuiya",
+      "katibu_jumuiya": "$katibuJumuiya",
+      "kama_ushiriki": "$kamaUshiriki",
+      "reg_year_id": "$krid",
       "tarehe": "$now"
     });
     if (response.statusCode == 200) {
@@ -540,7 +535,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         });
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         // Alerts.show(context, "Umefanikiwa kujisajili kikamilifu", "Taarifa zimefanikiwa.");
         return Fluttertoast.showToast(
@@ -684,17 +679,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Thibitisha"),
-          content: Text("Unakaribia kutuma taarifa zako kwenda usharikani,kagua kisha tuma taarifa zako kwenda usharikani"),
+          title: const Text("Thibitisha"),
+          content: const Text("Unakaribia kutuma taarifa zako kwenda usharikani,kagua kisha tuma taarifa zako kwenda usharikani"),
           actions: <Widget>[
             TextButton(
-              child: Text("Funga"),
+              child: const Text("Funga"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Tuma"),
+              child: const Text("Tuma"),
               onPressed: () {
                 Navigator.of(context).pop();
                 verifyFormAndSubmit();
@@ -715,7 +710,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -728,7 +723,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Text(
                         "A. Taarifa binafsi",
@@ -741,7 +736,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Column(
@@ -754,10 +749,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '1. Jina la msharika',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -766,7 +761,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.person),
                               labelText: "Jina la msharika",
                             ),
@@ -774,16 +769,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: jinaLaMsharika,
                           ),
                           () {
-                            if (msgErrorPhoneNumber3 != null) {
-                              return Text(
-                                "$msgErrorPhoneNumber3",
-                                style: TextStyle(color: Colors.redAccent),
-                              );
-                            } else {
-                              return manualSpacer();
-                            }
+                            return Text(
+                              msgErrorPhoneNumber3,
+                              style: const TextStyle(color: Colors.redAccent),
+                            );
                           }(),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
                           Container(
@@ -791,10 +782,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text(
+                                const Text(
                                   '2. Hali ya ndoa',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -857,7 +848,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
@@ -865,10 +856,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text(
+                                const Text(
                                   'Jinsia yako',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -905,12 +896,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           (_halindoa != '' && _halindoa == 'Nimeoa')
                               ? Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                                  Text(
+                                  const Text(
                                     '3.Jina la mwenzi wako',
                                     style: TextStyle(
                                       fontSize: 16.0,
@@ -919,7 +910,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ),
                                   ),
                                   TextFormField(
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       prefixIcon: Icon(Icons.person),
                                       labelText: "Jina la mwenzi wako",
                                     ),
@@ -927,11 +918,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     controller: jinaLaMwenziWako,
                                   ),
                                 ])
-                              : SizedBox.shrink(),
-                          SizedBox(
+                              : const SizedBox.shrink(),
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '4.Namba ya Ahadi',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -940,7 +931,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.event_available),
                               labelText: "Namba ya Ahadi",
                             ),
@@ -953,10 +944,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
-                                      Text(
+                                      const Text(
                                         '5. Aina ya ndoa',
                                         style: TextStyle(
                                           fontSize: 16.0,
@@ -993,11 +984,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     ],
                                   ),
                                 )
-                              : SizedBox.shrink(),
-                          SizedBox(
+                              : const SizedBox.shrink(),
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '6. Watoto/Waumini wanakutegemea wapya(mfano wasio na bahasha lakini wako kwa uangalizi wako)',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1013,11 +1004,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         'Mtegemezi wa kwanza',
                                         style: TextStyle(
@@ -1027,22 +1018,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.person),
                                         labelText: "Jina la Mtegemezi wa kwanza",
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: jinaMtoto_1,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.date_range),
                                         labelText: "Tarehe ya kuzaliwa Mtegemezi wa kwanza",
                                       ),
@@ -1053,11 +1044,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         _tareheMtotoOne(context);
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.connect_without_contact),
                                         labelText: "Uhusiano Mtegemezi wa kwanza",
                                       ),
@@ -1073,11 +1064,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         'Mtegemezi wa pili',
                                         style: TextStyle(
@@ -1087,22 +1078,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.person),
                                         labelText: "Jina la Mtegemezi wa pili",
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: jinaMtoto_2,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.date_range),
                                         labelText: "Tarehe ya kuzaliwa Mtegemezi wa pili",
                                       ),
@@ -1112,11 +1103,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         _tareheMtotoTwo(context);
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.connect_without_contact),
                                         labelText: "Uhusiano Mtegemezi wa pili",
                                       ),
@@ -1132,11 +1123,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
                                       child: Text(
                                         'Mtegemezi wa tatu',
                                         style: TextStyle(
@@ -1146,22 +1137,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.person),
                                         labelText: "Jina la Mtegemezi wa tatu",
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: jinaMtoto_3,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.date_range),
                                         labelText: "Tarehe ya kuzaliwa Mtegemezi wa tatu",
                                       ),
@@ -1171,11 +1162,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         _tareheMtotoThree(context);
                                       },
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.connect_without_contact),
                                         labelText: "Uhusiano Mtegemezi wa tatu",
                                       ),
@@ -1207,7 +1198,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1220,7 +1211,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Text(
                         "B. Mawasiliano na makazi",
@@ -1233,7 +1224,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Column(
@@ -1246,10 +1237,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             'Namba ya simu',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1258,28 +1249,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.call),
                               labelText: "Namba ya simu (eg. 0659515042)",
                             ),
                             keyboardType: TextInputType.number,
                             controller: nambaYaSimu,
                             inputFormatters: [
-                              new LengthLimitingTextInputFormatter(10),
+                              LengthLimitingTextInputFormatter(10),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
                           () {
-                            if (msgErrorPhoneNumber != null) {
-                              return Text(
-                                "$msgErrorPhoneNumber",
-                                style: TextStyle(color: Colors.redAccent),
-                              );
-                            } else {
-                              return manualSpacer();
-                            }
+                            return Text(
+                              msgErrorPhoneNumber,
+                              style: const TextStyle(color: Colors.redAccent),
+                            );
                           }(),
                         ],
                       ),
@@ -1301,7 +1288,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1314,7 +1301,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Text(
                         "C. Ahadi yako kwa Bwana",
@@ -1327,7 +1314,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Column(
@@ -1340,10 +1327,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '1. Jengo Kiasi',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1352,17 +1339,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.money),
                               labelText: "Jengo kiasi",
                             ),
                             keyboardType: TextInputType.number,
                             controller: jengo,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '2. Ahadi Kiasi',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1371,7 +1358,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.money),
                               labelText: "Ahadi kiasi",
                             ),
@@ -1398,7 +1385,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1411,7 +1398,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Text(
                         "D. Services",
@@ -1424,7 +1411,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Column(
@@ -1437,10 +1424,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '1. Kazi/Shughuli yako(occupation)',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1449,17 +1436,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.badge),
                               labelText: "Kazi yako",
                             ),
                             keyboardType: TextInputType.text,
                             controller: kazi,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '2. Elimu',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1468,17 +1455,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.history_edu),
                               labelText: "Elimu yako",
                             ),
                             keyboardType: TextInputType.text,
                             controller: elimu,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '3. Ujuzi(Profession)',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1487,17 +1474,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.work),
                               labelText: "ujuzi",
                             ),
                             keyboardType: TextInputType.text,
                             controller: ujuzi,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '4. Mahala Pakazi',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1506,7 +1493,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.location_city_sharp),
                               labelText: "mahala pakazi",
                             ),
@@ -1533,7 +1520,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
-            decoration: BoxDecoration(),
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1546,7 +1533,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(left: 8.0, top: 4.0),
                       child: Text(
                         "E. Ushiriki wa huduma za kanisa na vikundi",
@@ -1559,7 +1546,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 Column(
@@ -1572,10 +1559,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             '1. Unashiriki ibada za nyumba kwa nyumba',
                             style: TextStyle(
                               fontSize: 16.0,
@@ -1609,7 +1596,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           (_ushiriki != '' && _ushiriki == 'ndio')
@@ -1617,7 +1604,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       '2. Jina la jumuiya',
                                       style: TextStyle(
                                         fontSize: 16.0,
@@ -1626,24 +1613,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     _dataProvince == null
-                                        ? SizedBox()
+                                        ? const SizedBox()
                                         : Padding(
                                             padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: double.infinity,
                                               child: DropdownButton(
-                                                hint: Text("Chagua Jumuiya yako"),
+                                                hint: const Text("Chagua Jumuiya yako"),
                                                 value: _valProvince,
                                                 items: _dataProvince.map((item) {
                                                   var data;
                                                   return DropdownMenuItem(
+                                                    value: item['jumuiya_name'],
                                                     child: Row(
                                                       children: [
                                                         Icon(
                                                           Icons.home_work_outlined,
                                                           color: MyColors.primaryLight,
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 10,
                                                         ),
                                                         Text(
@@ -1654,12 +1642,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                           ),
                                                         ),
                                                       ],
-                                                    ),
-                                                    value: item['jumuiya_name'], //{"id": item['id'].toString(), "jina": item['jumuiya_name'].toString()},
+                                                    ), //{"id": item['id'].toString(), "jina": item['jumuiya_name'].toString()},
                                                   );
                                                 }).toList(),
                                                 onChanged: (value) async {
-                                                  print("value data ${value}");
+                                                  print("value data $value");
                                                   setState(() {
                                                     // idYaJumuiya = item['jumuiya_name'];
                                                     for (var items in katibuWaJumuiya) {
@@ -1676,10 +1663,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               ),
                                             ),
                                           ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(
+                                    const Text(
                                       '3. Katibu wa jumuiya',
                                       style: TextStyle(
                                         fontSize: 16.0,
@@ -1688,14 +1675,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       ),
                                     ),
                                     TextFormField(
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         prefixIcon: Icon(Icons.person),
                                         labelText: "katibu wa jumiya",
                                       ),
                                       keyboardType: TextInputType.text,
                                       controller: katibuJumuiya,
                                       enableInteractiveSelection: false, // will disable paste operation
-                                      focusNode: new AlwaysDisabledFocusNode(),
+                                      focusNode: AlwaysDisabledFocusNode(),
                                     ),
                                   ],
                                 )
@@ -1704,10 +1691,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
-                                        Text(
+                                        const Text(
                                           '4. Kama Haushiriki weka sababu ya kutokushiriki',
                                           style: TextStyle(
                                             fontSize: 16.0,
@@ -1716,29 +1703,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           ),
                                         ),
                                         TextFormField(
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                             prefixIcon: Icon(Icons.info),
                                             labelText: "sababu ya kutokushiriki jumuiya",
                                           ),
                                           keyboardType: TextInputType.text,
                                           controller: kamaUshiriki,
                                           inputFormatters: [
-                                            new LengthLimitingTextInputFormatter(10),
+                                            LengthLimitingTextInputFormatter(10),
                                           ],
                                         ),
                                         () {
-                                          if (msgErrorPhoneNumber2 != null) {
-                                            return Text(
-                                              "$msgErrorPhoneNumber2",
-                                              style: TextStyle(color: Colors.redAccent),
-                                            );
-                                          } else {
-                                            return manualSpacer();
-                                          }
+                                          return Text(
+                                            msgErrorPhoneNumber2,
+                                            style: const TextStyle(color: Colors.redAccent),
+                                          );
                                         }(),
                                       ],
                                     )
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                         ],
                       ),
                     ),
@@ -1746,21 +1729,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: 40,
                     child: TextButton(
-                      child: Text(
-                        "Tuma taarifa",
-                        style: TextStyle(color: Colors.white),
-                      ),
                       style: TextButton.styleFrom(
                         backgroundColor: MyColors.primary,
-                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       ),
                       onPressed: () {
                         aboutToSendData(context);
                       },
+                      child: const Text(
+                        "Tuma taarifa",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -1777,7 +1760,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
@@ -1795,7 +1778,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         body: Padding(
           padding: EdgeInsets.only(top: deviceHeight(context) * .10),
           child: PageView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: <Widget>[
               sectionFormA(),
@@ -1812,11 +1795,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               pagecontrolnumber == 0
-                  ? SizedBox()
+                  ? const SizedBox()
                   : RaisedButton(
                       onPressed: previousPage,
                       color: MyColors.primaryLight,
-                      child: Text(
+                      child: const Text(
                         'nyuma',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -1825,11 +1808,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
               pagecontrolnumber == 4
-                  ? SizedBox()
+                  ? const SizedBox()
                   : RaisedButton(
                       onPressed: nextPage,
                       color: MyColors.primaryLight,
-                      child: Text(
+                      child: const Text(
                         'mbele',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -1845,7 +1828,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void nextPage() {
-    _pageController.animateToPage(_pageController.page.toInt() + 1, duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+    _pageController.animateToPage(_pageController.page.toInt() + 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
       getJumuiyaApi();
       getUsajiliId();
@@ -1856,7 +1839,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void previousPage() {
     print("${_pageController.page.toInt()} page id");
-    _pageController.animateToPage(_pageController.page.toInt() - 1, duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+    _pageController.animateToPage(_pageController.page.toInt() - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
       pagecontrolnumber = pagecontrolnumber - 1;
     });
