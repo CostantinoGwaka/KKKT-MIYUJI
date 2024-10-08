@@ -1,0 +1,454 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
+import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:kinyerezi/bloc/addReply.dart';
+import 'package:kinyerezi/bloc/pointer.dart';
+import 'package:kinyerezi/chatroom/cloud/cloud.dart';
+import 'package:kinyerezi/chatroom/cloud/media_handler.dart';
+import 'package:kinyerezi/chatroom/widget/message_bubble.dart';
+import 'package:kinyerezi/chatroom/widget/message_input.dart';
+import 'package:kinyerezi/models/message.dart';
+import 'package:kinyerezi/models/recent_chat.dart';
+import 'package:kinyerezi/shared/localstorage/index.dart';
+import 'package:kinyerezi/utils/TextStyles.dart';
+import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:kinyerezi/utils/spacer.dart';
+import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
+import './imagecaption_screen.dart';
+import 'package:kinyerezi/home/screens/index.dart';
+
+
+class ChatSectionScreen extends StatefulWidget {
+  const ChatSectionScreen({Key key, this.fullname, this.picture, this.fromFriends = false, this.friendId, this.deptId, this.token}) : super(key: key);
+
+  final String fullname;
+  final String friendId;
+  final bool fromFriends;
+  final String picture;
+  final String deptId;
+  final String token;
+
+  @override
+  _ChatSectionScreenState createState() => _ChatSectionScreenState();
+}
+
+class _ChatSectionScreenState extends State<ChatSectionScreen> {
+  var readBy = [];
+  bool showSelectMedia = false;
+  static final picker = ImagePicker();
+  String replymessageid = '';
+  ItemScrollController _scrollController = ItemScrollController();
+  ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  bool needToPaginate;
+
+  Future<void> sendImage(BuildContext context) async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    File _image = File(pickedFile.path);
+
+    if (pickedFile == null) return;
+    if (_image.lengthSync() <= 8000000) {
+      //create file to be uploaded to the server
+      _image = await File(pickedFile.path).create();
+
+      return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+          ),
+          child: ImageCaption(
+            imagefile: _image,
+            widgetData: widget,
+          ),
+        ),
+      );
+    }
+  }
+
+  List messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // checkLogin();
+    sendFirstMessage();
+    Cloud.update(
+      checkSnap: false,
+      serverPath: "RecentChat/${host['member_no']}/${widget.friendId}/",
+      value: {
+        "unseen": 0,
+      },
+    );
+    Provider.of<AddReplyData>(context, listen: false).unsetReply();
+
+    itemPositionsListener.itemPositions.addListener(() {
+      // doSomethingWith(itemPositionsListener.itemPositions.value);
+      final positions = itemPositionsListener.itemPositions.value;
+      final firstPosition = positions.first;
+      final elevated = firstPosition.index != 0 || firstPosition.itemLeadingEdge != 0;
+      setDataToPointerProvider(elevated, context);
+    });
+  }
+
+  // void checkLogin() async {
+  //   LocalStorage.getStringItem('member_no').then((value) {
+  //     if (value != null) {
+  //       var mydata = jsonDecode(value);
+  //       setState(() {
+  //         host = mydata;
+  //       });
+  //     }
+  //   });
+  // }
+
+  setDataToPointerProvider(bool position, BuildContext context) {
+    bool check = context.read<AddPointerData>().getitem;
+    if ((check == false) && (position == true)) {
+      Provider.of<AddPointerData>(context, listen: false).setItem(true);
+    } else if ((check == true) && (position == false)) {
+      Provider.of<AddPointerData>(context, listen: false).setItem(false);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    // _scrollController.removeListener(_scrollListener);
+    Provider.of<AddReplyData>(context, listen: false).unsetReply();
+    Cloud.update(
+      checkSnap: false,
+      serverPath: "RecentChat/${host['member_no']}/${widget.friendId}/",
+      value: {
+        "unseen": 0,
+      },
+    );
+    super.deactivate();
+  }
+
+  showIcon() {
+    setState(() {
+      showSelectMedia = !showSelectMedia;
+    });
+  }
+
+  sendFirstMessage() {
+    var userId;
+    FirebaseDatabase.instance.reference().child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        userId = snapshot.value['userId'];
+      }
+
+      //add first message when user click to this item at first
+      if (userId == null) {
+        String id = Uuid().v4();
+        readBy.add(host['member_no']);
+
+        //send message here
+        Message(
+          readBy: readBy,
+          friendId: widget.friendId,
+          hostId: host['member_no'],
+          createdAt: DateTime.now().toString(),
+          sentAt: DateTime.now().toString(),
+          color: "green",
+          message: "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
+          messageId: id,
+          status: "sent",
+          reply: false,
+          type: "text",
+          repliedContent: null,
+          unseen: 0,
+        ).handleSendMessage(
+          convoId: widget.friendId,
+          userId: host['member_no'],
+          messageId: id,
+        );
+
+        //update recent chat
+        Cloud.add(
+          serverPath: "RecentChat/" + "${host['member_no']}" + "/" + "${widget.friendId}",
+          value: RecentChat(
+                  lastMessage: "Karibu KKKT KINYEREZI",
+                  fullName: widget.fullname,
+                  picUrl: widget.picture,
+                  color: "pink",
+                  unseen: ServerValue.increment(0),
+                  time: DateTime.now().toString(),
+                  friendId: widget.friendId)
+              .toMap(),
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List replyData = context.watch<AddReplyData>().getReplyData;
+    bool check = context.watch<AddPointerData>().getitem;
+
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          leading: GestureDetector(
+            child: Icon(Icons.arrow_back_ios),
+            onTap: () {
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitDown,
+                DeviceOrientation.portraitUp,
+              ]);
+              Navigator.pop(context);
+            },
+          ),
+          middle: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage("assets/images/profile.png"),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  widget.fullname,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: TextStyles.headline(context).copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: MyColors.primaryLight,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          // resizeToAvoidBottomPadding: false,
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/chat_back.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/chat_back.jpg"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Stack(children: [
+                      StreamBuilder(
+                        stream: FirebaseDatabase.instance
+                            .reference()
+                            .child("Messages/${host['member_no']}/${widget.friendId}")
+                            .orderByChild('createdAt')
+                            .onValue,
+                        builder: (_, snap) {
+                          if (snap.hasData) {
+                            var _data = [];
+
+                            if (snap.data.snapshot.value != null) {
+                              Map<dynamic, dynamic> map = snap.data.snapshot.value;
+                              _data = map.values.toList()..sort((a, b) => b['sentAt'].compareTo(a['sentAt']));
+                            }
+                            return snap.data.snapshot.value == null && _data.length == 0
+                                ? Center(
+                                    child: Text("no chats"),
+                                  )
+                                : ScrollablePositionedList.builder(
+                                    physics: BouncingScrollPhysics(),
+                                    reverse: true,
+                                    itemCount: _data.length,
+                                    itemScrollController: _scrollController,
+                                    itemPositionsListener: itemPositionsListener,
+                                    itemBuilder: (_, i) {
+                                      var snap = _data[i];
+                                      // item.setItem(
+                                      //     _scrollController.position.pixels);
+                                      return Column(
+                                        children: [
+                                          MessageBubble(
+                                            message: snap,
+                                            replymessageid: replymessageid,
+                                            scrollTo: () {
+                                              int index = _data.indexWhere((element) => element["messageId"] == snap["repliedContent"]["messageId"]);
+                                              if (index > 0) {
+                                                _scrollController.scrollTo(
+                                                  index: index,
+                                                  duration: Duration(milliseconds: 500),
+                                                );
+
+                                                //set replymessageId
+                                                setState(() {
+                                                  replymessageid = snap['repliedContent'] != null ? snap['repliedContent']['messageId'] : null;
+                                                });
+
+                                                //unset
+                                                Timer(
+                                                  Duration(seconds: 3),
+                                                  () {
+                                                    setState(() {
+                                                      replymessageid = "";
+                                                    });
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          //bottom of message bubble
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                (host['member_no'] != snap['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 5.0, right: 10, left: 10),
+                                                child: Align(
+                                                  alignment: Alignment.bottomRight,
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      text: DateFormat.jm()
+                                                          .format(
+                                                            DateTime.parse(snap['sentAt']),
+                                                          )
+                                                          .toString(),
+                                                      style: TextStyle(color: Colors.grey, fontSize: 10, fontWeight: FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      // scroll down to message button
+                      (check != null && check == true)
+                          ? Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Card(
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(deviceHeight(context) / 30),
+                                    ),
+                                  ),
+                                  child: CircleAvatar(
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Provider.of<AddPointerData>(context, listen: false).setItem(false);
+                                        _scrollController.scrollTo(
+                                          index: 0,
+                                          duration: Duration(milliseconds: 500),
+                                        );
+                                      },
+                                      icon: Icon(Icons.arrow_circle_down),
+                                    ),
+                                    radius: deviceHeight(context) / 40,
+                                    backgroundColor: Colors.green[100],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : manualSpacer(step: 0)
+                    ]),
+                  ),
+                ),
+                MessageInput(
+                  friendId: widget.friendId,
+                  showSelectMedia: showSelectMedia,
+                  showIcon: showIcon,
+                  token: widget.token,
+                  fullname: widget.fullname,
+                  scrollTo: _scrollController,
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: showSelectMedia
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 275.0, bottom: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        backgroundColor: MyColors.primaryLight,
+                        onPressed: () => sendImage(context).whenComplete(() {
+                          _scrollController.scrollTo(
+                            index: 0,
+                            duration: Duration(milliseconds: 200),
+                          );
+                          Provider.of<AddReplyData>(context, listen: false).unsetReply();
+                          setState(() {
+                            showSelectMedia = false;
+                          });
+                        }),
+                        child: Tooltip(
+                          message: "Picha",
+                          child: Icon(Icons.image),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      FloatingActionButton(
+                        backgroundColor: MyColors.primaryLight,
+                        onPressed: () {
+                          MediaHandler.getDocument(context, widget, widget.token, replyData).whenComplete(() {
+                            _scrollController.scrollTo(
+                              index: 0,
+                              duration: Duration(milliseconds: 200),
+                            );
+                            Provider.of<AddReplyData>(context, listen: false).unsetReply();
+                          });
+                          setState(() {
+                            showSelectMedia = false;
+                          });
+                        },
+                        child: Tooltip(
+                          message: "faili",
+                          child: Icon(Icons.file_present),
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: 8,
+                      // ),
+                      // FloatingActionButton(
+                      //   onPressed: () {},
+                      //   child: Icon(Icons.play_arrow_rounded),
+                      // ),
+                    ],
+                  ),
+                )
+              : manualStepper(step: 0),
+        ));
+  }
+}

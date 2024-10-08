@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "521734412987",
+    "firebase_url": "https://kkkt-kinyerezi-default-rtdb.firebaseio.com",
+    "project_id": "kkkt-kinyerezi",
+    "storage_bucket": "kkkt-kinyerezi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521734412987:android:adca3ecb9f787a54f9e79e",
+        "android_client_info": {
+          "package_name": "app.kinyerezi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521734412987-d4r75h3236dbk6qsl5j7r97lhqs81ti1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVGKO1nG9XHWl3ioCyfELPPrQ6FACBhIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521734412987-d4r75h3236dbk6qsl5j7r97lhqs81ti1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.kinyerezi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521734412987:android:ff02f22a5f062ebaf9e79e",
+        "android_client_info": {
+          "package_name": "com.example.kinyerezi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521734412987-d4r75h3236dbk6qsl5j7r97lhqs81ti1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVGKO1nG9XHWl3ioCyfELPPrQ6FACBhIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521734412987-d4r75h3236dbk6qsl5j7r97lhqs81ti1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.kinyerezi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

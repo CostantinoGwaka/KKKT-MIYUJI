@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.521734412987-emv2n3u80rp7dnd1a6428kav3ghtt0pi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCqv44--g8YUIJCANsUkpLKmP_rtJp4IfY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>521734412987</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.kinyerezi</string>
+	<key>PROJECT_ID</key>
+	<string>kkkt-kinyerezi</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kkkt-kinyerezi.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:521734412987:ios:08c739cd0c05ccbef9e79e</string>
+	<key>DATABASE_URL</key>
+	<string>https://kkkt-kinyerezi-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,361 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:kinyerezi/utils/ApiUrl.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kinyerezi/chatroom/cloud/cloud.dart';
+import 'package:kinyerezi/chatroom/cloud/firebase_notification.dart';
+import 'package:kinyerezi/home/screens/index.dart';
+import 'package:kinyerezi/shared/localstorage/index.dart';
+import 'package:kinyerezi/usajili/screens/index.dart';
+import 'package:kinyerezi/utils/Alerts.dart';
+import 'package:kinyerezi/utils/my_colors.dart';
+import 'package:kinyerezi/utils/spacer.dart';
+
+class ChangePasswordScreen extends StatefulWidget {
+  @override
+  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+}
+
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  TextEditingController oldp = TextEditingController();
+  TextEditingController newp = TextEditingController();
+  bool isregistered = false;
+  bool _isObscure = true;
+  bool _status = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        title: Text(
+          "Badili neno la siri",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            _bottomBar(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _bottomBar(context) {
+    return Expanded(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child: Text("Badili Neno Lako La Siri",
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        color: Color(0xff205072),
+                        fontWeight: FontWeight.w500,
+                      )),
+                ),
+                SizedBox(height: 20),
+                _inputField1(),
+                _inputField2(),
+                SizedBox(height: 15),
+                _loginbtn(context),
+                SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inputField1() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(50),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            blurRadius: 25,
+            offset: Offset(0, 5),
+            spreadRadius: -25,
+          ),
+        ],
+      ),
+      margin: EdgeInsets.only(bottom: 20),
+      child: TextField(
+        controller: oldp,
+        keyboardType: TextInputType.text,
+        style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.black,
+            letterSpacing: 0.24,
+            fontWeight: FontWeight.w500),
+        decoration: InputDecoration(
+          hintText: "Neno la siri lazamani",
+          hintStyle: TextStyle(
+            color: Color(0xffA6B0BD),
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+        obscureText: _isObscure,
+      ),
+    );
+  }
+
+  Widget _inputField2() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(50),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black,
+            blurRadius: 25,
+            offset: Offset(0, 5),
+            spreadRadius: -25,
+          ),
+        ],
+      ),
+      margin: EdgeInsets.only(bottom: 20),
+      child: TextField(
+        style: GoogleFonts.poppins(
+          fontSize: 20,
+          color: Colors.black,
+          letterSpacing: 0.24,
+          fontWeight: FontWeight.w500,
+        ),
+        controller: newp,
+        decoration: InputDecoration(
+          hintText: "Neno la siri jipya",
+          hintStyle: TextStyle(
+            color: Color(0xffA6B0BD),
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20),
+            ),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isObscure ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isObscure = !_isObscure;
+              });
+            },
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        obscureText: _isObscure,
+      ),
+    );
+  }
+
+  Future<void> updatePassword(
+      String member_no, String oldpassword, String newpassword) async {
+    //get my data
+    Alerts.showProgressDialog(
+        context, "Tafadhari Subiri,neno lako linabadilishwa");
+    setState(() {
+      _status = true;
+    });
+
+    String mydataApi = "http://kinyerezikkkt.or.tz/api/change_password.php";
+
+    final response = await http.post(
+      mydataApi,
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: {
+        "member_no": "$member_no",
+        "oldpassword": "$oldpassword",
+        "newpassword": "$newpassword",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _status = false;
+      });
+      //remove loader
+      Navigator.of(context).pop();
+      //end here
+      dynamic jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+        var json = jsonDecode(response.body);
+
+        String mydata = jsonEncode(json[0]);
+
+        await LocalStorage.setStringItem("mydata", mydata);
+
+        setState(() {
+          oldp.clear();
+          newp.clear();
+        });
+        Navigator.of(context).pop();
+        return Fluttertoast.showToast(
+          msg: "Neno la siri limebadilishwa",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: MyColors.primaryLight,
+          textColor: Colors.white,
+        );
+      } else {
+        setState(() {
+          _status = false;
+        });
+
+        Fluttertoast.showToast(
+          msg: "Neno lako la siri la zamani limekosewa",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: MyColors.primaryLight,
+          textColor: Colors.white,
+        );
+      }
+    } else {
+      setState(() {
+        _status = false;
+      });
+
+      Fluttertoast.showToast(
+        msg: "Neno lako la siri la zamani limekosewa",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: MyColors.primaryLight,
+        textColor: Colors.white,
+      );
+    }
+
+    //end here
+  }
+
+  Widget _loginbtn(context) {
+    // ignore: deprecated_member_use
+    return Center(
+      // ignore: deprecated_member_use
+      child: FlatButton(
+        onPressed: () async {
+          if (oldp.text.isEmpty || newp.text.isEmpty) {
+            return Fluttertoast.showToast(
+              msg: "Tafadhari weka taarifa zote",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: MyColors.primaryLight,
+              textColor: Colors.white,
+            );
+          } else {
+            await updatePassword(host['member_no'], oldp.text, newp.text);
+          }
+        },
+        padding: EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 80,
+        ),
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(20.0),
+        ),
+        child: Text(
+          "Badili",
+          style: GoogleFonts.montserrat(
+            fontSize: 23,
+            color: Colors.white,
+            letterSpacing: 0.168,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        color: MyColors.primaryLight,
+      ),
+    );
+  }
+}
+
+Widget _passCode(context) {
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Je! Hauna akaunti? ",
+            style: GoogleFonts.montserrat(fontSize: 20, color: Colors.black),
+          ),
+          InkWell(
+            child: Text(
+              "Jisajili",
+              style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline),
+            ),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => RegistrationScreen()));
+            },
+          )
+        ],
+      ),
+      manualStepper(step: 10),
+      InkWell(
+        child: Text(
+          "Rudi nyuma",
+          style: GoogleFonts.montserrat(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline),
+        ),
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+      )
+    ],
+  );
+}
