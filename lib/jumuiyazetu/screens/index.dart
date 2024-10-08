@@ -21,7 +21,7 @@ class JumuiyaZetu extends StatefulWidget {
 class _JumuiyaZetuState extends State<JumuiyaZetu> {
   Future<List<JumuiyaData>> getJumuiya() async {
     String myApi = "http://miyujikkkt.or.tz/api/getjumuiya.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <JumuiyaData>[];
     var baraza;

@@ -462,7 +462,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
     final response = await http.post(
-      mydataApi,
+      mydataApi as Uri,
       headers: {
         'Accept': 'application/json',
       },

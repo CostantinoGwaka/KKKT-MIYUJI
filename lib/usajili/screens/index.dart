@@ -27,9 +27,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _ndoa = '';
   String _ushiriki = '';
   String idYaJumuiya = '';
-  String msgErrorPhoneNumber;
-  String msgErrorPhoneNumber2;
-  String msgErrorPhoneNumber3;
+  String? msgErrorPhoneNumber;
+  String? msgErrorPhoneNumber2;
+  String? msgErrorPhoneNumber3;
 
   TextEditingController jinaLaMsharika = TextEditingController();
   TextEditingController jinsia = TextEditingController();
@@ -58,16 +58,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController katibuJumuiya = TextEditingController();
   TextEditingController kamaUshiriki = TextEditingController();
 
-  DateTime tareheMtotoOne, tareheMtotoTwo, tareheMtotoThree;
+  DateTime? tareheMtotoOne, tareheMtotoTwo, tareheMtotoThree;
 
   var jumuiyaList = <JumuiyaData>[];
-  JumuiyaData dropdownValue;
-  String _valProvince;
-  List<dynamic> _dataProvince;
+  JumuiyaData? dropdownValue;
+  String? _valProvince;
+  List<dynamic>? _dataProvince;
   dynamic usajiliId;
   String krid = "";
-  List katibuWaJumuiya;
-  int pagecontrolnumber;
+  List? katibuWaJumuiya;
+  int? pagecontrolnumber;
 
   void getUsajiliId() async {
     String myApi = "http://miyujikkkt.or.tz/api/getusajiliid.php";
@@ -257,7 +257,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   //date mtoto one
   _tareheMtotoThree(BuildContext context) async {
-    DateTime newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showDatePicker(
       context: context,
       initialDate: tareheMtotoThree ?? DateTime.now(),
       firstDate: DateTime(1900),
@@ -465,7 +465,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     var now = DateTime.now();
 
-    final response = await http.post(myApi, headers: {
+    final response = await http.post(myApi as Uri, headers: {
       'Accept': 'application/json'
     }, body: {
       "jina_la_msharika": "$jinaLaMsharika",

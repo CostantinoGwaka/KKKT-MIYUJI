@@ -6,7 +6,7 @@ class LocalStorage {
     return prefs.setString(key, value);
   }
 
-  static Future<bool> setStringListItem(String key, List value) async {
+  static Future<bool> setStringListItem(String key, List<String> value) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.setStringList(key, value);
   }
@@ -35,5 +35,4 @@ class LocalStorage {
     final prefs = await SharedPreferences.getInstance();
     return prefs.remove(key);
   }
-
 }

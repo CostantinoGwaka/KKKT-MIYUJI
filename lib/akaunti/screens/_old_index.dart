@@ -586,6 +586,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
             flex: 2,
           ),
           Expanded(
+            // ignore: sort_child_properties_last
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Container(

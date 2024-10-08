@@ -105,7 +105,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     String mydataApi = "http://miyujikkkt.or.tz/api/mapendekezo.php";
 
     final response = await http.post(
-      mydataApi,
+      mydataApi as Uri,
       headers: {
         'Accept': 'application/json',
       },

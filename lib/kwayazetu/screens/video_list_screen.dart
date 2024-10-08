@@ -29,7 +29,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       load = true;
     });
     String myApi = "http://miyujikkkt.or.tz/api/get_video_kwaya.php/";
-    final response = await http.post(myApi, headers: {
+    final response = await http.post(myApi as Uri, headers: {
       'Accept': 'application/json',
     }, body: {
       "kwaya_id": '${widget.kwayaid}',

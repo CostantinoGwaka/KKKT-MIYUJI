@@ -21,7 +21,7 @@ class NenoLaSiku extends StatefulWidget {
 class _NenoLaSikuState extends State<NenoLaSiku> {
   Future<List<Manenosiku>> getManeno() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_maneno.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <Manenosiku>[];
     var baraza;

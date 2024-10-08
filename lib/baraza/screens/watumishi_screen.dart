@@ -21,7 +21,7 @@ class WatumishiScreen extends StatefulWidget {
 class _WatumishiScreenState extends State<WatumishiScreen> {
   Future<List<WatumishiUsharika>> getWatumishiWasharika() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_watumishi.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <WatumishiUsharika>[];
     var baraza;

@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
     String mydataApi = "http://miyujikkkt.or.tz/api/get_mydata.php/";
 
     final response = await http.post(
-      mydataApi,
+      mydataApi as Uri,
       headers: {'Accept': 'application/json'},
       body: {
         "member_no": memberNo,
@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
 
     String mtumishApi = "http://miyujikkkt.or.tz/api/check_mtumish.php/";
     final response2 = await http.post(
-      mtumishApi,
+      mtumishApi as Uri,
       headers: {'Accept': 'application/json'},
       body: {
         "member_no": memberNo,
@@ -95,7 +95,7 @@ class _LoginState extends State<Login> {
       print("user token $tokens");
       String myApi = "http://miyujikkkt.or.tz/api/login.php/";
       final response = await http.post(
-        myApi,
+        myApi as Uri,
         headers: {'Accept': 'application/json'},
         body: {
           "member_no": memberNo,
@@ -385,10 +385,10 @@ class _LoginState extends State<Login> {
     // ignore: deprecated_member_use
     return Center(
       // ignore: deprecated_member_use
-      child: FlatButton(
+      child: ElevatedButton(
         onPressed: () async {
           if (memberController.text.isEmpty || passwordController.text.isEmpty) {
-            return Fluttertoast.showToast(
+            Fluttertoast.showToast(
               msg: "Tafadhari weka taarifa zote",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
@@ -399,13 +399,14 @@ class _LoginState extends State<Login> {
             await login(memberController.text, passwordController.text);
           }
         },
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 80,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+        // color: MyColors.primaryLight,
+        // padding: const EdgeInsets.symmetric(
+        //   vertical: 10,
+        //   horizontal: 80,
+        // ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(20.0),
+        // ),
         child: Text(
           "Ingia",
           style: GoogleFonts.montserrat(
@@ -415,7 +416,6 @@ class _LoginState extends State<Login> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        color: MyColors.primaryLight,
       ),
     );
   }

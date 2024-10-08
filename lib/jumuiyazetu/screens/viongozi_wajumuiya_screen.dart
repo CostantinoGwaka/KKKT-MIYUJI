@@ -24,7 +24,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
     print("kamati data ${widget.jumuiya.id}");
     String myApi = "http://miyujikkkt.or.tz/api/get_jumuiya_viongozi_id.php";
     final response = await http.post(
-      myApi,
+      myApi as Uri,
       body: {
         "jumuiya_id": widget.jumuiya.id,
       },

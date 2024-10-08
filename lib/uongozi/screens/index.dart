@@ -20,7 +20,7 @@ class ViongoziWaKanisa extends StatefulWidget {
 class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
   Future<List<ViongoziWaKanisaData>> getViongozi() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_viongozi_wakanisa.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <ViongoziWaKanisaData>[];
     var baraza;

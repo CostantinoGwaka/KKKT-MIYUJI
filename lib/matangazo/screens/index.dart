@@ -23,7 +23,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
 
   Future<List<Matangazo>> getMatangazoNew() async {
     String myApi = "http://miyujikkkt.or.tz/api/get_matangazo.php";
-    final response = await http.post(myApi, headers: {'Accept': 'application/json'});
+    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var matangazoList = <Matangazo>[];
     var tangazo;

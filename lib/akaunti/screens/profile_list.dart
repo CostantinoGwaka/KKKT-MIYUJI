@@ -43,8 +43,8 @@ class ProfileListItem extends StatelessWidget {
           ),
           const Spacer(),
           if (hasNavigation)
-            Icon(
-              LineAwesomeIcons.angle_right,
+            const Icon(
+              LineAwesomeIcons.arrow_right_solid,
               size: 25,
             ),
         ],

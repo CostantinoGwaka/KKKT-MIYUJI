@@ -117,60 +117,79 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     super.dispose();
   }
 
-  Future<void> updatePassword(String memberNo, String oldpassword, String newpassword) async {
+  Future<Future<bool?>> updatePassword(
+    String? memberNo,
+    String? oldpassword,
+    String? newpassword,
+  ) async {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
       _status = true;
     });
 
-    String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
+    try {
+      String mydataApi = "http://miyujikkkt.or.tz/api/change_password.php";
 
-    final response = await http.post(
-      mydataApi as Uri,
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "member_no": memberNo,
-        "oldpassword": oldpassword,
-        "newpassword": newpassword,
-      },
-    );
+      final response = await http.post(
+        mydataApi as Uri,
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: {
+          "member_no": memberNo,
+          "oldpassword": oldpassword,
+          "newpassword": newpassword,
+        },
+      );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _status = false;
-      });
-      //remove loader
-      Navigator.of(context).pop();
-      //end here
-      dynamic jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-        var json = jsonDecode(response.body);
-
-        String mydata = jsonEncode(json[0]);
-
-        await LocalStorage.setStringItem("mydata", mydata);
-
+      if (response.statusCode == 200) {
         setState(() {
-          oldp.clear();
-          newp.clear();
+          _status = false;
         });
+        //remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+        //end here
+        dynamic jsonResponse = json.decode(response.body);
+        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+          var json = jsonDecode(response.body);
 
-        return Fluttertoast.showToast(
-          msg: "Neno la siri limebadilishwa",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
+          String mydata = jsonEncode(json[0]);
+
+          await LocalStorage.setStringItem("mydata", mydata);
+
+          setState(() {
+            oldp.clear();
+            newp.clear();
+          });
+
+          return Fluttertoast.showToast(
+            msg: "Neno la siri limebadilishwa",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        } else {
+          setState(() {
+            _status = false;
+          });
+
+          return Fluttertoast.showToast(
+            msg: "Neno lako la siri la zamani limekosewa",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        }
       } else {
         setState(() {
           _status = false;
         });
 
-        Fluttertoast.showToast(
+        return Fluttertoast.showToast(
           msg: "Neno lako la siri la zamani limekosewa",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -178,12 +197,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
           textColor: Colors.white,
         );
       }
-    } else {
-      setState(() {
-        _status = false;
-      });
-
-      Fluttertoast.showToast(
+    } catch (e) {
+      return Fluttertoast.showToast(
         msg: "Neno lako la siri la zamani limekosewa",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -206,8 +221,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             flex: 2,
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: ElevatedButton(
+              child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -241,15 +255,15 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                   }
                 },
                 // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              )),
+              ),
             ),
           ),
           Expanded(
             flex: 2,
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: ElevatedButton(
+              child: ElevatedButton(
+                // ignore: sort_child_properties_last
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -263,14 +277,16 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     const Text("Toka"),
                   ],
                 ),
-                textColor: Colors.white,
-                color: MyColors.primaryDark,
+                // textColor: Colors.white,
+                // color: MyColors.primaryDark,
                 onPressed: () async {
                   Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
 
                   await LocalStorage.removeItem("member_no").whenComplete(() async {
                     await LocalStorage.removeItem("mydata").whenComplete(() async {
+                      // ignore: void_checks
                       await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
@@ -284,8 +300,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     });
                   });
                 },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              )),
+                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              ),
             ),
           ),
         ],
@@ -599,11 +615,11 @@ class AvatarImage extends StatelessWidget {
 }
 
 class SocialIcon extends StatelessWidget {
-  final Color color;
-  final IconData iconData;
-  final Function onPressed;
+  final Color? color;
+  final IconData? iconData;
+  final VoidCallback onPressed;
 
-  const SocialIcon({super.key, this.color, this.iconData, this.onPressed});
+  const SocialIcon({super.key, this.color, this.iconData, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -628,7 +644,9 @@ class ProfileListItems extends StatelessWidget {
 
   _launchURL() async {
     String url = Platform.isIOS ? 'tel://0659515042' : 'tel:0659515042';
+    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
       await launch("tel://0659515042");
     } else {
       Fluttertoast.showToast(
@@ -672,8 +690,8 @@ class ProfileListItems extends StatelessWidget {
               Share.share(
                   "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
             },
-            child: ProfileListItem(
-              icon: LineAwesomeIcons.user_plus,
+            child: const ProfileListItem(
+              icon: LineAwesomeIcons.user,
               text: 'Shirikisha Rafiki',
             ),
           ),
@@ -681,8 +699,8 @@ class ProfileListItems extends StatelessWidget {
             onTap: () async {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapendekezoScreen()));
             },
-            child: ProfileListItem(
-              icon: LineAwesomeIcons.question,
+            child: const ProfileListItem(
+              icon: LineAwesomeIcons.question_circle,
               text: 'Maoni/Mapendekezo',
             ),
           ),
@@ -693,7 +711,9 @@ class ProfileListItems extends StatelessWidget {
 
               await LocalStorage.removeItem("member_no").whenComplete(() async {
                 await LocalStorage.removeItem("mydata").whenComplete(() async {
+                  // ignore: void_checks
                   await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                     SystemNavigator.pop();
                     return Fluttertoast.showToast(
@@ -707,8 +727,8 @@ class ProfileListItems extends StatelessWidget {
                 });
               });
             },
-            child: ProfileListItem(
-              icon: LineAwesomeIcons.alternate_sign_out,
+            child: const ProfileListItem(
+              icon: LineAwesomeIcons.sign_out_alt_solid,
               text: 'Toka kwenye akaunti',
               hasNavigation: false,
             ),
@@ -722,13 +742,21 @@ class ProfileListItems extends StatelessWidget {
                 Text(
                   "Crafted By iSoftTz",
                   style: GoogleFonts.gochiHand(
-                    textStyle: const TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      letterSpacing: .5,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Text(
                   "© 2022",
                   style: GoogleFonts.gochiHand(
-                    textStyle: const TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 14),
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      letterSpacing: .5,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],
