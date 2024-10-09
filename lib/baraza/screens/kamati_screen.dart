@@ -190,7 +190,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        snapshot.data![index].jinaKamati,
+                                        snapshot.data![index].jinaKamati!,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: MyColors.primaryLight,

@@ -173,8 +173,8 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text(snapshot.data![index].fname),
-                      subtitle: Text(snapshot.data![index].wadhifaName),
+                      title: Text(snapshot.data![index].fname!),
+                      subtitle: Text(snapshot.data![index].wadhifaName!),
                       children: <Widget>[
                         const Divider(
                           thickness: 1.0,
@@ -208,7 +208,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          snapshot.data![index].fname,
+                                          snapshot.data![index].fname!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                           ),
                                         ),
                                         Text(
-                                          snapshot.data![index].phoneNo,
+                                          snapshot.data![index].phoneNo!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -260,7 +260,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      snapshot.data![index].kamatiName,
+                                      snapshot.data![index].kamatiName!,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -286,7 +286,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      snapshot.data![index].tarehe,
+                                      snapshot.data![index].tarehe!,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,

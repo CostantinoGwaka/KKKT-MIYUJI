@@ -210,7 +210,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              snapshot.data![index].jumuiyaName,
+                                              snapshot.data![index].jumuiyaName!,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: MyColors.primaryLight,

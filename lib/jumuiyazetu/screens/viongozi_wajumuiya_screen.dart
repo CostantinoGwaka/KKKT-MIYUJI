@@ -173,8 +173,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text(snapshot.data![index].fname),
-                      subtitle: Text(snapshot.data![index].wadhifa),
+                      title: Text(snapshot.data![index].fname!),
+                      subtitle: Text(snapshot.data![index].wadhifa!),
                       children: <Widget>[
                         const Divider(
                           thickness: 1.0,

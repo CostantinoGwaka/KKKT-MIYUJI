@@ -149,7 +149,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
 
     databaseRef.child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
           if (snapshot.value != null) {
-            userId = snapshot.value['userId'];
+            userId = snapshot.child('userId').value;
           }
 
           //add first message when user click to this item at first
@@ -262,7 +262,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                             var data = [];
 
                             if (snap.data!.snapshot.value != null) {
-                              Map<dynamic, dynamic> map = snap!.data!.snapshot.value;
+                              Map<dynamic, dynamic> map = Map.from(snap.data!.snapshot.value as Map);
                               data = map.values.toList()..sort((a, b) => b['sentAt'].compareTo(a['sentAt']));
                             }
                             return snap.data!.snapshot.value == null && data.isEmpty
@@ -272,7 +272,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                 : ScrollablePositionedList.builder(
                                     physics: const BouncingScrollPhysics(),
                                     reverse: true,
-                                    itemCount: data!.length,
+                                    itemCount: data.length,
                                     itemScrollController: _scrollController,
                                     itemPositionsListener: itemPositionsListener,
                                     itemBuilder: (_, i) {
