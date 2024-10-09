@@ -5,7 +5,7 @@ import 'package:miyuji/utils/spacer.dart';
 import 'package:miyuji/register_login/screens/login.dart';
 
 class NoAuthBanner extends StatelessWidget {
-  const NoAuthBanner({Key? key}) : super(key: key);
+  const NoAuthBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +51,22 @@ class NoAuthBanner extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    FlatButton(
+                    ElevatedButton(
                       onPressed: () async {
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
                       },
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 80,
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+                        elevation: 1,
+                        foregroundColor: Colors.black54,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
+                      // padding: const EdgeInsets.symmetric(
+                      //   vertical: 10,
+                      //   horizontal: 80,
+                      // ),
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(20.0),
+                      // ),
                       child: Text(
                         "Ingia",
                         style: GoogleFonts.montserrat(
@@ -71,7 +76,6 @@ class NoAuthBanner extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      color: MyColors.primaryLight,
                     ),
                   ],
                 ),

@@ -24,7 +24,7 @@ import './imagecaption_screen.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class ChatSectionScreen extends StatefulWidget {
-  const ChatSectionScreen({required Key key, required this.fullname, required this.picture, this.fromFriends = false, this.friendId, this.deptId, this.token}) : super(key: key);
+  const ChatSectionScreen({Key? key, required this.fullname, required this.picture, this.fromFriends = false, this.friendId, this.deptId, this.token}) : super(key: key);
 
   final String? fullname;
   final String? friendId;
@@ -47,11 +47,10 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   bool? needToPaginate;
 
   Future<void> sendImage(BuildContext context) async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    File image = File(pickedFile.path);
-
-    if (pickedFile == null) return;
+    File image = File(pickedFile!.path);
     if (image.lengthSync() <= 8000000) {
       //create file to be uploaded to the server
       image = await File(pickedFile.path).create();
@@ -59,6 +58,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
       return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => Container(
           decoration: BoxDecoration(
@@ -145,52 +145,54 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
 
   sendFirstMessage() {
     var userId;
-    FirebaseDatabase.instance.reference().child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
-        userId = snapshot.value['userId'];
-      }
+    final databaseRef = FirebaseDatabase.instance.ref();
 
-      //add first message when user click to this item at first
-      if (userId == null) {
-        String id = const Uuid().v4();
-        readBy.add(host['member_no']);
+    databaseRef.child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
+          if (snapshot.value != null) {
+            userId = snapshot.value['userId'];
+          }
 
-        //send message here
-        Message(
-          readBy: readBy,
-          friendId: widget.friendId,
-          hostId: host['member_no'],
-          createdAt: DateTime.now().toString(),
-          sentAt: DateTime.now().toString(),
-          color: "green",
-          message: "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
-          messageId: id,
-          status: "sent",
-          reply: false,
-          type: "text",
-          repliedContent: null,
-          unseen: 0,
-        ).handleSendMessage(
-          convoId: widget.friendId,
-          userId: host['member_no'],
-          messageId: id,
-        );
+          //add first message when user click to this item at first
+          if (userId == null) {
+            String id = const Uuid().v4();
+            readBy.add(host['member_no']);
 
-        //update recent chat
-        Cloud.add(
-          serverPath: "RecentChat/${host['member_no']}/${widget.friendId}",
-          value: RecentChat(
-                  lastMessage: "Karibu KKKT miyuji",
-                  fullName: widget.fullname,
-                  picUrl: widget.picture,
-                  color: "pink",
-                  unseen: ServerValue.increment(0),
-                  time: DateTime.now().toString(),
-                  friendId: widget.friendId)
-              .toMap(),
-        );
-      }
-    });
+            //send message here
+            Message(
+              readBy: readBy,
+              friendId: widget.friendId,
+              hostId: host['member_no'],
+              createdAt: DateTime.now().toString(),
+              sentAt: DateTime.now().toString(),
+              color: "green",
+              message: "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
+              messageId: id,
+              status: "sent",
+              reply: false,
+              type: "text",
+              repliedContent: null,
+              unseen: 0,
+            ).handleSendMessage(
+              convoId: widget.friendId,
+              userId: host['member_no'],
+              messageId: id,
+            );
+
+            //update recent chat
+            Cloud.add(
+              serverPath: "RecentChat/${host['member_no']}/${widget.friendId}",
+              value: RecentChat(
+                lastMessage: "Karibu KKKT miyuji",
+                fullName: widget.fullname,
+                picUrl: widget.picture,
+                color: "pink",
+                unseen: ServerValue.increment(0),
+                time: DateTime.now().toString(),
+                friendId: widget.friendId,
+              ).toMap(),
+            );
+          }
+        } as FutureOr Function(DatabaseEvent value));
   }
 
   @override
@@ -219,7 +221,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  widget.fullname,
+                  widget.fullname!.toString(),
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   style: TextStyles.headline(context).copyWith(
@@ -254,23 +256,23 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                     ),
                     child: Stack(children: [
                       StreamBuilder(
-                        stream: FirebaseDatabase.instance.reference().child("Messages/${host['member_no']}/${widget.friendId}").orderByChild('createdAt').onValue,
+                        stream: FirebaseDatabase.instance.ref().child("Messages/${host['member_no']}/${widget.friendId}").orderByChild('createdAt').onValue,
                         builder: (_, snap) {
                           if (snap.hasData) {
                             var data = [];
 
-                            if (snap.data.snapshot.value != null) {
-                              Map<dynamic, dynamic> map = snap.data.snapshot.value;
+                            if (snap.data!.snapshot.value != null) {
+                              Map<dynamic, dynamic> map = snap!.data!.snapshot.value;
                               data = map.values.toList()..sort((a, b) => b['sentAt'].compareTo(a['sentAt']));
                             }
-                            return snap.data.snapshot.value == null && data.isEmpty
+                            return snap.data!.snapshot.value == null && data.isEmpty
                                 ? const Center(
                                     child: Text("no chats"),
                                   )
                                 : ScrollablePositionedList.builder(
                                     physics: const BouncingScrollPhysics(),
                                     reverse: true,
-                                    itemCount: data.length,
+                                    itemCount: data!.length,
                                     itemScrollController: _scrollController,
                                     itemPositionsListener: itemPositionsListener,
                                     itemBuilder: (_, i) {
@@ -374,11 +376,11 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                   ),
                 ),
                 MessageInput(
-                  friendId: widget.friendId,
+                  friendId: widget.friendId.toString(),
                   showSelectMedia: showSelectMedia,
                   showIcon: showIcon,
-                  token: widget.token,
-                  fullname: widget.fullname,
+                  token: widget.token.toString(),
+                  fullname: widget.fullname.toString(),
                   scrollTo: _scrollController,
                 ),
               ],
@@ -413,11 +415,12 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                       FloatingActionButton(
                         backgroundColor: MyColors.primaryLight,
                         onPressed: () {
-                          MediaHandler.getDocument(context, widget, widget.token, replyData).whenComplete(() {
+                          MediaHandler.getDocument(context, widget, widget.token.toString(), replyData).whenComplete(() {
                             _scrollController.scrollTo(
                               index: 0,
                               duration: const Duration(milliseconds: 200),
                             );
+                            // ignore: use_build_context_synchronously
                             Provider.of<AddReplyData>(context, listen: false).unsetReply();
                           });
                           setState(() {

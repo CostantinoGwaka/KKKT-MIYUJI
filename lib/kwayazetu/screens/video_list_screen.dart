@@ -8,13 +8,13 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 List<dynamic> videoList = [];
-List<YoutubePlayerController> _controllers;
+late List<YoutubePlayerController> _controllers;
 
 /// Creates list of video players
 class VideoListScreen extends StatefulWidget {
   final dynamic kwayaid;
   const VideoListScreen({
-    Key key,
+    Key? key,
     this.kwayaid,
   }) : super(key: key);
 
@@ -35,12 +35,11 @@ class _VideoListScreenState extends State<VideoListScreen> {
       "kwaya_id": '${widget.kwayaid}',
     });
 
-    var matangazoList = {};
+    // ignore: prefer_typing_uninitialized_variables
     var tangazo;
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      print("data video ${response.body}");
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
         tangazo = json;
@@ -58,11 +57,11 @@ class _VideoListScreenState extends State<VideoListScreen> {
     setState(() {
       load = false;
     });
-    print("videoid $videoList");
+    // print("videoid $videoList");
     setState(() {
       videoList = videoList;
     });
-    // return videoList;
+    return videoList;
   }
 
   @override

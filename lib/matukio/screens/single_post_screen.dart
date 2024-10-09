@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class SinglePostScreen extends StatefulWidget {
   final dynamic postdata;
-  const SinglePostScreen({Key key, this.postdata}) : super(key: key);
+  const SinglePostScreen({Key? key, this.postdata}) : super(key: key);
 
   @override
   _SinglePostScreenState createState() => _SinglePostScreenState();

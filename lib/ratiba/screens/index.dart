@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class RatibaZaIbada extends StatefulWidget {
-  const RatibaZaIbada({Key? key}) : super(key: key);
+  const RatibaZaIbada({super.key});
 
   @override
   _RatibaZaIbadaState createState() => _RatibaZaIbadaState();
@@ -210,7 +210,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                           } else if (snapshot.hasData) {
                             return ListView.builder(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data.length,
+                              itemCount: snapshot.data!.length,
                               itemBuilder: (_, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -267,7 +267,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                                 ),
                                                                 manualSpacer(step: 5),
                                                                 Text(
-                                                                  snapshot.data![index].jina,
+                                                                  snapshot.data![index].jina!,
                                                                   maxLines: 2,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   softWrap: false,
@@ -288,7 +288,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                                 // ),
                                                                 manualSpacer(step: 5),
                                                                 Text(
-                                                                  snapshot.data![index].muda,
+                                                                  snapshot.data![index].muda!,
                                                                   maxLines: 1,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   softWrap: false,
@@ -410,7 +410,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                           } else if (snapshot.hasData) {
                             return ListView.builder(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data.length,
+                              itemCount: snapshot.data!.length,
                               itemBuilder: (_, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -433,10 +433,11 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                               onTap: () {
                                                 Clipboard.setData(
                                                   ClipboardData(
-                                                    text: snapshot.data![index].namba,
+                                                    text: snapshot.data![index].namba!,
                                                   ),
                                                 ).then((_) {
-                                                  Scaffold.of(context).showSnackBar(
+                                                  // ignore: use_build_context_synchronously
+                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                     const SnackBar(
                                                       content: Text("Nambari ya akaunti imenakiliwa"),
                                                     ),
@@ -456,7 +457,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                   ),
                                                 ),
                                                 title: Text(
-                                                  snapshot.data![index].jina,
+                                                  snapshot.data![index].jina!,
                                                   style: Theme.of(context).textTheme.bodyLarge,
                                                 ),
                                                 trailing: Column(
@@ -464,7 +465,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      snapshot.data![index].namba,
+                                                      snapshot.data![index].namba!,
                                                     ),
                                                     const Text(
                                                       "bonyeza kunakili",

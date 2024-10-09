@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class NenoLaSiku extends StatefulWidget {
-  const NenoLaSiku({Key? key}) : super(key: key);
+  const NenoLaSiku({super.key});
 
   @override
   _NenoLaSikuState createState() => _NenoLaSikuState();
@@ -148,7 +148,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
             } else if (snapshot.hasData) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (cintext, index) {
                   return Card(
                     elevation: 2,
@@ -166,7 +166,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            snapshot.data![index].neno,
+                            snapshot.data![index].neno!,
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -187,7 +187,7 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                                   ),
                                   manualSpacer(step: 5),
                                   Text(
-                                    snapshot.data![index].tarehe,
+                                    snapshot.data![index].tarehe!,
                                     style: GoogleFonts.montserrat(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,

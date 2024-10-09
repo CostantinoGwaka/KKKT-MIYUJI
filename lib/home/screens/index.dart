@@ -34,7 +34,7 @@ var data;
 var mtumishi;
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -47,28 +47,35 @@ class _HomePageState extends State<HomePage> {
   String messageTitle = "Empty";
   String notificationAlert = "alert";
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   @override
   void initState() {
-    // TODO: implement initState
     checkLogin();
     getdataLocal();
     super.initState();
-    _firebaseMessaging.configure(
-      onMessage: (message) async {
-        setState(() {
-          messageTitle = message["notification"]["title"];
-          notificationAlert = "New Notification Alert";
-        });
-      },
-      onResume: (message) async {
-        setState(() {
-          messageTitle = message["data"]["title"];
-          notificationAlert = "Application opened from Notification";
-        });
-      },
-    );
+
+    // For handling foreground messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      setState(() {
+        messageTitle = message.notification?.title ?? 'No Title';
+        notificationAlert = "New Notification Alert";
+      });
+    });
+
+    // For handling when the app is opened via a notification
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      setState(() {
+        messageTitle = message.data['title'] ?? 'No Title';
+        notificationAlert = "Application opened from Notification";
+      });
+    });
+
+    // Optionally, handle background messages (requires a background handler)
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
+  // Background message handler function
+  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    print("Handling a background message: ${message.messageId}");
   }
 
   Future<List<NenoLaSikuData>> getRatiba() async {
@@ -746,10 +753,10 @@ class _HomePageState extends State<HomePage> {
                                     child: ListView.builder(
                                       padding: EdgeInsets.zero,
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: snapshot.data.length,
+                                      itemCount: snapshot.data!.length,
                                       itemBuilder: (_, index) {
                                         return Text(
-                                          snapshot.data![index].neno,
+                                          snapshot.data![index].neno.toString(),
                                           style: GoogleFonts.montserrat(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,

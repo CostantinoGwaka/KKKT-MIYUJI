@@ -5,7 +5,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 class ProfileListItem extends StatelessWidget {
   final IconData? icon;
   final String? text;
-  final bool? hasNavigation;
+  final bool hasNavigation;
 
   const ProfileListItem({
     super.key,
@@ -38,7 +38,7 @@ class ProfileListItem extends StatelessWidget {
           ),
           const SizedBox(width: 15),
           Text(
-            text,
+            text.toString(),
             style: kTitleTextStyle.copyWith(fontWeight: FontWeight.w500, fontFamily: "Poppins"),
           ),
           const Spacer(),

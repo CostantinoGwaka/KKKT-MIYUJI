@@ -3,56 +3,57 @@ import 'package:flutter/services.dart';
 
 class InputField extends StatelessWidget {
   ///each text field should have it's own controller
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   // on changed function
-  final Function onchanged;
+  final ValueChanged<String>? onchanged;
 
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   ///shown after initialize the widget
-  final String label;
+  final String? label;
 
   ///maximum lines a field takes
   final int maxLines;
 
-  final int maxLength;
-  final int minLines;
+  final int? maxLength;
+  final int? minLines;
 
   final TextInputAction inputAction;
 
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
 
   ///used mostly in password fields
   final bool obscure;
 
-  final Widget suffixIcon;
-  final String helperText;
-  final String hint;
-  final Color errorColor;
-  final Color cursorColor;
-  final Color focusColor;
-  final Color hintColor;
-  final bool filled;
-  final Color fillColor;
-  final Color labelColor;
-  final FloatingLabelBehavior float;
-  final TextInputType keyboardType;
-  final EdgeInsetsGeometry padding;
-  final Function validator;
-  final List<TextInputFormatter> inputFormatter;
-  final double labelSize;
-  final Color helperColor;
-  final double helperSize;
+  final Widget? suffixIcon;
+  final String? helperText;
+  final String? hint;
+  final Color? errorColor;
+  final Color? cursorColor;
+  final Color? focusColor;
+  final Color? hintColor;
+  final bool? filled;
+  final Color? fillColor;
+  final Color? labelColor;
+  final FloatingLabelBehavior? float;
+  final TextInputType? keyboardType;
+  final EdgeInsetsGeometry? padding;
+  final FormFieldValidator<String>? validator;
+  final List<TextInputFormatter>? inputFormatter;
+  final double? labelSize;
+  final Color? helperColor;
+  final double? helperSize;
   final bool allowPre;
-  final Widget prefix;
+  final Widget? prefix;
 
   ///initialized in the user focus area
-  final String pre;
+  final String? pre;
 
   ///inputs for all texts committed
   InputField(
-      {super.key, this.labelColor,
+      {super.key,
+      this.labelColor,
       this.allowPre = false,
       this.minLines,
       this.textStyle,
@@ -85,7 +86,7 @@ class InputField extends StatelessWidget {
       this.helperSize});
 
   final outlineInputBorder = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey[300]),
+    borderSide: BorderSide(color: Colors.grey[300]!),
     borderRadius: BorderRadius.circular(5),
   );
 

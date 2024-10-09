@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:miyuji/bloc/addReply.dart';
 import 'package:miyuji/chatroom/cloud/message_handler.dart';
@@ -11,13 +10,14 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class MessageInput extends StatefulWidget {
-  final String friendId;
-  final bool showSelectMedia;
-  final Function showIcon;
-  final String token;
-  final String fullname;
-  final ItemScrollController scrollTo;
-  const MessageInput({super.key, 
+  final String? friendId;
+  final bool? showSelectMedia;
+  final Function? showIcon;
+  final String? token;
+  final String? fullname;
+  final ItemScrollController? scrollTo;
+  const MessageInput({
+    super.key,
     this.friendId,
     this.showSelectMedia,
     this.showIcon,
@@ -26,6 +26,7 @@ class MessageInput extends StatefulWidget {
     this.scrollTo,
   });
   @override
+  // ignore: library_private_types_in_public_api
   _MessageInputState createState() => _MessageInputState();
 }
 
@@ -98,12 +99,12 @@ class _MessageInputState extends State<MessageInput> {
           children: [
             GestureDetector(
               onTap: () {
-                widget.showIcon();
+                widget.showIcon!();
               },
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: SizedBox(
-                  child: (widget.showSelectMedia)
+                  child: (widget.showSelectMedia!)
                       ? const Icon(
                           Icons.close,
                           size: 32,
@@ -144,7 +145,7 @@ class _MessageInputState extends State<MessageInput> {
             ),
             GestureDetector(
               onTap: () => sendMessage(replyData).whenComplete(() {
-                widget.scrollTo.scrollTo(
+                widget.scrollTo!.scrollTo(
                   index: 0,
                   duration: const Duration(milliseconds: 200),
                 );

@@ -28,6 +28,6 @@ class NenoLaSikuData {
   Map<String, dynamic> toJson() => {
         "id": id,
         "neno": neno,
-        "tarehe": "${tarehe.year.toString().padLeft(4, '0')}-${tarehe.month.toString().padLeft(2, '0')}-${tarehe.day.toString().padLeft(2, '0')}",
+        "tarehe": "${tarehe!.year.toString().padLeft(4, '0')}-${tarehe!.month.toString().padLeft(2, '0')}-${tarehe!.day.toString().padLeft(2, '0')}",
       };
 }

@@ -9,7 +9,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class BarazaLaWazee extends StatefulWidget {
-  const BarazaLaWazee({Key? key}) : super(key: key);
+  const BarazaLaWazee({super.key});
 
   @override
   _BarazaLaWazeeState createState() => _BarazaLaWazeeState();

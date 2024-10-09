@@ -1,7 +1,7 @@
 import 'dart:io';
 
 class Adverts {
-  static String getBannerAdUnitId() {
+  static String? getBannerAdUnitId() {
     if (Platform.isIOS) {
       return 'ca-app-pub-3940256099942544/2934735716';
     } else if (Platform.isAndroid) {

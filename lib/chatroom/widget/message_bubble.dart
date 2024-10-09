@@ -20,11 +20,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class MessageBubble extends StatefulWidget {
-  final Function scrollTo;
+  final GestureTapCallback scrollTo;
   final message;
-  final String replymessageid;
+  final String? replymessageid;
 
-  const MessageBubble({key, this.message, this.scrollTo, this.replymessageid}) : super(key: key);
+  // ignore: use_super_parameters
+  const MessageBubble({key, this.message, required this.scrollTo, this.replymessageid}) : super(key: key);
 
   @override
   _MessageBubbleState createState() => _MessageBubbleState();
@@ -33,7 +34,6 @@ class MessageBubble extends StatefulWidget {
 class _MessageBubbleState extends State<MessageBubble> {
   @override
   void initState() {
-    // TODO: implement initState
     // getdataLocal();
     super.initState();
   }
@@ -53,27 +53,37 @@ class _MessageBubbleState extends State<MessageBubble> {
     LocalStorage.getStringItem('member_no').then((value) {
       var mydata = jsonDecode(value);
       host = mydata;
-        });
+    });
     // if (await DataConnectionChecker().hasConnection) {
-    await FirebaseDatabase.instance.reference().child('Messages/${host['member_no']}/${widget.message['receiverId']}').once().then(
-      (DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach(
-          (i, value) {Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");},
-        );
-      },
-    ).whenComplete(
-      () {
-        Cloud.update(
-          checkSnap: false,
-          serverPath: "RecentChat/${host['member_no']}/${widget.message['receiverId']}",
-          value: {
-            "lastmessage": " ",
-            "unseen": 0,
-          },
-        );
-      },
-    );
+    final databaseRef = FirebaseDatabase.instance.ref();
+
+    databaseRef.child('Messages/${host['member_no']}/${widget.message['receiverId']}').once().then((DatabaseEvent event) {
+      DataSnapshot snapshot = event.snapshot;
+
+      // Check if snapshot contains data
+      if (snapshot.exists && snapshot.value != null) {
+        // Cast snapshot value to a Map
+        Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
+
+        values.forEach((key, value) {
+          // Ensure value is a Map before accessing keys
+          if (value is Map<dynamic, dynamic>) {
+            Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");
+          }
+        });
+      }
+    }).whenComplete(() {
+      // After completion, update RecentChat
+      Cloud.update(
+        checkSnap: false,
+        serverPath: "RecentChat/${host['member_no']}/${widget.message['receiverId']}",
+        value: {
+          "lastmessage": " ",
+          "unseen": 0,
+        },
+      );
+    });
+
     // } else {
     //   //no internet connection
     // }
@@ -137,7 +147,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                   ),
                   onPressed: () {
                     Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}").whenComplete(
-                      () {Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}");},
+                      () {
+                        Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}");
+                      },
                     );
                   },
                 ),
@@ -223,7 +235,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                                   decoration: BoxDecoration(
                                     color: Colors.grey[300],
                                     border: Border(
-                                      left: BorderSide(width: 5, color: Colors.green[900]),
+                                      left: BorderSide(
+                                        width: 5,
+                                        color: Colors.green[900]!,
+                                      ),
                                     ),
                                   ),
                                   child: Column(

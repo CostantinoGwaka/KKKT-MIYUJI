@@ -12,7 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WalimuScreen extends StatefulWidget {
-  const WalimuScreen({Key? key}) : super(key: key);
+  const WalimuScreen({super.key});
 
   @override
   _WalimuScreenState createState() => _WalimuScreenState();
@@ -139,7 +139,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
             } else if (snapshot.hasData) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 2,
@@ -155,8 +155,8 @@ class _WalimuScreenState extends State<WalimuScreen> {
                         radius: 25,
                         child: Image.asset("assets/images/profile.png"),
                       ),
-                      title: Text(snapshot.data![index].fname),
-                      subtitle: Text(snapshot.data![index].wadhifa),
+                      title: Text(snapshot.data![index].fname!),
+                      subtitle: Text(snapshot.data![index].wadhifa!),
                       children: <Widget>[
                         const Divider(
                           thickness: 1.0,
@@ -190,7 +190,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          snapshot.data![index].fname,
+                                          snapshot.data![index].fname!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -198,7 +198,7 @@ class _WalimuScreenState extends State<WalimuScreen> {
                                           ),
                                         ),
                                         Text(
-                                          snapshot.data![index].phoneNo,
+                                          snapshot.data![index].phoneNo!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,

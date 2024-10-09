@@ -5,7 +5,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class SingleTangazoScreen extends StatefulWidget {
-  const SingleTangazoScreen({Key? key}) : super(key: key);
+  const SingleTangazoScreen({super.key});
 
   @override
   _SingleTangazoScreenState createState() => _SingleTangazoScreenState();

@@ -220,6 +220,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _status = false;
       });
       //remove loader
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
       //end here
       dynamic jsonResponse = json.decode(response.body);
@@ -234,6 +235,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           oldp.clear();
           newp.clear();
         });
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
         return Fluttertoast.showToast(
           msg: "Neno la siri limebadilishwa",
@@ -247,7 +249,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           _status = false;
         });
 
-        Fluttertoast.showToast(
+        return Fluttertoast.showToast(
           msg: "Neno lako la siri la zamani limekosewa",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -260,7 +262,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _status = false;
       });
 
-      Fluttertoast.showToast(
+      return Fluttertoast.showToast(
         msg: "Neno lako la siri la zamani limekosewa",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -279,7 +281,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: ElevatedButton(
         onPressed: () async {
           if (oldp.text.isEmpty || newp.text.isEmpty) {
-            return Fluttertoast.showToast(
+            Fluttertoast.showToast(
               msg: "Tafadhari weka taarifa zote",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,

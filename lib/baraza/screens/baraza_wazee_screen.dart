@@ -11,7 +11,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BarazaWazeeScreen extends StatefulWidget {
-  const BarazaWazeeScreen({Key? key}) : super(key: key);
+  const BarazaWazeeScreen({super.key});
 
   @override
   _BarazaWazeeScreenState createState() => _BarazaWazeeScreenState();
@@ -144,7 +144,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
             } else if (snapshot.hasData) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 2,
@@ -153,7 +153,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                     ),
                     child: ListTile(
                       title: Text(
-                        snapshot.data![index].fname,
+                        snapshot.data![index].fname!,
                         style: TextStyles.caption(context).copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -161,7 +161,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
                         ),
                       ),
                       subtitle: Text(
-                        snapshot.data![index].nambaYaSimu,
+                        snapshot.data![index].nambaYaSimu!,
                         style: TextStyles.caption(context).copyWith(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,

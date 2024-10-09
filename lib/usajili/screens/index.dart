@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:miyuji/utils/spacer.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({Key? key}) : super(key: key);
+  const RegistrationScreen({super.key});
   static const routeName = "/registrationscreen";
 
   @override
@@ -91,7 +92,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   productCountListener() {
-    print("value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("0")}");
+    if (kDebugMode) {
+      print("value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("0")}");
+    }
 
     //maximum sell
     if (nambaYaSimu.value.text.length != 10 || !nambaYaSimu.value.text.startsWith("0")) {
@@ -189,12 +192,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   //date mtoto one
   _tareheMtotoOne(BuildContext context) async {
-    DateTime newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showDatePicker(
       context: context,
       initialDate: tareheMtotoOne ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
@@ -205,13 +208,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             dialogBackgroundColor: Colors.blue[500],
           ),
-          child: child,
+          child: child ?? const SizedBox.shrink(), // Handle null child case
         );
       },
     );
+
     tareheMtotoOne = newSelectedDate;
     tareheMtoto_1
-      ..text = DateFormat.yMMMd().format(tareheMtotoOne)
+      ..text = DateFormat.yMMMd().format(tareheMtotoOne!)
       ..selection = TextSelection.fromPosition(
         TextPosition(
           offset: tareheMtoto_1.text.length,
@@ -223,12 +227,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   //date mtoto one
   _tareheMtotoTwo(BuildContext context) async {
-    DateTime newSelectedDate = await showDatePicker(
+    DateTime? newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: tareheMtotoTwo ?? DateTime.now(),
+      initialDate: tareheMtotoOne ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
@@ -239,13 +243,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             dialogBackgroundColor: Colors.blue[500],
           ),
-          child: child,
+          child: child ?? const SizedBox.shrink(), // Handle null child case
         );
       },
     );
+
     tareheMtotoTwo = newSelectedDate;
     tareheMtoto_2
-      ..text = DateFormat.yMMMd().format(tareheMtotoTwo)
+      ..text = DateFormat.yMMMd().format(tareheMtotoTwo!)
       ..selection = TextSelection.fromPosition(
         TextPosition(
           offset: tareheMtoto_2.text.length,
@@ -262,7 +267,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       initialDate: tareheMtotoThree ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2040),
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
@@ -273,13 +278,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             dialogBackgroundColor: Colors.blue[500],
           ),
-          child: child,
+          child: child!,
         );
       },
     );
     tareheMtotoThree = newSelectedDate;
     tareheMtoto_3
-      ..text = DateFormat.yMMMd().format(tareheMtotoThree)
+      ..text = DateFormat.yMMMd().format(tareheMtotoThree!)
       ..selection = TextSelection.fromPosition(
         TextPosition(
           offset: tareheMtoto_3.text.length,
@@ -326,55 +331,55 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   verifyFormAndSubmit() {
-    String jinaLaMsharika = jinaLaMsharika.text;
-    String haliYaNdoa = haliYaNdoa.text;
-    String jinsia = jinsia.text;
-    String jinaLaMwenziWako = jinaLaMwenziWako.text;
-    String nambaYaAhadi = nambaYaAhadi.text;
-    String ainaYaNdoa = ainaYaNdoa.text;
-    String haliYaaNdoa = haliYaNdoa.text;
+    String jinaLaMsharikaa = jinaLaMsharika.text;
+    String haliYaNdoaa = haliYaNdoa.text;
+    String jinsiaa = jinsia.text;
+    String jinaLaMwenziWakoa = jinaLaMwenziWako.text;
+    String nambaYaAhadia = nambaYaAhadi.text;
+    String ainaYaNdoaa = ainaYaNdoa.text;
+    String haliYaaNdoaa = haliYaNdoa.text;
 
-    String jinaMtoto_1 = jinaMtoto_1.text;
-    String tareheMtoto_1 = tareheMtoto_1.text;
-    String uhusianoMtoto_1 = uhusianoMtoto_1.text;
+    String jinaMtoto_1a = jinaMtoto_1.text;
+    String tareheMtoto_1a = tareheMtoto_1.text;
+    String uhusianoMtoto_1a = uhusianoMtoto_1.text;
 
-    String jinaMtoto_2 = jinaMtoto_2.text;
-    String tareheMtoto_2 = tareheMtoto_2.text;
-    String uhusianoMtoto_2 = uhusianoMtoto_2.text;
+    String jinaMtoto_2a = jinaMtoto_2.text;
+    String tareheMtoto_2a = tareheMtoto_2.text;
+    String uhusianoMtoto_2a = uhusianoMtoto_2.text;
 
-    String jinaMtoto_3 = jinaMtoto_3.text;
-    String tareheMtoto_3 = tareheMtoto_3.text;
-    String uhusianoMtoto_3 = uhusianoMtoto_3.text;
+    String jinaMtoto_3a = jinaMtoto_3.text;
+    String tareheMtoto_3a = tareheMtoto_3.text;
+    String uhusianoMtoto_3a = uhusianoMtoto_3.text;
 
-    String nambaYaSimu = nambaYaSimu.text;
-    String jengo = jengo.text;
-    String ahadi = ahadi.text;
-    String kazi = kazi.text;
-    String elimu = elimu.text;
-    String ujuzi = ujuzi.text;
-    String mahaliPakazi = mahaliPakazi.text;
+    String nambaYaSimua = nambaYaSimu.text;
+    String jengoa = jengo.text;
+    String ahadia = ahadi.text;
+    String kazia = kazi.text;
+    String elimua = elimu.text;
+    String ujuzia = ujuzi.text;
+    String mahaliPakazia = mahaliPakazi.text;
 
-    String jumuiyaUshiriki = jumuiyaUshiriki.text;
-    String jinaLaJumuiya = jinaLaJumuiya.text;
-    String idYaJumuiya = idYaJumuiya;
-    String katibuJumuiya = katibuJumuiya.text;
-    String kamaUshiriki = kamaUshiriki.text;
-    String krid = krid;
+    String jumuiyaUshirikia = jumuiyaUshiriki.text;
+    String jinaLaJumuiyaa = jinaLaJumuiya.text;
+    String idYaJumuiyaa = idYaJumuiya;
+    String katibuJumuiyaa = katibuJumuiya.text;
+    String kamaUshirikia = kamaUshiriki.text;
+    String krida = krid;
 
     final String s = jinaLaMsharika.value.text;
     final List l = s.split(' ');
 
-    if (jinaLaMsharika == "" ||
-        nambaYaSimu == "" ||
+    if (jinaLaMsharikaa == "" ||
+        nambaYaSimua == "" ||
         // _jumuiyaUshiriki == "" ||
-        ahadi == "" ||
-        jengo == "" ||
-        krid == "" ||
-        jinsia == "") {
+        ahadia == "" ||
+        jengoa == "" ||
+        krida == "" ||
+        jinsiaa == "") {
       Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia)");
-    } else if (nambaYaSimu.length != 10 || !nambaYaSimu.startsWith("0")) {
+    } else if (nambaYaSimua.length != 10 || !nambaYaSimua.startsWith("0")) {
       Alerts.show(context, "Kuna shida", "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).");
-    } else if (((jumuiyaUshiriki != '' && jumuiyaUshiriki == 'ndio') && (jinaLaJumuiya.text.isEmpty)) || katibuJumuiya.text.isEmpty) {
+    } else if (((jumuiyaUshirikia != '' && jumuiyaUshirikia == 'ndio') && (jinaLaJumuiya.text.isEmpty)) || katibuJumuiya.text.isEmpty) {
       Alerts.show(
         context,
         "Kuna shida",
@@ -396,35 +401,35 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
     } else {
       registerUser(
-        jinaLaMsharika,
-        jinsia,
-        haliYaNdoa,
-        jinaLaMwenziWako,
-        nambaYaAhadi,
-        ainaYaNdoa,
-        haliYaaNdoa,
-        jinaMtoto_1,
-        tareheMtoto_1,
-        uhusianoMtoto_1,
-        jinaMtoto_2,
-        tareheMtoto_2,
-        uhusianoMtoto_2,
-        jinaMtoto_3,
-        tareheMtoto_3,
-        uhusianoMtoto_3,
-        nambaYaSimu,
-        jengo,
-        ahadi,
-        kazi,
-        elimu,
-        ujuzi,
-        mahaliPakazi,
-        jumuiyaUshiriki,
-        jinaLaJumuiya,
-        idYaJumuiya,
-        katibuJumuiya,
-        kamaUshiriki,
-        krid,
+        jinaLaMsharikaa,
+        jinsiaa,
+        haliYaNdoaa,
+        jinaLaMwenziWakoa,
+        nambaYaAhadia,
+        ainaYaNdoaa,
+        haliYaaNdoaa,
+        jinaMtoto_1a,
+        tareheMtoto_1a,
+        uhusianoMtoto_1a,
+        jinaMtoto_2a,
+        tareheMtoto_2a,
+        uhusianoMtoto_2a,
+        jinaMtoto_3a,
+        tareheMtoto_3a,
+        uhusianoMtoto_3a,
+        nambaYaSimua,
+        jengoa,
+        ahadia,
+        kazia,
+        elimua,
+        ujuzia,
+        mahaliPakazia,
+        jumuiyaUshirikia,
+        jinaLaJumuiyaa,
+        idYaJumuiyaa,
+        katibuJumuiyaa,
+        kamaUshirikia,
+        krida,
       );
     }
   }
@@ -500,6 +505,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
 
       if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
@@ -538,7 +544,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
         // Alerts.show(context, "Umefanikiwa kujisajili kikamilifu", "Taarifa zimefanikiwa.");
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Umefanikiwa kujisajili kikamilifu",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -548,7 +554,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       } else if (jsonResponse == 404) {
         Navigator.pop(context);
 
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Server Error",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -556,8 +562,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           textColor: Colors.white,
         );
       } else if (jsonResponse == 201) {
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Ahsante ushajisajili kwa mwaka huu.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -565,8 +572,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           textColor: Colors.white,
         );
       } else if (jsonResponse == 500) {
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Server Error Please Try Again Later",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -575,9 +583,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       }
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
-
-      return Fluttertoast.showToast(
+      Fluttertoast.showToast(
         msg: "Server Error Please Try Again Later",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
@@ -770,83 +778,81 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           () {
                             return Text(
-                              msgErrorPhoneNumber3,
+                              msgErrorPhoneNumber3!,
                               style: const TextStyle(color: Colors.redAccent),
                             );
                           }(),
                           const SizedBox(
                             height: 2,
                           ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(
-                                  height: 5,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                '2. Hali ya ndoa',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                const Text(
-                                  '2. Hali ya ndoa',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Nimeoa'),
+                                leading: Radio(
+                                  value: "Nimeoa",
+                                  groupValue: _halindoa,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _halindoa = value!;
+                                      haliYaNdoa.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Nimeoa'),
-                                  leading: Radio(
-                                    value: "Nimeoa",
-                                    groupValue: _halindoa,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _halindoa = value;
-                                        haliYaNdoa.text = value;
-                                      });
-                                    },
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Sijaoa'),
+                                leading: Radio(
+                                  value: "Sijaoa",
+                                  groupValue: _halindoa,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _halindoa = value!;
+                                      haliYaNdoa.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Sijaoa'),
-                                  leading: Radio(
-                                    value: "Sijaoa",
-                                    groupValue: _halindoa,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _halindoa = value;
-                                        haliYaNdoa.text = value;
-                                      });
-                                    },
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Mgane'),
+                                leading: Radio(
+                                  value: "mgane",
+                                  groupValue: _halindoa,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _halindoa = value!;
+                                      haliYaNdoa.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Mgane'),
-                                  leading: Radio(
-                                    value: "mgane",
-                                    groupValue: _halindoa,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _halindoa = value;
-                                        haliYaNdoa.text = value;
-                                      });
-                                    },
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Talakiwa'),
+                                leading: Radio(
+                                  value: "talakiwa",
+                                  groupValue: _halindoa,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _halindoa = value!;
+                                      haliYaNdoa.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Talakiwa'),
-                                  leading: Radio(
-                                    value: "talakiwa",
-                                    groupValue: _halindoa,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _halindoa = value;
-                                        haliYaNdoa.text = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 5,
@@ -874,7 +880,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     groupValue: _jinsiaYako,
                                     onChanged: (value) {
                                       setState(() {
-                                        _jinsiaYako = value;
+                                        _jinsiaYako = value!;
                                         jinsia.text = value;
                                       });
                                     },
@@ -887,7 +893,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     groupValue: _jinsiaYako,
                                     onChanged: (value) {
                                       setState(() {
-                                        _jinsiaYako = value;
+                                        _jinsiaYako = value!;
                                         jinsia.text = value;
                                       });
                                     },
@@ -939,50 +945,48 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             controller: nambaYaAhadi,
                           ),
                           (_halindoa != '' && _halindoa == 'Nimeoa')
-                              ? Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const SizedBox(
-                                        height: 5,
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Text(
+                                      '5. Aina ya ndoa',
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
                                       ),
-                                      const Text(
-                                        '5. Aina ya ndoa',
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
+                                    ),
+                                    ListTile(
+                                      title: const Text('Ndoa ya Kikristo'),
+                                      leading: Radio(
+                                        value: "Ndoa ya Kikristo",
+                                        groupValue: _ndoa,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _ndoa = value!;
+                                            ainaYaNdoa.text = value;
+                                          });
+                                        },
                                       ),
-                                      ListTile(
-                                        title: const Text('Ndoa ya Kikristo'),
-                                        leading: Radio(
-                                          value: "Ndoa ya Kikristo",
-                                          groupValue: _ndoa,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _ndoa = value;
-                                              ainaYaNdoa.text = value;
-                                            });
-                                          },
-                                        ),
+                                    ),
+                                    ListTile(
+                                      title: const Text('Ndoa isiyo ya Kikristo'),
+                                      leading: Radio(
+                                        value: "Ndoa isiyo ya Kikristo",
+                                        groupValue: _ndoa,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _ndoa = value!;
+                                            ainaYaNdoa.text = value;
+                                          });
+                                        },
                                       ),
-                                      ListTile(
-                                        title: const Text('Ndoa isiyo ya Kikristo'),
-                                        leading: Radio(
-                                          value: "Ndoa isiyo ya Kikristo",
-                                          groupValue: _ndoa,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _ndoa = value;
-                                              ainaYaNdoa.text = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 )
                               : const SizedBox.shrink(),
                           const SizedBox(
@@ -1264,7 +1268,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           () {
                             return Text(
-                              msgErrorPhoneNumber,
+                              msgErrorPhoneNumber!,
                               style: const TextStyle(color: Colors.redAccent),
                             );
                           }(),
@@ -1577,7 +1581,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               groupValue: _ushiriki,
                               onChanged: (value) {
                                 setState(() {
-                                  _ushiriki = value;
+                                  _ushiriki = value!;
                                   jumuiyaUshiriki.text = value;
                                 });
                               },
@@ -1590,7 +1594,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               groupValue: _ushiriki,
                               onChanged: (value) {
                                 setState(() {
-                                  _ushiriki = value;
+                                  _ushiriki = value!;
                                   jumuiyaUshiriki.text = value;
                                 });
                               },
@@ -1621,8 +1625,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                               child: DropdownButton(
                                                 hint: const Text("Chagua Jumuiya yako"),
                                                 value: _valProvince,
-                                                items: _dataProvince.map((item) {
-                                                  var data;
+                                                items: _dataProvince!.map((item) {
                                                   return DropdownMenuItem(
                                                     value: item['jumuiya_name'],
                                                     child: Row(
@@ -1646,18 +1649,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                                   );
                                                 }).toList(),
                                                 onChanged: (value) async {
-                                                  print("value data $value");
                                                   setState(() {
                                                     // idYaJumuiya = item['jumuiya_name'];
-                                                    for (var items in katibuWaJumuiya) {
+                                                    for (var items in katibuWaJumuiya!) {
                                                       if (items['jumuiya'] == value) {
                                                         katibuJumuiya.text = items['jina'];
                                                       }
                                                     }
 
-                                                    _valProvince = value;
-                                                    jinaLaJumuiya.text = value;
-                                                    idYaJumuiya = value;
+                                                    _valProvince = value.toString();
+                                                    jinaLaJumuiya.text = value.toString();
+                                                    idYaJumuiya = value.toString();
                                                   });
                                                 },
                                               ),
@@ -1715,7 +1717,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         ),
                                         () {
                                           return Text(
-                                            msgErrorPhoneNumber2,
+                                            msgErrorPhoneNumber2!,
                                             style: const TextStyle(color: Colors.redAccent),
                                           );
                                         }(),
@@ -1796,29 +1798,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             children: <Widget>[
               pagecontrolnumber == 0
                   ? const SizedBox()
-                  : RaisedButton(
+                  : ElevatedButton(
                       onPressed: previousPage,
-                      color: MyColors.primaryLight,
+                      // color: MyColors.primaryLight,
                       child: const Text(
                         'nyuma',
                         style: TextStyle(color: Colors.white),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(10),
+                      // ),
                     ),
               pagecontrolnumber == 4
                   ? const SizedBox()
-                  : RaisedButton(
+                  : ElevatedButton(
                       onPressed: nextPage,
-                      color: MyColors.primaryLight,
+                      // color: MyColors.primaryLight,
                       child: const Text(
                         'mbele',
                         style: TextStyle(color: Colors.white),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(10),
+                      // ),
                     )
             ],
           ),
@@ -1828,20 +1830,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void nextPage() {
-    _pageController.animateToPage(_pageController.page.toInt() + 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+    _pageController.animateToPage(_pageController.page!.toInt() + 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
       getJumuiyaApi();
       getUsajiliId();
       getKatibu();
-      pagecontrolnumber = pagecontrolnumber + 1;
+      pagecontrolnumber = (pagecontrolnumber! + 1);
     });
   }
 
   void previousPage() {
-    print("${_pageController.page.toInt()} page id");
-    _pageController.animateToPage(_pageController.page.toInt() - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+    if (kDebugMode) {
+      print("${_pageController.page!.toInt()} page id");
+    }
+    _pageController.animateToPage(_pageController.page!.toInt() - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
-      pagecontrolnumber = pagecontrolnumber - 1;
+      pagecontrolnumber = pagecontrolnumber! - 1;
     });
   }
 }

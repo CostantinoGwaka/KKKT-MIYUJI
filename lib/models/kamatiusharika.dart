@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-List<KamatiUsharika> kamatiUsharikaFromJson(String str) =>
-    List<KamatiUsharika>.from(json.decode(str).map((x) => KamatiUsharika.fromJson(x)));
+List<KamatiUsharika> kamatiUsharikaFromJson(String str) => List<KamatiUsharika>.from(json.decode(str).map((x) => KamatiUsharika.fromJson(x)));
 
 String kamatiUsharikaToJson(List<KamatiUsharika> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -16,9 +15,9 @@ class KamatiUsharika {
     this.tarehe,
   });
 
-  String id;
-  String jinaKamati;
-  String tarehe;
+  String? id;
+  String? jinaKamati;
+  String? tarehe;
 
   factory KamatiUsharika.fromJson(Map<String, dynamic> json) => KamatiUsharika(
         id: json["id"],

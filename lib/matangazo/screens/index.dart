@@ -12,7 +12,7 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 
 class MatangazoScreen extends StatefulWidget {
-  const MatangazoScreen({Key? key}) : super(key: key);
+  const MatangazoScreen({super.key});
 
   @override
   _MatangazoScreenState createState() => _MatangazoScreenState();
@@ -147,7 +147,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
             } else if (snapshot.hasData) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Card(
                     shape: RoundedRectangleBorder(
@@ -210,7 +210,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              snapshot.data![index].title,
+                                              snapshot.data![index].title.toString(),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: false,
@@ -222,7 +222,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                               ),
                                             ),
                                             Text(
-                                              DateFormat('dd-MM-yyyy').format(snapshot.data![index].tarehe),
+                                              DateFormat('dd-MM-yyyy').format(snapshot.data![index].tarehe!),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: false,

@@ -6,7 +6,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class KwayaZetu extends StatefulWidget {
-  const KwayaZetu({Key? key}) : super(key: key);
+  const KwayaZetu({super.key});
 
   @override
   _KwayaZetuState createState() => _KwayaZetuState();

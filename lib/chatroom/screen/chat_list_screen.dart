@@ -43,7 +43,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: FirebaseDatabase.instance.reference().child("RecentChat/${host['member_no']}").onValue,
+        stream: null,
+        // stream: FirebaseDatabase.instance.reference().child("RecentChat/${host['member_no']}").onValue,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {

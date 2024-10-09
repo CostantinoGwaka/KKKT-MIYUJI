@@ -12,22 +12,21 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 var videoId = '';
 
 class LiveYoutubePlayer extends StatefulWidget {
-  final LiveStreams media;
-  const LiveYoutubePlayer({Key key, this.media}) : super(key: key);
+  final LiveStreams? media;
+  const LiveYoutubePlayer({Key? key, this.media}) : super(key: key);
 
   @override
   _PlayerState createState() => _PlayerState();
 }
 
 class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver {
-  YoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
   bool load = false;
 
   Future<dynamic> getVideoId() async {
     setState(() {
       load = true;
     });
-    print("dataz");
     String myApi = "http://miyujikkkt.or.tz/api/get_streamId.php";
     final response = await http.post(
       Uri.parse(myApi),

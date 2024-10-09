@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class JumuiyaZetu extends StatefulWidget {
-  const JumuiyaZetu({Key? key}) : super(key: key);
+  const JumuiyaZetu({super.key});
 
   @override
   _JumuiyaZetuState createState() => _JumuiyaZetuState();
@@ -148,7 +148,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
               } else if (snapshot.hasData) {
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) {
                     return Material(
                       child: InkWell(

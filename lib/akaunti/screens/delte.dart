@@ -493,7 +493,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
           newp.clear();
         });
 
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Neno la siri limebadilishwa",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -542,7 +542,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -556,8 +556,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     const Text("Badili"),
                   ],
                 ),
-                textColor: Colors.white,
-                color: Colors.green,
+                // textColor: Colors.white,
+                // color: Colors.green,
                 onPressed: () {
                   // setState(() {
                   //   _status = true;
@@ -566,7 +566,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                   if (oldp.text.isNotEmpty && newp.text.isNotEmpty) {
                     updatePassword(host['member_no'], oldp.text, newp.text);
                   } else {
-                    return Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: "Weka neno lako la siri jipya na lazamani",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.BOTTOM,
@@ -575,7 +575,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     );
                   }
                 },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
           ),
@@ -584,7 +584,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -598,8 +598,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     const Text("Toka"),
                   ],
                 ),
-                textColor: Colors.white,
-                color: MyColors.primaryDark,
+                // textColor: Colors.white,
+                // color: MyColors.primaryDark,
                 onPressed: () async {
                   Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
 
@@ -607,6 +607,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     await LocalStorage.removeItem("mydata").whenComplete(() async {
                       // ignore: void_checks
                       await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
@@ -620,7 +621,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                     });
                   });
                 },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
               )),
             ),
           ),

@@ -124,7 +124,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
 
         Navigator.of(context).pop();
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-        return Fluttertoast.showToast(
+        Fluttertoast.showToast(
           msg: "Maoni yako yamepokelewa, Ahsante",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -157,10 +157,10 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     // ignore: deprecated_member_use
     return Center(
       // ignore: deprecated_member_use
-      child: FlatButton(
+      child: ElevatedButton(
         onPressed: () async {
           if (xsuggestion.text.isEmpty || xsuggestion.text.isEmpty) {
-            return Fluttertoast.showToast(
+            Fluttertoast.showToast(
               msg: "Tafadhari weka maoni au mapendekezo yako..",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
@@ -171,13 +171,14 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
             await send_suggestion(host['member_no'], xsuggestion.text);
           }
         },
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 80,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+        // color: MyColors.primaryLight,
+        // padding: const EdgeInsets.symmetric(
+        //   vertical: 10,
+        //   horizontal: 80,
+        // ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(20.0),
+        // ),
         child: Text(
           "Tuma",
           style: GoogleFonts.montserrat(
@@ -187,7 +188,6 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        color: MyColors.primaryLight,
       ),
     );
   }

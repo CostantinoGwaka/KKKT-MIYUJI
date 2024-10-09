@@ -7,11 +7,11 @@ class Cloud {
     dynamic value,
     String? serverTime,
   }) async {
-    try {
-      await FirebaseDatabase.instance.reference().child(serverPath).set(value);
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    //   await FirebaseDatabase.instance.reference().child(serverPath).set(value);
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   static Future updateStafToken({String? serverPath, dynamic value}) async {
@@ -54,10 +54,10 @@ class Cloud {
         //   }
         // });
       } else {
-        await FirebaseDatabase.instance.reference().child(serverPath).update(value);
+        // await FirebaseDatabase.instance.reference().child(serverPath).update(value);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 

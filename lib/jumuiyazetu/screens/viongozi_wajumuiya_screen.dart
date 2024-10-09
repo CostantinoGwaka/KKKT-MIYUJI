@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViongoziJumuiya extends StatefulWidget {
   final dynamic jumuiya;
-  const ViongoziJumuiya({Key key, this.jumuiya}) : super(key: key);
+  const ViongoziJumuiya({Key? key, this.jumuiya}) : super(key: key);
 
   @override
   _ViongoziJumuiyaState createState() => _ViongoziJumuiyaState();
@@ -157,7 +157,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
             } else if (snapshot.hasData) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Card(
                     elevation: 2,
@@ -208,7 +208,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          snapshot.data![index].fname,
+                                          snapshot.data![index].fname!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                           ),
                                         ),
                                         Text(
-                                          snapshot.data![index].phoneNo,
+                                          snapshot.data![index].phoneNo!,
                                           style: TextStyles.caption(context).copyWith(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -228,6 +228,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
+                                        // ignore: deprecated_member_use
                                         launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(
@@ -259,7 +260,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      snapshot.data![index].jumuiya,
+                                      snapshot.data![index].jumuiya!,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
@@ -285,7 +286,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ),
                                     manualSpacer(step: 5),
                                     Text(
-                                      snapshot.data![index].tarehe,
+                                      snapshot.data![index].tarehe!,
                                       style: TextStyles.caption(context).copyWith(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,

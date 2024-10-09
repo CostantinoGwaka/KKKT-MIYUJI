@@ -10,7 +10,7 @@ import 'dart:math' as math;
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -32,10 +32,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   void resetBtn() {
     //reset button
-    if (_controller!.isDismissed) {
-      _controller!.forward();
+    if (_controller.isDismissed) {
+      _controller.forward();
     } else {
-      _controller!.reverse();
+      _controller.reverse();
     }
   }
 
@@ -84,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     onPressed: () {
                       if (index == 0) {
                         resetBtn();
-                        return showModalBottomSheet(
+                        showModalBottomSheet(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                   heroTag: null,
                   child: AnimatedBuilder(
                     animation: _controller,
-                    builder: (BuildContext context, Widget child) {
+                    builder: (BuildContext context, Widget? child) {
                       return Transform(
                         transform: Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
                         alignment: FractionalOffset.center,

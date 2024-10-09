@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import './local_notification.dart';
-import 'package:http/http.dart' as http;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:miyuji/models/message.dart';
 
 const String FIREBASE_API_KEY =

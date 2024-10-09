@@ -12,7 +12,7 @@ import 'package:firebase_database/firebase_database.dart';
 // }
 
 class HandleMessageFunction {
-  static sendNormalText({Message? message, String? receiverId, String? senderId, String token}) {
+  static sendNormalText({Message? message, String? receiverId, String? senderId, String? token}) {
     Cloud.add(
       serverPath: "Messages/$senderId/$receiverId/${message!.messageId}",
       value: {
@@ -36,7 +36,6 @@ class HandleMessageFunction {
         "repliedContent": message.repliedContent,
       },
     ).whenComplete(() {
-      print("this message riched1");
       saveIncomingMessage(message: message);
 
       FireibaseClass.sendNotification(

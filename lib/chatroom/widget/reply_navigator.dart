@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:miyuji/bloc/addReply.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +35,7 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[200], width: 1))),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1))),
       padding: const EdgeInsets.all(8),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

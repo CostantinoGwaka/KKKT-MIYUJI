@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +17,7 @@ import './message_handler.dart';
 
 class MediaHandler {
   static final picker = ImagePicker();
-  static File _image;
+  static late File _image;
   static var basNameWithExtension;
   static var newmessage;
   static var mtumishi;
@@ -25,7 +26,7 @@ class MediaHandler {
     await LocalStorage.getStringItem('member_no').then((value) {
       var mymtumishi = jsonDecode(value);
       mtumishi = mymtumishi;
-        });
+    });
 
     //upload image to server
     if (message.type == "photo") {}
@@ -43,25 +44,27 @@ class MediaHandler {
       res.ref.getDownloadURL().then((value) {
         //update picurl
         updateMediaUrl(value, widget.friendId, id).whenComplete(() {
-              newmessage = message;
-              message.picUrl = value;
-              HandleMessageFunction.saveIncomingMessage(message: message);
-              FireibaseClass.sendNotification(
-                message: message,
-                token: token,
-              ).catchError((err) {
-                print("error occured: $err");
-              });
-              Cloud.update(
-                checkSnap: false,
-                serverPath: "RecentChat/${mtumishi['member_no']}/${widget.friendId}",
-                value: {
-                  "lastmessage": message.message,
-                  "unseen": 0,
-                  "time": message.sentAt,
-                },
-              );
-            });
+          newmessage = message;
+          message.picUrl = value;
+          HandleMessageFunction.saveIncomingMessage(message: message);
+          FireibaseClass.sendNotification(
+            message: message,
+            token: token,
+          ).catchError((err) {
+            if (kDebugMode) {
+              print("error occured: $err");
+            }
+          });
+          Cloud.update(
+            checkSnap: false,
+            serverPath: "RecentChat/${mtumishi['member_no']}/${widget.friendId}",
+            value: {
+              "lastmessage": message.message,
+              "unseen": 0,
+              "time": message.sentAt,
+            },
+          );
+        });
       });
     });
   }
@@ -81,7 +84,6 @@ class MediaHandler {
     File image,
     String caption,
   ) async {
-    print("here we go :caption $caption");
     //create file to be uploaded to the server
     //create message id
     String id = const Uuid().v4();
@@ -150,11 +152,13 @@ class MediaHandler {
   }
 
   static Future getDocument(BuildContext context, dynamic widget, String token, List replyData) async {
-    print("hahahaahah : $replyData");
-    File file = await FilePicker.getFile(
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', '.doc', 'txt', 'xlsx'],
+      allowedExtensions: ['pdf', 'doc', 'txt', 'xlsx'],
     );
+
+    File file = File(result!.files.single.path!);
+
     if (file.lengthSync() <= 8000000) {
       //create file to be uploaded to the server
       _image = await File(file.path).create();
@@ -221,7 +225,7 @@ class MediaHandler {
   }
 
   //universal function send media fucntion
-  static Future<dynamic> sendMedia({Message message, String receiverId, String senderId}) async {
+  static Future<dynamic> sendMedia({required Message message, String? receiverId, String? senderId}) async {
     Cloud.add(
       serverPath: "Messages/$senderId/$receiverId/${message.messageId}",
       value: {

@@ -8,12 +8,12 @@ class ImagePreview extends StatelessWidget {
   final BoxFit fit;
   final bool filter;
   final Color filterColor;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
 
   const ImagePreview({
-    Key key,
-    @required this.img,
+    Key? key,
+    required this.img,
     this.height,
     this.width,
     this.fit = BoxFit.cover,

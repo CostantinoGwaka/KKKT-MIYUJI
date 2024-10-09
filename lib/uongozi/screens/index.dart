@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class ViongoziWaKanisa extends StatefulWidget {
-  const ViongoziWaKanisa({Key? key}) : super(key: key);
+  const ViongoziWaKanisa({super.key});
 
   @override
   _ViongoziWaKanisaState createState() => _ViongoziWaKanisaState();
@@ -146,7 +146,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const BouncingScrollPhysics(),
-                          itemCount: snapshot.data.length,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (_, index) {
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -198,7 +198,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        snapshot.data![index].fname,
+                                                        snapshot.data![index].fname!,
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         softWrap: false,
@@ -210,7 +210,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                                       ),
                                                       manualStepper(step: 10),
                                                       Text(
-                                                        snapshot.data![index].wadhifa,
+                                                        snapshot.data![index].wadhifa!,
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         softWrap: false,

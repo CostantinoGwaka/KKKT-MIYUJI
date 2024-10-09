@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class ImageCaption extends StatefulWidget {
   final File imagefile;
   var widgetData;
-  ImageCaption({super.key, this.imagefile, this.widgetData});
+  ImageCaption({super.key, required this.imagefile, this.widgetData});
 
   @override
   _ImageCaptionState createState() => _ImageCaptionState();
@@ -25,12 +25,10 @@ class _ImageCaptionState extends State<ImageCaption> {
       backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
-          Container(
-            child: Center(
-              child: Image.file(
-                widget.imagefile,
-                // fit: BoxFit.cover,
-              ),
+          Center(
+            child: Image.file(
+              widget.imagefile,
+              // fit: BoxFit.cover,
             ),
           ),
           Positioned(

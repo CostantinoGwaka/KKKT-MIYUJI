@@ -4,8 +4,7 @@
 
 import 'dart:convert';
 
-List<ViongoziKamati> viongoziKamatiFromJson(String str) =>
-    List<ViongoziKamati>.from(json.decode(str).map((x) => ViongoziKamati.fromJson(x)));
+List<ViongoziKamati> viongoziKamatiFromJson(String str) => List<ViongoziKamati>.from(json.decode(str).map((x) => ViongoziKamati.fromJson(x)));
 
 String viongoziKamatiToJson(List<ViongoziKamati> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -22,15 +21,15 @@ class ViongoziKamati {
     this.status,
   });
 
-  String id;
-  String fname;
-  String phoneNo;
-  String kamatiId;
-  String kamatiName;
-  String wadhifaName;
-  String memberNo;
-  String tarehe;
-  String status;
+  String? id;
+  String? fname;
+  String? phoneNo;
+  String? kamatiId;
+  String? kamatiName;
+  String? wadhifaName;
+  String? memberNo;
+  String? tarehe;
+  String? status;
 
   factory ViongoziKamati.fromJson(Map<String, dynamic> json) => ViongoziKamati(
         id: json["id"],

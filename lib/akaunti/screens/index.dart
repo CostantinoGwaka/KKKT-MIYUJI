@@ -245,7 +245,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                   if (oldp.text.isNotEmpty && newp.text.isNotEmpty) {
                     updatePassword(host['member_no'], oldp.text, newp.text);
                   } else {
-                    return Fluttertoast.showToast(
+                    Fluttertoast.showToast(
                       msg: "Weka neno lako la siri jipya na lazamani",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.BOTTOM,

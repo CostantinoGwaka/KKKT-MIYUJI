@@ -10,7 +10,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 
 class MatoleoScreen extends StatefulWidget {
-  const MatoleoScreen({Key? key}) : super(key: key);
+  const MatoleoScreen({super.key});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -160,7 +160,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               children: [
                                 Text(
                                   "Ahadi",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(),
                                 Text(
                                   "Tsh ${currency.format(int.parse(data['ahadi']))}",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
                                       ),
@@ -177,7 +177,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
                                 Text(
                                   "Jengo",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -186,7 +186,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(),
                                 Text(
                                   "Tsh ${currency.format(int.parse(data['jengo']))}",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
                                       ),
@@ -199,7 +199,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               children: [
                                 Text(
                                   "",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -215,7 +215,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     } else if (snapshot.hasData) {
                                       return Text(
                                         "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                        style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                               fontSize: 17,
                                               color: MyColors.primaryLight,
                                             ),
@@ -228,7 +228,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
                                 Text(
                                   "",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 15,
                                         color: MyColors.primaryLight,
                                         fontWeight: FontWeight.bold,
@@ -244,7 +244,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     } else if (snapshot.hasData) {
                                       return Text(
                                         "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context).primaryTextTheme.displayMedium.copyWith(
+                                        style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                               fontSize: 17,
                                               color: MyColors.primaryLight,
                                             ),
@@ -266,7 +266,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Matoleo",
-                      style: Theme.of(context).textTheme.displayLarge.copyWith(
+                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: MyColors.primaryLight,
@@ -345,7 +345,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                   return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: snapshot.data.length,
+                                      itemCount: snapshot.data!.length,
                                       itemBuilder: (_, index) {
                                         return GestureDetector(
                                           onTap: () {},
@@ -364,7 +364,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                         children: [
                                                           Text(
                                                             "Ahadi",
-                                                            style: Theme.of(context).textTheme.titleMedium.copyWith(fontSize: 14),
+                                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
                                                           ),
                                                           Padding(
                                                             padding: const EdgeInsets.all(8.0),
@@ -372,11 +372,11 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                               children: [
                                                                 Text(
                                                                   "TZS ",
-                                                                  style: Theme.of(context).textTheme.titleMedium.copyWith(fontSize: 10),
+                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
                                                                 ),
                                                                 Text(
                                                                   currency.format(int.parse(snapshot.data![index]['ahadi'])),
-                                                                  style: Theme.of(context).textTheme.titleMedium.copyWith(
+                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                                                         fontSize: 17,
                                                                         fontWeight: FontWeight.w500,
                                                                       ),
@@ -391,7 +391,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                         children: [
                                                           Text(
                                                             "Jengo",
-                                                            style: Theme.of(context).textTheme.titleMedium.copyWith(fontSize: 14),
+                                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
                                                           ),
                                                           Padding(
                                                             padding: const EdgeInsets.all(8.0),
@@ -399,11 +399,11 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                               children: [
                                                                 Text(
                                                                   "TZS ",
-                                                                  style: Theme.of(context).textTheme.titleMedium.copyWith(fontSize: 10),
+                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
                                                                 ),
                                                                 Text(
                                                                   currency.format(int.parse(snapshot.data![index]['jengo'])),
-                                                                  style: Theme.of(context).textTheme.titleMedium.copyWith(
+                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                                                         fontSize: 17,
                                                                         fontWeight: FontWeight.w500,
                                                                       ),
@@ -422,14 +422,14 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                           children: [
                                                             Text(
                                                               "",
-                                                              style: Theme.of(context).textTheme.titleMedium.copyWith(
+                                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                                                     fontSize: 14,
                                                                     fontWeight: FontWeight.bold,
                                                                   ),
                                                             ),
                                                             Text(
                                                               "2022-03-13",
-                                                              style: Theme.of(context).textTheme.titleMedium.copyWith(
+                                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                                                     fontSize: 12,
                                                                     fontWeight: FontWeight.bold,
                                                                   ),

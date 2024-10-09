@@ -4,7 +4,7 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
 class CardBaraza extends StatelessWidget {
-  const CardBaraza({Key? key}) : super(key: key);
+  const CardBaraza({super.key});
 
   @override
   Widget build(BuildContext context) {

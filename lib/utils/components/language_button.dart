@@ -13,17 +13,18 @@ class LanguageButtonDirection {
 }
 
 class LanguageButton extends StatefulWidget {
-  const LanguageButton({super.key, 
-    @required this.language,
-    @required this.direction,
-    @required this.isSelected,
-    @required this.onTap,
+  const LanguageButton({
+    super.key,
+    required this.language,
+    required this.direction,
+    required this.isSelected,
+    required this.onTap,
   });
 
   final String language;
   final LanguageButtonDirection direction;
   final bool isSelected;
-  final Function onTap;
+  final GestureTapCallback onTap;
 
   @override
   _LanguageButtonState createState() => _LanguageButtonState();

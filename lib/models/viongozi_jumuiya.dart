@@ -4,11 +4,9 @@
 
 import 'dart:convert';
 
-List<ViongoziJumuiyaPodo> viongoziJumuiyaPodoFromJson(String str) =>
-    List<ViongoziJumuiyaPodo>.from(json.decode(str).map((x) => ViongoziJumuiyaPodo.fromJson(x)));
+List<ViongoziJumuiyaPodo> viongoziJumuiyaPodoFromJson(String str) => List<ViongoziJumuiyaPodo>.from(json.decode(str).map((x) => ViongoziJumuiyaPodo.fromJson(x)));
 
-String viongoziJumuiyaPodoToJson(List<ViongoziJumuiyaPodo> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String viongoziJumuiyaPodoToJson(List<ViongoziJumuiyaPodo> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ViongoziJumuiyaPodo {
   ViongoziJumuiyaPodo({
@@ -22,14 +20,14 @@ class ViongoziJumuiyaPodo {
     this.tarehe,
   });
 
-  String id;
-  String fname;
-  String phoneNo;
-  String wadhifa;
-  String jumuiya;
-  String jumuiyaId;
-  String status;
-  String tarehe;
+  String? id;
+  String? fname;
+  String? phoneNo;
+  String? wadhifa;
+  String? jumuiya;
+  String? jumuiyaId;
+  String? status;
+  String? tarehe;
 
   factory ViongoziJumuiyaPodo.fromJson(Map<String, dynamic> json) => ViongoziJumuiyaPodo(
       id: json["id"],

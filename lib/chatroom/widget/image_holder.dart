@@ -7,10 +7,10 @@ class ImageView extends StatelessWidget {
   final BoxFit fit;
   final bool filter;
   final Color filterColor;
-  final double height;
+  final double? height;
 
   ///encapsulate a network image
-  const ImageView({super.key, this.img, this.height, this.fit = BoxFit.cover, this.filter = false, this.filterColor = Colors.black45});
+  const ImageView({super.key, required this.img, this.height, this.fit = BoxFit.cover, this.filter = false, this.filterColor = Colors.black45});
 
   @override
   Widget build(BuildContext context) {

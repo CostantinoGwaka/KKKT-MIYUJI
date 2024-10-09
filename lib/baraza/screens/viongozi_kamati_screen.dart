@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViongoziWaKamati extends StatefulWidget {
   final dynamic kamati;
-  const ViongoziWaKamati({Key? key, this.kamati}) : super(key: key);
+  const ViongoziWaKamati({super.key, this.kamati});
 
   @override
   _ViongoziWaKamatiState createState() => _ViongoziWaKamatiState();

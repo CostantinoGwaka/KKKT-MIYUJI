@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class KamatiUsharikaScreen extends StatefulWidget {
-  const KamatiUsharikaScreen({Key? key}) : super(key: key);
+  const KamatiUsharikaScreen({super.key});
 
   @override
   _KamatiUsharikaScreenState createState() => _KamatiUsharikaScreenState();

@@ -6,32 +6,33 @@ import 'package:miyuji/utils/spacer.dart';
 enum MessageType { normal, photo, video, document, contact }
 
 class ChatListItem extends StatefulWidget {
-  final String name;
-  final String uid;
-  final String picture;
+  final String? name;
+  final String? uid;
+  final String? picture;
   final bool online;
   final bool selected;
-  final int count;
+  final int? count;
   final MessageType type;
-  final String text;
-  final String time;
-  final String lastMessage;
-  final String friendId;
-  final String detpId;
+  final String? text;
+  final String? time;
+  final String? lastMessage;
+  final String? friendId;
+  final String? detpId;
 
   const ChatListItem(
-      {super.key, @required this.name,
+      {super.key,
+      @required this.name,
       this.friendId,
       this.detpId,
       this.uid,
-      @required this.picture,
-      this.online,
-      @required this.count,
-      @required this.type,
+      required this.picture,
+      this.online = false,
+      required this.count,
+      required this.type,
       this.text,
-      this.selected,
+      this.selected = false,
       this.lastMessage,
-      @required this.time});
+      required this.time});
 
   @override
   _ChatListItemState createState() => _ChatListItemState();
@@ -41,15 +42,17 @@ class _ChatListItemState extends State<ChatListItem> {
   TextStyle media = const TextStyle(fontSize: 14);
   TextStyle small = const TextStyle(fontSize: 10);
   double iconSize = 18;
-  String token = null;
+  late String token;
 
   @override
   void initState() {
-    FirebaseDatabase.instance.reference().child("users/${widget.friendId}/token").once().then((snap) {
+    final databaseRef = FirebaseDatabase.instance.ref();
+    databaseRef.child("users/${widget.friendId}/token").once().then((DatabaseEvent snap) {
       setState(() {
-        token = snap.value;
+        token = snap.snapshot.value.toString();
       });
     });
+
     super.initState();
   }
 
@@ -81,7 +84,7 @@ class _ChatListItemState extends State<ChatListItem> {
         // child: _renderOnline(),
       ),
       title: Text(
-        widget.name,
+        widget.name.toString(),
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: deviceWidth(context) / 25),
       ),
       subtitle: _renderSubtitle(context),
@@ -94,7 +97,7 @@ class _ChatListItemState extends State<ChatListItem> {
       radius: deviceWidth(context) / 45,
       backgroundColor: Colors.green,
       child: Text(
-        widget.count < 100 ? widget.count.toString() : "99+",
+        widget.count! < 100 ? widget.count.toString() : "99+",
         style: TextStyle(
           color: Colors.white,
           fontSize: deviceWidth(context) / 40,
@@ -104,7 +107,7 @@ class _ChatListItemState extends State<ChatListItem> {
   }
 
   Widget _renderTailing(BuildContext context) {
-    if (widget.count > 0) {
+    if (widget.count! > 0) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
@@ -112,14 +115,14 @@ class _ChatListItemState extends State<ChatListItem> {
           _count(context),
           manualStepper(step: 5),
           Text(
-            widget.time,
+            widget.time.toString(),
             style: small,
           )
         ],
       );
     } else {
       return Text(
-        widget.time,
+        widget.time.toString(),
         style: small,
       );
     }

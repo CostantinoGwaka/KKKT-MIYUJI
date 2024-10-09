@@ -35,7 +35,7 @@ dependencies:
   url_launcher:
   focused_menu:
   scrollable_positioned_list:
-  # device_preview:
+  device_preview:
   ffi: ^1.0.0
   fluttertoast:
   # local_auth:

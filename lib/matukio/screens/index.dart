@@ -5,7 +5,7 @@ import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 
 class MatukioScreen extends StatefulWidget {
-  const MatukioScreen({Key? key}) : super(key: key);
+  const MatukioScreen({super.key});
 
   @override
   _MatukioScreenState createState() => _MatukioScreenState();
