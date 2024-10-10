@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
 
@@ -29,16 +29,16 @@ class ReceivedNotification {
 
 class LocalNotification {
   static void requestPermissions() {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+    // flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+    //       alert: true,
+    //       badge: true,
+    //       sound: true,
+    //     );
+    // flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+    //       alert: true,
+    //       badge: true,
+    //       sound: true,
+    //     );
   }
 
   static void configureDidReceiveLocalNotificationSubject({required BuildContext context}) {
@@ -123,25 +123,25 @@ class LocalNotification {
   }
 
   static Future<void> showNotification({String? title, String? description}) async {
-    FlutterLocalNotificationsPlugin localNotifPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'channel_id',
-      'channel_name',
-      'channel_description',
-      importance: Importance.max,
-      priority: Priority.high,
-      enableLights: true,
-      ticker: 'ticker',
-      // icon: 'notification_icon_default',
-      // largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
-    );
+    // FlutterLocalNotificationsPlugin localNotifPlugin = FlutterLocalNotificationsPlugin();
+    // const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    //   'channel_id',
+    //   'channel_name',
+    //   'channel_description',
+    //   importance: Importance.max,
+    //   priority: Priority.high,
+    //   enableLights: true,
+    //   ticker: 'ticker',
+    //   // icon: 'notification_icon_default',
+    //   // largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
+    // );
     // var iOSChannelSpecifics = IOSNotificationDetails();
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    localNotifPlugin.show(
-      0,
-      title,
-      description,
-      platformChannelSpecifics,
-    );
+    // const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    // localNotifPlugin.show(
+    //   0,
+    //   title,
+    //   description,
+    //   platformChannelSpecifics,
+    // );
   }
 }
