@@ -26,7 +26,7 @@ dependencies:
   share:
   firebase_database:
   firebase_messaging:
-  flutter_local_notifications:
+  # flutter_local_notifications:
   firebase_storage:
   image_picker:
   file_picker:
@@ -49,8 +49,11 @@ dev_dependencies:
 
   flutter_lints: ^4.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+  # To add assets to your application, add an assets section, like this:
+assets:
+  - assets/images/
+  - assets/animation/
+  - assets/payicons/
 
 # The following section is specific to Flutter packages.
 flutter:
