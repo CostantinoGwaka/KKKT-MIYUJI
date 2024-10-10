@@ -24,22 +24,28 @@ class NoAuthBanner extends StatelessWidget {
                       child: Image.asset('assets/images/lock.png'),
                     ),
                   )),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Center(
                   child: Text(
                     "Umezuiliwa",
-                    style: TextStyle(fontSize: 22),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 23,
+                      color: MyColors.darkText,
+                      letterSpacing: 0.168,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   "Tafadhali Ingia kwa akaunti yako kuendelea",
-                  style: TextStyle(
-                    color: Colors.grey,
+                  style: GoogleFonts.montserrat(
                     fontSize: 18,
+                    color: MyColors.grey_20,
+                    letterSpacing: 0.168,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -58,20 +64,13 @@ class NoAuthBanner extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
                         elevation: 1,
-                        foregroundColor: Colors.black54,
+                        backgroundColor: MyColors.primaryLight,
                       ),
-                      // padding: const EdgeInsets.symmetric(
-                      //   vertical: 10,
-                      //   horizontal: 80,
-                      // ),
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(20.0),
-                      // ),
                       child: Text(
                         "Ingia",
                         style: GoogleFonts.montserrat(
                           fontSize: 23,
-                          color: Colors.white,
+                          color: MyColors.white,
                           letterSpacing: 0.168,
                           fontWeight: FontWeight.w500,
                         ),
