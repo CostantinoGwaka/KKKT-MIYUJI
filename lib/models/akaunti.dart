@@ -16,7 +16,7 @@ class AkauntiUsharikaPodo {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? jina;
   String? namba;
   String? tarehe;

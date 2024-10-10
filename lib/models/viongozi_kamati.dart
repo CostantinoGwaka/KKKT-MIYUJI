@@ -21,7 +21,7 @@ class ViongoziKamati {
     this.status,
   });
 
-  String? id;
+  dynamic id;
   String? fname;
   String? phoneNo;
   String? kamatiId;

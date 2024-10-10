@@ -16,7 +16,7 @@ class VideoKwaya {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? kwaya;
   String? videoId;
   DateTime? tarehe;

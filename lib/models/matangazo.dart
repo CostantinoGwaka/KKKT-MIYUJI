@@ -17,7 +17,7 @@ class Matangazo {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? title;
   String? image;
   String? descp;

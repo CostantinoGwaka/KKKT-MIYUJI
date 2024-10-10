@@ -15,7 +15,7 @@ class KamatiUsharika {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? jinaKamati;
   String? tarehe;
 

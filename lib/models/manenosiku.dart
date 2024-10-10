@@ -15,7 +15,7 @@ class Manenosiku {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? neno;
   String? tarehe;
 

@@ -19,7 +19,7 @@ class WatumishiUsharika {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? fname;
   String? phoneNo;
   String? wadhifa;

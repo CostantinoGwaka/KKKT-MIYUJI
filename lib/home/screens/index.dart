@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   Future<List<NenoLaSikuData>> getRatiba() async {
     String myApi = "${ApiUrl.BASEURL}get_nenolasiku.php";
     final response = await http.post(
-      myApi as Uri,
+      Uri.parse(myApi),
       headers: {
         'Accept': 'application/json',
       },
@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage> {
       NenoLaSikuData video = NenoLaSikuData.fromJson(element);
       barazaList.add(video);
     }
+
     return barazaList;
   }
 

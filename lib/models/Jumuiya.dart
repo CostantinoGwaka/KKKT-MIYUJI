@@ -15,7 +15,7 @@ class JumuiyaData {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? jumuiyaName;
   DateTime? tarehe;
 

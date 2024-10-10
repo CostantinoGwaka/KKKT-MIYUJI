@@ -15,19 +15,15 @@ class NenoLaSikuData {
     this.tarehe,
   });
 
-  String? id;
+  int? id;
   String? neno;
-  DateTime? tarehe;
+  String? tarehe;
 
-  factory NenoLaSikuData.fromJson(Map<String, dynamic> json) => NenoLaSikuData(
-        id: json["id"],
-        neno: json["neno"],
-        tarehe: DateTime.parse(json["tarehe"]),
-      );
+  factory NenoLaSikuData.fromJson(Map<String, dynamic> json) => NenoLaSikuData(id: json["id"], neno: json["neno"], tarehe: json["tarehe"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "neno": neno,
-        "tarehe": "${tarehe!.year.toString().padLeft(4, '0')}-${tarehe!.month.toString().padLeft(2, '0')}-${tarehe!.day.toString().padLeft(2, '0')}",
+        "tarehe": tarehe,
       };
 }

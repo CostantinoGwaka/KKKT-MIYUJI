@@ -16,7 +16,7 @@ class IbadaRatiba {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? jina;
   String? muda;
   DateTime? tarehe;

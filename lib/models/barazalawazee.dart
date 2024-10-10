@@ -18,7 +18,7 @@ class BarazaLaWazeeData {
     this.tarehe,
   });
 
-  String? id;
+  dynamic id;
   String? fname;
   String? nambaYaSimu;
   String? wadhifa;
