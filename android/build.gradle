@@ -1,10 +1,6 @@
 buildscript {
     ext {
-
-
         agp_version2 = '8.0.0'
-        agp_version1 = '7.4.0'
-        agp_version = '8.1.1'
     }
     ext.kotlin_version = '1.7.10'
     repositories {
@@ -19,13 +15,6 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty('android')) {
@@ -35,6 +24,13 @@ subprojects {
                 }
             }
         }
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
     }
 }
 

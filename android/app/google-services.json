@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376704236556",
+    "project_id": "kkkt-miyuji",
+    "storage_bucket": "kkkt-miyuji.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376704236556:android:6bb747340aeff311924229",
+        "android_client_info": {
+          "package_name": "com.example.miyuji"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3uMY37SYP-DSzB4ECjmiLhZEPPJNRu7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
