@@ -19,7 +19,7 @@ class RatibaZaIbada extends StatefulWidget {
 
 class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<IbadaRatiba>> getRatiba() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_ibada.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_ibada.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <IbadaRatiba>[];
@@ -44,7 +44,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
 
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     print("data heere 1");
-    String myApi = "http://miyujikkkt.or.tz/api/get_akaunti.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_akaunti.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <AkauntiUsharikaPodo>[];

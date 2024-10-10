@@ -24,7 +24,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
   List<KamatiUsharika> listkamati = <KamatiUsharika>[];
 
   Future<List<KamatiUsharika>> getMatangazoNew() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_kamati.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_kamati.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var kamatilist = <KamatiUsharika>[];

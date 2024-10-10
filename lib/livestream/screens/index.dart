@@ -27,7 +27,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
     setState(() {
       load = true;
     });
-    String myApi = "http://miyujikkkt.or.tz/api/get_streamId.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_streamId.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {

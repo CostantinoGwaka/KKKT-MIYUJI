@@ -22,7 +22,7 @@ class ViongoziJumuiya extends StatefulWidget {
 class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
   Future<List<ViongoziJumuiyaPodo>> getWatumishiWasharika() async {
     print("kamati data ${widget.jumuiya.id}");
-    String myApi = "http://miyujikkkt.or.tz/api/get_jumuiya_viongozi_id.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumuiya_viongozi_id.php";
     final response = await http.post(
       myApi as Uri,
       body: {

@@ -71,7 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   int? pagecontrolnumber;
 
   void getUsajiliId() async {
-    String myApi = "http://miyujikkkt.or.tz/api/getusajiliid.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/getusajiliid.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -139,7 +139,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getJumuiyaApi() async {
-    String myApi = "http://miyujikkkt.or.tz/api/getjumuiya.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/getjumuiya.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -165,7 +165,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getKatibu() async {
-    String myApi = "http://miyujikkkt.or.tz/api/getkatibu.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/getkatibu.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -466,7 +466,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     krid,
   ) async {
     Alerts.showProgressDialog(context, "Tafadhari subiri");
-    String myApi = "http://miyujikkkt.or.tz/api/jisajili.php/";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/jisajili.php/";
 
     var now = DateTime.now();
 
@@ -595,7 +595,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
     // try {
     //   final response = await http.post(
-    //     "http://miyujikkkt.or.tz/api/jisajili.php/",
+    //     "https://kkktmiyuji.nitusue.com/api/jisajili.php/",
     //     // headers: {
     //     //   "Content-Type": "application/json",
     //     // },

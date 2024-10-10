@@ -20,7 +20,7 @@ class WalimuScreen extends StatefulWidget {
 
 class _WalimuScreenState extends State<WalimuScreen> {
   Future<List<WalimuUsharika>> getWalimuWasharika() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_walimu.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_walimu.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <WalimuUsharika>[];

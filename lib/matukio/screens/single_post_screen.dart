@@ -46,7 +46,7 @@ class _SinglePostScreenState extends State<SinglePostScreen> {
                 background: Hero(
                   tag: "msimu",
                   child: Image.network(
-                    "http://miyujikkkt.or.tz/admin/matangazo/${widget.postdata.image}",
+                    "https://kkktmiyuji.nitusue.com/admin/matangazo/${widget.postdata.image}",
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),

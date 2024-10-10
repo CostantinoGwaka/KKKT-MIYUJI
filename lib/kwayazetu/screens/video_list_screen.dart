@@ -28,7 +28,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     setState(() {
       load = true;
     });
-    String myApi = "http://miyujikkkt.or.tz/api/get_video_kwaya.php/";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_video_kwaya.php/";
     final response = await http.post(myApi as Uri, headers: {
       'Accept': 'application/json',
     }, body: {

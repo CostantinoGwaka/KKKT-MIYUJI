@@ -102,7 +102,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,inatuma maoni yako...");
 
-    String mydataApi = "http://miyujikkkt.or.tz/api/mapendekezo.php";
+    String mydataApi = "https://kkktmiyuji.nitusue.com/api/mapendekezo.php";
 
     final response = await http.post(
       mydataApi as Uri,

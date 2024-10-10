@@ -18,7 +18,7 @@ class MatoleoScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<MatoleoScreen> {
   Future<dynamic> getSadakaZako() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_sadaka.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -43,7 +43,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaAhadi() async {
     print("dataz");
-    String myApi = "http://miyujikkkt.or.tz/api/get_jumla_ahadi_sadaka.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumla_ahadi_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -68,7 +68,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaJengo() async {
     print("dataz");
-    String myApi = "http://miyujikkkt.or.tz/api/get_jumla_jengo_sadaka.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumla_jengo_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {

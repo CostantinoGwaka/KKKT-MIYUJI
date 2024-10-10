@@ -1,5 +1,5 @@
 class ApiUrl {
-  static const String BASEURL = "http://miyujikkkt.or.tz/";
+  static const String BASEURL = "https://kkktmiyuji.nitusue.com/";
   static const String TERMS = "https://www.envisionapps.net/terms";
   static const String PRIVACY = "https://www.envisionapps.net/privacy";
   static const String ABOUT = "https://www.envisionapps.net/about";

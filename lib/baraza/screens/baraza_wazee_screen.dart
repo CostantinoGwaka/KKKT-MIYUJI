@@ -19,7 +19,7 @@ class BarazaWazeeScreen extends StatefulWidget {
 
 class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
   Future<List<BarazaLaWazeeData>> getBarazaWaZee() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_barazawazee.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_barazawazee.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <BarazaLaWazeeData>[];

@@ -22,7 +22,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   List<Matangazo> listmatangazo = <Matangazo>[];
 
   Future<List<Matangazo>> getMatangazoNew() async {
-    String myApi = "http://miyujikkkt.or.tz/api/get_matangazo.php";
+    String myApi = "https://kkktmiyuji.nitusue.com/api/get_matangazo.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var matangazoList = <Matangazo>[];
@@ -169,13 +169,13 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ImagePreview(
-                                      img: 'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data![index].image}',
+                                      img: 'https://kkktmiyuji.nitusue.com/admin/matangazo/${snapshot.data![index].image}',
                                       fit: BoxFit.fill,
                                       width: double.infinity,
                                       height: 200,
                                     ),
                                     // Image.network(
-                                    //   'http://miyujikkkt.or.tz/admin/matangazo/${snapshot.data![index].image}',
+                                    //   'https://kkktmiyuji.nitusue.com/admin/matangazo/${snapshot.data![index].image}',
                                     //   fit: BoxFit.fill,
                                     //   width: double.infinity,
                                     //   height: 200,
