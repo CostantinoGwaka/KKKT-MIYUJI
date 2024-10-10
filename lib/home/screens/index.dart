@@ -228,36 +228,42 @@ class _HomePageState extends State<HomePage> {
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
-              side: const BorderSide(color: MyColors.white, width: 2.0),
+              side: const BorderSide(
+                color: MyColors.white,
+                width: 2.0,
+              ),
             ),
             elevation: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  iconSize: 45,
-                  icon: Lottie.asset(
-                    'assets/animation/access_denided.json',
+            child: SizedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    iconSize: 45,
+                    icon: Lottie.asset(
+                      'assets/animation/access_denided.json',
+                      height: jtdeviceWidth(context) / 5,
+                    ),
+                    onPressed: () {
+                      Alerts.showCupertinoAlert(
+                        context,
+                        "MAZUNGUMZO(Guest)",
+                        "Tafadahari Ingia kwenye akaunti yako ilikuweza kupata huduma hii na mtu ambaye hauna akaunti ya msharika tafadhari jisajili, Ahsante.",
+                      );
+                    },
                   ),
-                  onPressed: () {
-                    Alerts.showCupertinoAlert(
-                      context,
+                  Center(
+                    child: Text(
                       "MAZUNGUMZO(Guest)",
-                      "Tafadahari Ingia kwenye akaunti yako ilikuweza kupata huduma hii na mtu ambaye hauna akaunti ya msharika tafadhari jisajili, Ahsante.",
-                    );
-                  },
-                ),
-                Center(
-                  child: Text(
-                    "MAZUNGUMZO(Guest)",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                      color: MyColors.primaryLight,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.primaryLight,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
@@ -270,12 +276,13 @@ class _HomePageState extends State<HomePage> {
             ),
             elevation: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   iconSize: 45,
                   icon: Lottie.asset(
                     'assets/animation/access_denided.json',
+                    height: jtdeviceWidth(context) / 5,
                   ),
                   onPressed: () {
                     Alerts.showCupertinoAlert(
@@ -327,7 +334,7 @@ class _HomePageState extends State<HomePage> {
             ),
             elevation: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 IconButton(
                   onPressed: () {
@@ -350,17 +357,18 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const JumuiyaZetu()));
                     }
                   },
-                  iconSize: (menuList[index]['pushTo'] == "MUBASHARA") ? 60 : 20,
+                  iconSize: 45,
                   icon: Image.asset(
                     menuList[index]['image'],
                     color: MyColors.primaryLight,
+                    height: jtdeviceWidth(context) / 5,
                   ),
                 ),
                 Center(
                   child: Text(
                     menuList[index]['name'],
                     style: GoogleFonts.montserrat(
-                      fontSize: 10,
+                      fontSize: 8,
                       fontWeight: FontWeight.bold,
                       color: MyColors.primaryLight,
                     ),
@@ -397,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                       height: 30,
                       child: Center(
                         child: Text(
-                          "KKKT miyuji",
+                          "KKKT MIYUJI",
                           style: GoogleFonts.montserrat(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -733,15 +741,22 @@ class _HomePageState extends State<HomePage> {
                                       child: Column(
                                         children: [
                                           SizedBox(
-                                            height: 30,
-                                            child: Lottie.asset('assets/animation/load_neno.json', height: 20),
+                                            height: 20,
+                                            child: Lottie.asset(
+                                              'assets/animation/load_neno.json',
+                                              height: 30,
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 2.0,
                                           ),
                                           const Text(
                                             "Hakuna taarifa zilizopatiakana",
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, color: Colors.black38),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.0,
+                                              color: Colors.black38,
+                                            ),
                                           )
                                         ],
                                       ),
