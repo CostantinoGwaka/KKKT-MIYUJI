@@ -7,6 +7,7 @@ import 'package:miyuji/home/screens/index.dart';
 import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/usajili/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
@@ -201,7 +202,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       _status = true;
     });
 
-    String mydataApi = "https://kkktmiyuji.nitusue.com/api/change_password.php";
+    String mydataApi = "${ApiUrl.BASEURL}change_password.php";
 
     final response = await http.post(
       mydataApi as Uri,

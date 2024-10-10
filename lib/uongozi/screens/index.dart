@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/models/viongozi_wakanisa.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -19,7 +20,7 @@ class ViongoziWaKanisa extends StatefulWidget {
 
 class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
   Future<List<ViongoziWaKanisaData>> getViongozi() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_viongozi_wakanisa.php";
+    String myApi = "${ApiUrl.BASEURL}get_viongozi_wakanisa.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <ViongoziWaKanisaData>[];

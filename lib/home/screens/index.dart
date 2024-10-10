@@ -19,6 +19,7 @@ import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/uongozi/screens/index.dart';
 import 'package:miyuji/usajili/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/dimension.dart';
 import 'package:miyuji/utils/my_colors.dart';
@@ -79,11 +80,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<NenoLaSikuData>> getRatiba() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_nenolasiku.php";
-    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
+    String myApi = "${ApiUrl.BASEURL}get_nenolasiku.php";
+    final response = await http.post(
+      myApi as Uri,
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
 
     var barazaList = <NenoLaSikuData>[];
-    var baraza;
+    var baraza = [];
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -93,12 +99,10 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    baraza.forEach(
-      (element) {
-        NenoLaSikuData video = NenoLaSikuData.fromJson(element);
-        barazaList.add(video);
-      },
-    );
+    for (var element in baraza) {
+      NenoLaSikuData video = NenoLaSikuData.fromJson(element);
+      barazaList.add(video);
+    }
     return barazaList;
   }
 

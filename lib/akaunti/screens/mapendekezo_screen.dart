@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/home/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 
 class MapendekezoScreen extends StatefulWidget {
@@ -102,7 +103,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,inatuma maoni yako...");
 
-    String mydataApi = "https://kkktmiyuji.nitusue.com/api/mapendekezo.php";
+    String mydataApi = "${ApiUrl.BASEURL}mapendekezo.php";
 
     final response = await http.post(
       mydataApi as Uri,

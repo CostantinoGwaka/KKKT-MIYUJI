@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/matukio/screens/single_post_screen.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/image.dart';
 import 'package:miyuji/utils/my_colors.dart';
@@ -22,7 +23,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   List<Matangazo> listmatangazo = <Matangazo>[];
 
   Future<List<Matangazo>> getMatangazoNew() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_matangazo.php";
+    String myApi = "${ApiUrl.BASEURL}get_matangazo.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var matangazoList = <Matangazo>[];

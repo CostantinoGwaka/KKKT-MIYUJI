@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/models/walimu_washarika.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -20,7 +21,7 @@ class WalimuScreen extends StatefulWidget {
 
 class _WalimuScreenState extends State<WalimuScreen> {
   Future<List<WalimuUsharika>> getWalimuWasharika() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_walimu.php";
+    String myApi = "${ApiUrl.BASEURL}get_walimu.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <WalimuUsharika>[];

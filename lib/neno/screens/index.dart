@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/models/manenosiku.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -20,7 +21,7 @@ class NenoLaSiku extends StatefulWidget {
 
 class _NenoLaSikuState extends State<NenoLaSiku> {
   Future<List<Manenosiku>> getManeno() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_maneno.php";
+    String myApi = "${ApiUrl.BASEURL}get_maneno.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <Manenosiku>[];

@@ -5,6 +5,7 @@ import 'package:miyuji/akaunti/screens/constant.dart';
 import 'package:miyuji/akaunti/screens/mapendekezo_screen.dart';
 import 'package:miyuji/akaunti/screens/profile_list.dart';
 import 'package:miyuji/register_login/screens/login.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/dimension.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     });
 
     try {
-      String mydataApi = "https://kkktmiyuji.nitusue.com/api/change_password.php";
+      String mydataApi = "${ApiUrl.BASEURL}change_password.php";
 
       final response = await http.post(
         mydataApi as Uri,

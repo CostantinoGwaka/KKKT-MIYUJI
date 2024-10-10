@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/models/barazalawazee.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,7 @@ class BarazaWazeeScreen extends StatefulWidget {
 
 class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
   Future<List<BarazaLaWazeeData>> getBarazaWaZee() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_barazawazee.php";
+    String myApi = "${ApiUrl.BASEURL}get_barazawazee.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <BarazaLaWazeeData>[];

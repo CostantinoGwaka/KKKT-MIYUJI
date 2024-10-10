@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/models/livestream.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
     setState(() {
       load = true;
     });
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_streamId.php";
+    String myApi = "${ApiUrl.BASEURL}get_streamId.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {

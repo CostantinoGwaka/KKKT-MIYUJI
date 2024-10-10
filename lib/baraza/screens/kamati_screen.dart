@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/baraza/screens/viongozi_kamati_screen.dart';
 import 'package:miyuji/models/kamatiusharika.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -24,7 +25,7 @@ class _KamatiUsharikaScreenState extends State<KamatiUsharikaScreen> {
   List<KamatiUsharika> listkamati = <KamatiUsharika>[];
 
   Future<List<KamatiUsharika>> getMatangazoNew() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_kamati.php";
+    String myApi = "${ApiUrl.BASEURL}get_kamati.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var kamatilist = <KamatiUsharika>[];

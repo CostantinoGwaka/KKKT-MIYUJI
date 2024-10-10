@@ -11,6 +11,7 @@ import 'package:miyuji/home/screens/index.dart';
 import 'package:miyuji/shared/localstorage/index.dart';
 import 'package:miyuji/usajili/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 
@@ -30,7 +31,7 @@ class _LoginState extends State<Login> {
   Future<void> checkGetMyData(String memberNo) async {
     //get my data
 
-    String mydataApi = "https://kkktmiyuji.nitusue.com/api/get_mydata.php/";
+    String mydataApi = "${ApiUrl.BASEURL}get_mydata.php/";
 
     final response = await http.post(
       mydataApi as Uri,
@@ -57,7 +58,7 @@ class _LoginState extends State<Login> {
   Future<void> checkMtumish(String memberNo) async {
     // //check mtumishi permission
 
-    String mtumishApi = "https://kkktmiyuji.nitusue.com/api/check_mtumish.php/";
+    String mtumishApi = "${ApiUrl.BASEURL}check_mtumish.php/";
     final response2 = await http.post(
       mtumishApi as Uri,
       headers: {'Accept': 'application/json'},
@@ -93,7 +94,7 @@ class _LoginState extends State<Login> {
 
     FireibaseClass.getUserToken().then((tokens) async {
       print("user token $tokens");
-      String myApi = "https://kkktmiyuji.nitusue.com/api/login.php/";
+      String myApi = "${ApiUrl.BASEURL}login.php/";
       final response = await http.post(
         myApi as Uri,
         headers: {'Accept': 'application/json'},

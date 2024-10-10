@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:miyuji/models/Jumuiya.dart';
 import 'package:miyuji/utils/Alerts.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -71,7 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   int? pagecontrolnumber;
 
   void getUsajiliId() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/getusajiliid.php";
+    String myApi = "${ApiUrl.BASEURL}getusajiliid.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -139,7 +140,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getJumuiyaApi() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/getjumuiya.php";
+    String myApi = "${ApiUrl.BASEURL}getjumuiya.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -165,7 +166,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void getKatibu() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/getkatibu.php";
+    String myApi = "${ApiUrl.BASEURL}getkatibu.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -466,7 +467,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     krid,
   ) async {
     Alerts.showProgressDialog(context, "Tafadhari subiri");
-    String myApi = "https://kkktmiyuji.nitusue.com/api/jisajili.php/";
+    String myApi = "${ApiUrl.BASEURL}jisajili.php/";
 
     var now = DateTime.now();
 
@@ -595,7 +596,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
     // try {
     //   final response = await http.post(
-    //     "https://kkktmiyuji.nitusue.com/api/jisajili.php/",
+    //     "${ApiUrl.BASEURL}jisajili.php/",
     //     // headers: {
     //     //   "Content-Type": "application/json",
     //     // },

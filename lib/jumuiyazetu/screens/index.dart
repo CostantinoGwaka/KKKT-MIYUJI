@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:miyuji/jumuiyazetu/screens/viongozi_wajumuiya_screen.dart';
 import 'package:miyuji/models/Jumuiya.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -20,7 +21,7 @@ class JumuiyaZetu extends StatefulWidget {
 
 class _JumuiyaZetuState extends State<JumuiyaZetu> {
   Future<List<JumuiyaData>> getJumuiya() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/getjumuiya.php";
+    String myApi = "${ApiUrl.BASEURL}getjumuiya.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <JumuiyaData>[];

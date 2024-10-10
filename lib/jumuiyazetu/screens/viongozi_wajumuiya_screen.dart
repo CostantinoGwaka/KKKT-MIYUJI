@@ -4,6 +4,7 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miyuji/models/viongozi_jumuiya.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
@@ -22,7 +23,7 @@ class ViongoziJumuiya extends StatefulWidget {
 class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
   Future<List<ViongoziJumuiyaPodo>> getWatumishiWasharika() async {
     print("kamati data ${widget.jumuiya.id}");
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumuiya_viongozi_id.php";
+    String myApi = "${ApiUrl.BASEURL}get_jumuiya_viongozi_id.php";
     final response = await http.post(
       myApi as Uri,
       body: {

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/models/akaunti.dart';
 import 'package:miyuji/models/ratiba_ibada.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,7 @@ class RatibaZaIbada extends StatefulWidget {
 
 class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<IbadaRatiba>> getRatiba() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_ibada.php";
+    String myApi = "${ApiUrl.BASEURL}get_ibada.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <IbadaRatiba>[];
@@ -44,7 +45,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
 
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     print("data heere 1");
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_akaunti.php";
+    String myApi = "${ApiUrl.BASEURL}get_akaunti.php";
     final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
     var barazaList = <AkauntiUsharikaPodo>[];

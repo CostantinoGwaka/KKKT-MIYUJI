@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:miyuji/home/screens/index.dart';
+import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/dimension.dart';
 import 'package:miyuji/utils/my_colors.dart';
@@ -18,7 +19,7 @@ class MatoleoScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<MatoleoScreen> {
   Future<dynamic> getSadakaZako() async {
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_sadaka.php";
+    String myApi = "${ApiUrl.BASEURL}get_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -43,7 +44,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaAhadi() async {
     print("dataz");
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumla_ahadi_sadaka.php";
+    String myApi = "${ApiUrl.BASEURL}get_jumla_ahadi_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -68,7 +69,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
   Future<dynamic> getJumlaJengo() async {
     print("dataz");
-    String myApi = "https://kkktmiyuji.nitusue.com/api/get_jumla_jengo_sadaka.php";
+    String myApi = "${ApiUrl.BASEURL}get_jumla_jengo_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
