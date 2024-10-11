@@ -169,7 +169,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 ),
                                 jtmanualStepper(),
                                 Text(
-                                  "Tsh ${currency.format(int.parse(data['ahadi']))}",
+                                  "Tsh ${currency.format(data != null && data['ahadi'] != null ? int.parse(data['ahadi']) : 0)}",
                                   style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
@@ -186,7 +186,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 ),
                                 jtmanualStepper(),
                                 Text(
-                                  "Tsh ${currency.format(int.parse(data['jengo']))}",
+                                  "Tsh ${currency.format(data != null && data['jengo'] != null ? int.parse(data['jengo']) : 0)}",
                                   style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
                                         fontSize: 17,
                                         color: MyColors.primaryLight,
@@ -351,94 +351,99 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                         return GestureDetector(
                                           onTap: () {},
                                           child: SizedBox(
-                                            height: jtdeviceHeight(context) / 7,
+                                            height: jtdeviceHeight(context) / 3,
                                             width: jtdeviceWidth(context),
                                             child: Card(
-                                                elevation: 0,
+                                                elevation: 1,
                                                 color: Theme.of(context).cardColor,
                                                 child: Padding(
                                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  child: Expanded(
+                                                    child: SizedBox(
+                                                      height: jtdeviceHeight(context) / 2,
+                                                      child: Column(
                                                         children: [
-                                                          Text(
-                                                            "Ahadi",
-                                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "Ahadi",
+                                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "TZS ",
+                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
+                                                                    ),
+                                                                    Text(
+                                                                      currency.format(int.parse(snapshot.data![index]['ahadi'])),
+                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                            fontSize: 17,
+                                                                            fontWeight: FontWeight.w500,
+                                                                          ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
                                                           ),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "Jengo",
+                                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "TZS ",
+                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
+                                                                    ),
+                                                                    Text(
+                                                                      currency.format(int.parse(snapshot.data![index]['jengo'])),
+                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                            fontSize: 17,
+                                                                            fontWeight: FontWeight.w500,
+                                                                          ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          jtmanualStepper(step: 8),
                                                           Padding(
-                                                            padding: const EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.only(right: 8.0),
                                                             child: Row(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                               children: [
                                                                 Text(
-                                                                  "TZS ",
-                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
+                                                                  "",
+                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                        fontSize: 14,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
                                                                 ),
                                                                 Text(
-                                                                  currency.format(int.parse(snapshot.data![index]['ahadi'])),
+                                                                  "2022-03-13",
                                                                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                        fontSize: 17,
-                                                                        fontWeight: FontWeight.w500,
+                                                                        fontSize: 12,
+                                                                        fontWeight: FontWeight.bold,
                                                                       ),
-                                                                )
+                                                                ),
                                                               ],
                                                             ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Jengo",
-                                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
                                                           ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(8.0),
-                                                            child: Row(
-                                                              children: [
-                                                                Text(
-                                                                  "TZS ",
-                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
-                                                                ),
-                                                                Text(
-                                                                  currency.format(int.parse(snapshot.data![index]['jengo'])),
-                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                        fontSize: 17,
-                                                                        fontWeight: FontWeight.w500,
-                                                                      ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
                                                         ],
                                                       ),
-                                                      jtmanualStepper(step: 8),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(right: 8.0),
-                                                        child: Row(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              "",
-                                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                    fontSize: 14,
-                                                                    fontWeight: FontWeight.bold,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              "2022-03-13",
-                                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                    fontSize: 12,
-                                                                    fontWeight: FontWeight.bold,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 )),
                                           ),
