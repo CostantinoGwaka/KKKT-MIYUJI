@@ -9,6 +9,7 @@ import 'package:miyuji/utils/Alerts.dart';
 import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
@@ -19,7 +20,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
-  bool _status = false;
+  bool status = false;
   final FocusNode myFocusNode = FocusNode();
   bool _isObscureOld = true;
   bool _isObscureNew = true;
@@ -179,7 +180,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                         //   mainAxisAlignment: MainAxisAlignment.end,
                                         //   mainAxisSize: MainAxisSize.min,
                                         //   children: <Widget>[
-                                        //     _status ? _getEditIcon() : new Container(),
+                                        //     status ? _getEditIcon() : new Container(),
                                         //   ],
                                         // )
                                       ],
@@ -293,16 +294,16 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                 const Divider(
                                   thickness: 2,
                                 ),
-                                Padding(
-                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(
                                           flex: 2,
-                                          child: Container(
-                                            child: const Text(
+                                          child: SizedBox(
+                                            child: Text(
                                               'Neno la siri',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                             ),
@@ -423,7 +424,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                                         // Flexible(
                                         //   child: new TextField(
                                         //     decoration: const InputDecoration(hintText: "Enter State"),
-                                        //     enabled: !_status,
+                                        //     enabled: !status,
                                         //   ),
                                         //   flex: 2,
                                         // ),
@@ -457,7 +458,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
-      _status = true;
+      status = true;
     });
 
     String mydataApi = "${ApiUrl.BASEURL}change_password.php";
@@ -476,9 +477,10 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
     if (response.statusCode == 200) {
       setState(() {
-        _status = false;
+        status = false;
       });
       //remove loader
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
       //end here
       dynamic jsonResponse = json.decode(response.body);
@@ -503,7 +505,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
         );
       } else {
         setState(() {
-          _status = false;
+          status = false;
         });
 
         Fluttertoast.showToast(
@@ -516,7 +518,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
       }
     } else {
       setState(() {
-        _status = false;
+        status = false;
       });
 
       Fluttertoast.showToast(
@@ -542,7 +544,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             flex: 2,
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Container(
+              child: SizedBox(
                   child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -561,7 +563,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                 // color: Colors.green,
                 onPressed: () {
                   // setState(() {
-                  //   _status = true;
+                  //   status = true;
                   //   FocusScope.of(context).requestFocus(new FocusNode());
                   // });
                   if (oldp.text.isNotEmpty && newp.text.isNotEmpty) {
@@ -584,7 +586,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             flex: 2,
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: Container(
+              child: SizedBox(
                   child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -631,6 +633,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     );
   }
 
+  // ignore: unused_element
   Widget _getEditIcon() {
     return GestureDetector(
       child: const CircleAvatar(
@@ -644,7 +647,7 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
       ),
       onTap: () {
         setState(() {
-          _status = false;
+          status = false;
         });
       },
     );

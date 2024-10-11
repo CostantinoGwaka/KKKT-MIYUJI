@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:miyuji/home/screens/index.dart';
@@ -15,6 +16,7 @@ class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
 
@@ -23,7 +25,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   TextEditingController newp = TextEditingController();
   bool isregistered = false;
   bool _isObscure = true;
-  bool _status = false;
+  bool status = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ),
         ),
       ),
-      body: Container(
+      body: SizedBox(
         child: Column(
           children: <Widget>[
             _bottomBar(context),
@@ -199,7 +201,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
-      _status = true;
+      status = true;
     });
 
     String mydataApi = "${ApiUrl.BASEURL}change_password.php";
@@ -218,7 +220,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
     if (response.statusCode == 200) {
       setState(() {
-        _status = false;
+        status = false;
       });
       //remove loader
       // ignore: use_build_context_synchronously
@@ -247,7 +249,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         );
       } else {
         setState(() {
-          _status = false;
+          status = false;
         });
 
         return Fluttertoast.showToast(
@@ -260,7 +262,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       }
     } else {
       setState(() {
-        _status = false;
+        status = false;
       });
 
       return Fluttertoast.showToast(
@@ -315,6 +317,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 }
 
+// ignore: unused_element
 Widget _passCode(context) {
   return Column(
     children: [

@@ -35,6 +35,8 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
       }
     }
 
+    print("data $baraza");
+
     baraza.forEach(
       (element) {
         Manenosiku video = Manenosiku.fromJson(element);

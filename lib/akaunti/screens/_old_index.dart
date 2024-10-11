@@ -10,6 +10,7 @@ import 'package:miyuji/utils/Alerts.dart';
 import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 class ProfilePages extends StatefulWidget {
@@ -20,7 +21,7 @@ class ProfilePages extends StatefulWidget {
 }
 
 class MapScreensState extends State<ProfilePages> with SingleTickerProviderStateMixin {
-  bool _status = false;
+  bool status = false;
   final FocusNode myFocusNode = FocusNode();
   bool _isObscureOld = true;
   bool _isObscureNew = true;
@@ -29,7 +30,6 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkLogin();
   }
@@ -181,7 +181,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                         //   mainAxisAlignment: MainAxisAlignment.end,
                                         //   mainAxisSize: MainAxisSize.min,
                                         //   children: <Widget>[
-                                        //     _status ? _getEditIcon() : new Container(),
+                                        //     status ? _getEditIcon() : new Container(),
                                         //   ],
                                         // )
                                       ],
@@ -295,15 +295,15 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                 const Divider(
                                   thickness: 2,
                                 ),
-                                Padding(
-                                    padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                                const Padding(
+                                    padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(
                                           flex: 2,
-                                          child: Container(
+                                          child: SizedBox(
                                             child: Text(
                                               'Neno la siri',
                                               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
@@ -330,7 +330,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                         Flexible(
                                           flex: 2,
                                           child: Padding(
-                                            padding: EdgeInsets.only(right: 10.0),
+                                            padding: const EdgeInsets.only(right: 10.0),
                                             child: Column(
                                               children: [
                                                 TextField(
@@ -344,18 +344,18 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
                                                     hintText: "Neno la siri la zamani",
-                                                    hintStyle: TextStyle(
+                                                    hintStyle: const TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder: OutlineInputBorder(
+                                                    enabledBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
                                                       borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder: OutlineInputBorder(
+                                                    focusedBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
@@ -387,18 +387,18 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                                   // controller: passwordController,
                                                   decoration: InputDecoration(
                                                     hintText: "Neno la siri jipya",
-                                                    hintStyle: TextStyle(
+                                                    hintStyle: const TextStyle(
                                                       color: Color(0xffA6B0BD),
                                                     ),
                                                     fillColor: Colors.white,
                                                     filled: true,
-                                                    enabledBorder: OutlineInputBorder(
+                                                    enabledBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(20),
                                                       ),
                                                       borderSide: BorderSide(color: Colors.white),
                                                     ),
-                                                    focusedBorder: OutlineInputBorder(
+                                                    focusedBorder: const OutlineInputBorder(
                                                       borderRadius: BorderRadius.all(
                                                         Radius.circular(10),
                                                       ),
@@ -425,7 +425,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                                         // Flexible(
                                         //   child: new TextField(
                                         //     decoration: const InputDecoration(hintText: "Enter State"),
-                                        //     enabled: !_status,
+                                        //     enabled: !status,
                                         //   ),
                                         //   flex: 2,
                                         // ),
@@ -464,7 +464,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
     //get my data
     Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
     setState(() {
-      _status = true;
+      status = true;
     });
 
     String mydataApi = "${ApiUrl.BASEURL}change_password.php";
@@ -483,7 +483,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
 
     if (response.statusCode == 200) {
       setState(() {
-        _status = false;
+        status = false;
       });
       //remove loader
       // ignore: use_build_context_synchronously
@@ -511,7 +511,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
         );
       } else {
         setState(() {
-          _status = false;
+          status = false;
         });
 
         return Fluttertoast.showToast(
@@ -524,7 +524,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
       }
     } else {
       setState(() {
-        _status = false;
+        status = false;
       });
 
       return Fluttertoast.showToast(
@@ -550,7 +550,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
             // ignore: sort_child_properties_last
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Container(
+              child: SizedBox(
                   child: ElevatedButton(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -569,7 +569,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                 // color: Colors.green,
                 onPressed: () {
                   // setState(() {
-                  //   _status = true;
+                  //   status = true;
                   //   FocusScope.of(context).requestFocus(new FocusNode());
                   // });
                   if (oldp.text.isNotEmpty && newp.text.isNotEmpty) {
@@ -593,7 +593,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
             // ignore: sort_child_properties_last
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: Container(
+              child: SizedBox(
                   child: ElevatedButton(
                 onPressed: () async {
                   Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
@@ -602,6 +602,7 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
                     await LocalStorage.removeItem("mydata").whenComplete(() async {
                       // ignore: void_checks
                       await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                        // ignore: use_build_context_synchronously
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
                         SystemNavigator.pop();
                         return Fluttertoast.showToast(
@@ -638,22 +639,22 @@ class MapScreensState extends State<ProfilePages> with SingleTickerProviderState
     );
   }
 
-  Widget _getEditIcon() {
-    return GestureDetector(
-      child: const CircleAvatar(
-        backgroundColor: Colors.red,
-        radius: 14.0,
-        child: Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 16.0,
-        ),
-      ),
-      onTap: () {
-        setState(() {
-          _status = false;
-        });
-      },
-    );
-  }
+  // Widget _getEditIcon() {
+  //   return GestureDetector(
+  //     child: const CircleAvatar(
+  //       backgroundColor: Colors.red,
+  //       radius: 14.0,
+  //       child: Icon(
+  //         Icons.edit,
+  //         color: Colors.white,
+  //         size: 16.0,
+  //       ),
+  //     ),
+  //     onTap: () {
+  //       setState(() {
+  //         status = false;
+  //       });
+  //     },
+  //   );
+  // }
 }
