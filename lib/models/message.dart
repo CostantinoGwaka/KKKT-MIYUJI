@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:firebase_database/firebase_database.dart';
+
 Message messageFromJson(String str) => Message.fromJson(json.decode(str));
 
 String messageToJson(Message data) => json.encode(data.toJson());
@@ -106,29 +108,29 @@ class Message {
     String? convoId,
     String? userId,
   }) {
-    // FirebaseDatabase.instance.reference().child('Messages/' + userId + "/" + convoId + "/" + messageId).set({
-    //   "receiverId": friendId.toString(),
-    //   "senderId": convoId,
-    //   "picture": picUrl,
-    //   "document": docUrl,
-    //   "medianame": medianame,
-    //   "color": "pink",
-    //   "unseen": unseen,
-    //   "messageId": messageId,
-    //   "repliedContent": repliedContent,
-    //   "reply": reply,
-    //   "status": status,
-    //   "type": type,
-    //   "createdAt": DateTime.now().toString(),
-    //   "sentAt": DateTime.now().toString(),
-    //   "message": message,
-    //   "isDeletedBy": isDeletedBy,
-    //   "read": readed,
-    //   "readBy": readBy,
-    //   "access": access ?? true,
-    //   "mediasize": mediasize,
-    //   "caption": caption,
-    // });
+    FirebaseDatabase.instance.ref().child("Messages/$userId/$convoId/${messageId!}").set({
+      "receiverId": friendId.toString(),
+      "senderId": convoId,
+      "picture": picUrl,
+      "document": docUrl,
+      "medianame": medianame,
+      "color": "pink",
+      "unseen": unseen,
+      "messageId": messageId,
+      "repliedContent": repliedContent,
+      "reply": reply,
+      "status": status,
+      "type": type,
+      "createdAt": DateTime.now().toString(),
+      "sentAt": DateTime.now().toString(),
+      "message": message,
+      "isDeletedBy": isDeletedBy,
+      "read": readed,
+      "readBy": readBy,
+      "access": access ?? true,
+      "mediasize": mediasize,
+      "caption": caption,
+    });
 
     // .set(model.toMap());
   }

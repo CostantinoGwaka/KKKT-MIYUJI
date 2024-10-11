@@ -121,7 +121,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       return Transform(
                         transform: Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
                         alignment: FractionalOffset.center,
-                        child: Icon(_controller.isDismissed ? Icons.add : Icons.close),
+                        child: Icon(
+                          _controller.isDismissed ? Icons.add : Icons.close,
+                          color: Colors.black,
+                        ),
                       );
                     },
                   ),

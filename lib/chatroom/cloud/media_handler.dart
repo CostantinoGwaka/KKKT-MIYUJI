@@ -18,8 +18,11 @@ import './message_handler.dart';
 class MediaHandler {
   static final picker = ImagePicker();
   static late File _image;
+  // ignore: prefer_typing_uninitialized_variables
   static var basNameWithExtension;
+  // ignore: prefer_typing_uninitialized_variables
   static var newmessage;
+  // ignore: prefer_typing_uninitialized_variables
   static var mtumishi;
 
   static uploadMedia(id, size, image, widget, Message message, token, type) async {

@@ -43,8 +43,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-        stream: null,
-        // stream: FirebaseDatabase.instance.reference().child("RecentChat/${host['member_no']}").onValue,
+        stream: FirebaseDatabase.instance.ref().child("RecentChat/${host['member_no']}").onValue,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {
@@ -86,7 +85,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               return Padding(
                 padding: EdgeInsets.only(top: deviceHeight(context) * .4),
                 child: Center(
-                  child: Container(
+                  child: SizedBox(
                     child: Column(
                       children: <Widget>[
                         SizedBox(

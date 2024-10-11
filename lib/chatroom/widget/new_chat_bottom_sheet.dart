@@ -89,7 +89,7 @@ class NewChatBottomSheet extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: Center(
-              child: Container(
+              child: SizedBox(
                 child: Column(
                   children: <Widget>[
                     SizedBox(

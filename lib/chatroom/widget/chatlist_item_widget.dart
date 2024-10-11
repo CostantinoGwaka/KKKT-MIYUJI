@@ -35,6 +35,7 @@ class ChatListItem extends StatefulWidget {
       required this.time});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChatListItemState createState() => _ChatListItemState();
 }
 
