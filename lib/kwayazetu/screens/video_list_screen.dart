@@ -58,7 +58,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     setState(() {
       load = false;
     });
-    // print("videoid $videoList");
+
     setState(() {
       videoList = videoList;
     });
@@ -67,11 +67,9 @@ class _VideoListScreenState extends State<VideoListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // videoList.clear();
     getVideoKwaya();
-    print("video is $videoList");
     _controllers = videoList
         .map<YoutubePlayerController>(
           (videoId) => YoutubePlayerController(
