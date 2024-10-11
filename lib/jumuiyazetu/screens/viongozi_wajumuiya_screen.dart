@@ -22,7 +22,6 @@ class ViongoziJumuiya extends StatefulWidget {
 
 class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
   Future<List<ViongoziJumuiyaPodo>> getWatumishiWasharika() async {
-    print("kamati data ${widget.jumuiya.id}");
     String myApi = "${ApiUrl.BASEURL}get_jumuiya_viongozi_id.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -35,7 +34,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
     );
 
     var barazaList = <ViongoziJumuiyaPodo>[];
-    var baraza;
+    var baraza = [];
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -45,12 +44,10 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
       }
     }
 
-    baraza.forEach(
-      (element) {
-        ViongoziJumuiyaPodo video = ViongoziJumuiyaPodo.fromJson(element);
-        barazaList.add(video);
-      },
-    );
+    for (var element in baraza) {
+      ViongoziJumuiyaPodo video = ViongoziJumuiyaPodo.fromJson(element);
+      barazaList.add(video);
+    }
     return barazaList;
   }
 
