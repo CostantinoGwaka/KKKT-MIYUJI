@@ -29,40 +29,47 @@ class _VideoListScreenState extends State<VideoListScreen> {
     setState(() {
       load = true;
     });
+
     String myApi = "${ApiUrl.BASEURL}get_video_kwaya.php/";
-    final response = await http.post(Uri.parse(myApi), headers: {
-      'Accept': 'application/json',
-    }, body: {
-      "kwaya_id": '${widget.kwayaid}',
-    });
 
-    // ignore: prefer_typing_uninitialized_variables
-    var tangazo;
+    try {
+      final response = await http.post(Uri.parse(myApi), headers: {
+        'Accept': 'application/json',
+      }, body: {
+        "kwaya_id": '${widget.kwayaid}',
+      });
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        tangazo = json;
+      // ignore: prefer_typing_uninitialized_variables
+      var tangazo;
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse != null && jsonResponse != 404) {
+          var json = jsonDecode(response.body);
+          tangazo = json;
+        }
       }
+
+      videoList.clear();
+
+      tangazo.forEach(
+        (element) {
+          VideoKwaya video = VideoKwaya.fromJson(element);
+          videoList.add(video.videoId);
+        },
+      );
+
+      setState(() {
+        load = false;
+      });
+
+      setState(() {
+        videoList = videoList;
+      });
+      return videoList;
+    } catch (e) {
+      return [];
     }
-
-    videoList.clear();
-
-    tangazo.forEach(
-      (element) {
-        VideoKwaya video = VideoKwaya.fromJson(element);
-        videoList.add(video.videoId);
-      },
-    );
-    setState(() {
-      load = false;
-    });
-
-    setState(() {
-      videoList = videoList;
-    });
-    return videoList;
   }
 
   @override
