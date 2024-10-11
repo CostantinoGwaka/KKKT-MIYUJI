@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
     String mydataApi = "${ApiUrl.BASEURL}get_mydata.php/";
 
     final response = await http.post(
-      mydataApi as Uri,
+      Uri.parse(mydataApi),
       headers: {'Accept': 'application/json'},
       body: {
         "member_no": memberNo,
@@ -93,10 +93,9 @@ class _LoginState extends State<Login> {
     }
 
     FireibaseClass.getUserToken().then((tokens) async {
-      print("user token $tokens");
       String myApi = "${ApiUrl.BASEURL}login.php/";
       final response = await http.post(
-        myApi as Uri,
+        Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
         body: {
           "member_no": memberNo,
@@ -120,7 +119,6 @@ class _LoginState extends State<Login> {
           String mtumishi = jsonEncode(json[0]);
 
           FireibaseClass.getUserToken().then((token) {
-            print("tokennnnnn: $token");
             Cloud.add(
               serverPath: "users/${json[0]['member_no']}",
               value: {
@@ -149,9 +147,11 @@ class _LoginState extends State<Login> {
           await checkMtumish(memberNo);
 
           //remove loader
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
           //end here
 
+          // ignore: use_build_context_synchronously
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
 
           return Fluttertoast.showToast(
@@ -168,6 +168,7 @@ class _LoginState extends State<Login> {
             },
           );
           //remove loader
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
           //end here
 
@@ -190,6 +191,7 @@ class _LoginState extends State<Login> {
             isregistered = false;
           });
           //remove loader
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
           //end here
           setState(
@@ -213,6 +215,7 @@ class _LoginState extends State<Login> {
             isregistered = false;
           },
         );
+        // ignore: avoid_print
         print("no data");
       }
     });
@@ -400,19 +403,16 @@ class _LoginState extends State<Login> {
             await login(memberController.text, passwordController.text);
           }
         },
-        // color: MyColors.primaryLight,
-        // padding: const EdgeInsets.symmetric(
-        //   vertical: 10,
-        //   horizontal: 80,
-        // ),
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(20.0),
-        // ),
+        style: ElevatedButton.styleFrom(
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+          elevation: 1,
+          backgroundColor: MyColors.primaryLight,
+        ),
         child: Text(
           "Ingia",
           style: GoogleFonts.montserrat(
             fontSize: 23,
-            color: Colors.white,
+            color: MyColors.white,
             letterSpacing: 0.168,
             fontWeight: FontWeight.w500,
           ),

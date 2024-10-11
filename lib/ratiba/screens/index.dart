@@ -21,7 +21,7 @@ class RatibaZaIbada extends StatefulWidget {
 class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<IbadaRatiba>> getRatiba() async {
     String myApi = "${ApiUrl.BASEURL}get_ibada.php";
-    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
+    final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <IbadaRatiba>[];
     var baraza;
@@ -44,14 +44,11 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   }
 
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
-    print("data heere 1");
     String myApi = "${ApiUrl.BASEURL}get_akaunti.php";
-    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
+    final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <AkauntiUsharikaPodo>[];
     var baraza;
-
-    print("data heere ${response.statusCode}");
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -60,7 +57,6 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
         baraza = json;
       }
     }
-    print("data heere 2 $baraza");
 
     try {
       baraza.forEach(
@@ -69,11 +65,10 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
           barazaList.add(video);
         },
       );
+      return barazaList;
     } catch (e) {
-      print("data error $e");
+      return [];
     }
-    print("data here $barazaList");
-    return barazaList;
   }
 
   Future<void> _pullRefresh() async {

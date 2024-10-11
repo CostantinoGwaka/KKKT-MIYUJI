@@ -102,6 +102,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         );
                       } else {
                         resetBtn();
+                        // ignore: deprecated_member_use
                         launch("tel://+255 659 515 042");
                       }
                     },
@@ -112,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             }).toList()
               ..add(
                 FloatingActionButton(
-                  backgroundColor: MyColors.primaryLight,
+                  backgroundColor: MyColors.white,
                   heroTag: null,
                   child: AnimatedBuilder(
                     animation: _controller,

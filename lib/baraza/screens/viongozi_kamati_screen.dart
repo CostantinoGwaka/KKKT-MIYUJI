@@ -25,7 +25,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
     print("kamati data ${widget.kamati.id}");
     String myApi = "${ApiUrl.BASEURL}get_kamati_viongozi_id.php";
     final response = await http.post(
-      myApi as Uri,
+      Uri.parse(myApi),
       body: {
         "kamati_id": widget.kamati.id,
       },

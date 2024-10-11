@@ -66,14 +66,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Center(
-                  child: Text("Badili Neno Lako La Siri",
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        color: const Color(0xff205072),
-                        fontWeight: FontWeight.w500,
-                      )),
-                ),
+                // Center(
+                //   child: Text("Badili Neno Lako La Siri",
+                //       style: GoogleFonts.poppins(
+                //         fontSize: 20,
+                //         color: const Color(0xff205072),
+                //         fontWeight: FontWeight.w500,
+                //       )),
+                // ),
                 const SizedBox(height: 20),
                 _inputField1(),
                 _inputField2(),
@@ -207,7 +207,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     String mydataApi = "${ApiUrl.BASEURL}change_password.php";
 
     final response = await http.post(
-      mydataApi as Uri,
+      Uri.parse(mydataApi),
       headers: {
         'Accept': 'application/json',
       },
@@ -295,18 +295,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             await updatePassword(host['member_no'], oldp.text, newp.text);
           }
         },
-        // padding: EdgeInsets.symmetric(
-        //   vertical: 10,
-        //   horizontal: 80,
-        // ),
-        // shape: new RoundedRectangleBorder(
-        //   borderRadius: new BorderRadius.circular(20.0),
-        // ),
+        style: ElevatedButton.styleFrom(
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+          elevation: 1,
+          backgroundColor: MyColors.primaryLight,
+        ),
         child: Text(
           "Badili",
           style: GoogleFonts.montserrat(
             fontSize: 23,
-            color: Colors.white,
+            color: MyColors.white,
             letterSpacing: 0.168,
             fontWeight: FontWeight.w500,
           ),

@@ -24,26 +24,35 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
 
   Future<List<Matangazo>> getMatangazoNew() async {
     String myApi = "${ApiUrl.BASEURL}get_matangazo.php";
-    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
 
-    var matangazoList = <Matangazo>[];
-    var tangazo;
-
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        tangazo = json;
-      }
-    }
-
-    tangazo.forEach(
-      (element) {
-        Matangazo video = Matangazo.fromJson(element);
-        matangazoList.add(video);
-      },
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
     );
-    return matangazoList;
+
+    try {
+      var matangazoList = <Matangazo>[];
+      var tangazo;
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse != null && jsonResponse != 404) {
+          var json = jsonDecode(response.body);
+          tangazo = json;
+        }
+      }
+
+      tangazo.forEach(
+        (element) {
+          Matangazo video = Matangazo.fromJson(element);
+          matangazoList.add(video);
+        },
+      );
+      return matangazoList;
+    } catch (e) {
+      print("error: $e");
+      return [];
+    }
   }
 
   Future<void> _pullRefresh() async {

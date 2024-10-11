@@ -9,6 +9,7 @@ import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
 import 'package:miyuji/utils/spacer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -16,34 +17,41 @@ class NenoLaSiku extends StatefulWidget {
   const NenoLaSiku({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NenoLaSikuState createState() => _NenoLaSikuState();
 }
 
 class _NenoLaSikuState extends State<NenoLaSiku> {
   Future<List<Manenosiku>> getManeno() async {
-    String myApi = "${ApiUrl.BASEURL}get_maneno.php";
-    final response = await http.post(myApi as Uri, headers: {'Accept': 'application/json'});
+    try {
+      String myApi = "${ApiUrl.BASEURL}get_maneno.php";
+      final response = await http.post(
+        Uri.parse(myApi),
+        headers: {
+          'Accept': 'application/json',
+        },
+      );
 
-    var barazaList = <Manenosiku>[];
-    var baraza;
+      var barazaList = <Manenosiku>[];
+      var baraza = [];
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        baraza = json;
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+
+        if (jsonResponse != null && jsonResponse != 404) {
+          var json = jsonDecode(response.body);
+          baraza = json;
+        }
       }
-    }
 
-    print("data $baraza");
-
-    baraza.forEach(
-      (element) {
+      for (var element in baraza) {
         Manenosiku video = Manenosiku.fromJson(element);
         barazaList.add(video);
-      },
-    );
-    return barazaList;
+      }
+      return barazaList;
+    } catch (e) {
+      return [];
+    }
   }
 
   Future<void> _pullRefresh() async {

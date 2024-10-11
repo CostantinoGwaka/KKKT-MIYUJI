@@ -471,7 +471,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     var now = DateTime.now();
 
-    final response = await http.post(myApi as Uri, headers: {
+    final response = await http.post(Uri.parse(myApi), headers: {
       'Accept': 'application/json'
     }, body: {
       "jina_la_msharika": "$jinaLaMsharika",
