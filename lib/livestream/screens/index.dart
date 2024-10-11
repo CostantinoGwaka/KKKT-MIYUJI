@@ -7,6 +7,7 @@ import 'package:miyuji/models/livestream.dart';
 import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/TextStyles.dart';
 import 'package:miyuji/utils/my_colors.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -14,9 +15,16 @@ var videoId = '';
 
 class LiveYoutubePlayer extends StatefulWidget {
   final LiveStreams? media;
-  const LiveYoutubePlayer({Key? key, this.media}) : super(key: key);
+  // ignore: use_super_parameters
+  const LiveYoutubePlayer({
+    Key? key,
+    this.media,
+  }) : super(
+          key: key,
+        );
 
   @override
+  // ignore: library_private_types_in_public_api
   _PlayerState createState() => _PlayerState();
 }
 
@@ -170,7 +178,9 @@ class _PlayerState extends State<LiveYoutubePlayer> with WidgetsBindingObserver 
         color: Colors.black,
         shape: BoxShape.rectangle,
         image: DecorationImage(
-          image: NetworkImage("https://www.technocrazed.com/wp-content/uploads/2015/12/Landscape-wallpaper-36.jpg"),
+          image: NetworkImage(
+            "https://www.technocrazed.com/wp-content/uploads/2015/12/Landscape-wallpaper-36.jpg",
+          ),
           fit: BoxFit.cover,
         ),
       ),
