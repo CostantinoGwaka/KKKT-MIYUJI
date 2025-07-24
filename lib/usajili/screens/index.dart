@@ -100,7 +100,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     //maximum sell
     if (nambaYaSimu.value.text.length != 10 || !nambaYaSimu.value.text.startsWith("0")) {
       setState(() {
-        msgErrorPhoneNumber = "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
+        msgErrorPhoneNumber =
+            "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
       });
     } else {
       setState(() {
@@ -130,7 +131,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     if (kamaUshiriki.value.text.length != 10 || !kamaUshiriki.value.text.startsWith("0")) {
       setState(() {
-        msgErrorPhoneNumber2 = "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
+        msgErrorPhoneNumber2 =
+            "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
       });
     } else {
       setState(() {
@@ -207,7 +209,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               surface: Colors.blueGrey,
               onSurface: Colors.yellow,
             ),
-            dialogBackgroundColor: Colors.blue[500],
+            dialogTheme: DialogThemeData(backgroundColor: Colors.blue[500]),
           ),
           child: child ?? const SizedBox.shrink(), // Handle null child case
         );
@@ -242,7 +244,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               surface: Colors.blueGrey,
               onSurface: Colors.yellow,
             ),
-            dialogBackgroundColor: Colors.blue[500],
+            dialogTheme: DialogThemeData(backgroundColor: Colors.blue[500]),
           ),
           child: child ?? const SizedBox.shrink(), // Handle null child case
         );
@@ -277,7 +279,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               surface: Colors.blueGrey,
               onSurface: Colors.yellow,
             ),
-            dialogBackgroundColor: Colors.blue[500],
+            dialogTheme: DialogThemeData(backgroundColor: Colors.blue[500]),
           ),
           child: child!,
         );
@@ -379,8 +381,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         jinsiaa == "") {
       Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia)");
     } else if (nambaYaSimua.length != 10 || !nambaYaSimua.startsWith("0")) {
-      Alerts.show(context, "Kuna shida", "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).");
-    } else if (((jumuiyaUshirikia != '' && jumuiyaUshirikia == 'ndio') && (jinaLaJumuiya.text.isEmpty)) || katibuJumuiya.text.isEmpty) {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).");
+    } else if (((jumuiyaUshirikia != '' && jumuiyaUshirikia == 'ndio') && (jinaLaJumuiya.text.isEmpty)) ||
+        katibuJumuiya.text.isEmpty) {
       Alerts.show(
         context,
         "Kuna shida",
@@ -689,7 +693,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Thibitisha"),
-          content: const Text("Unakaribia kutuma taarifa zako kwenda usharikani,kagua kisha tuma taarifa zako kwenda usharikani"),
+          content: const Text(
+              "Unakaribia kutuma taarifa zako kwenda usharikani,kagua kisha tuma taarifa zako kwenda usharikani"),
           actions: <Widget>[
             TextButton(
               child: const Text("Funga"),
@@ -907,24 +912,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             height: 5,
                           ),
                           (_halindoa != '' && _halindoa == 'Nimeoa')
-                              ? Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-                                  const Text(
-                                    '3.Jina la mwenzi wako',
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  TextFormField(
-                                    decoration: const InputDecoration(
-                                      prefixIcon: Icon(Icons.person),
-                                      labelText: "Jina la mwenzi wako",
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    controller: jinaLaMwenziWako,
-                                  ),
-                                ])
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                      const Text(
+                                        '3.Jina la mwenzi wako',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      TextFormField(
+                                        decoration: const InputDecoration(
+                                          prefixIcon: Icon(Icons.person),
+                                          labelText: "Jina la mwenzi wako",
+                                        ),
+                                        keyboardType: TextInputType.text,
+                                        controller: jinaLaMwenziWako,
+                                      ),
+                                    ])
                               : const SizedBox.shrink(),
                           const SizedBox(
                             height: 5,
@@ -1831,7 +1839,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void nextPage() {
-    _pageController.animateToPage(_pageController.page!.toInt() + 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+    _pageController.animateToPage(_pageController.page!.toInt() + 1,
+        duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
       getJumuiyaApi();
       getUsajiliId();
@@ -1844,7 +1853,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (kDebugMode) {
       print("${_pageController.page!.toInt()} page id");
     }
-    _pageController.animateToPage(_pageController.page!.toInt() - 1, duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
+    _pageController.animateToPage(_pageController.page!.toInt() - 1,
+        duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
     setState(() {
       pagecontrolnumber = pagecontrolnumber! - 1;
     });

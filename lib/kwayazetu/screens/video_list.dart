@@ -5,9 +5,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class VideoList extends StatefulWidget {
   final dynamic kwayaid;
   const VideoList({
-    Key? key,
+    super.key,
     this.kwayaid,
-  }) : super(key: key);
+  });
   @override
   _VideoListState createState() => _VideoListState();
 }

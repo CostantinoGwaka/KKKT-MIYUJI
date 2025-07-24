@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViongoziJumuiya extends StatefulWidget {
   final dynamic jumuiya;
-  const ViongoziJumuiya({Key? key, this.jumuiya}) : super(key: key);
+  const ViongoziJumuiya({super.key, this.jumuiya});
 
   @override
   _ViongoziJumuiyaState createState() => _ViongoziJumuiyaState();

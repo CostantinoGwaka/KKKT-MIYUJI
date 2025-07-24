@@ -12,14 +12,14 @@ class ImagePreview extends StatelessWidget {
   final double? width;
 
   const ImagePreview({
-    Key? key,
+    super.key,
     required this.img,
     this.height,
     this.width,
     this.fit = BoxFit.cover,
     this.filter = false,
     this.filterColor = Colors.black45,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-import './local_notification.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 const String FIREBASE_API_KEY =

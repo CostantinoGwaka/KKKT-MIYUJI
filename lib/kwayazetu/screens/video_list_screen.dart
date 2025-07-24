@@ -15,9 +15,9 @@ late List<YoutubePlayerController> _controllers;
 class VideoListScreen extends StatefulWidget {
   final dynamic kwayaid;
   const VideoListScreen({
-    Key? key,
+    super.key,
     this.kwayaid,
-  }) : super(key: key);
+  });
 
   @override
   _VideoListScreenState createState() => _VideoListScreenState();

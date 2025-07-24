@@ -10,10 +10,11 @@ String enumName(AppTheme anyEnum) {
 
 final appThemeData = {
   AppTheme.White: ThemeData(
-    dialogTheme: const DialogTheme(
-        titleTextStyle: TextStyle(
-      color: Colors.black,
-    )),
+    dialogTheme: const DialogThemeData(
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+      ),
+    ),
     brightness: Brightness.light,
     primaryColor: MyColors.primary,
     //primarySwatch: MyColors.primary,
@@ -24,7 +25,7 @@ final appThemeData = {
         color: Colors.white,
       ),
     ),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
       color: Colors.white,
     ),
     iconTheme: const IconThemeData(
@@ -51,10 +52,11 @@ final appThemeData = {
     //scaffoldBackgroundColor: MyColors.grey_90,
     //primaryColor: MyColors.grey_90,
     brightness: Brightness.dark,
-    dialogTheme: const DialogTheme(
-        titleTextStyle: TextStyle(
-      color: Colors.white,
-    )),
+    dialogTheme: const DialogThemeData(
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+      ),
+    ),
     bottomSheetTheme: const BottomSheetThemeData(
         //backgroundColor: MyColors.grey_90,
         ),
@@ -70,7 +72,7 @@ final appThemeData = {
     ),
     dividerColor: Colors.grey.shade800,
     //bottomAppBarTheme: BottomAppBarTheme(color: MyColors.grey_90),
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
         //color: MyColors.grey_80,
         ),
     iconTheme: const IconThemeData(

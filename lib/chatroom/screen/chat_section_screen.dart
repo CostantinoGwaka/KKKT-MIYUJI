@@ -24,7 +24,14 @@ import './imagecaption_screen.dart';
 import 'package:miyuji/home/screens/index.dart';
 
 class ChatSectionScreen extends StatefulWidget {
-  const ChatSectionScreen({Key? key, required this.fullname, required this.picture, this.fromFriends = false, this.friendId, this.deptId, this.token}) : super(key: key);
+  const ChatSectionScreen(
+      {super.key,
+      required this.fullname,
+      required this.picture,
+      this.fromFriends = false,
+      this.friendId,
+      this.deptId,
+      this.token});
 
   final String? fullname;
   final String? friendId;
@@ -144,7 +151,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   }
 
   sendFirstMessage() {
-    var userId;
+    Object? userId;
     final databaseRef = FirebaseDatabase.instance.ref();
 
     databaseRef.child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
@@ -165,7 +172,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
               createdAt: DateTime.now().toString(),
               sentAt: DateTime.now().toString(),
               color: "green",
-              message: "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
+              message:
+                  "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
               messageId: id,
               status: "sent",
               reply: false,
@@ -256,7 +264,11 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                     ),
                     child: Stack(children: [
                       StreamBuilder(
-                        stream: FirebaseDatabase.instance.ref().child("Messages/${host['member_no']}/${widget.friendId}").orderByChild('createdAt').onValue,
+                        stream: FirebaseDatabase.instance
+                            .ref()
+                            .child("Messages/${host['member_no']}/${widget.friendId}")
+                            .orderByChild('createdAt')
+                            .onValue,
                         builder: (_, snap) {
                           if (snap.hasData) {
                             var data = [];
@@ -285,7 +297,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                             message: snap,
                                             replymessageid: replymessageid,
                                             scrollTo: () {
-                                              int index = data.indexWhere((element) => element["messageId"] == snap["repliedContent"]["messageId"]);
+                                              int index = data.indexWhere((element) =>
+                                                  element["messageId"] == snap["repliedContent"]["messageId"]);
                                               if (index > 0) {
                                                 _scrollController.scrollTo(
                                                   index: index,
@@ -294,7 +307,9 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
 
                                                 //set replymessageId
                                                 setState(() {
-                                                  replymessageid = snap['repliedContent'] != null ? snap['repliedContent']['messageId'] : null;
+                                                  replymessageid = snap['repliedContent'] != null
+                                                      ? snap['repliedContent']['messageId']
+                                                      : null;
                                                 });
 
                                                 //unset
@@ -312,7 +327,9 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                           //bottom of message bubble
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: (host['member_no'] != snap['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
+                                            mainAxisAlignment: (host['member_no'] != snap['senderId'])
+                                                ? MainAxisAlignment.start
+                                                : MainAxisAlignment.end,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(top: 5.0, right: 10, left: 10),
@@ -325,7 +342,10 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                                             DateTime.parse(snap['sentAt']),
                                                           )
                                                           .toString(),
-                                                      style: const TextStyle(color: Colors.grey, fontSize: 10, fontWeight: FontWeight.bold),
+                                                      style: const TextStyle(
+                                                          color: Colors.grey,
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                 ),
@@ -415,7 +435,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                       FloatingActionButton(
                         backgroundColor: MyColors.primaryLight,
                         onPressed: () {
-                          MediaHandler.getDocument(context, widget, widget.token.toString(), replyData).whenComplete(() {
+                          MediaHandler.getDocument(context, widget, widget.token.toString(), replyData)
+                              .whenComplete(() {
                             _scrollController.scrollTo(
                               index: 0,
                               duration: const Duration(milliseconds: 200),

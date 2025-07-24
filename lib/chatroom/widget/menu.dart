@@ -20,7 +20,7 @@ class FocusedMenuHolder extends StatefulWidget {
   final bool openWithTap;
 
   const FocusedMenuHolder(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.onPressed,
       required this.menuItems,
@@ -33,8 +33,7 @@ class FocusedMenuHolder extends StatefulWidget {
       this.menuWidth,
       this.bottomOffsetHeight,
       this.menuOffset,
-      this.openWithTap = false})
-      : super(key: key);
+      this.openWithTap = false});
 
   @override
   _FocusedMenuHolderState createState() => _FocusedMenuHolderState();
@@ -118,7 +117,7 @@ class FocusedMenuDetails extends StatelessWidget {
   final double? menuOffset;
 
   const FocusedMenuDetails(
-      {Key? key,
+      {super.key,
       this.menuItems,
       this.child,
       this.childOffset,
@@ -130,8 +129,7 @@ class FocusedMenuDetails extends StatelessWidget {
       this.blurBackgroundColor,
       this.menuWidth,
       this.bottomOffsetHeight,
-      this.menuOffset})
-      : super(key: key);
+      this.menuOffset});
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +140,9 @@ class FocusedMenuDetails extends StatelessWidget {
 
     final maxMenuWidth = menuWidth ?? (size.width * 0.70);
     final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    final leftOffset = (childOffset!.dx + maxMenuWidth) < size.width ? childOffset!.dx : (childOffset!.dx - maxMenuWidth + childSize!.width);
+    final leftOffset = (childOffset!.dx + maxMenuWidth) < size.width
+        ? childOffset!.dx
+        : (childOffset!.dx - maxMenuWidth + childSize!.width);
     final topOffset = (childOffset!.dy + menuHeight + childSize!.height) < size.height - bottomOffsetHeight!
         ? childOffset!.dy + childSize!.height + menuOffset!
         : childOffset!.dy - menuHeight - menuOffset!;
