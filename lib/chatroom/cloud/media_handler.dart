@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,9 @@ class MediaHandler {
 
     //upload image to server
     if (message.type == "photo") {}
-    final firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child('Message${message.type}/$id-${image.path.split('/').last}');
+    final firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('Message${message.type}/$id-${image.path.split('/').last}');
 
     //upload task listen when upload image to server
     UploadTask uploadTask = ref.putFile(image);
@@ -170,7 +172,7 @@ class MediaHandler {
       String id = const Uuid().v4();
 
       //server time
-      DateTime serverTime = Timestamp.now().toDate().toLocal();
+      // DateTime serverTime = Timestamp.now().toDate().toLocal();
 
       //media size
       int size = await file.length();

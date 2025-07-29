@@ -30,7 +30,7 @@ dependencies:
   firebase_storage:
   image_picker:
   file_picker:
-  cloud_firestore:
+  # cloud_firestore: ^4.15.3
   provider:
   url_launcher:
   focused_menu:
@@ -38,6 +38,7 @@ dependencies:
   device_preview:
   ffi: ^1.0.0
   fluttertoast:
+  firebase_core:
   # local_auth:
 
   # The following adds the Cupertino Icons font to your application.

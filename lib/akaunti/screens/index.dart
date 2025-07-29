@@ -41,7 +41,6 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkLogin();
   }
@@ -363,7 +362,8 @@ class AvatarImage extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 25.0,
-                          backgroundImage: NetworkImage("https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
+                          backgroundImage: NetworkImage(
+                              "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
                           backgroundColor: Colors.transparent,
                         ),
                         manualSpacer(step: 5),
@@ -427,7 +427,8 @@ class AvatarImage extends StatelessWidget {
                                   manualSpacer(step: 5),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(builder: (context) => const Login()));
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: MyColors.primaryLight,
@@ -506,7 +507,9 @@ class AvatarImage extends StatelessWidget {
                                             ),
                                             //
                                             Text(
-                                              (data == null || data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
+                                              (data == null || data['ahadi'] == null)
+                                                  ? "N/A"
+                                                  : "${money.format(int.parse(data['ahadi']))} Tsh",
                                               style: GoogleFonts.montserrat(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -526,7 +529,9 @@ class AvatarImage extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              (data == null || data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))}  Tsh",
+                                              (data == null || data['jengo'] == null)
+                                                  ? "N/A"
+                                                  : "${money.format(int.parse(data['jengo']))}  Tsh",
                                               style: GoogleFonts.montserrat(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,

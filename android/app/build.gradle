@@ -35,17 +35,19 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = 'com.example.miyuji'
     testNamespace 'com.example.miyuji'
-    compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
+    compileSdkVersion 35
+
+    ndkVersion "25.1.8937393"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = '1.8'
     }
+
 
     defaultConfig {
         applicationId "com.example.miyuji"
@@ -96,6 +98,10 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
     androidTestImplementation "androidx.fragment:fragment-testing:1.8.4"
     androidTestImplementation "androidx.test:core:1.6.1"
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.core:core-ktx:1.6.0'
 }
 
 flutter {
