@@ -5,14 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/chatroom/cloud/cloud.dart';
-import 'package:miyuji/chatroom/cloud/firebase_notification.dart';
-import 'package:miyuji/home/screens/index.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
-import 'package:miyuji/usajili/screens/index.dart';
-import 'package:miyuji/utils/Alerts.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/chatroom/cloud/cloud.dart';
+import 'package:kanisaapp/chatroom/cloud/firebase_notification.dart';
+import 'package:kanisaapp/home/screens/index.dart';
+import 'package:kanisaapp/shared/localstorage/index.dart';
+import 'package:kanisaapp/usajili/screens/index.dart';
+import 'package:kanisaapp/utils/Alerts.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

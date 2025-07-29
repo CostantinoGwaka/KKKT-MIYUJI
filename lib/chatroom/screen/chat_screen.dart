@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:miyuji/chatroom/screen/chat_list_screen.dart';
-import 'package:miyuji/chatroom/widget/new_chat_bottom_sheet.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/chatroom/screen/chat_list_screen.dart';
+import 'package:kanisaapp/chatroom/widget/new_chat_bottom_sheet.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
 import 'dart:math' as math;
 
 import 'package:url_launcher/url_launcher.dart';

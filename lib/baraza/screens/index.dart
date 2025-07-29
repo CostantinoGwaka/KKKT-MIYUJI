@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:miyuji/baraza/screens/baraza_wazee_screen.dart';
-import 'package:miyuji/baraza/screens/kamati_screen.dart';
-import 'package:miyuji/baraza/screens/walimu_screen.dart';
-import 'package:miyuji/baraza/screens/watumishi_screen.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/baraza/screens/baraza_wazee_screen.dart';
+import 'package:kanisaapp/baraza/screens/kamati_screen.dart';
+import 'package:kanisaapp/baraza/screens/walimu_screen.dart';
+import 'package:kanisaapp/baraza/screens/watumishi_screen.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 
 class BarazaLaWazee extends StatefulWidget {
   const BarazaLaWazee({super.key});
@@ -143,7 +143,8 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BarazaWazeeScreen()));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) => const BarazaWazeeScreen()));
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
@@ -222,7 +223,8 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KamatiUsharikaScreen()));
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) => const KamatiUsharikaScreen()));
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -298,7 +300,8 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WatumishiScreen()));
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) => const WatumishiScreen()));
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -374,7 +377,8 @@ class _BarazaLaWazeeState extends State<BarazaLaWazee> {
                             borderRadius: BorderRadius.circular(20),
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const WalimuScreen()));
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) => const WalimuScreen()));
                               },
                               child: Container(
                                 decoration: const BoxDecoration(

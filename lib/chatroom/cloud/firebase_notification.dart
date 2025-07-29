@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:miyuji/models/message.dart';
+import 'package:kanisaapp/models/message.dart';
 
 const String FIREBASE_API_KEY =
     "AAAA8UdPgfc:APA91bEdD2_3efaG6aYBiog4VRll4IFJwcMokUNknGZWGIObncUUY93oKNhZivjH8eZggbMEkGwNn4_Kmp1Dk6Vncc80_HMlNR5wbe0JJSczsL0lCJsRclwMPjur_jryZ1h92bWcd44X";
@@ -97,7 +97,9 @@ class FireibaseClass {
             "payload": <String, dynamic>{
               "aps": {"mutable-content": 1}
             },
-            "fcm_options": <String, dynamic>{"image": "https://pbs.twimg.com/profile_images/1162267256157458433/m7s3Y6nj_400x400.jpg"}
+            "fcm_options": <String, dynamic>{
+              "image": "https://pbs.twimg.com/profile_images/1162267256157458433/m7s3Y6nj_400x400.jpg"
+            }
           },
           'to': token,
         },

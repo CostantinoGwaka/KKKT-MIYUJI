@@ -1,4 +1,4 @@
-import 'package:miyuji/models/message.dart';
+import 'package:kanisaapp/models/message.dart';
 import './cloud.dart';
 import './firebase_notification.dart';
 import 'package:firebase_database/firebase_database.dart';

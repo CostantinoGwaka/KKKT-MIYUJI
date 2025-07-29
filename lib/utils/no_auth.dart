@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
-import 'package:miyuji/register_login/screens/login.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
+import 'package:kanisaapp/register_login/screens/login.dart';
 
 class NoAuthBanner extends StatelessWidget {
   const NoAuthBanner({super.key});

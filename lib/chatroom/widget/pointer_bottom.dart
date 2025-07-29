@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 
 class PointerBottom extends StatelessWidget {
   const PointerBottom({key}) : super(key: key);

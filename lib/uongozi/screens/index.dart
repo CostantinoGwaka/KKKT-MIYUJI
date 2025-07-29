@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/models/viongozi_wakanisa.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/models/viongozi_wakanisa.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -170,64 +170,67 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                           top: 10,
                                           bottom: 10,
                                         ),
-                                        child: Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-                                          Column(
+                                        child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
-                                              SizedBox(
-                                                height: 50,
-                                                child: CircleAvatar(
-                                                  backgroundColor: MyColors.white,
-                                                  // backgroundImage: AssetImage("assets/images/viongozi.png"),
-                                                  child: Image.asset(
-                                                    "assets/images/useravatar.png",
-                                                    // color: MyColors.primaryLight,
-                                                    height: 70,
+                                              Column(
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    height: 50,
+                                                    child: CircleAvatar(
+                                                      backgroundColor: MyColors.white,
+                                                      // backgroundImage: AssetImage("assets/images/viongozi.png"),
+                                                      child: Image.asset(
+                                                        "assets/images/useravatar.png",
+                                                        // color: MyColors.primaryLight,
+                                                        height: 70,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(left: 10),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                SizedBox(
-                                                  width: 200,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        snapshot.data![index].fname!,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        softWrap: false,
-                                                        style: GoogleFonts.montserrat(
-                                                          fontSize: 15,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: MyColors.primaryLight,
-                                                        ),
+                                              Container(
+                                                margin: const EdgeInsets.only(left: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      width: 200,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            snapshot.data![index].fname!,
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            softWrap: false,
+                                                            style: GoogleFonts.montserrat(
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: MyColors.primaryLight,
+                                                            ),
+                                                          ),
+                                                          manualStepper(step: 10),
+                                                          Text(
+                                                            snapshot.data![index].wadhifa!,
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            softWrap: false,
+                                                            style: GoogleFonts.montserrat(
+                                                              fontSize: 12,
+                                                              fontWeight: FontWeight.normal,
+                                                              color: MyColors.primaryLight,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      manualStepper(step: 10),
-                                                      Text(
-                                                        snapshot.data![index].wadhifa!,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        softWrap: false,
-                                                        style: GoogleFonts.montserrat(
-                                                          fontSize: 12,
-                                                          fontWeight: FontWeight.normal,
-                                                          color: MyColors.primaryLight,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          )
-                                        ]),
+                                              )
+                                            ]),
                                       )
                                     ],
                                   ),

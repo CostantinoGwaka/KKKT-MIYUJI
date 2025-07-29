@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 
 class ImageView extends StatelessWidget {
   final String img;
@@ -10,7 +10,13 @@ class ImageView extends StatelessWidget {
   final double? height;
 
   ///encapsulate a network image
-  const ImageView({super.key, required this.img, this.height, this.fit = BoxFit.cover, this.filter = false, this.filterColor = Colors.black45});
+  const ImageView(
+      {super.key,
+      required this.img,
+      this.height,
+      this.fit = BoxFit.cover,
+      this.filter = false,
+      this.filterColor = Colors.black45});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +33,10 @@ class ImageView extends StatelessWidget {
             imageUrl: img,
             colorBlendMode: BlendMode.darken,
             color: filter ? filterColor : null,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                SizedBox(height: 10, width: 20, child: Center(child: CircularProgressIndicator(value: downloadProgress.progress))),
+            progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                height: 10,
+                width: 20,
+                child: Center(child: CircularProgressIndicator(value: downloadProgress.progress))),
             errorWidget: (context, url, error) => Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 height: height ?? deviceHeight(context),

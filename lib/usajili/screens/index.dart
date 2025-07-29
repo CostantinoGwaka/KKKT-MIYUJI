@@ -6,13 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:miyuji/models/Jumuiya.dart';
-import 'package:miyuji/utils/Alerts.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/models/Jumuiya.dart';
+import 'package:kanisaapp/utils/Alerts.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

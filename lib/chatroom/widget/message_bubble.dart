@@ -8,16 +8,16 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/chatroom/cloud/cloud.dart';
-import 'package:miyuji/chatroom/widget/image_holder.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/chatroom/cloud/cloud.dart';
+import 'package:kanisaapp/chatroom/widget/image_holder.dart';
+import 'package:kanisaapp/shared/localstorage/index.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 class MessageBubble extends StatefulWidget {
   final GestureTapCallback scrollTo;
@@ -57,7 +57,10 @@ class _MessageBubbleState extends State<MessageBubble> {
     // if (await DataConnectionChecker().hasConnection) {
     final databaseRef = FirebaseDatabase.instance.ref();
 
-    databaseRef.child('Messages/${host['member_no']}/${widget.message['receiverId']}').once().then((DatabaseEvent event) {
+    databaseRef
+        .child('Messages/${host['member_no']}/${widget.message['receiverId']}')
+        .once()
+        .then((DatabaseEvent event) {
       DataSnapshot snapshot = event.snapshot;
 
       // Check if snapshot contains data
@@ -68,7 +71,8 @@ class _MessageBubbleState extends State<MessageBubble> {
         values.forEach((key, value) {
           // Ensure value is a Map before accessing keys
           if (value is Map<dynamic, dynamic>) {
-            Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");
+            Cloud.delete(
+                serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");
           }
         });
       }
@@ -95,7 +99,8 @@ class _MessageBubbleState extends State<MessageBubble> {
       decoration: BoxDecoration(color: (widget.message['messageId'] == widget.replymessageid) ? Colors.grey : null),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: (host['member_no'] != widget.message['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
+        mainAxisAlignment:
+            (host['member_no'] != widget.message['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
         children: [
           Align(
             alignment: (host['member_no'] != widget.message['senderId']) ? Alignment.centerLeft : Alignment.centerRight,
@@ -146,9 +151,14 @@ class _MessageBubbleState extends State<MessageBubble> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    Cloud.delete(serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}").whenComplete(
+                    Cloud.delete(
+                            serverPath:
+                                "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}")
+                        .whenComplete(
                       () {
-                        Cloud.delete(serverPath: "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}");
+                        Cloud.delete(
+                            serverPath:
+                                "Messages/${widget.message['receiverId']}/${widget.message['senderId']}/${widget.message['messageId']}");
                       },
                     );
                   },
@@ -245,7 +255,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        host['member_no'].toString() == widget.message["repliedContent"]['sender'] ? "Wewe" : "Mtumishi",
+                                        host['member_no'].toString() == widget.message["repliedContent"]['sender']
+                                            ? "Wewe"
+                                            : "Mtumishi",
                                         style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.green),
                                       ),
                                       Text(
@@ -264,7 +276,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                                 style: GoogleFonts.montserrat(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color: (host['member_no'] == widget.message['senderId']) ? MyColors.white : Colors.black,
+                                  color:
+                                      (host['member_no'] == widget.message['senderId']) ? MyColors.white : Colors.black,
                                 ),
                               )
                             : manualStepper(step: 0),
@@ -343,7 +356,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                                                         ),
                                                         Text(
                                                           "${widget.message['caption']}",
-                                                          style: TextStyle(fontSize: deviceWidth(context) / 25, color: Colors.white),
+                                                          style: TextStyle(
+                                                              fontSize: deviceWidth(context) / 25, color: Colors.white),
                                                         )
                                                       ],
                                                     ),

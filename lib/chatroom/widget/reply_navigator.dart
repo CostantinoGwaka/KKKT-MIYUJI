@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:miyuji/bloc/addReply.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:provider/provider.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 // var host;
 

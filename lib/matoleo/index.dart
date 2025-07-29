@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:miyuji/home/screens/index.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/dimension.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/home/screens/index.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/dimension.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 
 class MatoleoScreen extends StatefulWidget {
@@ -368,7 +368,10 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             children: [
                                                               Text(
                                                                 "Ahadi",
-                                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+                                                                style: Theme.of(context)
+                                                                    .textTheme
+                                                                    .titleMedium!
+                                                                    .copyWith(fontSize: 14),
                                                               ),
                                                               Padding(
                                                                 padding: const EdgeInsets.all(8.0),
@@ -376,11 +379,18 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                                   children: [
                                                                     Text(
                                                                       "TZS ",
-                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
+                                                                      style: Theme.of(context)
+                                                                          .textTheme
+                                                                          .titleMedium!
+                                                                          .copyWith(fontSize: 10),
                                                                     ),
                                                                     Text(
-                                                                      currency.format(int.parse(snapshot.data![index]['ahadi'])),
-                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                      currency.format(
+                                                                          int.parse(snapshot.data![index]['ahadi'])),
+                                                                      style: Theme.of(context)
+                                                                          .textTheme
+                                                                          .titleMedium!
+                                                                          .copyWith(
                                                                             fontSize: 17,
                                                                             fontWeight: FontWeight.w500,
                                                                           ),
@@ -395,7 +405,10 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             children: [
                                                               Text(
                                                                 "Jengo",
-                                                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+                                                                style: Theme.of(context)
+                                                                    .textTheme
+                                                                    .titleMedium!
+                                                                    .copyWith(fontSize: 14),
                                                               ),
                                                               Padding(
                                                                 padding: const EdgeInsets.all(8.0),
@@ -403,11 +416,18 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                                   children: [
                                                                     Text(
                                                                       "TZS ",
-                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 10),
+                                                                      style: Theme.of(context)
+                                                                          .textTheme
+                                                                          .titleMedium!
+                                                                          .copyWith(fontSize: 10),
                                                                     ),
                                                                     Text(
-                                                                      currency.format(int.parse(snapshot.data![index]['jengo'])),
-                                                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                      currency.format(
+                                                                          int.parse(snapshot.data![index]['jengo'])),
+                                                                      style: Theme.of(context)
+                                                                          .textTheme
+                                                                          .titleMedium!
+                                                                          .copyWith(
                                                                             fontSize: 17,
                                                                             fontWeight: FontWeight.w500,
                                                                           ),
@@ -426,17 +446,19 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                               children: [
                                                                 Text(
                                                                   "",
-                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                        fontSize: 14,
-                                                                        fontWeight: FontWeight.bold,
-                                                                      ),
+                                                                  style:
+                                                                      Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.bold,
+                                                                          ),
                                                                 ),
                                                                 Text(
                                                                   "2022-03-13",
-                                                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                        fontSize: 12,
-                                                                        fontWeight: FontWeight.bold,
-                                                                      ),
+                                                                  style:
+                                                                      Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                                            fontSize: 12,
+                                                                            fontWeight: FontWeight.bold,
+                                                                          ),
                                                                 ),
                                                               ],
                                                             ),

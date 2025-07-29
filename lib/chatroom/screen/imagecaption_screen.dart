@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/chatroom/cloud/media_handler.dart';
-import 'package:miyuji/utils/inputs.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/chatroom/cloud/media_handler.dart';
+import 'package:kanisaapp/utils/inputs.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 import 'package:provider/provider.dart';
 
 class ImageCaption extends StatefulWidget {

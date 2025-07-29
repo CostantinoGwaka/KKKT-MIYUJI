@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:miyuji/matukio/screens/single_post_screen.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/image.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/models/matangazo.dart';
+import 'package:kanisaapp/matukio/screens/single_post_screen.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/image.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/models/matangazo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -166,7 +166,8 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SinglePostScreen(postdata: snapshot.data![index])));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => SinglePostScreen(postdata: snapshot.data![index])));
                       },
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 10),
@@ -179,7 +180,8 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ImagePreview(
-                                      img: 'https://kkktmiyuji.nitusue.com/admin/matangazo/${snapshot.data![index].image}',
+                                      img:
+                                          'https://kkktmiyuji.nitusue.com/admin/matangazo/${snapshot.data![index].image}',
                                       fit: BoxFit.fill,
                                       width: double.infinity,
                                       height: 200,

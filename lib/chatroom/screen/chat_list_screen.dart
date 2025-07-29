@@ -2,11 +2,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:miyuji/chatroom/widget/chatlist_item_widget.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/chatroom/widget/chatlist_item_widget.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 // var host;
 var query;

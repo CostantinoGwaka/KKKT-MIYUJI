@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/chatroom/screen/chat_section_screen.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/chatroom/screen/chat_section_screen.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:firebase_database/firebase_database.dart';

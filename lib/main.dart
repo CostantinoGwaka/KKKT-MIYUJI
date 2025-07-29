@@ -1,11 +1,11 @@
 // import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/bloc/pointer.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/bloc/pointer.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

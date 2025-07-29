@@ -5,23 +5,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/bloc/pointer.dart';
-import 'package:miyuji/chatroom/cloud/cloud.dart';
-import 'package:miyuji/chatroom/cloud/media_handler.dart';
-import 'package:miyuji/chatroom/widget/message_bubble.dart';
-import 'package:miyuji/chatroom/widget/message_input.dart';
-import 'package:miyuji/models/message.dart';
-import 'package:miyuji/models/recent_chat.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/bloc/pointer.dart';
+import 'package:kanisaapp/chatroom/cloud/cloud.dart';
+import 'package:kanisaapp/chatroom/cloud/media_handler.dart';
+import 'package:kanisaapp/chatroom/widget/message_bubble.dart';
+import 'package:kanisaapp/chatroom/widget/message_input.dart';
+import 'package:kanisaapp/models/message.dart';
+import 'package:kanisaapp/models/recent_chat.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import './imagecaption_screen.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 class ChatSectionScreen extends StatefulWidget {
   const ChatSectionScreen(

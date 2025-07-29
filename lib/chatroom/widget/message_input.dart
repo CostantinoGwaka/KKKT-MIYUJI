@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:miyuji/bloc/addReply.dart';
-import 'package:miyuji/chatroom/cloud/message_handler.dart';
-import 'package:miyuji/chatroom/widget/reply_navigator.dart';
-import 'package:miyuji/models/message.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/chatroom/cloud/message_handler.dart';
+import 'package:kanisaapp/chatroom/widget/reply_navigator.dart';
+import 'package:kanisaapp/models/message.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:miyuji/home/screens/index.dart';
+import 'package:kanisaapp/home/screens/index.dart';
 
 class MessageInput extends StatefulWidget {
   final String? friendId;

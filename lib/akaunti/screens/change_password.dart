@@ -4,13 +4,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:miyuji/home/screens/index.dart';
-import 'package:miyuji/shared/localstorage/index.dart';
-import 'package:miyuji/usajili/screens/index.dart';
-import 'package:miyuji/utils/Alerts.dart';
-import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
+import 'package:kanisaapp/home/screens/index.dart';
+import 'package:kanisaapp/shared/localstorage/index.dart';
+import 'package:kanisaapp/usajili/screens/index.dart';
+import 'package:kanisaapp/utils/Alerts.dart';
+import 'package:kanisaapp/utils/ApiUrl.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/spacer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -57,7 +57,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration:
+            const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
@@ -329,7 +330,8 @@ Widget _passCode(context) {
           InkWell(
             child: Text(
               "Jisajili",
-              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+              style: GoogleFonts.montserrat(
+                  fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
@@ -341,7 +343,8 @@ Widget _passCode(context) {
       InkWell(
         child: Text(
           "Rudi nyuma",
-          style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+          style:
+              GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
         ),
         onTap: () {
           Navigator.of(context).pop();

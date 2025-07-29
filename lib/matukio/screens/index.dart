@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:miyuji/matukio/screens/single_post_screen.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/my_colors.dart';
+import 'package:kanisaapp/matukio/screens/single_post_screen.dart';
+import 'package:kanisaapp/utils/TextStyles.dart';
+import 'package:kanisaapp/utils/my_colors.dart';
 
 class MatukioScreen extends StatefulWidget {
   const MatukioScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:miyuji/usajili/screens/index.dart';
+import 'package:kanisaapp/usajili/screens/index.dart';
 
 class Alerts {
   static Future<void> show(context, title, message) async {
