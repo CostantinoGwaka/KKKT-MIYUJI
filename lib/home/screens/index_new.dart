@@ -31,14 +31,14 @@ var host;
 var data;
 var mtumishi;
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeNewPage extends StatefulWidget {
+  const HomeNewPage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeNewPageState createState() => _HomeNewPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeNewPageState extends State<HomeNewPage> {
   int _currentIndex = 0;
   String messageTitle = "Empty";
   String notificationAlert = "alert";
@@ -203,9 +203,9 @@ class _HomePageState extends State<HomePage> {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1.0,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        childAspectRatio: 1.1,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
       itemCount: menuList.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -294,11 +294,11 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
+            color: Colors.grey.withOpacity(0.06),
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
@@ -306,36 +306,45 @@ class _HomePageState extends State<HomePage> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           onTap: () => _handleMenuNavigation(menuItem['pushTo']),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: MyColors.primaryLight.withOpacity(0.1),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        MyColors.primaryLight.withOpacity(0.1),
+                        MyColors.primaryLight.withOpacity(0.05),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Image.asset(
                     menuItem['image'],
-                    height: 32,
-                    width: 32,
+                    height: 28,
+                    width: 28,
                     color: MyColors.primaryLight,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   menuItem['name'],
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
-                    fontSize: 9,
+                    fontSize: 8.5,
                     fontWeight: FontWeight.w600,
                     color: MyColors.primaryLight,
-                    height: 1.2,
+                    height: 1.1,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -349,37 +358,77 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 20,
-        bottom: 20,
+        top: MediaQuery.of(context).padding.top + 16,
+        bottom: 12,
+        left: 20,
+        right: 20,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            MyColors.primaryLight.withOpacity(0.1),
-            Colors.white,
+            MyColors.primaryLight.withOpacity(0.08),
+            Colors.white.withOpacity(0.95),
           ],
         ),
       ),
-      child: Column(
+      child: Row(
         children: [
-          Text(
-            "KKKT MIYUJI",
-            style: GoogleFonts.montserrat(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: MyColors.primaryLight.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.church,
               color: MyColors.primaryLight,
-              letterSpacing: 1.2,
+              size: 24,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "KKKT MIYUJI",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: MyColors.primaryLight,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                Text(
+                  "Kanisa la Kristu Tanzania",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
-            width: 60,
-            height: 3,
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              Icons.notifications_outlined,
               color: MyColors.primaryLight,
-              borderRadius: BorderRadius.circular(2),
+              size: 20,
             ),
           ),
         ],
@@ -392,20 +441,20 @@ class _HomePageState extends State<HomePage> {
     final money = NumberFormat("#,###.#", "en_US");
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -414,34 +463,36 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: MyColors.primaryLight.withOpacity(0.3),
-                      width: 2,
+                    gradient: LinearGradient(
+                      colors: [
+                        MyColors.primaryLight.withOpacity(0.2),
+                        MyColors.primaryLight.withOpacity(0.1),
+                      ],
                     ),
                   ),
                   child: const CircleAvatar(
-                    radius: 30,
+                    radius: 24,
                     backgroundImage: NetworkImage(
                       "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png",
                     ),
                     backgroundColor: Colors.transparent,
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: host != null ? _buildUserInfo() : _buildGuestInfo(),
                 ),
               ],
             ),
             if (host != null) ...[
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               _buildUserDetails(money),
             ] else ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               _buildWelcomeMessage(),
             ],
             if (host != null) ...[
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               _buildMatoleoButton(),
             ],
           ],
@@ -457,40 +508,40 @@ class _HomePageState extends State<HomePage> {
         Text(
           "Karibu,",
           style: GoogleFonts.montserrat(
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.w500,
             color: MyColors.primaryLight,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           host != null ? "${host['fname']}" : "N/A",
           style: GoogleFonts.montserrat(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: MyColors.primaryLight.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            color: MyColors.primaryLight.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.badge_outlined,
-                size: 16,
+                size: 14,
                 color: MyColors.primaryLight,
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Text(
                 "No. Ahadi: ${(data == null || data['namba_ya_ahadi'] == null) ? (host != null ? host['member_no'] : "N/A") : data['namba_ya_ahadi']}",
                 style: GoogleFonts.montserrat(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: MyColors.primaryLight,
                 ),
@@ -509,23 +560,23 @@ class _HomePageState extends State<HomePage> {
         Text(
           "Mgeni",
           style: GoogleFonts.montserrat(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         ElevatedButton.icon(
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const Login()),
             );
           },
-          icon: const Icon(Icons.login, size: 18),
+          icon: const Icon(Icons.login, size: 16),
           label: Text(
             'Ingia Akaunti',
             style: GoogleFonts.montserrat(
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -533,9 +584,10 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MyColors.primaryLight,
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            minimumSize: Size.zero,
           ),
         ),
       ],
@@ -553,7 +605,7 @@ class _HomePageState extends State<HomePage> {
                   Icons.group,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   children: [
@@ -562,7 +614,7 @@ class _HomePageState extends State<HomePage> {
                       (data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
                       Icons.monetization_on,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     _buildInfoCard(
                       "Jengo",
                       (data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))} Tsh",
@@ -574,12 +626,12 @@ class _HomePageState extends State<HomePage> {
             ],
           )
         : Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: MyColors.primaryLight.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
+              color: MyColors.primaryLight.withOpacity(0.04),
+              borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: MyColors.primaryLight.withOpacity(0.2),
+                color: MyColors.primaryLight.withOpacity(0.15),
               ),
             ),
             child: Column(
@@ -587,14 +639,14 @@ class _HomePageState extends State<HomePage> {
                 Icon(
                   Icons.info_outline,
                   color: MyColors.primaryLight,
-                  size: 24,
+                  size: 20,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   "Taarifa zako za Ahadi zitaonekana hapa baada ya usajili.",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
@@ -606,12 +658,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildInfoCard(String title, String value, IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: MyColors.primaryLight.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
+        color: MyColors.primaryLight.withOpacity(0.04),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: MyColors.primaryLight.withOpacity(0.2),
+          color: MyColors.primaryLight.withOpacity(0.15),
         ),
       ),
       child: Column(
@@ -621,25 +673,25 @@ class _HomePageState extends State<HomePage> {
             children: [
               Icon(
                 icon,
-                size: 16,
+                size: 14,
                 color: MyColors.primaryLight,
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Text(
                 title,
                 style: GoogleFonts.montserrat(
-                  fontSize: 10,
+                  fontSize: 9,
                   fontWeight: FontWeight.w600,
                   color: MyColors.primaryLight,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 3),
           Text(
             value,
             style: GoogleFonts.montserrat(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
             ),
@@ -651,24 +703,24 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildWelcomeMessage() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            MyColors.primaryLight.withOpacity(0.1),
-            MyColors.primaryLight.withOpacity(0.05),
+            MyColors.primaryLight.withOpacity(0.08),
+            MyColors.primaryLight.withOpacity(0.03),
           ],
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         "Karibu kwenye mfumo wa KKKT Miyuji, mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
         textAlign: TextAlign.center,
         style: GoogleFonts.montserrat(
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: FontWeight.w500,
           color: Colors.black87,
-          height: 1.4,
+          height: 1.3,
         ),
       ),
     );
@@ -683,11 +735,11 @@ class _HomePageState extends State<HomePage> {
             MaterialPageRoute(builder: (context) => const MatoleoScreen()),
           );
         },
-        icon: const Icon(Icons.account_balance_wallet, size: 18),
+        icon: const Icon(Icons.account_balance_wallet, size: 16),
         label: Text(
           'Matoleo yako',
           style: GoogleFonts.montserrat(
-            fontSize: 14,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -695,9 +747,9 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: MyColors.primaryLight,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 10),
         ),
       ),
     );
@@ -706,20 +758,20 @@ class _HomePageState extends State<HomePage> {
   // Build daily word card
   Widget _buildDailyWordCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -728,39 +780,48 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: MyColors.primaryLight.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      colors: [
+                        MyColors.primaryLight.withOpacity(0.15),
+                        MyColors.primaryLight.withOpacity(0.08),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
-                    Icons.menu_book,
+                    Icons.menu_book_rounded,
                     color: MyColors.primaryLight,
-                    size: 20,
+                    size: 18,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Text(
                   "Neno la Siku",
                   style: GoogleFonts.montserrat(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: MyColors.primaryLight.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    DateFormat('dd MMM').format(DateTime.now()),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: MyColors.primaryLight,
+                    ),
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 16),
-            Container(
-              height: 1,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    MyColors.primaryLight.withOpacity(0.3),
-                    Colors.transparent,
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             FutureBuilder<List<NenoLaSikuData>>(
               future: getRatiba(),
               builder: (context, snapshot) {
@@ -769,16 +830,16 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 60,
+                          height: 50,
                           child: Lottie.asset(
                             'assets/animation/load_neno.json',
-                            height: 40,
+                            height: 35,
                           ),
                         ),
                         Text(
                           "Inapakia...",
                           style: GoogleFonts.montserrat(
-                            fontSize: 12,
+                            fontSize: 11,
                             color: Colors.black54,
                           ),
                         ),
@@ -787,20 +848,20 @@ class _HomePageState extends State<HomePage> {
                   );
                 } else if (snapshot.hasError || !snapshot.hasData) {
                   return Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
                         Icon(
                           Icons.error_outline,
                           color: Colors.orange,
-                          size: 32,
+                          size: 28,
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         Text(
                           "Hakuna taarifa zilizopatiakana",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: FontWeight.w500,
                             color: Colors.black54,
                           ),
@@ -810,21 +871,21 @@ class _HomePageState extends State<HomePage> {
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Container(
-                    constraints: const BoxConstraints(maxHeight: 120),
+                    constraints: const BoxConstraints(maxHeight: 100),
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
                       physics: const BouncingScrollPhysics(),
                       itemCount: snapshot.data!.length,
                       itemBuilder: (_, index) {
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.only(bottom: 6),
                           child: Text(
                             snapshot.data![index].neno.toString(),
                             style: GoogleFonts.montserrat(
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Colors.black87,
-                              height: 1.4,
+                              height: 1.3,
                             ),
                           ),
                         );
@@ -835,14 +896,14 @@ class _HomePageState extends State<HomePage> {
                   return Text(
                     "Hakuna neno la siku",
                     style: GoogleFonts.montserrat(
-                      fontSize: 12,
+                      fontSize: 11,
                       color: Colors.black54,
                     ),
                   );
                 }
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(
@@ -853,16 +914,21 @@ class _HomePageState extends State<HomePage> {
                 },
                 icon: Icon(
                   Icons.arrow_forward_ios,
-                  size: 14,
+                  size: 12,
                   color: MyColors.primaryLight,
                 ),
                 label: Text(
                   'Tazama yote',
                   style: GoogleFonts.montserrat(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: MyColors.primaryLight,
                   ),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ),
             ),
@@ -875,20 +941,20 @@ class _HomePageState extends State<HomePage> {
   // Build sermon banner
   Widget _buildSermonBanner() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      height: 180,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      height: 160,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.grey.withOpacity(0.15),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
             Container(
@@ -905,38 +971,38 @@ class _HomePageState extends State<HomePage> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.2),
+                    Colors.black.withOpacity(0.6),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
                       'Mahubiri ya tarehe 23-02-2021',
                       style: GoogleFonts.montserrat(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Text(
                     'Na Mch. Moses',
                     style: GoogleFonts.montserrat(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
@@ -948,11 +1014,11 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(builder: (context) => const MahubiriScreen()),
                       );
                     },
-                    icon: const Icon(Icons.play_arrow, size: 18),
+                    icon: const Icon(Icons.play_arrow, size: 16),
                     label: Text(
                       'Tazama zote',
                       style: GoogleFonts.montserrat(
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -960,9 +1026,10 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.white,
                       foregroundColor: MyColors.primaryLight,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      minimumSize: Size.zero,
                     ),
                   ),
                 ],
@@ -992,26 +1059,21 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(child: _buildDailyWordCard()),
             SliverToBoxAdapter(child: _buildSermonBanner()),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Huduma Zetu",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Huduma Zetu",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      child: buildMenu(context),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    child: buildMenu(context),
+                  ),
+                ],
               ),
             ),
           ],
@@ -1022,76 +1084,79 @@ class _HomePageState extends State<HomePage> {
       (host == null) ? const NoAuthBanner() : const ProfilePage()
     ];
 
-    void onItemTapped(int index) {
-      setState(() {
-        _currentIndex = index;
-      });
-    }
-
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        backgroundColor: Colors.grey.shade50,
         body: children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: MyColors.primaryDark,
-          unselectedItemColor: MyColors.primaryLight,
-          onTap: onItemTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: _currentIndex == 0
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.home,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(Icons.home),
-              label: "Nyumbani",
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(0, Icons.home_outlined, Icons.home, "Nyumbani"),
+                  _buildNavItem(1, Icons.people_outline, Icons.people, "Uongozi"),
+                  _buildNavItem(2, Icons.grid_view_outlined, Icons.grid_view, "Mengineyo"),
+                  _buildNavItem(3, Icons.person_outline, Icons.person, "Akaunti"),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 1
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.people,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(Icons.people),
-              label: 'Uongozi',
-            ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 2
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.extension,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.extension,
-                    ),
-              label: 'Mengineyo',
-            ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 3
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.person_outline_outlined,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.person_outline_outlined,
-                    ),
-              label: 'Akaunti',
-            ),
-          ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index, IconData inactiveIcon, IconData activeIcon, String label) {
+    final isSelected = _currentIndex == index;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: isSelected ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  isSelected ? activeIcon : inactiveIcon,
+                  color: isSelected ? MyColors.primaryLight : Colors.grey.shade600,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: GoogleFonts.montserrat(
+                  fontSize: 10,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? MyColors.primaryLight : Colors.grey.shade600,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

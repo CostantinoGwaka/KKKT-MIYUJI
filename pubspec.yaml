@@ -1,5 +1,5 @@
-name: miyuji
-description: "KKKT MIYUJI APP"
+name: kanisaapp
+description: "KANISA APP"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -26,11 +26,11 @@ dependencies:
   share:
   firebase_database:
   firebase_messaging:
-  # flutter_local_notifications:
+  flutter_local_notifications:
   firebase_storage:
   image_picker:
   file_picker:
-  # cloud_firestore: ^4.15.3
+  cloud_firestore: ^4.15.3
   provider:
   url_launcher:
   focused_menu:
@@ -39,7 +39,7 @@ dependencies:
   ffi: ^1.0.0
   fluttertoast:
   firebase_core:
-  # local_auth:
+  local_auth:
 
   # The following adds the Cupertino Icons font to your application.
   cupertino_icons: ^1.0.8

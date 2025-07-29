@@ -13,7 +13,6 @@ import 'package:miyuji/usajili/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
 import 'package:miyuji/utils/ApiUrl.dart';
 import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -89,7 +88,11 @@ class _LoginState extends State<Login> {
       });
 
       return Fluttertoast.showToast(
-          msg: "Tafadhari weka taarifa zote", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM, backgroundColor: MyColors.primaryLight, textColor: Colors.white);
+          msg: "Tafadhari weka taarifa zote",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: MyColors.primaryLight,
+          textColor: Colors.white);
     }
 
     FireibaseClass.getUserToken().then((tokens) async {
@@ -233,11 +236,73 @@ class _LoginState extends State<Login> {
   }
 
   Widget get _topBar => Container(
-        child: Column(
+        height: MediaQuery.of(context).size.height * 0.35,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              MyColors.primaryLight.withOpacity(0.9),
+              MyColors.primaryLight,
+            ],
+          ),
+        ),
+        child: Stack(
           children: [
-            Image.asset(
-              "assets/images/banner.png",
-              fit: BoxFit.fitHeight,
+            // Positioned.fill(
+            //   child: Image.asset(
+            //     "assets/images/banner.png",
+            //     fit: BoxFit.cover,
+            //     color: Colors.black.withOpacity(0.3),
+            //     colorBlendMode: BlendMode.darken,
+            //   ),
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    MyColors.primaryLight.withOpacity(0.4),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 30,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      "KKKT MIYUJI",
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Karibu kwenye akaunti yako",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.9),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -248,29 +313,45 @@ class _LoginState extends State<Login> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(1))),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Center(
-                  child: Text("Ingia Kwenye Akaunti",
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        color: const Color(0xff205072),
-                        fontWeight: FontWeight.w500,
-                      )),
+                Text(
+                  "Ingia Kwenye Akaunti",
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    color: MyColors.primaryLight,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 8),
+                Text(
+                  "Weka taarifa zako za kuingia",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: 32),
                 _inputField1(),
+                const SizedBox(height: 16),
                 _inputField2(),
-                const SizedBox(height: 15),
+                const SizedBox(height: 24),
                 _loginbtn(context),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
                 _passCode(context)
               ],
             ),
@@ -282,43 +363,58 @@ class _LoginState extends State<Login> {
 
   Widget _inputField1() {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(50),
-        ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
-            blurRadius: 25,
-            offset: Offset(0, 5),
-            spreadRadius: -25,
+            color: MyColors.primaryLight.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         controller: memberController,
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        style: GoogleFonts.poppins(fontSize: 20, color: Colors.black, letterSpacing: 0.24, fontWeight: FontWeight.w500),
-        decoration: const InputDecoration(
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          color: Colors.black87,
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: InputDecoration(
           hintText: "Namba yako ya Ahadi",
-          hintStyle: TextStyle(
-            color: Color(0xffA6B0BD),
+          hintStyle: GoogleFonts.poppins(
+            color: Colors.grey.shade500,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: Container(
+            padding: const EdgeInsets.all(12),
+            child: Icon(
+              Icons.badge_outlined,
+              color: MyColors.primaryLight,
+              size: 20,
+            ),
           ),
           fillColor: Colors.white,
           filled: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            ),
-            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: MyColors.primaryLight, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.red, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.red, width: 2),
           ),
         ),
       ),
@@ -327,57 +423,68 @@ class _LoginState extends State<Login> {
 
   Widget _inputField2() {
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(50),
-        ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
-            blurRadius: 25,
-            offset: Offset(0, 5),
-            spreadRadius: -25,
+            color: MyColors.primaryLight.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      margin: const EdgeInsets.only(bottom: 20),
       child: TextField(
         style: GoogleFonts.poppins(
-          fontSize: 20,
-          color: Colors.black,
-          letterSpacing: 0.24,
+          fontSize: 16,
+          color: Colors.black87,
           fontWeight: FontWeight.w500,
         ),
         controller: passwordController,
         decoration: InputDecoration(
           hintText: "Neno la siri",
-          hintStyle: const TextStyle(
-            color: Color(0xffA6B0BD),
+          hintStyle: GoogleFonts.poppins(
+            color: Colors.grey.shade500,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: Container(
+            padding: const EdgeInsets.all(12),
+            child: Icon(
+              Icons.lock_outline,
+              color: MyColors.primaryLight,
+              size: 20,
+            ),
           ),
           fillColor: Colors.white,
           filled: true,
-          enabledBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            ),
-            borderSide: BorderSide(color: Colors.white),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            borderSide: BorderSide(color: Colors.white),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: MyColors.primaryLight, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.red, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.red, width: 2),
           ),
           suffixIcon: IconButton(
             icon: Icon(
-              _isObscure ? Icons.visibility : Icons.visibility_off,
+              _isObscure ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey.shade500,
+              size: 20,
             ),
             onPressed: () {
               setState(() {
                 _isObscure = !_isObscure;
               });
             },
-            color: Theme.of(context).primaryColor,
           ),
         ),
         obscureText: _isObscure,
@@ -386,9 +493,9 @@ class _LoginState extends State<Login> {
   }
 
   Widget _loginbtn(context) {
-    // ignore: deprecated_member_use
-    return Center(
-      // ignore: deprecated_member_use
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
       child: ElevatedButton(
         onPressed: () async {
           if (memberController.text.isEmpty || passwordController.text.isEmpty) {
@@ -404,18 +511,31 @@ class _LoginState extends State<Login> {
           }
         },
         style: ElevatedButton.styleFrom(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-          elevation: 1,
           backgroundColor: MyColors.primaryLight,
-        ),
-        child: Text(
-          "Ingia",
-          style: GoogleFonts.montserrat(
-            fontSize: 23,
-            color: MyColors.white,
-            letterSpacing: 0.168,
-            fontWeight: FontWeight.w500,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shadowColor: MyColors.primaryLight.withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Ingia",
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.5,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.arrow_forward_rounded,
+              size: 20,
+            ),
+          ],
         ),
       ),
     );
@@ -430,28 +550,60 @@ Widget _passCode(context) {
         children: [
           Text(
             "Je! Hauna akaunti? ",
-            style: GoogleFonts.montserrat(fontSize: 20, color: Colors.black),
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w400,
+            ),
           ),
           InkWell(
-            child: Text(
-              "Jisajili",
-              style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
-            ),
+            borderRadius: BorderRadius.circular(8),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
             },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              child: Text(
+                "Jisajili",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: MyColors.primaryLight,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
           )
         ],
       ),
-      manualStepper(step: 10),
+      const SizedBox(height: 24),
       InkWell(
-        child: Text(
-          "Rudi nyuma",
-          style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
-        ),
+        borderRadius: BorderRadius.circular(8),
         onTap: () {
           Navigator.of(context).pop();
         },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.arrow_back_ios,
+                size: 16,
+                color: Colors.grey.shade600,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                "Rudi nyuma",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ],
+          ),
+        ),
       )
     ],
   );

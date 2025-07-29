@@ -20,10 +20,7 @@ import 'package:miyuji/uongozi/screens/index.dart';
 import 'package:miyuji/usajili/screens/index.dart';
 import 'package:miyuji/utils/Alerts.dart';
 import 'package:miyuji/utils/ApiUrl.dart';
-import 'package:miyuji/utils/TextStyles.dart';
-import 'package:miyuji/utils/dimension.dart';
 import 'package:miyuji/utils/my_colors.dart';
-import 'package:miyuji/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:miyuji/utils/no_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -207,8 +204,8 @@ class _HomePageState extends State<HomePage> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 1.0,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
       itemCount: menuList.length,
       physics: const NeverScrollableScrollPhysics(),
@@ -278,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "${menuItem['name']}\n(Guest)",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.poppins(
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                     color: Colors.red.shade400,
@@ -305,6 +302,10 @@ class _HomePageState extends State<HomePage> {
             offset: const Offset(0, 2),
           ),
         ],
+        border: Border.all(
+          color: MyColors.primaryLight.withOpacity(0.15),
+          width: 0.8,
+        ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -319,7 +320,12 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: MyColors.primaryLight.withOpacity(0.1),
+                    gradient: LinearGradient(
+                      colors: [
+                        MyColors.primaryLight.withOpacity(0.15),
+                        MyColors.primaryLight.withOpacity(0.08),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Image.asset(
@@ -333,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   menuItem['name'],
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.poppins(
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                     color: MyColors.primaryLight,
@@ -352,15 +358,15 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + 20,
-        bottom: 20,
+        top: MediaQuery.of(context).padding.top + 8,
+        bottom: 8,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            MyColors.primaryLight.withOpacity(0.1),
+            MyColors.primaryLight.withOpacity(0.05),
             Colors.white,
           ],
         ),
@@ -369,17 +375,17 @@ class _HomePageState extends State<HomePage> {
         children: [
           Text(
             "KKKT MIYUJI",
-            style: GoogleFonts.montserrat(
-              fontSize: 24,
+            style: GoogleFonts.poppins(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: MyColors.primaryLight,
               letterSpacing: 1.2,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Container(
-            width: 60,
-            height: 3,
+            width: 40,
+            height: 2,
             decoration: BoxDecoration(
               color: MyColors.primaryLight,
               borderRadius: BorderRadius.circular(2),
@@ -403,7 +409,7 @@ class _HomePageState extends State<HomePage> {
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -423,7 +429,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   child: const CircleAvatar(
-                    radius: 30,
+                    radius: 28,
                     backgroundImage: NetworkImage(
                       "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png",
                     ),
@@ -459,16 +465,16 @@ class _HomePageState extends State<HomePage> {
       children: [
         Text(
           "Karibu,",
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: MyColors.primaryLight,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Text(
           host != null ? "${host['fname']}" : "N/A",
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
@@ -492,7 +498,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 6),
               Text(
                 "No. Ahadi: ${(data == null || data['namba_ya_ahadi'] == null) ? (host != null ? host['member_no'] : "N/A") : data['namba_ya_ahadi']}",
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: MyColors.primaryLight,
@@ -511,7 +517,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         Text(
           "Mgeni",
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
@@ -527,7 +533,7 @@ class _HomePageState extends State<HomePage> {
           icon: const Icon(Icons.login, size: 18),
           label: Text(
             'Ingia Akaunti',
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.poppins(
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -539,6 +545,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            elevation: 0,
           ),
         ),
       ],
@@ -556,7 +563,7 @@ class _HomePageState extends State<HomePage> {
                   Icons.group,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   children: [
@@ -565,7 +572,7 @@ class _HomePageState extends State<HomePage> {
                       (data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
                       Icons.monetization_on,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     _buildInfoCard(
                       "Jengo",
                       (data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))} Tsh",
@@ -577,12 +584,13 @@ class _HomePageState extends State<HomePage> {
             ],
           )
         : Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: MyColors.primaryLight.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
+              color: MyColors.primaryLight.withOpacity(0.04),
+              borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: MyColors.primaryLight.withOpacity(0.2),
+                color: MyColors.primaryLight.withOpacity(0.15),
+                width: 0.5,
               ),
             ),
             child: Column(
@@ -590,14 +598,14 @@ class _HomePageState extends State<HomePage> {
                 Icon(
                   Icons.info_outline,
                   color: MyColors.primaryLight,
-                  size: 24,
+                  size: 20,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   "Taarifa zako za Ahadi zitaonekana hapa baada ya usajili.",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
@@ -611,10 +619,11 @@ class _HomePageState extends State<HomePage> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: MyColors.primaryLight.withOpacity(0.05),
+        color: MyColors.primaryLight.withOpacity(0.06),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: MyColors.primaryLight.withOpacity(0.2),
+          width: 0.8,
         ),
       ),
       child: Column(
@@ -630,7 +639,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 6),
               Text(
                 title,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: MyColors.primaryLight,
@@ -641,7 +650,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 4),
           Text(
             value,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.poppins(
               fontSize: 11,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
@@ -667,7 +676,7 @@ class _HomePageState extends State<HomePage> {
       child: Text(
         "Karibu kwenye mfumo wa KKKT Miyuji, mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
         textAlign: TextAlign.center,
-        style: GoogleFonts.montserrat(
+        style: GoogleFonts.poppins(
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: Colors.black87,
@@ -689,7 +698,7 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Icons.account_balance_wallet, size: 18),
         label: Text(
           'Matoleo yako',
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
@@ -701,6 +710,7 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(vertical: 12),
+          elevation: 0,
         ),
       ),
     );
@@ -717,7 +727,7 @@ class _HomePageState extends State<HomePage> {
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -743,7 +753,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 12),
                 Text(
                   "Neno la Siku",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -780,7 +790,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           "Inapakia...",
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: Colors.black54,
                           ),
@@ -802,7 +812,7 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           "Hakuna taarifa zilizopatiakana",
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.black54,
@@ -823,7 +833,7 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
                             snapshot.data![index].neno.toString(),
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.poppins(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: Colors.black87,
@@ -837,7 +847,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   return Text(
                     "Hakuna neno la siku",
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.poppins(
                       fontSize: 12,
                       color: Colors.black54,
                     ),
@@ -861,7 +871,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 label: Text(
                   'Tazama yote',
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: MyColors.primaryLight,
@@ -886,7 +896,7 @@ class _HomePageState extends State<HomePage> {
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -909,7 +919,7 @@ class _HomePageState extends State<HomePage> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.8),
                   ],
                 ),
               ),
@@ -928,8 +938,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Text(
                       'Mahubiri ya tarehe 23-02-2021',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 14,
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -938,9 +948,9 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 12),
                   Text(
                     'Na Mch. Moses',
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
                   ),
@@ -954,7 +964,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(Icons.play_arrow, size: 18),
                     label: Text(
                       'Tazama zote',
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.poppins(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -966,6 +976,7 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      elevation: 0,
                     ),
                   ),
                 ],
@@ -996,13 +1007,13 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(child: _buildSermonBanner()),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0, top: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Huduma Zetu",
-                      style: GoogleFonts.montserrat(
+                      "Huduma Zetus",
+                      style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -1010,7 +1021,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 16),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.28,
                       child: buildMenu(context),
                     ),
                   ],
@@ -1034,67 +1045,104 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        backgroundColor: Colors.grey.shade50,
         body: children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: MyColors.primaryDark,
-          unselectedItemColor: MyColors.primaryLight,
-          onTap: onItemTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: _currentIndex == 0
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.home,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(Icons.home),
-              label: "Nyumbani",
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
             ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 1
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.people,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(Icons.people),
-              label: 'Uongozi',
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.15),
+                blurRadius: 15,
+                offset: const Offset(0, -5),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
             ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 2
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.extension,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.extension,
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.white,
+              selectedItemColor: MyColors.primaryLight,
+              unselectedItemColor: Colors.grey.shade500,
+              onTap: onItemTapped,
+              elevation: 0,
+              selectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              unselectedLabelStyle: GoogleFonts.poppins(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
+              items: [
+                BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _currentIndex == 0 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
                     ),
-              label: 'Mengineyo',
-            ),
-            BottomNavigationBarItem(
-              icon: _currentIndex == 3
-                  ? CircleAvatar(
-                      backgroundColor: MyColors.primaryLight,
-                      child: const Icon(
-                        Icons.person_outline_outlined,
-                        color: MyColors.white,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.person_outline_outlined,
+                    child: Icon(
+                      Icons.home_rounded,
+                      size: _currentIndex == 0 ? 28 : 24,
                     ),
-              label: 'Akaunti',
+                  ),
+                  label: "Nyumbani",
+                ),
+                BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _currentIndex == 1 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.people_rounded,
+                      size: _currentIndex == 1 ? 28 : 24,
+                    ),
+                  ),
+                  label: 'Uongozi',
+                ),
+                BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _currentIndex == 2 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.apps_rounded,
+                      size: _currentIndex == 2 ? 28 : 24,
+                    ),
+                  ),
+                  label: 'Mengineyo',
+                ),
+                BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: _currentIndex == 3 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: _currentIndex == 3 ? 28 : 24,
+                    ),
+                  ),
+                  label: 'Akaunti',
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
