@@ -9,33 +9,27 @@ import 'package:miyuji/utils/my_colors.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase properly
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    print('Firebase initialization error: $e');
-  }
-  
-  // Set system UI preferences
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AddReplyData>(
-          create: (_) => AddReplyData(),
-          lazy: false,
-        ),
-        ChangeNotifierProvider<AddPointerData>(
-          create: (_) => AddPointerData(),
-          lazy: false,
-        ),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  // await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<AddReplyData>(
+            create: (_) => AddReplyData(),
+            lazy: false,
+          ),
+          ChangeNotifierProvider<AddPointerData>(
+            create: (_) => AddPointerData(),
+            lazy: false,
+          ),
+        ],
+        // child: DevicePreview(builder: (context) => MyApp()),
+        child: const MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -43,7 +37,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Set system UI overlay style
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.white,
@@ -52,7 +46,6 @@ class MyApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-    
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
