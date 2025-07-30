@@ -38,6 +38,29 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+// Add this class below your HomePage widget
+class _HeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+
+  _HeaderDelegate({required this.child});
+
+  @override
+  double get minExtent => kToolbarHeight + 40;
+
+  @override
+  double get maxExtent => kToolbarHeight + 60;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+  @override
+  bool shouldRebuild(covariant _HeaderDelegate oldDelegate) {
+    return oldDelegate.child != child;
+  }
+}
+
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   String messageTitle = "Empty";
@@ -201,6 +224,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildMenu(BuildContext context) {
     return GridView.builder(
+      padding: const EdgeInsets.all(0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 1.0,
@@ -374,7 +398,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Text(
-            "KKKT MIYUJI",
+            "KANISA APP",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -1001,13 +1025,20 @@ class _HomePageState extends State<HomePage> {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(child: _buildHeader()),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _HeaderDelegate(child: _buildHeader()),
+            ),
             SliverToBoxAdapter(child: _buildUserInfoCard()),
             SliverToBoxAdapter(child: _buildDailyWordCard()),
             SliverToBoxAdapter(child: _buildSermonBanner()),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0, top: 8.0),
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  bottom: 24.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

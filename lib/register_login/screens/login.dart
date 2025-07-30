@@ -227,48 +227,19 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[_topBar, _bottomBar(context)],
-        ),
+      body: Column(
+        children: <Widget>[_topBar, _bottomBar(context)],
       ),
     );
   }
 
   Widget get _topBar => Container(
         height: MediaQuery.of(context).size.height * 0.35,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              MyColors.primaryLight.withOpacity(0.9),
-              MyColors.primaryLight,
-            ],
-          ),
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
         ),
         child: Stack(
           children: [
-            // Positioned.fill(
-            //   child: Image.asset(
-            //     "assets/images/banner.png",
-            //     fit: BoxFit.cover,
-            //     color: Colors.black.withOpacity(0.3),
-            //     colorBlendMode: BlendMode.darken,
-            //   ),
-            // ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    MyColors.primaryLight.withOpacity(0.4),
-                  ],
-                ),
-              ),
-            ),
             Positioned(
               bottom: 30,
               left: 0,
@@ -278,12 +249,12 @@ class _LoginState extends State<Login> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: MyColors.primaryLight,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      border: Border.all(color: Colors.white),
                     ),
                     child: Text(
-                      "KKKT MIYUJI",
+                      "KANISA APP",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -297,7 +268,7 @@ class _LoginState extends State<Login> {
                     "Karibu kwenye akaunti yako",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Colors.white.withOpacity(0.9),
+                      color: MyColors.primaryLight.withOpacity(0.9),
                       fontWeight: FontWeight.w400,
                     ),
                   ),
