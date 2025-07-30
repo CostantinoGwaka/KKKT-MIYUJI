@@ -40,7 +40,6 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
         barazaList.add(video);
       },
     );
-    print("data here $barazaList");
     return barazaList;
   }
 
