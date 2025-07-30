@@ -37,7 +37,7 @@ dependencies:
   ffi: ^1.0.0
   fluttertoast:
   local_auth:
-  firebase_core:
+  # firebase_core:
   # cloud_firestore:
   firebase_storage:
 
