@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, depend_on_referenced_packages, prefer_typing_uninitialized_variables, library_private_types_in_public_api
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,7 +97,9 @@ class _HomePageState extends State<HomePage> {
 
   // Background message handler function
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    print("Handling a background message: ${message.messageId}");
+    if (kDebugMode) {
+      print("Handling a background message: ${message.messageId}");
+    }
   }
 
   Future<List<NenoLaSikuData>> getRatiba() async {

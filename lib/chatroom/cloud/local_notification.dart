@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,8 @@ import 'package:rxdart/subjects.dart';
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
 
 final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
 
@@ -75,7 +78,8 @@ class LocalNotification {
     });
   }
 
-  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload, {required BuildContext context}) async {
+  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload,
+      {required BuildContext context}) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
       context: context,

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:kanisaapp/models/message.dart';
 import './cloud.dart';
 import './firebase_notification.dart';

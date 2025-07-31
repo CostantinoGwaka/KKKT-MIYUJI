@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_typing_uninitialized_variables, library_private_types_in_public_api, avoid_print, deprecated_member_use, prefer_const_constructors
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
