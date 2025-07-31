@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:kanisaapp/bloc/pointer.dart';
 import 'package:kanisaapp/home/screens/index.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:provider/provider.dart';
 

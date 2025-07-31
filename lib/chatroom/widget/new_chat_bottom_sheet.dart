@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
+// ignore: must_be_immutable
 class NewChatBottomSheet extends StatelessWidget {
   var readBy = [];
 

@@ -9,6 +9,7 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -16,6 +17,7 @@ class KamatiUsharikaScreen extends StatefulWidget {
   const KamatiUsharikaScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _KamatiUsharikaScreenState createState() => _KamatiUsharikaScreenState();
 }
 

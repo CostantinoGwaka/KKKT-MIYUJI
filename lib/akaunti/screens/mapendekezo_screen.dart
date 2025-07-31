@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/home/screens/index.dart';
@@ -12,6 +13,7 @@ class MapendekezoScreen extends StatefulWidget {
   const MapendekezoScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MapendekezoScreenState createState() => _MapendekezoScreenState();
 }
 
@@ -34,12 +36,10 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
           ),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            _bottomBar(context),
-          ],
-        ),
+      body: Column(
+        children: <Widget>[
+          _bottomBar(context),
+        ],
       ),
     );
   }
@@ -97,7 +97,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     );
   }
 
-  Future<void> send_suggestion(
+  Future<void> sendsuggestion(
     String memberNo,
     String suggestion,
   ) async {
@@ -124,7 +124,9 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
           xsuggestion.clear();
         });
 
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
+        // ignore: use_build_context_synchronously
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
         Fluttertoast.showToast(
           msg: "Maoni yako yamepokelewa, Ahsante",
@@ -170,7 +172,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
               textColor: Colors.white,
             );
           } else {
-            await send_suggestion(host['member_no'], xsuggestion.text);
+            await sendsuggestion(host['member_no'], xsuggestion.text);
           }
         },
         // color: MyColors.primaryLight,

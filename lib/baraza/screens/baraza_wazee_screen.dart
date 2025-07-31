@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:kanisaapp/models/barazalawazee.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 import 'package:lottie/lottie.dart';
@@ -15,6 +18,7 @@ class BarazaWazeeScreen extends StatefulWidget {
   const BarazaWazeeScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _BarazaWazeeScreenState createState() => _BarazaWazeeScreenState();
 }
 
@@ -24,6 +28,7 @@ class _BarazaWazeeScreenState extends State<BarazaWazeeScreen> {
     final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <BarazaLaWazeeData>[];
+    // ignore: prefer_typing_uninitialized_variables
     var baraza;
 
     if (response.statusCode == 200) {

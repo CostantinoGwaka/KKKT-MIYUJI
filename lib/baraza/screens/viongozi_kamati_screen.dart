@@ -9,6 +9,7 @@ import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,12 +18,12 @@ class ViongoziWaKamati extends StatefulWidget {
   const ViongoziWaKamati({super.key, this.kamati});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ViongoziWaKamatiState createState() => _ViongoziWaKamatiState();
 }
 
 class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
   Future<List<ViongoziKamati>> getWatumishiWasharika() async {
-    print("kamati data ${widget.kamati.id}");
     String myApi = "${ApiUrl.BASEURL}get_kamati_viongozi_id.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -35,6 +36,7 @@ class _ViongoziWaKamatiState extends State<ViongoziWaKamati> {
     );
 
     var barazaList = <ViongoziKamati>[];
+    // ignore: prefer_typing_uninitialized_variables
     var baraza;
 
     if (response.statusCode == 200) {

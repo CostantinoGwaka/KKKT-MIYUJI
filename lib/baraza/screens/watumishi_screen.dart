@@ -8,6 +8,7 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ class WatumishiScreen extends StatefulWidget {
   const WatumishiScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _WatumishiScreenState createState() => _WatumishiScreenState();
 }
 
@@ -25,6 +27,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
     final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <WatumishiUsharika>[];
+    // ignore: prefer_typing_uninitialized_variables
     var baraza;
 
     if (response.statusCode == 200) {
@@ -217,6 +220,7 @@ class _WatumishiScreenState extends State<WatumishiScreen> {
                                     manualSpacer(step: 5),
                                     InkWell(
                                       onTap: () {
+                                        // ignore: deprecated_member_use
                                         launch("tel://${snapshot.data![index].phoneNo}");
                                       },
                                       child: CircleAvatar(

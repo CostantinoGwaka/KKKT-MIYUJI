@@ -254,7 +254,7 @@ class _LoginState extends State<Login> {
                       border: Border.all(color: Colors.white),
                     ),
                     child: Text(
-                      "KANISA APP",
+                      "KANISANI",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

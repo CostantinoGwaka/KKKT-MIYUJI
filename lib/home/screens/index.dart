@@ -398,7 +398,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Text(
-            "KANISA APP",
+            "KANISANI",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -1027,7 +1027,18 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverPersistentHeader(
               pinned: true,
-              delegate: _HeaderDelegate(child: _buildHeader()),
+              delegate: _HeaderDelegate(
+                child: Container(
+                  constraints: const BoxConstraints(
+                    minHeight: kToolbarHeight + 60,
+                    maxHeight: kToolbarHeight + 80,
+                  ),
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: _buildHeader(),
+                  ),
+                ),
+              ),
             ),
             SliverToBoxAdapter(child: _buildUserInfoCard()),
             SliverToBoxAdapter(child: _buildDailyWordCard()),

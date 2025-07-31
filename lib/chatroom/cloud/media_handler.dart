@@ -11,7 +11,9 @@ import 'package:kanisaapp/chatroom/cloud/cloud.dart';
 import 'package:kanisaapp/chatroom/cloud/firebase_notification.dart';
 import 'package:kanisaapp/models/message.dart';
 import 'package:kanisaapp/shared/localstorage/index.dart';
+// ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 import './message_handler.dart';
 

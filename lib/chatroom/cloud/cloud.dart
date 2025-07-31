@@ -11,7 +11,9 @@ class Cloud {
     try {
       await FirebaseDatabase.instance.ref().child(serverPath!).set(value);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

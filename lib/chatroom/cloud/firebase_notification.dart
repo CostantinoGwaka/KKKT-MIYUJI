@@ -1,5 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages, constant_identifier_names
+
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/models/message.dart';
 
@@ -106,8 +109,13 @@ class FireibaseClass {
       ),
     )
         .catchError((err) {
-      print("is error toooooooooooooooooo $err");
+      if (kDebugMode) {
+        print("is error toooooooooooooooooo $err");
+      }
+      return http.Response('Error: $err', 500);
     });
-    print("this is response: ${response.body}");
+    if (kDebugMode) {
+      print("this is response: ${response.body}");
+    }
   }
 }

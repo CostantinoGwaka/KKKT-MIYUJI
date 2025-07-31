@@ -18,6 +18,7 @@ import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -32,9 +33,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
+  // ignore: unused_field
   bool _status = false;
   final FocusNode myFocusNode = FocusNode();
+  // ignore: unused_field
   final bool _isObscureOld = true;
+  // ignore: unused_field
   final bool _isObscureNew = true;
   TextEditingController oldp = TextEditingController();
   TextEditingController newp = TextEditingController();

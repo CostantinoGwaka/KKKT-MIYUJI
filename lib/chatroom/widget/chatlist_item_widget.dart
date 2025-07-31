@@ -73,16 +73,10 @@ class _ChatListItemState extends State<ChatListItem> {
           ),
         );
       },
-      //  Navigator().push(
-      //   context,
-      //   child: ,
-      // ),
-      // onLongPress: widget.onLongPress,
       leading: const CircleAvatar(
         radius: 30,
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage("assets/images/profile.png"),
-        // child: _renderOnline(),
       ),
       title: Text(
         widget.name.toString(),
@@ -143,7 +137,6 @@ class _ChatListItemState extends State<ChatListItem> {
               ),
               text: widget.lastMessage),
         );
-        break;
       case MessageType.photo:
         return Row(
           children: <Widget>[
@@ -157,7 +150,6 @@ class _ChatListItemState extends State<ChatListItem> {
             )
           ],
         );
-        break;
       case MessageType.video:
         return Row(
           children: <Widget>[
@@ -171,7 +163,6 @@ class _ChatListItemState extends State<ChatListItem> {
             )
           ],
         );
-        break;
       case MessageType.document:
         return Row(
           children: <Widget>[
@@ -185,7 +176,6 @@ class _ChatListItemState extends State<ChatListItem> {
             )
           ],
         );
-        break;
       case MessageType.contact:
         return Row(
           children: <Widget>[
@@ -199,7 +189,7 @@ class _ChatListItemState extends State<ChatListItem> {
             )
           ],
         );
-        break;
+      // ignore: unreachable_switch_default
       default:
         return Text(
           "Ujumbe",
