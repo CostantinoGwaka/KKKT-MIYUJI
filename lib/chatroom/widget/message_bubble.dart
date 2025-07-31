@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, library_private_types_in_public_api, deprecated_member_use, avoid_print, avoid_unnecessary_containers
+
 import 'dart:convert';
 import 'dart:ui';
 
 // import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/services.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -178,7 +181,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                     try {
                       Provider.of<AddReplyData>(context, listen: false).setReplyData(widget.message);
                     } catch (er) {
-                      print("hahahaha this is error: $er");
+                      if (kDebugMode) {
+                        print("hahahaha this is error: $er");
+                      }
                     }
                   },
                 ),

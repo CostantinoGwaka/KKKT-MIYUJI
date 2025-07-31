@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +11,7 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -25,6 +28,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
     final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <JumuiyaData>[];
+
     var baraza;
 
     if (response.statusCode == 200) {

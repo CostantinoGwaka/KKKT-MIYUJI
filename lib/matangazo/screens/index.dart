@@ -1,3 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables
+
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +53,9 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
       );
       return matangazoList;
     } catch (e) {
-      print("error: $e");
+      if (kDebugMode) {
+        print("error: $e");
+      }
       return [];
     }
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,6 @@ class ReplyMessageIndicator extends StatefulWidget {
 class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
   @override
   void initState() {
-    // TODO: implement initState
     // checkLogin();
     super.initState();
   }
@@ -65,12 +66,10 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
                         style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                       ),
                       () {
-                        return Container(
-                          child: Text(
-                            '${widget.messageData['message']}',
-                            style: const TextStyle(color: Colors.black),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        return Text(
+                          '${widget.messageData['message']}',
+                          style: const TextStyle(color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
                         );
                       }(),
                     ],

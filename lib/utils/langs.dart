@@ -1,6 +1,7 @@
 // enum AppLanguage { English, Swahili, French, Spanish, Portugese }
-enum AppLanguage { English, Swahili }
+// ignore_for_file: constant_identifier_names
 
+enum AppLanguage { English, Swahili }
 
 /// Returns enum value name without enum class name.
 String enumName(AppLanguage anyEnum) {

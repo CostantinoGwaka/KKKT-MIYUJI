@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -127,8 +129,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   productCountListener2() {
-    print("value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("0")}");
-
     if (kamaUshiriki.value.text.length != 10 || !kamaUshiriki.value.text.startsWith("0")) {
       setState(() {
         msgErrorPhoneNumber2 =
@@ -163,8 +163,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     setState(() {
       _dataProvince = jumuiya;
     });
-
-    print("dataa# $_dataProvince");
   }
 
   void getKatibu() async {
@@ -189,8 +187,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     setState(() {
       katibuWaJumuiya = katibus;
     });
-
-    print("dataa# $katibuWaJumuiya");
   }
 
   //date mtoto one
@@ -320,7 +316,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
-    print("widget is disposed");
     // _dataProvince.clear();
     super.dispose();
   }
@@ -510,7 +505,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
 
       if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
@@ -567,7 +561,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           textColor: Colors.white,
         );
       } else if (jsonResponse == 201) {
-        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         Fluttertoast.showToast(
           msg: "Ahsante ushajisajili kwa mwaka huu.",
@@ -577,7 +570,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           textColor: Colors.white,
         );
       } else if (jsonResponse == 500) {
-        // ignore: use_build_context_synchronously
         Navigator.pop(context);
         Fluttertoast.showToast(
           msg: "Server Error Please Try Again Later",
@@ -588,7 +580,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
       }
     } else {
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "Server Error Please Try Again Later",
@@ -863,50 +854,48 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           const SizedBox(
                             height: 5,
                           ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(
-                                  height: 5,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                'Jinsia yako',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                const Text(
-                                  'Jinsia yako',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Me'),
+                                leading: Radio(
+                                  value: "Me",
+                                  groupValue: _jinsiaYako,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _jinsiaYako = value!;
+                                      jinsia.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Me'),
-                                  leading: Radio(
-                                    value: "Me",
-                                    groupValue: _jinsiaYako,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _jinsiaYako = value!;
-                                        jinsia.text = value;
-                                      });
-                                    },
-                                  ),
+                              ),
+                              ListTile(
+                                title: const Text('Ke'),
+                                leading: Radio(
+                                  value: "Ke",
+                                  groupValue: _jinsiaYako,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _jinsiaYako = value!;
+                                      jinsia.text = value;
+                                    });
+                                  },
                                 ),
-                                ListTile(
-                                  title: const Text('Ke'),
-                                  leading: Radio(
-                                    value: "Ke",
-                                    groupValue: _jinsiaYako,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _jinsiaYako = value!;
-                                        jinsia.text = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 5,

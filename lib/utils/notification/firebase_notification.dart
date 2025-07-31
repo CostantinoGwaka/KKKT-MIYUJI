@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 const String FIREBASE_API_KEY =

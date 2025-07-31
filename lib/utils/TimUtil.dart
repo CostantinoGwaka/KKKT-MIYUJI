@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:intl/intl.dart';
 
 class TimUtil {
@@ -44,8 +46,7 @@ class TimUtil {
       return '${(difference.inDays / 365).floor()} yrs';
     } else if ((difference.inDays / 365).floor() >= 1) {
       return (numericDates) ? '1 yr' : 'Last yr';
-    } else if ((difference.inDays / 30).floor() >= 2 ||
-        (difference.inDays / 30).floor() >= 1) {
+    } else if ((difference.inDays / 30).floor() >= 2 || (difference.inDays / 30).floor() >= 1) {
       return (numericDates) ? '1 month' : 'Last month';
     } else if ((difference.inDays / 7).floor() >= 2) {
       return '${(difference.inDays / 7).floor()} wks';
@@ -74,7 +75,6 @@ class TimUtil {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     final date2 = DateTime.now();
     final difference = date2.difference(date);
-    print("diff in minutes ${difference.inMinutes}");
     if (difference.inMinutes > 10) {
       return true;
     } else {
@@ -131,9 +131,7 @@ class TimUtil {
       minutes = int.parse(parts[parts.length - 2]);
     }
     micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
-    int tim = Duration(hours: hours, minutes: minutes, microseconds: micros)
-        .inSeconds;
-    print("current video duration = $tim");
+    int tim = Duration(hours: hours, minutes: minutes, microseconds: micros).inSeconds;
     return tim;
   }
 

@@ -1,6 +1,7 @@
-// To parse this JSON data, do
 //
 //     final jumuiya = jumuiyaFromJson(jsonString);
+
+// ignore_for_file: file_names
 
 import 'dart:convert';
 
@@ -28,6 +29,7 @@ class JumuiyaData {
   Map<String, dynamic> toJson() => {
         "id": id,
         "jumuiya_name": jumuiyaName,
-        "tarehe": "${tarehe?.year.toString().padLeft(4, '0')}-${tarehe?.month.toString().padLeft(2, '0')}-${tarehe?.day.toString().padLeft(2, '0')}",
+        "tarehe":
+            "${tarehe?.year.toString().padLeft(4, '0')}-${tarehe?.month.toString().padLeft(2, '0')}-${tarehe?.day.toString().padLeft(2, '0')}",
       };
 }

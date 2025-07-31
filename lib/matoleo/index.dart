@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +45,6 @@ class _ChatScreenState extends State<MatoleoScreen> {
   }
 
   Future<dynamic> getJumlaAhadi() async {
-    print("dataz");
     String myApi = "${ApiUrl.BASEURL}get_jumla_ahadi_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -68,7 +69,6 @@ class _ChatScreenState extends State<MatoleoScreen> {
   }
 
   Future<dynamic> getJumlaJengo() async {
-    print("dataz");
     String myApi = "${ApiUrl.BASEURL}get_jumla_jengo_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),

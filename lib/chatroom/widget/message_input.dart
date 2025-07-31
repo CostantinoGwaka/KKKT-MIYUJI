@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, avoid_print, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:kanisaapp/chatroom/cloud/message_handler.dart';

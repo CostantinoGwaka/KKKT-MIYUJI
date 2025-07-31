@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, constant_identifier_names
+
 class StringsUtils {
   static const List<String> onboarder_image = [
     "assets/lottie/building.json",
@@ -223,22 +225,5 @@ class StringsUtils {
     22,
   ];
 
-  static List<int> bibleFontSizes = <int>[
-    30,
-    29,
-    28,
-    27,
-    26,
-    25,
-    24,
-    23,
-    22,
-    21,
-    20,
-    19,
-    18,
-    17,
-    16,
-    15
-  ];
+  static List<int> bibleFontSizes = <int>[30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15];
 }

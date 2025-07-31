@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, depend_on_referenced_packages, prefer_typing_uninitialized_variables, library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -827,7 +829,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.error_outline,
                           color: Colors.orange,
                           size: 32,

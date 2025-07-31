@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
@@ -18,6 +20,7 @@ import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+// ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import './imagecaption_screen.dart';
@@ -47,7 +50,6 @@ class ChatSectionScreen extends StatefulWidget {
 class _ChatSectionScreenState extends State<ChatSectionScreen> {
   var readBy = [];
   bool showSelectMedia = false;
-  static final picker = ImagePicker();
   String replymessageid = '';
   final ItemScrollController _scrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
@@ -65,7 +67,6 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
       return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => Container(
           decoration: BoxDecoration(
@@ -441,7 +442,6 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                               index: 0,
                               duration: const Duration(milliseconds: 200),
                             );
-                            // ignore: use_build_context_synchronously
                             Provider.of<AddReplyData>(context, listen: false).unsetReply();
                           });
                           setState(() {
