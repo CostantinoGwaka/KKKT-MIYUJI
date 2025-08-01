@@ -334,7 +334,7 @@ Widget _passCode(context) {
                   fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
             },
           )
         ],

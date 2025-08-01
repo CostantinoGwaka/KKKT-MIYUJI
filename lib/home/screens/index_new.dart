@@ -187,7 +187,7 @@ class _HomeNewPageState extends State<HomeNewPage> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatangazoScreen()));
         break;
       case "JISAJILI MSHARIKA":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
         break;
       case "KWAYA ZETU":
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KwayaZetu()));

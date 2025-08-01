@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatangazoScreen()));
         break;
       case "JISAJILI MSHARIKA":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
         break;
       case "KWAYA ZETU":
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KwayaZetu()));
@@ -828,8 +828,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 } else if (snapshot.hasError || !snapshot.hasData) {
-                  return Container(
-                    padding: const EdgeInsets.all(20),
+                  return Center(
                     child: Column(
                       children: [
                         const Icon(
@@ -839,7 +838,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Hakuna taarifa zilizopatiakana",
+                          "Hakuna taarifa zilizopatikana",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 12,

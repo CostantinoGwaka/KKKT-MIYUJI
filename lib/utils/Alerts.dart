@@ -42,7 +42,7 @@ class Alerts {
             onPressed: () {
               Navigator.pop(context);
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const RegistrationScreen()),
+                MaterialPageRoute(builder: (context) => const RegistrationPageScreen()),
               );
             },
           ),

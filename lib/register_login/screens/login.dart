@@ -532,7 +532,7 @@ Widget _passCode(context) {
           InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
