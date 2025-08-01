@@ -392,13 +392,18 @@ class _HomePageState extends State<HomePage> {
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          colors: [MyColors.primaryLight, MyColors.primary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            MyColors.primaryLight.withOpacity(0.05),
-            Colors.white,
-          ],
         ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: MyColors.primaryLight.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -406,8 +411,8 @@ class _HomePageState extends State<HomePage> {
             "KANISANI",
             style: GoogleFonts.poppins(
               fontSize: 20,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
-              color: MyColors.primaryLight,
               letterSpacing: 1.2,
             ),
           ),

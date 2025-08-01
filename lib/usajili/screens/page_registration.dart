@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:kanisaapp/models/Jumuiya.dart';
+import 'package:kanisaapp/models/jumuiya_model.dart';
+import 'package:kanisaapp/models/kanisa_model.dart';
+import 'package:kanisaapp/models/makatibu.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
@@ -26,6 +29,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
   final PageController _pageController = PageController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  Kanisa? kanisaData;
 
   String _halindoa = '';
   String _jinsiaYako = '';
@@ -63,17 +67,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
   TextEditingController jinaLaJumuiya = TextEditingController();
   TextEditingController katibuJumuiya = TextEditingController();
   TextEditingController kamaUshiriki = TextEditingController();
+  TextEditingController kanisaCode = TextEditingController();
+  TextEditingController umri = TextEditingController();
 
   DateTime? tareheMtotoOne, tareheMtotoTwo, tareheMtotoThree;
 
   var jumuiyaList = <JumuiyaData>[];
   JumuiyaData? dropdownValue;
   String? _valProvince;
-  List<dynamic>? _dataProvince;
+  List<Jumuiya>? _dataProvince;
   dynamic usajiliId;
   String krid = "";
-  List? katibuWaJumuiya;
+  List<Katibu> katibuWaJumuiya = [];
   int pagecontrolnumber = 0;
+  String selectedJumuiyaId = "";
+  String selectedKatibuId = "";
 
   @override
   void initState() {
@@ -86,10 +94,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.forward();
-
-    getJumuiyaApi();
-    getUsajiliId();
-    getKatibu();
     nambaYaSimu.addListener(productCountListener);
     kamaUshiriki.addListener(productCountListener2);
     jinaLaMsharika.addListener(productCountListenerJina);
@@ -125,13 +129,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     final response = await http.post(
       Uri.parse(myApi),
       headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": kanisaData != null ? kanisaData!.id : '',
+      }),
     );
     var jumuiya;
+
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        jumuiya = json;
+        // jumuiya = (json as List).map((item) => Jumuiya.fromJson(item)).toList();
+        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
+          jumuiya = (json['data'] as List).map((item) => Jumuiya.fromJson(item)).toList();
+        }
       }
     }
     setState(() {
@@ -144,13 +155,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     final response = await http.post(
       Uri.parse(myApi),
       headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": kanisaData != null ? kanisaData!.id : '',
+      }),
     );
     var katibus;
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        katibus = json;
+        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
+          katibus = (json['data'] as List).map((item) => Katibu.fromJson(item)).toList();
+        } else if (json is List) {
+          katibus = json.map((item) => Katibu.fromJson(item)).toList();
+        } else {
+          katibus = [];
+        }
       }
     }
     setState(() {
@@ -158,15 +178,66 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     });
   }
 
+  Future<Kanisa?> getKanisaDetails() async {
+    String myApi = "${ApiUrl.BASEURL}get_kanisa_details.php";
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisacode": kanisaCode.text.trim(),
+      }),
+    );
+
+    var kanisa;
+
+    var jsonResponse = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        kanisa = json;
+      }
+    }
+
+    if (kanisa != null) {
+      if (kanisa is Map && kanisa.containsKey('data')) {
+        // Handle single object response
+        setState(() {
+          kanisaData = Kanisa.fromJson(kanisa['data']);
+        });
+      }
+    }
+
+    return kanisaData; // Return a list with the kanisa data or an empty list
+  }
+
+  Future<bool> validateKanisaCode(String kanisaCode) async {
+    try {
+      Kanisa? kanisaObj = await getKanisaDetails();
+
+      // Check if the entered kanisa code exists
+      bool kanisaExists = kanisaObj != null && kanisaObj.kanisacode.toLowerCase() == kanisaCode.toLowerCase();
+
+      return kanisaExists;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error validating kanisa code: $e");
+      }
+      return false;
+    }
+  }
+
   // Validation listeners
   productCountListener() {
     if (kDebugMode) {
-      print("value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("0")}");
+      print(
+          "value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("06") || nambaYaSimu.value.text.startsWith("07")}");
     }
-    if (nambaYaSimu.value.text.length != 10 || !nambaYaSimu.value.text.startsWith("0")) {
+    if (nambaYaSimu.value.text.length != 10 ||
+        (!nambaYaSimu.value.text.startsWith("06") && !nambaYaSimu.value.text.startsWith("07"))) {
       setState(() {
         msgErrorPhoneNumber =
-            "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
+            "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).";
       });
     } else {
       setState(() {
@@ -316,22 +387,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     String idYaJumuiyaa = idYaJumuiya;
     String katibuJumuiyaa = katibuJumuiya.text;
     String kamaUshirikia = kamaUshiriki.text;
+    String kanisaCodea = kanisaCode.text;
+    String umria = umri.text;
     String krida = krid;
 
     final String s = jinaLaMsharika.value.text;
     final List l = s.split(' ');
 
-    if (jinaLaMsharikaa == "" || nambaYaSimua == "" || ahadia == "" || jengoa == "" || krida == "" || jinsiaa == "") {
-      Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia)");
-    } else if (nambaYaSimua.length != 10 || !nambaYaSimua.startsWith("0")) {
+    if (jinaLaMsharikaa == "" ||
+        nambaYaSimua == "" ||
+        ahadia == "" ||
+        jengoa == "" ||
+        krida == "" ||
+        jinsiaa == "" ||
+        kanisaCodea == "" ||
+        umria == "") {
       Alerts.show(context, "Kuna shida",
-          "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).");
-    } else if (((jumuiyaUshirikia != '' && jumuiyaUshirikia == 'ndio') && (jinaLaJumuiya.text.isEmpty)) ||
-        katibuJumuiya.text.isEmpty) {
+          "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia,kanisa code,umri)");
+    } else if (nambaYaSimua.length != 10 || (!nambaYaSimua.startsWith("06") && !nambaYaSimua.startsWith("07"))) {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).");
+    } else if (jumuiyaUshirikia != '' &&
+        jumuiyaUshirikia == 'ndio' &&
+        (jinaLaJumuiyaa.isEmpty || katibuJumuiyaa.isEmpty)) {
       Alerts.show(
         context,
         "Kuna shida",
-        "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya)",
+        "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya) $jumuiyaUshirikia",
       );
     } else if ((_halindoa != '' && _halindoa == 'Nimeoa') && (jinaLaMwenziWako.text.isEmpty)) {
       Alerts.show(
@@ -377,6 +459,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         idYaJumuiyaa,
         katibuJumuiyaa,
         kamaUshirikia,
+        kanisaCodea,
+        umria,
         krida,
       );
     }
@@ -411,99 +495,149 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     idYaJumuiya,
     katibuJumuiya,
     kamaUshiriki,
+    kanisaCode,
+    umri,
     krid,
   ) async {
-    Alerts.showProgressDialog(context, "Tafadhari subiri");
-    String myApi = "${ApiUrl.BASEURL}jisajili.php/";
+    try {
+      Alerts.showProgressDialog(context, "Tafadhari subiri");
+      String myApi = "${ApiUrl.BASEURL}jisajili.php/";
 
-    var now = DateTime.now();
+      var now = DateTime.now();
 
-    final response = await http.post(Uri.parse(myApi), headers: {
-      'Accept': 'application/json'
-    }, body: {
-      "jina_la_msharika": "$jinaLaMsharika",
-      "jinsia": "$jinsia",
-      "hali_ya_ndoa": "$haliYaNdoa",
-      "jina_la_mwenzi_wako": "$jinaLaMwenziWako",
-      "namba_ya_ahadi": "$nambaYaAhadi",
-      "aina_ya_ndoa": "$ainaYaNdoa",
-      "jina_mtoto_1": "$jinaMtoto_1",
-      "tarehe_mtoto_1": "$tareheMtoto_1",
-      "uhusiano_mtoto_1": "$uhusianoMtoto_1",
-      "jina_mtoto_2": "$jinaMtoto_2",
-      "tarehe_mtoto_2": "$tareheMtoto_2",
-      "uhusiano_mtoto_2": "$uhusianoMtoto_2",
-      "jina_mtoto_3": "$jinaMtoto_3",
-      "tarehe_mtoto_3": "$tareheMtoto_3",
-      "uhusiano_mtoto_3": "$uhusianoMtoto_3",
-      "namba_ya_simu": "$nambaYaSimu",
-      "jengo": "$jengo",
-      "ahadi": "$ahadi",
-      "kazi": "$kazi",
-      "elimu": "$elimu",
-      "ujuzi": "$ujuzi",
-      "mahali_pakazi": "$mahaliPakazi",
-      "jumuiya_ushiriki": "$jumuiyaUshiriki",
-      "jina_la_jumuiya": "$jinaLaJumuiya",
-      "id_ya_jumuiya": "$idYaJumuiya",
-      "katibu_jumuiya": "$katibuJumuiya",
-      "kama_ushiriki": "$kamaUshiriki",
-      "reg_year_id": "$krid",
-      "tarehe": "$now"
-    });
+      final response = await http.post(Uri.parse(myApi), headers: {
+        'Accept': 'application/json'
+      }, body: {
+        "jina_la_msharika": "$jinaLaMsharika",
+        "jinsia": "$jinsia",
+        "hali_ya_ndoa": "$haliYaNdoa",
+        "jina_la_mwenzi_wako": "$jinaLaMwenziWako",
+        "namba_ya_ahadi": "$nambaYaAhadi",
+        "aina_ya_ndoa": "$ainaYaNdoa",
+        "jina_mtoto_1": "$jinaMtoto_1",
+        "tarehe_mtoto_1": "$tareheMtoto_1",
+        "uhusiano_mtoto_1": "$uhusianoMtoto_1",
+        "jina_mtoto_2": "$jinaMtoto_2",
+        "tarehe_mtoto_2": "$tareheMtoto_2",
+        "uhusiano_mtoto_2": "$uhusianoMtoto_2",
+        "jina_mtoto_3": "$jinaMtoto_3",
+        "tarehe_mtoto_3": "$tareheMtoto_3",
+        "uhusiano_mtoto_3": "$uhusianoMtoto_3",
+        "namba_ya_simu": "$nambaYaSimu",
+        "jengo": "$jengo",
+        "ahadi": "$ahadi",
+        "kazi": "$kazi",
+        "elimu": "$elimu",
+        "ujuzi": "$ujuzi",
+        "mahali_pakazi": "$mahaliPakazi",
+        "jumuiya_ushiriki": "$jumuiyaUshiriki",
+        "jina_la_jumuiya": "$jinaLaJumuiya",
+        "id_ya_jumuiya": "$idYaJumuiya",
+        "katibu_jumuiya": "$katibuJumuiya",
+        "kama_ushiriki": "$kamaUshiriki",
+        "kanisacode": "$kanisaCode",
+        "umri": "$umri",
+        "reg_year_id": "$krid",
+        "tarehe": "$now"
+      });
 
-    if (response.statusCode == 200) {
+      print({
+        "jina_la_msharika": "$jinaLaMsharika",
+        "jinsia": "$jinsia",
+        "hali_ya_ndoa": "$haliYaNdoa",
+        "jina_la_mwenzi_wako": "$jinaLaMwenziWako",
+        "namba_ya_ahadi": "$nambaYaAhadi",
+        "aina_ya_ndoa": "$ainaYaNdoa",
+        "jina_mtoto_1": "$jinaMtoto_1",
+        "tarehe_mtoto_1": "$tareheMtoto_1",
+        "uhusiano_mtoto_1": "$uhusianoMtoto_1",
+        "jina_mtoto_2": "$jinaMtoto_2",
+        "tarehe_mtoto_2": "$tareheMtoto_2",
+        "uhusiano_mtoto_2": "$uhusianoMtoto_2",
+        "jina_mtoto_3": "$jinaMtoto_3",
+        "tarehe_mtoto_3": "$tareheMtoto_3",
+        "uhusiano_mtoto_3": "$uhusianoMtoto_3",
+        "namba_ya_simu": "$nambaYaSimu",
+        "jengo": "$jengo",
+        "ahadi": "$ahadi",
+        "kazi": "$kazi",
+        "elimu": "$elimu",
+        "ujuzi": "$ujuzi",
+        "mahali_pakazi": "$mahaliPakazi",
+        "jumuiya_ushiriki": "$jumuiyaUshiriki",
+        "jina_la_jumuiya": "$jinaLaJumuiya",
+        "id_ya_jumuiya": "$idYaJumuiya",
+        "katibu_jumuiya": "$katibuJumuiya",
+        "kama_ushiriki": "$kamaUshiriki",
+        "kanisacode": "$kanisaCode",
+        "umri": "$umri",
+        "reg_year_id": "$krid",
+        "tarehe": "$now"
+      });
+
       var jsonResponse = json.decode(response.body);
-      Navigator.pop(context);
 
-      if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-        setState(() {
-          // Clear all controllers
-          _clearAllControllers();
-        });
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-        Fluttertoast.showToast(
-          msg: "Umefanikiwa kujisajili kikamilifu",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
-      } else if (jsonResponse == 404) {
+      if (response.statusCode == 200 && jsonResponse['status'] == '200') {
+        Navigator.pop(context);
+
+        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+          setState(() {
+            // Clear all controllers
+            _clearAllControllers();
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+          Fluttertoast.showToast(
+            msg: "Umefanikiwa kujisajili kikamilifu",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        } else if (jsonResponse == 404) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: "Server Error",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        } else if (jsonResponse == 201) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: "Ahsante ushajisajili kwa mwaka huu.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        } else if (jsonResponse == 500) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: jsonResponse['message'] ?? "Server Error Please Try Again Later",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: MyColors.primaryLight,
+            textColor: Colors.white,
+          );
+        }
+      } else {
         Navigator.pop(context);
         Fluttertoast.showToast(
-          msg: "Server Error",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
-      } else if (jsonResponse == 201) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(
-          msg: "Ahsante ushajisajili kwa mwaka huu.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
-      } else if (jsonResponse == 500) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(
-          msg: "Server Error Please Try Again Later",
+          msg: jsonResponse['message'] ?? "Server Error Please Try Again Later",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: MyColors.primaryLight,
           textColor: Colors.white,
         );
       }
-    } else {
+    } catch (e) {
       Navigator.pop(context);
       Fluttertoast.showToast(
-        msg: "Server Error Please Try Again Later",
+        msg: "An error occurred: $e",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: MyColors.primaryLight,
@@ -538,6 +672,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     jinaLaJumuiya.clear();
     katibuJumuiya.clear();
     kamaUshiriki.clear();
+    kanisaCode.clear();
+    umri.clear();
   }
 
   aboutToSendData(BuildContext context) {
@@ -665,6 +801,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: MyColors.primaryLight.withOpacity(0.3),
               blurRadius: 12,
               offset: const Offset(0, 6),
@@ -676,6 +813,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -726,6 +864,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 margin: const EdgeInsets.all(8),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: MyColors.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -788,6 +927,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         border: Border.all(color: Colors.grey.shade200, width: 1.5),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.08),
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -927,12 +1067,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         color: Colors.grey.shade50,
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton(
+        child: DropdownButton<String>(
           hint: Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: MyColors.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -946,13 +1087,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
           icon: Icon(Icons.arrow_drop_down, color: MyColors.primaryLight),
           style: TextStyle(color: MyColors.primaryLight, fontSize: 16),
           items: _dataProvince!.map((item) {
-            return DropdownMenuItem(
-              value: item['jumuiya_name'],
+            return DropdownMenuItem<String>(
+              value: item.id.toString(), // Use jumuiya_id as value
               child: Row(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: MyColors.primaryLight.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -960,7 +1102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    item['jumuiya_name'],
+                    item.jumuiyaName,
                     style: TextStyle(
                       color: MyColors.primaryLight,
                       fontWeight: FontWeight.w600,
@@ -972,14 +1114,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
           }).toList(),
           onChanged: (value) async {
             setState(() {
-              for (var items in katibuWaJumuiya!) {
-                if (items['jumuiya'] == value) {
-                  katibuJumuiya.text = items['jina'];
-                }
-              }
-              _valProvince = value.toString();
-              jinaLaJumuiya.text = value.toString();
-              idYaJumuiya = value.toString();
+              _valProvince = value;
+              // print("Selected Jumuiya ID: $value");
+              idYaJumuiya = value ?? '';
+              // // Find jumuiya name for selected id
+              final selectedJumuiya =
+                  // ignore: unrelated_type_equality_checks
+                  _dataProvince!.firstWhere((j) => j.id == value, orElse: () => _dataProvince!.first);
+
+              katibuJumuiya.text = selectedJumuiya.katibuId.toString();
+              jinaLaJumuiya.text = selectedJumuiya.jumuiyaName;
             });
           },
         ),
@@ -1016,8 +1160,48 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 ),
               ],
             ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '2. Kanisa Code',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                _buildTextField(
+                  controller: kanisaCode,
+                  labelText: "Kanisa Code",
+                  icon: Icons.church,
+                  keyboardType: TextInputType.text,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  '3. Umri',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                _buildTextField(
+                  controller: umri,
+                  labelText: "Umri (miaka)",
+                  icon: Icons.cake,
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            ),
             _buildRadioGroup(
-              title: '2. Hali ya ndoa',
+              title: '4. Hali ya ndoa',
               options: ['Nimeoa', 'Sijaoa', 'mgane', 'talakiwa'],
               groupValue: _halindoa,
               onChanged: (value) {
@@ -1043,7 +1227,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '3. Jina la mwenzi wako',
+                    '5. Jina la mwenzi wako',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -1063,7 +1247,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  '4. Namba ya Ahadi',
+                  '6. Namba ya Ahadi',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
@@ -1081,7 +1265,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
             ),
             if (_halindoa == 'Nimeoa')
               _buildRadioGroup(
-                title: '5. Aina ya ndoa',
+                title: '7. Aina ya ndoa',
                 options: ['Ndoa ya Kikristo', 'Ndoa isiyo ya Kikristo'],
                 groupValue: _ndoa,
                 onChanged: (value) {
@@ -1097,7 +1281,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '6. Watoto/Waumini wanakutegemea wapya',
+                    '8. Watoto/Waumini wanakutegemea wapya',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -1164,7 +1348,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 const SizedBox(height: 8),
                 _buildTextField(
                   controller: nambaYaSimu,
-                  labelText: "Namba ya simu (eg. 0659515042)",
+                  labelText: "Namba ya simu (eg. 0659515042 au 0712345678)",
                   icon: Icons.call,
                   keyboardType: TextInputType.number,
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
@@ -1359,32 +1543,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   const SizedBox(height: 16),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '3. Katibu wa jumuiya',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildTextField(
-                    controller: katibuJumuiya,
-                    labelText: "Katibu wa jumuiya",
-                    icon: Icons.person_pin,
-                    readOnly: true,
-                  ),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     const Text(
+              //       '3. Katibu wa jumuiya',
+              //       style: TextStyle(
+              //         fontSize: 16.0,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.black87,
+              //       ),
+              //     ),
+              //     const SizedBox(height: 8),
+              //     _buildTextField(
+              //       controller: katibuJumuiya,
+              //       labelText: "Katibu wa jumuiya",
+              //       icon: Icons.person_pin,
+              //       readOnly: true,
+              //     ),
+              //   ],
+              // ),
             ] else if (_ushiriki == 'hapana') ...[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '4. Kama Haushiriki weka sababu ya kutokushiriki',
+                    'Kama Haushiriki weka sababu ya kutokushiriki',
                     style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -1394,10 +1578,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   const SizedBox(height: 8),
                   _buildTextField(
                     controller: kamaUshiriki,
-                    labelText: "Sababu ya kutokushiriki jumuiya",
+                    labelText: "Sababu ya kutokushiriki jumuiya $_ushiriki ${jumuiyaUshiriki.text}",
                     icon: Icons.info_outline,
                     keyboardType: TextInputType.text,
-                    errorText: msgErrorPhoneNumber2,
+                    // errorText: "Tafadhari weka sababu ya kutokushiriki jumuiya",
                   ),
                 ],
               ),
@@ -1557,13 +1741,111 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     );
   }
 
-  void nextPage() {
+  void nextPage() async {
+    // Validate required fields for step 1 before proceeding
+    if (pagecontrolnumber == 0) {
+      String jinaLaMsharikaa = jinaLaMsharika.text.trim();
+      String kanisaCodea = kanisaCode.text.trim();
+      String umria = umri.text.trim();
+      String jinsiaa = jinsia.text.trim();
+      String nambaYaAhadia = nambaYaAhadi.text.trim();
+
+      final String s = jinaLaMsharika.value.text;
+      final List l = s.split(' ');
+
+      if (jinaLaMsharikaa.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza jina la msharika");
+        return;
+      } else if (l.length < 3) {
+        Alerts.show(context, "Kuna shida", "Tafadhali Hakikisha umeweka majina matatu");
+        return;
+      } else if (kanisaCodea.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza kanisa code");
+        return;
+      } else if (umria.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza umri wako");
+        return;
+      } else if (jinsiaa.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali chagua jinsia yako");
+        return;
+      } else if (nambaYaAhadia.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza namba ya ahadi");
+        return;
+      } else {
+        // Validate kanisa code before moving to step 2
+        Alerts.showProgressDialog(context, "Tafadhari subiri, tunakagua kanisa code...");
+
+        bool kanisaExists = await validateKanisaCode(kanisaCodea);
+        Navigator.pop(context); // Close progress dialog
+
+        if (!kanisaExists) {
+          Alerts.show(context, "Kuna shida",
+              "Kanisa code '$kanisaCodea' haikupatikana. Tafadhali hakikisha umeweka kanisa code sahihi.");
+          return;
+        }
+      }
+    }
+
+    // Validate phone number for step 2 before proceeding
+    if (pagecontrolnumber == 1) {
+      String nambaYaSimua = nambaYaSimu.text.trim();
+
+      if (nambaYaSimua.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza namba ya simu");
+        return;
+      } else if (nambaYaSimua.length != 10) {
+        Alerts.show(context, "Kuna shida", "Namba ya simu lazima ziwe tarakimu kumi (10)");
+        return;
+      } else if (!nambaYaSimua.startsWith("06") && !nambaYaSimua.startsWith("07")) {
+        Alerts.show(context, "Kuna shida", "Namba ya simu lazima ianze na 06 au 07");
+        return;
+      }
+    }
+
+    // Validate jengo kiasi and ahadi kiasi for step 3 before proceeding
+    if (pagecontrolnumber == 2) {
+      String jengoa = jengo.text.trim();
+      String ahadia = ahadi.text.trim();
+
+      if (jengoa.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza jengo kiasi");
+        return;
+      } else if (ahadia.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza ahadi kiasi");
+        return;
+      }
+    }
+
+    // Validate work information for step 4 before proceeding
+    if (pagecontrolnumber == 3) {
+      String kazia = kazi.text.trim();
+      String elimua = elimu.text.trim();
+      String ujuzia = ujuzi.text.trim();
+      String mahaliPakazia = mahaliPakazi.text.trim();
+
+      if (kazia.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza kazi yako");
+        return;
+      } else if (elimua.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza elimu yako");
+        return;
+      } else if (ujuzia.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza ujuzi wako");
+        return;
+      } else if (mahaliPakazia.isEmpty) {
+        Alerts.show(context, "Kuna shida", "Tafadhali jaza mahali pa kazi");
+        return;
+      }
+    }
+
     _pageController.animateToPage(_pageController.page!.toInt() + 1,
         duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
-    setState(() {
+    if (kanisaData != null) {
       getJumuiyaApi();
       getUsajiliId();
       getKatibu();
+    }
+    setState(() {
       pagecontrolnumber = (pagecontrolnumber + 1);
     });
     _animationController.reset();
