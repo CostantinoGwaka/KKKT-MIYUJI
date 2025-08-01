@@ -557,46 +557,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         "tarehe": "$now"
       });
 
-      print({
-        "jina_la_msharika": "$jinaLaMsharika",
-        "jinsia": "$jinsia",
-        "hali_ya_ndoa": "$haliYaNdoa",
-        "jina_la_mwenzi_wako": "$jinaLaMwenziWako",
-        "namba_ya_ahadi": "$nambaYaAhadi",
-        "aina_ya_ndoa": "$ainaYaNdoa",
-        "jina_mtoto_1": "$jinaMtoto_1",
-        "tarehe_mtoto_1": "$tareheMtoto_1",
-        "uhusiano_mtoto_1": "$uhusianoMtoto_1",
-        "jina_mtoto_2": "$jinaMtoto_2",
-        "tarehe_mtoto_2": "$tareheMtoto_2",
-        "uhusiano_mtoto_2": "$uhusianoMtoto_2",
-        "jina_mtoto_3": "$jinaMtoto_3",
-        "tarehe_mtoto_3": "$tareheMtoto_3",
-        "uhusiano_mtoto_3": "$uhusianoMtoto_3",
-        "namba_ya_simu": "$nambaYaSimu",
-        "jengo": "$jengo",
-        "ahadi": "$ahadi",
-        "kazi": "$kazi",
-        "elimu": "$elimu",
-        "ujuzi": "$ujuzi",
-        "mahali_pakazi": "$mahaliPakazi",
-        "jumuiya_ushiriki": "$jumuiyaUshiriki",
-        "jina_la_jumuiya": "$jinaLaJumuiya",
-        "id_ya_jumuiya": "$idYaJumuiya",
-        "katibu_jumuiya": "$katibuJumuiya",
-        "kama_ushiriki": "$kamaUshiriki",
-        "kanisacode": "$kanisaCode",
-        "umri": "$umri",
-        "reg_year_id": "$krid",
-        "tarehe": "$now"
-      });
-
       var jsonResponse = json.decode(response.body);
 
-      if (response.statusCode == 200 && jsonResponse['status'] == '200') {
-        Navigator.pop(context);
-
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+      if (response.statusCode == 200 && (jsonResponse['status'] == '200' || jsonResponse['status'] == 200)) {
+        if (jsonResponse != null && jsonResponse['status'] != '404' && jsonResponse['status'] != '500') {
           setState(() {
             // Clear all controllers
             _clearAllControllers();
