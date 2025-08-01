@@ -11,6 +11,7 @@ import 'package:kanisaapp/models/Jumuiya.dart';
 import 'package:kanisaapp/models/jumuiya_model.dart';
 import 'package:kanisaapp/models/kanisa_model.dart';
 import 'package:kanisaapp/models/makatibu.dart';
+import 'package:kanisaapp/models/mwaka_wa_kanisa.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
@@ -30,6 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   Kanisa? kanisaData;
+  InactiveYear? inactiveYearData;
 
   String _halindoa = '';
   String _jinsiaYako = '';
@@ -105,25 +107,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     super.dispose();
   }
 
-  // All your existing API methods remain the same
-  void getUsajiliId() async {
-    String myApi = "${ApiUrl.BASEURL}getusajiliid.php";
-    final response = await http.post(
-      Uri.parse(myApi),
-      headers: {'Accept': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        usajiliId = json;
-        setState(() {
-          krid = usajiliId[0]['year_id'];
-        });
-      }
-    }
-  }
-
   void getJumuiyaApi() async {
     String myApi = "${ApiUrl.BASEURL}getjumuiya.php";
     final response = await http.post(
@@ -178,6 +161,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     });
   }
 
+  Future<InactiveYear?> getActiveKanisaYearDetails() async {
+    String myApi = "${ApiUrl.BASEURL}get_kanisa_year.php";
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+    );
+
+    var mwaka;
+
+    var jsonResponse = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        mwaka = json;
+      }
+    }
+
+    if (mwaka != null) {
+      if (mwaka is Map && mwaka.containsKey('data')) {
+        // Handle single object response
+        setState(() {
+          inactiveYearData = InactiveYear.fromJson(mwaka['data']);
+          krid = inactiveYearData!.yearId;
+        });
+      }
+    }
+
+    return inactiveYearData; // Return a list with the kanisa data or an empty list
+  }
+
   Future<Kanisa?> getKanisaDetails() async {
     String myApi = "${ApiUrl.BASEURL}get_kanisa_details.php";
     final response = await http.post(
@@ -214,6 +228,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
   Future<bool> validateKanisaCode(String kanisaCode) async {
     try {
       Kanisa? kanisaObj = await getKanisaDetails();
+
+      await getActiveKanisaYearDetails();
 
       // Check if the entered kanisa code exists
       bool kanisaExists = kanisaObj != null && kanisaObj.kanisacode.toLowerCase() == kanisaCode.toLowerCase();
@@ -1842,7 +1858,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
     if (kanisaData != null) {
       getJumuiyaApi();
-      getUsajiliId();
       getKatibu();
     }
     setState(() {
