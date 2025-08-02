@@ -240,8 +240,12 @@ class _HomePageState extends State<HomePage> {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         final menuItem = menuList[index];
-        final isRestrictedForGuest =
-            (host == null) && (menuItem['name'] == "MAZUNGUMZO" || menuItem['name'] == "MATANGAZO");
+        final isRestrictedForGuest = (host == null) &&
+            (menuItem['name'] == "MAZUNGUMZO" ||
+                menuItem['name'] == "MATANGAZO" ||
+                menuItem['name'] == "KWAYA ZETU" ||
+                menuItem['name'] == "MUBASHARA" ||
+                menuItem['name'] == "JUMUIYA ZETU");
 
         if (isRestrictedForGuest) {
           return _buildRestrictedMenuItem(menuItem);

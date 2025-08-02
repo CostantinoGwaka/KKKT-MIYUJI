@@ -33,8 +33,8 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    namespace = 'com.example.miyuji'
-    testNamespace 'com.example.miyuji'
+    namespace = 'com.isofttz.kanisaniapp'
+    testNamespace 'com.isofttz.kanisaniapp'
     compileSdkVersion 35
 
     ndkVersion "25.1.8937393"
@@ -50,7 +50,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.example.miyuji"
+        applicationId "com.isofttz.kanisaniapp"
         minSdk flutter.minSdkVersion
         targetSdk flutter.targetSdkVersion
         versionCode flutter.versionCode
@@ -93,7 +93,7 @@ subprojects {
 
 dependencies {
     implementation 'com.android.support:multidex:2.0.1'
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.firebase:firebase-analytics")
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
     androidTestImplementation "androidx.fragment:fragment-testing:1.8.4"

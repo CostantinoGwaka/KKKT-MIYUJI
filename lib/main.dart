@@ -1,4 +1,5 @@
 // import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
@@ -8,9 +9,9 @@ import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(
       MultiProvider(

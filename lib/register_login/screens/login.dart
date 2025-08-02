@@ -111,6 +111,7 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
+        print(jsonResponse);
         if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
           var json = jsonDecode(response.body);
           setState(
@@ -349,14 +350,17 @@ class _LoginState extends State<Login> {
       child: TextField(
         controller: memberController,
         keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(10),
+        ],
         style: GoogleFonts.poppins(
           fontSize: 16,
           color: Colors.black87,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
-          hintText: "Namba yako ya Ahadi",
+          hintText: "Namba yako ya simu",
           hintStyle: GoogleFonts.poppins(
             color: Colors.grey.shade500,
             fontSize: 14,
@@ -365,7 +369,7 @@ class _LoginState extends State<Login> {
           prefixIcon: Container(
             padding: const EdgeInsets.all(12),
             child: Icon(
-              Icons.badge_outlined,
+              Icons.phone_android_rounded,
               color: MyColors.primaryLight,
               size: 20,
             ),
@@ -390,6 +394,13 @@ class _LoginState extends State<Login> {
             borderSide: const BorderSide(color: Colors.red, width: 2),
           ),
         ),
+        onChanged: (value) {
+          if (value.length == 1 && !(value.startsWith('0'))) {
+            memberController.clear();
+          } else if (value.length == 2 && !(value.startsWith('06') || value.startsWith('07'))) {
+            memberController.clear();
+          }
+        },
       ),
     );
   }
