@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -518,7 +520,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
           });
 
           _showSuccessSnackBar("Maoni yako yamepokelewa, Asante sana!");
-          
+
           // Navigate back after a short delay
           Future.delayed(const Duration(seconds: 2), () {
             if (mounted) {
