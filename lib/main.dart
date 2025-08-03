@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:kanisaapp/bloc/pointer.dart';
+import 'package:kanisaapp/firebase_options.dart';
 import 'package:kanisaapp/home/screens/index.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,9 @@ import 'package:provider/provider.dart';
 void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(
       MultiProvider(

@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:provider/provider.dart';
-import 'package:kanisaapp/home/screens/index.dart';
 
 // var host;
 
@@ -16,22 +17,22 @@ class ReplyMessageIndicator extends StatefulWidget {
 }
 
 class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
+  BaseUser? currentUser;
+
   @override
   void initState() {
-    // checkLogin();
     super.initState();
+    _loadCurrentUser();
   }
 
-  // void checkLogin() async {
-  //   LocalStorage.getStringItem('member_no').then((value) {
-  //     if (value != null) {
-  //       var mydata = jsonDecode(value);
-  //       setState(() {
-  //         host = mydata;
-  //       });
-  //     }
-  //   });
-  // }
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {});
+    } catch (e) {
+      // Handle error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class _ReplyMessageIndicatorState extends State<ReplyMessageIndicator> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.messageData['sender'] == host['member_no'] ? "Wewe" : "Mtumishi",
+                        widget.messageData['sender'] == currentUser?.memberNo ? "Wewe" : "Mtumishi",
                         style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                       ),
                       () {

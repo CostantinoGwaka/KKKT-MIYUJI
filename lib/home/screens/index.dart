@@ -18,7 +18,6 @@ import 'package:kanisaapp/models/neno_lasiku.dart';
 import 'package:kanisaapp/neno/screens/index.dart';
 import 'package:kanisaapp/ratiba/screens/index.dart';
 import 'package:kanisaapp/register_login/screens/login.dart';
-import 'package:kanisaapp/shared/localstorage/index.dart';
 import 'package:kanisaapp/uongozi/screens/index.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
@@ -27,12 +26,14 @@ import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:lottie/lottie.dart';
 import 'package:kanisaapp/utils/no_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
 import '../../akaunti/screens/index.dart';
 
-var host;
-var data;
-var mtumishi;
+// var host;
+// var data;
+// var mtumishi;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -68,11 +69,11 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   String messageTitle = "Empty";
   String notificationAlert = "alert";
+  BaseUser? currentUser;
 
   @override
   void initState() {
     checkLogin();
-    getdataLocal();
     super.initState();
 
     // For handling foreground messages
@@ -131,34 +132,98 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkLogin() async {
-    LocalStorage.getStringItem('member_no').then((value) {
-      if (value.isNotEmpty) {
-        var mydata = jsonDecode(value);
-        setState(() {
-          host = mydata;
-        });
-      }
+    // Get current user using UserManager
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
     });
+
+    // Example: Get all users by role if current user is admin
+    if (user != null && UserManager.isAdmin(user)) {
+      _loadUsersByRole();
+    }
   }
 
-  void getdataLocal() async {
-    LocalStorage.getStringItem('mydata').then((value) {
-      if (value.isNotEmpty) {
-        var mydata = jsonDecode(value);
-        setState(() {
-          data = mydata;
-        });
-      }
-    });
+  // Example method to demonstrate how to get users by role
+  void _loadUsersByRole() async {
+    try {
+      // Get all users by different roles
+      List<AdminUser> admins = await UserManager.getAllAdmins();
+      List<MzeeUser> mazee = await UserManager.getAllMzee();
+      List<KatibuUser> makatibu = await UserManager.getAllKatibu();
+      List<MsharikaUser> washarika = await UserManager.getAllMsharika();
 
-    LocalStorage.getStringItem('mtumishi').then((value) {
-      if (value.isNotEmpty) {
-        var mymtumishi = jsonDecode(value);
-        setState(() {
-          mtumishi = mymtumishi;
-        });
+      // Get user statistics
+      Map<String, int> stats = await UserManager.getUserStatistics();
+
+      // Get all users
+      List<BaseUser> allUsers = await UserManager.getAllUsers();
+
+      if (kDebugMode) {
+        print("Admin users found: ${admins.length}");
+        print("Mzee users found: ${mazee.length}");
+        print("Katibu users found: ${makatibu.length}");
+        print("Msharika users found: ${washarika.length}");
+        print("Total users: ${allUsers.length}");
+        print("User statistics: $stats");
       }
-    });
+
+      // You can now use these lists to populate your UI
+      // For example, show user management options only to admins
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error loading users: $e");
+      }
+    }
+  }
+
+  // Helper methods to get user specific data
+  String _getUserJumuiya() {
+    if (currentUser == null) return 'N/A';
+
+    if (currentUser is MsharikaUser) {
+      return (currentUser as MsharikaUser).jinaLaJumuiya;
+    } else if (currentUser is MzeeUser) {
+      return (currentUser as MzeeUser).jumuiya;
+    } else if (currentUser is KatibuUser) {
+      return (currentUser as KatibuUser).jumuiya;
+    }
+
+    return 'N/A';
+  }
+
+  String _getUserAhadi(NumberFormat money) {
+    if (currentUser == null) return 'N/A';
+
+    if (currentUser is MsharikaUser) {
+      String ahadi = (currentUser as MsharikaUser).ahadi;
+      if (ahadi.isNotEmpty && ahadi != '0') {
+        try {
+          return "${money.format(int.parse(ahadi))} Tsh";
+        } catch (e) {
+          return ahadi;
+        }
+      }
+    }
+
+    return 'N/A';
+  }
+
+  String _getUserJengo(NumberFormat money) {
+    if (currentUser == null) return 'N/A';
+
+    if (currentUser is MsharikaUser) {
+      String jengo = (currentUser as MsharikaUser).jengo;
+      if (jengo.isNotEmpty && jengo != '0') {
+        try {
+          return "${money.format(int.parse(jengo))} Tsh";
+        } catch (e) {
+          return jengo;
+        }
+      }
+    }
+
+    return 'N/A';
   }
 
   final menuList = <Map<String, dynamic>>[
@@ -240,7 +305,7 @@ class _HomePageState extends State<HomePage> {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         final menuItem = menuList[index];
-        final isRestrictedForGuest = (host == null) &&
+        final isRestrictedForGuest = (currentUser == null) &&
             (menuItem['name'] == "MAZUNGUMZO" ||
                 menuItem['name'] == "MATANGAZO" ||
                 menuItem['name'] == "KWAYA ZETU" ||
@@ -412,7 +477,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Text(
-            "KANISANI",
+            (currentUser != null && currentUser!.kanisaName.isNotEmpty) ? currentUser!.kanisaName : "KANISANI",
             style: GoogleFonts.poppins(
               fontSize: 20,
               color: Colors.white,
@@ -476,18 +541,18 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: host != null ? _buildUserInfo() : _buildGuestInfo(),
+                  child: currentUser != null ? _buildUserInfo() : _buildGuestInfo(),
                 ),
               ],
             ),
-            if (host != null) ...[
+            if (currentUser != null) ...[
               const SizedBox(height: 20),
               _buildUserDetails(money),
             ] else ...[
               const SizedBox(height: 16),
               _buildWelcomeMessage(),
             ],
-            if (host != null) ...[
+            if (currentUser != null) ...[
               const SizedBox(height: 20),
               _buildMatoleoButton(),
             ],
@@ -510,13 +575,37 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const SizedBox(height: 2),
-        Text(
-          host != null ? "${host['fname']}" : "N/A",
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                UserManager.getUserDisplayName(currentUser),
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            if (currentUser != null) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _getUserTypeColor(currentUser!.userType),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  currentUser!.userType,
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
         const SizedBox(height: 8),
         Container(
@@ -535,7 +624,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(width: 6),
               Text(
-                "No. Ahadi: ${(data == null || data['namba_ya_ahadi'] == null) ? (host != null ? host['member_no'] : "N/A") : data['namba_ya_ahadi']}",
+                "No. Ahadi: ${currentUser!.memberNo}",
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -547,6 +636,21 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  Color _getUserTypeColor(String userType) {
+    switch (userType) {
+      case 'ADMIN':
+        return Colors.red.shade600;
+      case 'MZEE':
+        return Colors.orange.shade600;
+      case 'KATIBU':
+        return Colors.blue.shade600;
+      case 'MSHARIKA':
+        return Colors.green.shade600;
+      default:
+        return MyColors.primaryLight;
+    }
   }
 
   Widget _buildGuestInfo() {
@@ -591,13 +695,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildUserDetails(NumberFormat money) {
-    return data != null
+    return currentUser != null
         ? Row(
             children: [
               Expanded(
                 child: _buildInfoCard(
                   "Jumuiya",
-                  "${data['jina_la_jumuiya'] ?? 'N/A'}",
+                  _getUserJumuiya(),
                   Icons.group,
                 ),
               ),
@@ -607,13 +711,13 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     _buildInfoCard(
                       "Ahadi",
-                      (data['ahadi'] == null) ? "N/A" : "${money.format(int.parse(data['ahadi']))} Tsh",
+                      _getUserAhadi(money),
                       Icons.monetization_on,
                     ),
                     const SizedBox(height: 6),
                     _buildInfoCard(
                       "Jengo",
-                      (data['jengo'] == null) ? "N/A" : "${money.format(int.parse(data['jengo']))} Tsh",
+                      _getUserJengo(money),
                       Icons.home_work,
                     ),
                   ],
@@ -1032,7 +1136,6 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           setState(() {
             checkLogin();
-            getdataLocal();
           });
         },
         child: CustomScrollView(
@@ -1086,9 +1189,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      (host == null) ? const NoAuthBanner() : const ViongoziWaKanisa(),
-      (host == null) ? const NoAuthBanner() : const RatibaZaIbada(),
-      (host == null) ? const NoAuthBanner() : const ProfilePage()
+      (currentUser == null) ? const NoAuthBanner() : const ViongoziWaKanisa(),
+      (currentUser == null) ? const NoAuthBanner() : const RatibaZaIbada(),
+      (currentUser == null) ? const NoAuthBanner() : const ProfilePage()
     ];
 
     void onItemTapped(int index) {

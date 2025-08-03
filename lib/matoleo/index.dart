@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kanisaapp/home/screens/index.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
-import 'package:kanisaapp/utils/dimension.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
 
 class MatoleoScreen extends StatefulWidget {
@@ -20,7 +20,24 @@ class MatoleoScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<MatoleoScreen> {
+  BaseUser? currentUser;
+
+  @override
+  void initState() {
+    _loadCurrentUser();
+    super.initState();
+  }
+
+  void _loadCurrentUser() async {
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
+  }
+
   Future<dynamic> getSadakaZako() async {
+    if (currentUser == null) return null;
+
     String myApi = "${ApiUrl.BASEURL}get_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -28,7 +45,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": host['member_no'],
+        "member_no": currentUser!.memberNo,
       },
     );
 
@@ -45,6 +62,8 @@ class _ChatScreenState extends State<MatoleoScreen> {
   }
 
   Future<dynamic> getJumlaAhadi() async {
+    if (currentUser == null) return 0;
+
     String myApi = "${ApiUrl.BASEURL}get_jumla_ahadi_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -52,7 +71,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": host['member_no'],
+        "member_no": currentUser!.memberNo,
       },
     );
 
@@ -69,6 +88,8 @@ class _ChatScreenState extends State<MatoleoScreen> {
   }
 
   Future<dynamic> getJumlaJengo() async {
+    if (currentUser == null) return 0;
+
     String myApi = "${ApiUrl.BASEURL}get_jumla_jengo_sadaka.php";
     final response = await http.post(
       Uri.parse(myApi),
@@ -76,7 +97,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
         'Accept': 'application/json',
       },
       body: {
-        "member_no": host['member_no'],
+        "member_no": currentUser!.memberNo,
       },
     );
 
@@ -92,12 +113,39 @@ class _ChatScreenState extends State<MatoleoScreen> {
     return baraza;
   }
 
-  @override
-  void initState() {
-    getSadakaZako();
-    getJumlaAhadi();
-    getJumlaJengo();
-    super.initState();
+  // Helper methods to get user data
+  int _getUserAhadi() {
+    if (currentUser == null) return 0;
+
+    if (currentUser is MsharikaUser) {
+      String ahadi = (currentUser as MsharikaUser).ahadi;
+      if (ahadi.isNotEmpty && ahadi != '0') {
+        try {
+          return int.parse(ahadi);
+        } catch (e) {
+          return 0;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  int _getUserJengo() {
+    if (currentUser == null) return 0;
+
+    if (currentUser is MsharikaUser) {
+      String jengo = (currentUser as MsharikaUser).jengo;
+      if (jengo.isNotEmpty && jengo != '0') {
+        try {
+          return int.parse(jengo);
+        } catch (e) {
+          return 0;
+        }
+      }
+    }
+
+    return 0;
   }
 
   @override
@@ -106,8 +154,17 @@ class _ChatScreenState extends State<MatoleoScreen> {
 
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          backgroundColor: Colors.white,
+          border: const Border(),
           leading: GestureDetector(
-            child: const Icon(Icons.arrow_back_ios),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: MyColors.primaryLight.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(Icons.arrow_back_ios, color: MyColors.primaryLight, size: 20),
+            ),
             onTap: () {
               Navigator.pop(context);
             },
@@ -115,369 +172,509 @@ class _ChatScreenState extends State<MatoleoScreen> {
           middle: Text(
             "Matoleo Yako",
             style: TextStyles.headline(context).copyWith(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: MyColors.primaryLight,
             ),
           ),
         ),
         child: Scaffold(
-          // backgroundColor: const Color(0xffE5E5E5),
-          // appBar: AppBar(
-          //   foregroundColor: Colors.black,
-          //   elevation: 0,
-          //   backgroundColor: Colors.transparent,
-          //   centerTitle: true,
-          //   title: Text(
-          //     "",
-          //     style: TextStyle(
-          //       fontSize: 16,
-          //       color: MyColors.primaryLight,
-          //       fontWeight: FontWeight.bold,
-          //     ),
-          //   ),
-          // ),
+          backgroundColor: Colors.grey[50],
           body: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: jtdeviceHeight(context) / 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: jtdeviceHeight(context) / 5,
-                    width: jtdeviceWidth(context),
-                    child: Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Summary Cards Section
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Muhtasari wa Matoleo",
+                          style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: MyColors.primaryLight,
+                              ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Ahadi",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 15,
-                                        color: MyColors.primaryLight,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            // Ahadi Card
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [MyColors.primaryLight, MyColors.primaryLight.withOpacity(0.8)],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: MyColors.primaryLight.withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                                jtmanualStepper(),
-                                Text(
-                                  "Tsh ${currency.format(data != null && data['ahadi'] != null ? int.parse(data['ahadi']) : 0)}",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 17,
-                                        color: MyColors.primaryLight,
-                                      ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: const Icon(Icons.handshake, color: Colors.white, size: 20),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Ahadi",
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      "Tsh ${currency.format(_getUserAhadi())}",
+                                      style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    FutureBuilder(
+                                      future: getJumlaAhadi(),
+                                      builder: (context, AsyncSnapshot snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return Container(
+                                            height: 20,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.3),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          );
+                                        } else if (snapshot.hasData) {
+                                          return Text(
+                                            // "Jumla: Tsh ${currency.format(snapshot.data is Map && snapshot.data['jumla'] != null ? int.tryParse(snapshot.data['jumla'].toString()) ?? 0 : snapshot.data)}/=",
+                                            "0",
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.white.withOpacity(0.9),
+                                                ),
+                                          );
+                                        } else {
+                                          return Text(
+                                            "Hakuna data",
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.white.withOpacity(0.7),
+                                                ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
-                                Text(
-                                  "Jengo",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 15,
-                                        color: MyColors.primaryLight,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                                jtmanualStepper(),
-                                Text(
-                                  "Tsh ${currency.format(data != null && data['jengo'] != null ? int.parse(data['jengo']) : 0)}",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 17,
-                                        color: MyColors.primaryLight,
-                                      ),
-                                ),
-                              ],
+                              ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 15,
-                                        color: MyColors.primaryLight,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            const SizedBox(width: 16),
+                            // Jengo Card
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.orange.shade600, Colors.orange.shade500],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.orange.withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                                jtmanualStepper(),
-                                FutureBuilder(
-                                  //Error number 2
-                                  future: getJumlaAhadi(),
-                                  builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return const Text("...");
-                                    } else if (snapshot.hasData) {
-                                      return Text(
-                                        "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                              fontSize: 17,
-                                              color: MyColors.primaryLight,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          child: const Icon(Icons.home_work, color: Colors.white, size: 20),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Jengo",
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      // ignore: unnecessary_type_check
+                                      "Tsh ${currency.format(_getUserJengo() is num ? _getUserJengo() : 0)}",
+                                      style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    FutureBuilder(
+                                      future: getJumlaJengo(),
+                                      builder: (context, AsyncSnapshot snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return Container(
+                                            height: 20,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.3),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
-                                      );
-                                    } else {
-                                      return const Text("hakuna");
-                                    }
-                                  },
+                                          );
+                                        } else if (snapshot.hasData) {
+                                          return Text(
+                                            // "Jumla: Tsh ${currency.format(snapshot.data is Map && snapshot.data['jumla'] != null ? int.tryParse(snapshot.data['jumla'].toString()) ?? 0 : snapshot.data)}/=",
+
+                                            "0",
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.white.withOpacity(0.9),
+                                                ),
+                                          );
+                                        } else {
+                                          return Text(
+                                            "Hakuna data",
+                                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                  fontSize: 12,
+                                                  color: Colors.white.withOpacity(0.7),
+                                                ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                jtmanualStepper(step: jtdeviceHeight(context) ~/ 30),
-                                Text(
-                                  "",
-                                  style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                        fontSize: 15,
-                                        color: MyColors.primaryLight,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                                jtmanualStepper(),
-                                FutureBuilder(
-                                  //Error number 2
-                                  future: getJumlaJengo(),
-                                  builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return const Text("...");
-                                    } else if (snapshot.hasData) {
-                                      return Text(
-                                        "Tsh ${currency.format(snapshot.data)}/=",
-                                        style: Theme.of(context).primaryTextTheme.displayMedium!.copyWith(
-                                              fontSize: 17,
-                                              color: MyColors.primaryLight,
-                                            ),
-                                      );
-                                    } else {
-                                      return const Text("hakuna");
-                                    }
-                                  },
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
+                      ],
+                    ),
+                  ),
+                  // Matoleo Section Header
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: MyColors.primaryLight.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.list_alt, color: MyColors.primaryLight, size: 20),
                       ),
-                    ),
+                      const SizedBox(width: 12),
+                      Text(
+                        "Historia ya Matoleo",
+                        style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: MyColors.primaryLight,
+                            ),
+                      ),
+                    ],
                   ),
-                  jtmanualStepper(step: jtdeviceHeight(context) ~/ 40),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Matoleo",
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: MyColors.primaryLight,
-                          ),
+                  const SizedBox(height: 16),
+                  // Matoleo List
+                  Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
                     ),
-                  ),
-                  jtmanualStepper(),
-                  SizedBox(
-                    height: 500,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: FutureBuilder(
-                              //Error number 2
-                              future: getSadakaZako(),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 50.0),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(90.0),
+                    child: FutureBuilder(
+                        future: getSadakaZako(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Container(
+                              height: 300,
+                              padding: const EdgeInsets.all(40),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset(
+                                      'assets/animation/fetching.json',
+                                      height: 120,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Material(
+                                      child: Text(
+                                        "Inapanga taarifa...",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                          color: MyColors.primaryLight,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else if (snapshot.hasError || !snapshot.hasData) {
+                            return Container(
+                              height: 300,
+                              padding: const EdgeInsets.all(40),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Lottie.asset('assets/animation/nodata.json', height: 120),
+                                    const SizedBox(height: 16),
+                                    Material(
+                                      child: Text(
+                                        "Hakuna taarifa zilizopatikana",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                          color: MyColors.primaryLight,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else if (snapshot.hasData) {
+                            return ListView.builder(
+                                padding: EdgeInsets.zero,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (_, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 16),
+                                    child: Card(
+                                      elevation: 2,
+                                      shadowColor: Colors.black.withOpacity(0.1),
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      color: Colors.white,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(16),
+                                          border: Border.all(color: Colors.grey.shade100),
+                                        ),
                                         child: Column(
                                           children: [
-                                            Lottie.asset(
-                                              'assets/animation/fetching.json',
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Material(
-                                              child: Text(
-                                                "Inapanga taarifa",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12.0,
-                                                  color: MyColors.primaryLight,
+                                            // Header with date
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                                  decoration: BoxDecoration(
+                                                    color: MyColors.primaryLight.withOpacity(0.1),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                  child: Text(
+                                                    "Matoleo #${index + 1}",
+                                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                                          fontSize: 12,
+                                                          color: MyColors.primaryLight,
+                                                          fontWeight: FontWeight.w600,
+                                                        ),
+                                                  ),
                                                 ),
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade100,
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.calendar_today, size: 12, color: Colors.grey.shade600),
+                                                      const SizedBox(width: 4),
+                                                      Text(
+                                                        "2022-03-13",
+                                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                              fontSize: 11,
+                                                              color: Colors.grey.shade600,
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 20),
+                                            // Ahadi Section
+                                            Container(
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.blue.shade50,
+                                                borderRadius: BorderRadius.circular(12),
+                                                border: Border.all(color: Colors.blue.shade100),
                                               ),
-                                            )
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.all(8),
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.blue.shade100,
+                                                          borderRadius: BorderRadius.circular(8),
+                                                        ),
+                                                        child: Icon(Icons.handshake,
+                                                            color: Colors.blue.shade700, size: 16),
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      Text(
+                                                        "Ahadi",
+                                                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                              fontSize: 15,
+                                                              color: Colors.blue.shade700,
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "TZS",
+                                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                              fontSize: 10,
+                                                              color: Colors.blue.shade600,
+                                                            ),
+                                                      ),
+                                                      Text(
+                                                        currency.format(int.tryParse(
+                                                                snapshot.data![index]['ahadi']?.toString() ?? '0') ??
+                                                            0),
+                                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.blue.shade700,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 12),
+                                            // Jengo Section
+                                            Container(
+                                              padding: const EdgeInsets.all(16),
+                                              decoration: BoxDecoration(
+                                                color: Colors.orange.shade50,
+                                                borderRadius: BorderRadius.circular(12),
+                                                border: Border.all(color: Colors.orange.shade100),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.all(8),
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.orange.shade100,
+                                                          borderRadius: BorderRadius.circular(8),
+                                                        ),
+                                                        child: Icon(Icons.home_work,
+                                                            color: Colors.orange.shade700, size: 16),
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      Text(
+                                                        "Jengo",
+                                                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                                              fontSize: 15,
+                                                              color: Colors.orange.shade700,
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "TZS",
+                                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                                              fontSize: 10,
+                                                              color: Colors.orange.shade600,
+                                                            ),
+                                                      ),
+                                                      Text(
+                                                        currency.format(int.parse(snapshot.data![index]['jengo'])),
+                                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                                              fontSize: 18,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.orange.shade700,
+                                                            ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
                                     ),
                                   );
-                                } else if (snapshot.hasError || !snapshot.hasData) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Column(
-                                            children: [
-                                              Lottie.asset('assets/animation/nodata.json'),
-                                              const SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Material(
-                                                child: Text(
-                                                  "Hakuna taarifa zilizopatikana",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 13.0,
-                                                    color: MyColors.primaryLight,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } else if (snapshot.hasData) {
-                                  return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (_, index) {
-                                        return GestureDetector(
-                                          onTap: () {},
-                                          child: SizedBox(
-                                            height: jtdeviceHeight(context) / 3,
-                                            width: jtdeviceWidth(context),
-                                            child: Card(
-                                                elevation: 1,
-                                                color: Theme.of(context).cardColor,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                                  child: Expanded(
-                                                    child: SizedBox(
-                                                      height: jtdeviceHeight(context) / 2,
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                "Ahadi",
-                                                                style: Theme.of(context)
-                                                                    .textTheme
-                                                                    .titleMedium!
-                                                                    .copyWith(fontSize: 14),
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      "TZS ",
-                                                                      style: Theme.of(context)
-                                                                          .textTheme
-                                                                          .titleMedium!
-                                                                          .copyWith(fontSize: 10),
-                                                                    ),
-                                                                    Text(
-                                                                      currency.format(
-                                                                          int.parse(snapshot.data![index]['ahadi'])),
-                                                                      style: Theme.of(context)
-                                                                          .textTheme
-                                                                          .titleMedium!
-                                                                          .copyWith(
-                                                                            fontSize: 17,
-                                                                            fontWeight: FontWeight.w500,
-                                                                          ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                "Jengo",
-                                                                style: Theme.of(context)
-                                                                    .textTheme
-                                                                    .titleMedium!
-                                                                    .copyWith(fontSize: 14),
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets.all(8.0),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      "TZS ",
-                                                                      style: Theme.of(context)
-                                                                          .textTheme
-                                                                          .titleMedium!
-                                                                          .copyWith(fontSize: 10),
-                                                                    ),
-                                                                    Text(
-                                                                      currency.format(
-                                                                          int.parse(snapshot.data![index]['jengo'])),
-                                                                      style: Theme.of(context)
-                                                                          .textTheme
-                                                                          .titleMedium!
-                                                                          .copyWith(
-                                                                            fontSize: 17,
-                                                                            fontWeight: FontWeight.w500,
-                                                                          ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          jtmanualStepper(step: 8),
-                                                          Padding(
-                                                            padding: const EdgeInsets.only(right: 8.0),
-                                                            child: Row(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  "",
-                                                                  style:
-                                                                      Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                            fontSize: 14,
-                                                                            fontWeight: FontWeight.bold,
-                                                                          ),
-                                                                ),
-                                                                Text(
-                                                                  "2022-03-13",
-                                                                  style:
-                                                                      Theme.of(context).textTheme.titleMedium!.copyWith(
-                                                                            fontSize: 12,
-                                                                            fontWeight: FontWeight.bold,
-                                                                          ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )),
-                                          ),
-                                        );
-                                      });
-                                } else {
-                                  return const Text("no data");
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
+                                });
+                          } else {
+                            return Container(
+                              height: 200,
+                              child: Center(
+                                child: Text(
+                                  "Hakuna data",
+                                  style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        }),
                   )
                 ],
               ),

@@ -8,6 +8,8 @@ import 'package:kanisaapp/home/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
 class MapendekezoScreen extends StatefulWidget {
   const MapendekezoScreen({super.key});
@@ -20,6 +22,27 @@ class MapendekezoScreen extends StatefulWidget {
 class _MapendekezoScreenState extends State<MapendekezoScreen> {
   TextEditingController xsuggestion = TextEditingController();
   bool isregistered = false;
+  BaseUser? currentUser;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,8 +194,16 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
               backgroundColor: MyColors.primaryLight,
               textColor: Colors.white,
             );
+          } else if (currentUser != null) {
+            await sendsuggestion(currentUser!.memberNo, xsuggestion.text);
           } else {
-            await sendsuggestion(host['member_no'], xsuggestion.text);
+            Fluttertoast.showToast(
+              msg: "Tatizo la mtumiaji, tafadhari jaribu tena..",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: MyColors.primaryLight,
+              textColor: Colors.white,
+            );
           }
         },
         // color: MyColors.primaryLight,

@@ -6,10 +6,11 @@ import 'package:kanisaapp/chatroom/cloud/message_handler.dart';
 import 'package:kanisaapp/chatroom/widget/reply_navigator.dart';
 import 'package:kanisaapp/models/message.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:kanisaapp/home/screens/index.dart';
 
 class MessageInput extends StatefulWidget {
   final String? friendId;
@@ -34,15 +35,41 @@ class MessageInput extends StatefulWidget {
 
 class _MessageInputState extends State<MessageInput> {
   TextEditingController controller = TextEditingController();
+  BaseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {});
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  String _getUserDisplayName() {
+    if (currentUser == null) return "Mtumiaji";
+
+    if (currentUser is AdminUser) {
+      return (currentUser as AdminUser).fullName;
+    } else if (currentUser is MzeeUser) {
+      return (currentUser as MzeeUser).jina;
+    } else if (currentUser is KatibuUser) {
+      return (currentUser as KatibuUser).jina;
+    } else if (currentUser is MsharikaUser) {
+      return (currentUser as MsharikaUser).jinaLaMsharika;
+    }
+    return "Mtumiaji";
+  }
+
   Future<void> sendMessage(List replyData) async {
-    // LocalStorage.getStringItem('member_no').then((value) {
-    //   if (value != null) {
-    //     var mydata = jsonDecode(value);
-    //     setState(() {
-    //       host = mydata;
-    //     });
-    //   }
-    // });
+    if (currentUser == null) return;
+
     String textMessage = controller.text;
     String id = const Uuid().v4();
     print("size# ${textMessage.length} $textMessage");
@@ -53,18 +80,18 @@ class _MessageInputState extends State<MessageInput> {
         readed: false,
         message: textMessage,
         friendId: widget.friendId,
-        fullName: host['fname'],
+        fullName: _getUserDisplayName(),
         messageId: id,
         color: "green",
         sentAt: DateTime.now().toString(),
         createdAt: DateTime.now().toString(),
-        hostId: host['member_no'],
+        hostId: currentUser!.memberNo,
         reply: false,
         type: "text",
         repliedContent: (replyData.isNotEmpty) ? replyData[0] : null,
       ),
       receiverId: widget.friendId,
-      senderId: host['member_no'],
+      senderId: currentUser!.memberNo,
       token: widget.token,
     );
   }

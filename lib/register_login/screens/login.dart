@@ -12,9 +12,11 @@ import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/chatroom/cloud/cloud.dart';
 import 'package:kanisaapp/chatroom/cloud/firebase_notification.dart';
 import 'package:kanisaapp/home/screens/index.dart';
-import 'package:kanisaapp/shared/localstorage/index.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
+import 'package:kanisaapp/models/user_models.dart';
+import 'package:kanisaapp/services/user_service.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -29,61 +31,36 @@ class _LoginState extends State<Login> {
   bool isregistered = false;
   bool _isObscure = true;
 
-  Future<void> checkGetMyData(String memberNo) async {
-    //get my data
+  Future<void> checkMtumishi(String memberNo) async {
+    // Check mtumishi permission using the service
+    bool hasMtumishiPermission = await UserService.checkMtumishi(memberNo);
 
-    String mydataApi = "${ApiUrl.BASEURL}get_mydata.php/";
+    if (hasMtumishiPermission) {
+      // Get detailed mtumishi data if needed
+      String mtumishApi = "${ApiUrl.BASEURL}check_mtumish.php/";
+      final response2 = await http.post(
+        Uri.parse(mtumishApi),
+        headers: {'Accept': 'application/json'},
+        body: {
+          "member_no": memberNo,
+        },
+      );
 
-    final response = await http.post(
-      Uri.parse(mydataApi),
-      headers: {'Accept': 'application/json'},
-      body: {
-        "member_no": memberNo,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      dynamic jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-        var json = jsonDecode(response.body);
-
-        String mydata = jsonEncode(json[0]);
-
-        await LocalStorage.setStringItem("mydata", mydata);
+      if (response2.statusCode == 200) {
+        var jsonResponse = json.decode(response2.body);
+        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+          var json2 = jsonDecode(response2.body);
+          if (json2 is List && json2.isNotEmpty) {
+            await UserManager.saveMtumishiData(json2[0]);
+          }
+        }
       }
     }
-
-    //end here
-  }
-
-  Future<void> checkMtumish(String memberNo) async {
-    // //check mtumishi permission
-
-    String mtumishApi = "${ApiUrl.BASEURL}check_mtumish.php/";
-    final response2 = await http.post(
-      mtumishApi as Uri,
-      headers: {'Accept': 'application/json'},
-      body: {
-        "member_no": memberNo,
-      },
-    );
-
-    if (response2.statusCode == 200) {
-      var jsonResponse = json.decode(response2.body);
-      if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-        var json2 = jsonDecode(response2.body);
-
-        String mtumishi = jsonEncode(json2[0]);
-
-        await LocalStorage.setStringItem("mtumishi", mtumishi);
-      }
-    }
-
-    // //end here
   }
 
   Future<dynamic> login(String memberNo, String password) async {
     Alerts.showProgressDialog(context, "Tafadhari Subiri,Inatafuta akaunti yako");
+
     if (memberNo == "" || password == "") {
       setState(() {
         isregistered = true;
@@ -97,134 +74,153 @@ class _LoginState extends State<Login> {
           textColor: Colors.white);
     }
 
-    FireibaseClass.getUserToken().then((tokens) async {
-      String myApi = "${ApiUrl.BASEURL}login.php/";
-      final response = await http.post(
-        Uri.parse(myApi),
-        headers: {'Accept': 'application/json'},
-        body: {
-          "member_no": memberNo,
-          "password": password,
-          "token": tokens,
+    try {
+      // Get Firebase token
+      String token = await FireibaseClass.getUserToken();
+
+      // Call the login service
+      LoginResponse loginResponse = await UserService.login(memberNo, password, token);
+
+      // Remove loader
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+
+      if (loginResponse.status == 200 && loginResponse.user != null) {
+        // Login successful
+        setState(() {
+          isregistered = false;
+          memberController.text = "";
+          passwordController.text = "";
+        });
+
+        BaseUser user = loginResponse.user!;
+
+        // Store user data using UserManager
+        await UserManager.saveCurrentUser(user);
+
+        // Add user to Firebase database based on user type
+        await _addUserToFirebase(user, token);
+
+        // Check mtumishi permissions
+        await checkMtumishi(user.memberNo);
+
+        // Navigate to home page
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+
+        return Fluttertoast.showToast(
+          msg: "Umefanikiwa kuingia kwenye akaunti",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+      } else if (loginResponse.status == 404) {
+        setState(() {
+          isregistered = false;
+          memberController.clear();
+          passwordController.clear();
+        });
+
+        return Fluttertoast.showToast(
+          msg: loginResponse.message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else if (loginResponse.status == 500) {
+        setState(() {
+          isregistered = false;
+          memberController.clear();
+          passwordController.clear();
+        });
+
+        return Fluttertoast.showToast(
+          msg: loginResponse.message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else {
+        setState(() {
+          isregistered = false;
+        });
+
+        return Fluttertoast.showToast(
+          msg: loginResponse.message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e) {
+      // Remove loader on error
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+
+      setState(() {
+        isregistered = false;
+      });
+
+      return Fluttertoast.showToast(
+        msg: "Hitilafu imetokea. Jaribu tena.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  Future<void> _addUserToFirebase(BaseUser user, String token) async {
+    try {
+      String userId = user.memberNo;
+      String? userName;
+      String? phoneNumber;
+
+      // Extract user info based on user type
+      if (user is AdminUser) {
+        userName = user.fullName;
+        phoneNumber = user.phonenumber;
+      } else if (user is MzeeUser) {
+        userName = user.jina;
+        phoneNumber = user.nambaYaSimu;
+      } else if (user is KatibuUser) {
+        userName = user.jina;
+        phoneNumber = user.nambaYaSimu;
+      } else if (user is MsharikaUser) {
+        userName = user.jinaLaMsharika;
+        phoneNumber = user.nambaYaSimu;
+      }
+
+      // Add user to Firebase
+      await Cloud.add(
+        serverPath: "users/$userId",
+        value: {
+          "id": userId,
+          "firstname": userName ?? '',
+          "username": userName ?? '',
+          "picture": 'picture',
+          "phone": phoneNumber ?? '',
+          "token": token,
+          "user_type": user.userType,
         },
       );
 
-      if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        print(jsonResponse);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-          var json = jsonDecode(response.body);
-          setState(
-            () {
-              isregistered = false;
-              memberController.text = "";
-              passwordController.text = "";
-            },
-          );
-
-          String mtumishi = jsonEncode(json[0]);
-
-          FireibaseClass.getUserToken().then((token) {
-            Cloud.add(
-              serverPath: "users/${json[0]['member_no']}",
-              value: {
-                "id": '${json[0]['member_no']}',
-                "firstname": '${json[0]['fname']}',
-                "username": '${json[0]['fname']}',
-                "picture": 'picture',
-                "phone": '${json[0]['namba_ya_simu']}',
-                "token": token
-              },
-            ).whenComplete(() {
-              Cloud.updateStafToken(
-                serverPath: "staffs/${json[0]['member_no']}",
-                value: {
-                  "token": token,
-                },
-              );
-            });
-          });
-          //add user to firebase database
-
-          await LocalStorage.setStringItem("member_no", mtumishi);
-
-          await checkGetMyData(memberNo);
-
-          await checkMtumish(memberNo);
-
-          //remove loader
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
-          //end here
-
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-
-          return Fluttertoast.showToast(
-            msg: "Umefanikiwa kuingia kwenye akaunti",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-        } else if (jsonResponse == 404) {
-          setState(
-            () {
-              isregistered = false;
-            },
-          );
-          //remove loader
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
-          //end here
-
-          setState(
-            () {
-              isregistered = false;
-              memberController.clear();
-              passwordController.clear();
-            },
-          );
-          return Fluttertoast.showToast(
-            msg: "Taarifa zako hazijapatikana",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-        } else if (jsonResponse == 500) {
-          setState(() {
-            isregistered = false;
-          });
-          //remove loader
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
-          //end here
-          setState(
-            () {
-              isregistered = false;
-              memberController.clear();
-              passwordController.clear();
-            },
-          );
-          return Fluttertoast.showToast(
-            msg: "Server Error Please Try Again Later",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-        }
-      } else {
-        setState(
-          () {
-            isregistered = false;
-          },
-        );
-        // ignore: avoid_print
-        print("no data");
-      }
-    });
+      // Update staff token
+      await Cloud.updateStafToken(
+        serverPath: "staffs/$userId",
+        value: {
+          "token": token,
+        },
+      );
+    } catch (e) {
+      // Handle Firebase error silently or log it
+      print("Firebase error: $e");
+    }
   }
 
   @override

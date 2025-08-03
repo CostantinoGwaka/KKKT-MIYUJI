@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, library_private_types_in_public_api, deprecated_member_use, avoid_print, avoid_unnecessary_containers
 
-import 'dart:convert';
 import 'dart:ui';
 
 // import 'package:data_connection_checker/data_connection_checker.dart';
@@ -14,13 +13,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/bloc/addReply.dart';
 import 'package:kanisaapp/chatroom/cloud/cloud.dart';
 import 'package:kanisaapp/chatroom/widget/image_holder.dart';
-import 'package:kanisaapp/shared/localstorage/index.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:kanisaapp/home/screens/index.dart';
 
 class MessageBubble extends StatefulWidget {
   final GestureTapCallback scrollTo;
@@ -35,33 +34,36 @@ class MessageBubble extends StatefulWidget {
 }
 
 class _MessageBubbleState extends State<MessageBubble> {
+  BaseUser? currentUser;
+  bool isLoading = true;
+
   @override
   void initState() {
-    // getdataLocal();
     super.initState();
+    _loadCurrentUser();
   }
 
-  // void getdataLocal() async {
-  //   LocalStorage.getStringItem('member_no').then((value) {
-  //     if (value != null) {
-  //       var mydata = jsonDecode(value);
-  //       setState(() {
-  //         host = mydata;
-  //       });
-  //     }
-  //   });
-  // }
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   _clearMyChat() async {
-    LocalStorage.getStringItem('member_no').then((value) {
-      var mydata = jsonDecode(value);
-      host = mydata;
-    });
+    if (currentUser == null) return;
+
     // if (await DataConnectionChecker().hasConnection) {
     final databaseRef = FirebaseDatabase.instance.ref();
 
     databaseRef
-        .child('Messages/${host['member_no']}/${widget.message['receiverId']}')
+        .child('Messages/${currentUser!.memberNo}/${widget.message['receiverId']}')
         .once()
         .then((DatabaseEvent event) {
       DataSnapshot snapshot = event.snapshot;
@@ -75,7 +77,7 @@ class _MessageBubbleState extends State<MessageBubble> {
           // Ensure value is a Map before accessing keys
           if (value is Map<dynamic, dynamic>) {
             Cloud.delete(
-                serverPath: "Messages/${host['member_no']}/${widget.message['receiverId']}/${value['messageId']}");
+                serverPath: "Messages/${currentUser!.memberNo}/${widget.message['receiverId']}/${value['messageId']}");
           }
         });
       }
@@ -83,7 +85,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       // After completion, update RecentChat
       Cloud.update(
         checkSnap: false,
-        serverPath: "RecentChat/${host['member_no']}/${widget.message['receiverId']}",
+        serverPath: "RecentChat/${currentUser!.memberNo}/${widget.message['receiverId']}",
         value: {
           "lastmessage": " ",
           "unseen": 0,
@@ -103,10 +105,11 @@ class _MessageBubbleState extends State<MessageBubble> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment:
-            (host['member_no'] != widget.message['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
+            (currentUser?.memberNo != widget.message['senderId']) ? MainAxisAlignment.start : MainAxisAlignment.end,
         children: [
           Align(
-            alignment: (host['member_no'] != widget.message['senderId']) ? Alignment.centerLeft : Alignment.centerRight,
+            alignment:
+                (currentUser?.memberNo != widget.message['senderId']) ? Alignment.centerLeft : Alignment.centerRight,
             child: FocusedMenuHolder(
               menuWidth: MediaQuery.of(context).size.width * 0.50,
               blurSize: 5.0,
@@ -156,7 +159,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   onPressed: () {
                     Cloud.delete(
                             serverPath:
-                                "Messages/${host['member_no']}/${widget.message['receiverId']}/${widget.message['messageId']}")
+                                "Messages/${currentUser?.memberNo}/${widget.message['receiverId']}/${widget.message['messageId']}")
                         .whenComplete(
                       () {
                         Cloud.delete(
@@ -218,8 +221,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                       offset: Offset(1.0, 1.0),
                     )
                   ],
-                  color: (host['member_no'] != widget.message['senderId']) ? Colors.white : MyColors.primaryLight,
-                  borderRadius: (host['member_no'] == widget.message['senderId'])
+                  color: (currentUser?.memberNo != widget.message['senderId']) ? Colors.white : MyColors.primaryLight,
+                  borderRadius: (currentUser?.memberNo == widget.message['senderId'])
                       ? const BorderRadius.only(
                           bottomLeft: Radius.circular(10.0),
                           topLeft: Radius.circular(10.0),
@@ -260,7 +263,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        host['member_no'].toString() == widget.message["repliedContent"]['sender']
+                                        currentUser?.memberNo.toString() == widget.message["repliedContent"]['sender']
                                             ? "Wewe"
                                             : "Mtumishi",
                                         style: const TextStyle(fontWeight: FontWeight.w900, color: Colors.green),
@@ -281,8 +284,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                                 style: GoogleFonts.montserrat(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      (host['member_no'] == widget.message['senderId']) ? MyColors.white : Colors.black,
+                                  color: (currentUser?.memberNo == widget.message['senderId'])
+                                      ? MyColors.white
+                                      : Colors.black,
                                 ),
                               )
                             : manualStepper(step: 0),

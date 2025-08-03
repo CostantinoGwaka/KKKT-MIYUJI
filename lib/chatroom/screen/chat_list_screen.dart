@@ -8,9 +8,9 @@ import 'package:kanisaapp/chatroom/widget/chatlist_item_widget.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:kanisaapp/home/screens/index.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
-// var host;
 var query;
 
 class ChatListScreen extends StatefulWidget {
@@ -22,29 +22,34 @@ class ChatListScreen extends StatefulWidget {
 
 class _ChatListScreenState extends State<ChatListScreen> {
   var valueQuery;
+  BaseUser? currentUser;
 
   @override
   void initState() {
     super.initState();
-    // getdataLocal();
+    _loadCurrentUser();
   }
 
-  // void getdataLocal() async {
-  //   await LocalStorage.getStringItem('member_no').then((value) {
-  //     if (value != null) {
-  //       var mydata = jsonDecode(value);
-  //       setState(() {
-  //         host = mydata;
-  //       });
-  //     }
-  //   });
-  // }
+  void _loadCurrentUser() async {
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (currentUser == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: MyColors.primaryLight),
+        ),
+      );
+    }
+
     return Scaffold(
       body: StreamBuilder(
-        stream: FirebaseDatabase.instance.ref().child("RecentChat/${host['member_no']}").onValue,
+        stream: FirebaseDatabase.instance.ref().child("RecentChat/${currentUser!.memberNo}").onValue,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {

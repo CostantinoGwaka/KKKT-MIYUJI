@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kanisaapp/home/screens/index.dart';
 import 'package:kanisaapp/shared/localstorage/index.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -26,6 +26,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool isregistered = false;
   bool _isObscure = true;
   bool status = false;
+  BaseUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  void _loadCurrentUser() async {
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +307,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               textColor: Colors.white,
             );
           } else {
-            await updatePassword(host['member_no'], oldp.text, newp.text);
+            if (currentUser != null) {
+              await updatePassword(currentUser!.memberNo, oldp.text, newp.text);
+            } else {
+              Fluttertoast.showToast(
+                msg: "Tafadhari ingia kwenye akaunti yako kwanza",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: MyColors.primaryLight,
+                textColor: Colors.white,
+              );
+            }
           }
         },
         style: ElevatedButton.styleFrom(

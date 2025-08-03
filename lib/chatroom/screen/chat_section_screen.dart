@@ -18,13 +18,14 @@ import 'package:kanisaapp/models/recent_chat.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 // ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import './imagecaption_screen.dart';
-import 'package:kanisaapp/home/screens/index.dart';
 
 class ChatSectionScreen extends StatefulWidget {
   const ChatSectionScreen(
@@ -54,6 +55,66 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   final ItemScrollController _scrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   bool? needToPaginate;
+  BaseUser? currentUser;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {
+        isLoading = false;
+      });
+      // Initialize chat after user is loaded
+      _initializeChat();
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _initializeChat() {
+    if (currentUser == null) return;
+
+    sendFirstMessage();
+    Cloud.update(
+      checkSnap: false,
+      serverPath: "RecentChat/${currentUser!.memberNo}/${widget.friendId}/",
+      value: {
+        "unseen": 0,
+      },
+    );
+    Provider.of<AddReplyData>(context, listen: false).unsetReply();
+
+    itemPositionsListener.itemPositions.addListener(() {
+      // doSomethingWith(itemPositionsListener.itemPositions.value);
+      final positions = itemPositionsListener.itemPositions.value;
+      final firstPosition = positions.first;
+      final elevated = firstPosition.index != 0 || firstPosition.itemLeadingEdge != 0;
+      setDataToPointerProvider(elevated, context);
+    });
+  }
+
+  String _getUserDisplayName() {
+    if (currentUser == null) return "Mtumiaji";
+
+    if (currentUser is AdminUser) {
+      return (currentUser as AdminUser).fullName;
+    } else if (currentUser is MzeeUser) {
+      return (currentUser as MzeeUser).jina;
+    } else if (currentUser is KatibuUser) {
+      return (currentUser as KatibuUser).jina;
+    } else if (currentUser is MsharikaUser) {
+      return (currentUser as MsharikaUser).jinaLaMsharika;
+    }
+    return "Mtumiaji";
+  }
 
   Future<void> sendImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
@@ -82,29 +143,6 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   }
 
   List messages = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // checkLogin();
-    sendFirstMessage();
-    Cloud.update(
-      checkSnap: false,
-      serverPath: "RecentChat/${host['member_no']}/${widget.friendId}/",
-      value: {
-        "unseen": 0,
-      },
-    );
-    Provider.of<AddReplyData>(context, listen: false).unsetReply();
-
-    itemPositionsListener.itemPositions.addListener(() {
-      // doSomethingWith(itemPositionsListener.itemPositions.value);
-      final positions = itemPositionsListener.itemPositions.value;
-      final firstPosition = positions.first;
-      final elevated = firstPosition.index != 0 || firstPosition.itemLeadingEdge != 0;
-      setDataToPointerProvider(elevated, context);
-    });
-  }
 
   // void checkLogin() async {
   //   LocalStorage.getStringItem('member_no').then((value) {
@@ -135,13 +173,15 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   void deactivate() {
     // _scrollController.removeListener(_scrollListener);
     Provider.of<AddReplyData>(context, listen: false).unsetReply();
-    Cloud.update(
-      checkSnap: false,
-      serverPath: "RecentChat/${host['member_no']}/${widget.friendId}/",
-      value: {
-        "unseen": 0,
-      },
-    );
+    if (currentUser != null) {
+      Cloud.update(
+        checkSnap: false,
+        serverPath: "RecentChat/${currentUser!.memberNo}/${widget.friendId}/",
+        value: {
+          "unseen": 0,
+        },
+      );
+    }
     super.deactivate();
   }
 
@@ -152,10 +192,12 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   }
 
   sendFirstMessage() {
+    if (currentUser == null) return;
+
     Object? userId;
     final databaseRef = FirebaseDatabase.instance.ref();
 
-    databaseRef.child('RecentChat/${host['member_no']}/${widget.friendId}').once().then((DataSnapshot snapshot) {
+    databaseRef.child('RecentChat/${currentUser!.memberNo}/${widget.friendId}').once().then((DataSnapshot snapshot) {
           if (snapshot.value != null) {
             userId = snapshot.child('userId').value;
           }
@@ -163,18 +205,18 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
           //add first message when user click to this item at first
           if (userId == null) {
             String id = const Uuid().v4();
-            readBy.add(host['member_no']);
+            readBy.add(currentUser!.memberNo);
 
             //send message here
             Message(
               readBy: readBy,
               friendId: widget.friendId,
-              hostId: host['member_no'],
+              hostId: currentUser!.memberNo,
               createdAt: DateTime.now().toString(),
               sentAt: DateTime.now().toString(),
               color: "green",
               message:
-                  "Karibu ndugu ${host['fname']}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
+                  "Karibu ndugu ${_getUserDisplayName()}, hapa upo kwa ${widget.fullname} tafadhari uliza chochote nitakusaidia",
               messageId: id,
               status: "sent",
               reply: false,
@@ -183,13 +225,13 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
               unseen: 0,
             ).handleSendMessage(
               convoId: widget.friendId,
-              userId: host['member_no'],
+              userId: currentUser!.memberNo,
               messageId: id,
             );
 
             //update recent chat
             Cloud.add(
-              serverPath: "RecentChat/${host['member_no']}/${widget.friendId}",
+              serverPath: "RecentChat/${currentUser!.memberNo}/${widget.friendId}",
               value: RecentChat(
                 lastMessage: "Karibu KKKT miyuji",
                 fullName: widget.fullname,
@@ -265,11 +307,13 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                     ),
                     child: Stack(children: [
                       StreamBuilder(
-                        stream: FirebaseDatabase.instance
-                            .ref()
-                            .child("Messages/${host['member_no']}/${widget.friendId}")
-                            .orderByChild('createdAt')
-                            .onValue,
+                        stream: currentUser != null
+                            ? FirebaseDatabase.instance
+                                .ref()
+                                .child("Messages/${currentUser!.memberNo}/${widget.friendId}")
+                                .orderByChild('createdAt')
+                                .onValue
+                            : const Stream.empty(),
                         builder: (_, snap) {
                           if (snap.hasData) {
                             var data = [];
@@ -328,7 +372,7 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                           //bottom of message bubble
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: (host['member_no'] != snap['senderId'])
+                                            mainAxisAlignment: (currentUser?.memberNo != snap['senderId'])
                                                 ? MainAxisAlignment.start
                                                 : MainAxisAlignment.end,
                                             children: [

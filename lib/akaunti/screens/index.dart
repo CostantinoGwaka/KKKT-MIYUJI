@@ -5,27 +5,20 @@ import 'dart:io';
 import 'package:kanisaapp/akaunti/screens/change_password.dart';
 import 'package:kanisaapp/akaunti/screens/constant.dart';
 import 'package:kanisaapp/akaunti/screens/mapendekezo_screen.dart';
-import 'package:kanisaapp/akaunti/screens/profile_list.dart';
 import 'package:kanisaapp/register_login/screens/login.dart';
-import 'package:kanisaapp/utils/ApiUrl.dart';
-import 'package:kanisaapp/utils/TextStyles.dart';
-import 'package:kanisaapp/utils/dimension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kanisaapp/home/screens/index.dart';
 import 'package:kanisaapp/shared/localstorage/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
-import 'package:kanisaapp/utils/spacer.dart';
 import 'package:google_fonts/google_fonts.dart';
-// ignore: depend_on_referenced_packages
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/models/user_models.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -35,15 +28,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
-  // ignore: unused_field
-  bool _status = false;
   final FocusNode myFocusNode = FocusNode();
-  // ignore: unused_field
-  final bool _isObscureOld = true;
-  // ignore: unused_field
-  final bool _isObscureNew = true;
-  TextEditingController oldp = TextEditingController();
-  TextEditingController newp = TextEditingController();
+
+  BaseUser? currentUser;
+  Map<String, dynamic>? userData;
 
   @override
   void initState() {
@@ -52,20 +40,18 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   }
 
   void checkLogin() async {
-    LocalStorage.getStringItem('member_no').then((value) {
-      if (value.isNotEmpty) {
-        var mydata = jsonDecode(value);
-        setState(() {
-          host = mydata;
-        });
-      }
+    // Get current user using UserManager
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
     });
 
+    // For backward compatibility, also check old storage format
     LocalStorage.getStringItem('mydata').then((value) {
       if (value.isNotEmpty) {
         var mydata = jsonDecode(value);
         setState(() {
-          data = mydata;
+          userData = mydata;
         });
       }
     });
@@ -74,43 +60,304 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kAppPrimaryColor,
-      body: const Stack(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(25),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // AppBarButton(
-                      //   icon: Icons.arrow_back,
-                      // ),
-                      // SvgPicture.asset("assets/icons/menu.svg"),
+      backgroundColor: const Color(0xFFF8F9FA),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200.0,
+            floating: false,
+            pinned: true,
+            elevation: 0,
+            backgroundColor: MyColors.primaryLight,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      MyColors.primaryLight,
+                      MyColors.primaryLight.withOpacity(0.8),
                     ],
                   ),
                 ),
-                AvatarImage(),
-                SizedBox(
-                  height: 10,
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      Hero(
+                        tag: 'profile_avatar',
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: NetworkImage(
+                                "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        currentUser != null ? UserManager.getUserDisplayName(currentUser) : "Guest User",
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      if (currentUser != null)
+                        Text(
+                          "No. Ahadi: ${(userData == null || userData!['namba_ya_ahadi'] == null) ? currentUser!.memberNo : userData!['namba_ya_ahadi']}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.9),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                // SizedBox(height: 10),
-                // Text(
-                //   '${host['fname']}',
-                //   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, fontFamily: "Poppins"),
-                // ),
-                // Text(
-                //   'Member ID : ${host['member_no']} | Mtaa : ${(data == null || data['namba_ya_ahadi'] == null) ? host != null ? host['member_no'] : "N/A" : "${data['jina_la_jumuiya']}"}',
-                //   style: TextStyle(fontWeight: FontWeight.w300),
-                // ),
-                // SizedBox(height: 10),
-                ProfileListItems(),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _buildStatsCard(),
+                  const SizedBox(height: 20),
+                  const ProfileListItems(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsCard() {
+    if (currentUser == null) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.person_outline,
+              size: 60,
+              color: MyColors.primaryLight.withOpacity(0.5),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              "Karibu kwenye KKKT Miyuji",
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: MyColors.primaryLight,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.primaryLight,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                child: Text(
+                  'Ingia Akaunti',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final money = NumberFormat("#,###.#", "en_US");
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Taarifa za Ahadi",
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: MyColors.primaryLight,
+            ),
+          ),
+          const SizedBox(height: 20),
+          if (userData != null) ...[
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatItem(
+                    "Mtaa",
+                    userData!['jina_la_jumuiya'] ?? "N/A",
+                    Icons.location_on,
+                    MyColors.primaryLight,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: _buildStatItem(
+                    "Ahadi",
+                    userData!['ahadi'] != null ? "${money.format(int.parse(userData!['ahadi']))} Tsh" : "N/A",
+                    Icons.volunteer_activism,
+                    Colors.green,
+                  ),
+                ),
               ],
             ),
-          )
+            const SizedBox(height: 15),
+            _buildStatItem(
+              "Jengo",
+              userData!['jengo'] != null ? "${money.format(int.parse(userData!['jengo']))} Tsh" : "N/A",
+              Icons.business,
+              Colors.orange,
+            ),
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey[200]!),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: MyColors.primaryLight,
+                    size: 30,
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Taarifa za Ahadi",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: MyColors.primaryLight,
+                          ),
+                        ),
+                        Text(
+                          "Zitaonekana hapa baada ya usajili",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: color, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
+            ),
+          ),
         ],
       ),
     );
@@ -121,508 +368,6 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     // Clean up the controller when the Widget is disposed
     myFocusNode.dispose();
     super.dispose();
-  }
-
-  Future<Future<bool?>> updatePassword(
-    String? memberNo,
-    String? oldpassword,
-    String? newpassword,
-  ) async {
-    //get my data
-    Alerts.showProgressDialog(context, "Tafadhari Subiri,neno lako linabadilishwa");
-    setState(() {
-      _status = true;
-    });
-
-    try {
-      String mydataApi = "${ApiUrl.BASEURL}change_password.php";
-
-      final response = await http.post(
-        Uri.parse(mydataApi),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: {
-          "member_no": memberNo,
-          "oldpassword": oldpassword,
-          "newpassword": newpassword,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          _status = false;
-        });
-        //remove loader
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-        //end here
-        dynamic jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
-          var json = jsonDecode(response.body);
-
-          String mydata = jsonEncode(json[0]);
-
-          await LocalStorage.setStringItem("mydata", mydata);
-
-          setState(() {
-            oldp.clear();
-            newp.clear();
-          });
-
-          return Fluttertoast.showToast(
-            msg: "Neno la siri limebadilishwa",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: MyColors.primaryLight,
-            textColor: Colors.white,
-          );
-        } else {
-          setState(() {
-            _status = false;
-          });
-
-          return Fluttertoast.showToast(
-            msg: "Neno lako la siri la zamani limekosewa",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: MyColors.primaryLight,
-            textColor: Colors.white,
-          );
-        }
-      } else {
-        setState(() {
-          _status = false;
-        });
-
-        return Fluttertoast.showToast(
-          msg: "Neno lako la siri la zamani limekosewa",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: MyColors.primaryLight,
-          textColor: Colors.white,
-        );
-      }
-    } catch (e) {
-      return Fluttertoast.showToast(
-        msg: "Neno lako la siri la zamani limekosewa",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: MyColors.primaryLight,
-        textColor: Colors.white,
-      );
-    }
-
-    //end here
-  }
-
-  Widget _getActionButtons() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: ElevatedButton(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 16.0,
-                    ),
-                    manualSpacer(step: 5),
-                    const Text("Badili"),
-                  ],
-                ),
-                // textColor: Colors.white,
-                // color: Colors.green,
-                onPressed: () {
-                  // setState(() {
-                  //   _status = true;
-                  //   FocusScope.of(context).requestFocus(new FocusNode());
-                  // });
-                  if (oldp.text.isNotEmpty && newp.text.isNotEmpty) {
-                    updatePassword(host['member_no'], oldp.text, newp.text);
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: "Weka neno lako la siri jipya na lazamani",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: MyColors.primaryLight,
-                      textColor: Colors.white,
-                    );
-                  }
-                },
-                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: ElevatedButton(
-                // ignore: sort_child_properties_last
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                      size: 16.0,
-                    ),
-                    manualSpacer(step: 5),
-                    const Text("Toka"),
-                  ],
-                ),
-                // textColor: Colors.white,
-                // color: MyColors.primaryDark,
-                onPressed: () async {
-                  Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
-
-                  await LocalStorage.removeItem("member_no").whenComplete(() async {
-                    await LocalStorage.removeItem("mydata").whenComplete(() async {
-                      // ignore: void_checks
-                      await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-                        SystemNavigator.pop();
-                        return Fluttertoast.showToast(
-                          msg: "Umefanikiwa kutoka kwenye akaunt yako",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: MyColors.primaryLight,
-                          textColor: Colors.white,
-                        );
-                      });
-                    });
-                  });
-                },
-                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _getEditIcon() {
-    return GestureDetector(
-      child: const CircleAvatar(
-        backgroundColor: Colors.red,
-        radius: 14.0,
-        child: Icon(
-          Icons.edit,
-          color: Colors.white,
-          size: 16.0,
-        ),
-      ),
-      onTap: () {
-        setState(() {
-          _status = false;
-        });
-      },
-    );
-  }
-}
-
-class AvatarImage extends StatelessWidget {
-  const AvatarImage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final money = NumberFormat("#,###.#", "en_US");
-
-    return Container(
-      decoration: BoxDecoration(
-        color: MyColors.background,
-      ),
-      width: double.infinity,
-      height: 200,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          side: const BorderSide(color: MyColors.white, width: 1.0),
-        ),
-        color: MyColors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: NetworkImage(
-                              "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        manualSpacer(step: 5),
-                        ((host != null))
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Karibu,",
-                                    style: TextStyles.headline(context).copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                  Text(
-                                    host != null ? "${host['fname']}" : "N/A",
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  manualStepper(step: 10),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "No. Ahadi : ",
-                                        style: TextStyles.headline(context).copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: MyColors.primaryLight,
-                                        ),
-                                      ),
-                                      Text(
-                                        (data == null || data['namba_ya_ahadi'] == null)
-                                            ? host != null
-                                                ? host['member_no']
-                                                : "N/A"
-                                            : "${data['namba_ya_ahadi']}",
-                                        style: GoogleFonts.montserrat(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            : Row(
-                                children: [
-                                  Text(
-                                    "Guest User",
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  manualSpacer(step: 5),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(builder: (context) => const Login()));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: MyColors.primaryLight,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12), // <-- Radius
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Ingia Akaunti',
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyColors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            manualStepper(step: 2),
-            (host != null)
-                ? Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      children: [
-                        (data != null)
-                            ? Expanded(
-                                child: Row(
-                                  children: [
-                                    manualSpacer(step: 20),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Mtaa wako,",
-                                          style: TextStyles.headline(context).copyWith(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: MyColors.primaryLight,
-                                          ),
-                                        ),
-                                        manualStepper(step: 2),
-                                        Text(
-                                          (data == null || data['namba_ya_ahadi'] == null)
-                                              ? host != null
-                                                  ? host['member_no']
-                                                  : "N/A"
-                                              : "${data['jina_la_jumuiya']}",
-                                          style: GoogleFonts.montserrat(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    manualSpacer(step: 50),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Ahadi : ",
-                                              style: TextStyles.headline(context).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: MyColors.primaryLight,
-                                              ),
-                                            ),
-                                            //
-                                            Text(
-                                              (data == null || data['ahadi'] == null)
-                                                  ? "N/A"
-                                                  : "${money.format(int.parse(data['ahadi']))} Tsh",
-                                              style: GoogleFonts.montserrat(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        manualStepper(step: 2),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Jengo : ",
-                                              style: TextStyles.headline(context).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: MyColors.primaryLight,
-                                              ),
-                                            ),
-                                            Text(
-                                              (data == null || data['jengo'] == null)
-                                                  ? "N/A"
-                                                  : "${money.format(int.parse(data['jengo']))}  Tsh",
-                                              style: GoogleFonts.montserrat(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Taarifa zako za Ahadi zitaonekana hapa.",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Baada ya usajili.",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                      ],
-                    ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          child: Text(
-                            "Karibu, kwenye mfumo wa KKKT miyuji mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-            manualSpacer(step: 5),
-            // ((host != null))
-            //     ? Padding(
-            //         padding: const EdgeInsets.only(left: 10.0),
-            //         child: ElevatedButton(
-            //           onPressed: () {
-            //             Navigator.of(context).push(MaterialPageRoute(
-            //                 builder: (context) => MatoleoScreen()));
-            //           },
-            //           child: Text(
-            //             'Matoleo yako',
-            //             style: GoogleFonts.montserrat(
-            //               fontSize: 12,
-            //               fontWeight: FontWeight.bold,
-            //               color: MyColors.white,
-            //             ),
-            //           ),
-            //           style: ElevatedButton.styleFrom(
-            //             primary: MyColors.primaryLight,
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.circular(12), // <-- Radius
-            //             ),
-            //           ),
-            //         ),
-            //       )
-            //     : SizedBox.shrink(),
-          ],
-        ),
-      ),
-    );
   }
 }
 
@@ -673,109 +418,307 @@ class ProfileListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: <Widget>[
-          InkWell(
-            onTap: () {
-              _launchURL();
-            },
-            child: const ProfileListItem(
-              icon: LineAwesomeIcons.question_circle,
-              text: 'Msaada/Maelezo',
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChangePasswordScreen()));
-            },
-            // ignore: prefer_const_constructors
-            child: ProfileListItem(
-              icon: LineAwesomeIcons.sleigh_solid,
-              text: 'Badili Neno La Siri',
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              String result = "https://play.google.com/store/apps/details?id=app.miyuji";
-              Share.share(
-                  "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
-            },
-            child: const ProfileListItem(
-              icon: LineAwesomeIcons.user,
-              text: 'Shirikisha Rafiki',
-            ),
-          ),
-          InkWell(
-            onTap: () async {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapendekezoScreen()));
-            },
-            child: const ProfileListItem(
-              icon: LineAwesomeIcons.question_circle,
-              text: 'Maoni/Mapendekezo',
-            ),
-          ),
-          jtmanualStepper(step: 10),
-          InkWell(
-            onTap: () async {
-              Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
+    return Column(
+      children: [
+        _buildSectionHeader("Mipangilio ya Akaunti"),
+        const SizedBox(height: 15),
+        _buildModernListItem(
+          context,
+          icon: Icons.help_outline_rounded,
+          title: 'Msaada/Maelezo',
+          subtitle: 'Pata msaada na maelezo',
+          color: Colors.blue,
+          onTap: () => _launchURL(),
+        ),
+        const SizedBox(height: 10),
+        _buildModernListItem(
+          context,
+          icon: Icons.lock_outline_rounded,
+          title: 'Badili Neno La Siri',
+          subtitle: 'Badili neno lako la siri',
+          color: Colors.orange,
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChangePasswordScreen()));
+          },
+        ),
+        const SizedBox(height: 10),
+        _buildModernListItem(
+          context,
+          icon: Icons.share_rounded,
+          title: 'Shirikisha Rafiki',
+          subtitle: 'Shirikisha app na marafiki',
+          color: Colors.green,
+          onTap: () {
+            String result = "https://play.google.com/store/apps/details?id=app.miyuji";
+            Share.share(
+                "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
+          },
+        ),
+        const SizedBox(height: 10),
+        _buildModernListItem(
+          context,
+          icon: Icons.feedback_outlined,
+          title: 'Maoni/Mapendekezo',
+          subtitle: 'Tupe maoni yako',
+          color: Colors.purple,
+          onTap: () async {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapendekezoScreen()));
+          },
+        ),
+        const SizedBox(height: 30),
+        _buildSectionHeader("Mipangilio ya Mfumo"),
+        const SizedBox(height: 15),
+        _buildModernListItem(
+          context,
+          icon: Icons.logout_rounded,
+          title: 'Toka kwenye akaunti',
+          subtitle: 'Ondoka kwenye akaunti yako',
+          color: Colors.red,
+          showArrow: false,
+          onTap: () async {
+            _showLogoutDialog(context);
+          },
+        ),
+        const SizedBox(height: 40),
+        _buildFooter(),
+      ],
+    );
+  }
 
-              await LocalStorage.removeItem("member_no").whenComplete(() async {
-                await LocalStorage.removeItem("mydata").whenComplete(() async {
-                  // ignore: void_checks
-                  await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-                    SystemNavigator.pop();
-                    return Fluttertoast.showToast(
-                      msg: "Umefanikiwa kutoka kwenye akaunt yako",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: MyColors.primaryLight,
-                      textColor: Colors.white,
-                    );
-                  });
-                });
-              });
-            },
-            child: const ProfileListItem(
-              icon: LineAwesomeIcons.sign_out_alt_solid,
-              text: 'Toka kwenye akaunti',
-              hasNavigation: false,
+  Widget _buildSectionHeader(String title) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.grey[700],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModernListItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+    bool showArrow = true,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: color,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (showArrow)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.grey[400],
+                    size: 16,
+                  ),
+              ],
             ),
           ),
-          jtmanualStepper(step: 30),
-          Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Crafted By iSoftTz",
-                  style: GoogleFonts.gochiHand(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      letterSpacing: .5,
-                      fontSize: 14,
-                    ),
-                  ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.favorite,
+                color: Colors.red,
+                size: 16,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                "Crafted with love by",
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: Colors.grey[600],
                 ),
-                Text(
-                  "© 2022",
-                  style: GoogleFonts.gochiHand(
-                    textStyle: const TextStyle(
-                      color: Colors.black,
-                      letterSpacing: .5,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Text(
+            "iSoftTz",
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: MyColors.primaryLight,
+            ),
+          ),
+          Text(
+            "© 2022",
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              color: Colors.grey[500],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.logout_rounded,
+                color: Colors.red,
+                size: 24,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                "Toka Akaunti",
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            "Je, una uhakika unataka kutoka kwenye akaunti yako?",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey[700],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Sitisha",
+                style: GoogleFonts.poppins(
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
+
+                await LocalStorage.removeItem("member_no").whenComplete(() async {
+                  await LocalStorage.removeItem("mydata").whenComplete(() async {
+                    // ignore: void_checks
+                    await LocalStorage.removeItem("mtumishi").whenComplete(() {
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+                      SystemNavigator.pop();
+                      return Fluttertoast.showToast(
+                        msg: "Umefanikiwa kutoka kwenye akaunt yako",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: MyColors.primaryLight,
+                        textColor: Colors.white,
+                      );
+                    });
+                  });
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Toka",
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
