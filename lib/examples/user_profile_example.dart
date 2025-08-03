@@ -1,5 +1,7 @@
 // Example usage of the new user system
 
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/user_manager.dart';

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, avoid_unnecessary_containers
+// ignore_for_file: unused_element, avoid_unnecessary_containers, deprecated_member_use, prefer_const_constructors
 
 import 'dart:convert';
 import 'dart:io';
@@ -401,9 +401,7 @@ class ProfileListItems extends StatelessWidget {
 
   _launchURL() async {
     String url = Platform.isIOS ? 'tel://0659515042' : 'tel:0659515042';
-    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
-      // ignore: deprecated_member_use
       await launch("tel://0659515042");
     } else {
       Fluttertoast.showToast(

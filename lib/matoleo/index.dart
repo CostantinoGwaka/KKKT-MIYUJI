@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, prefer_typing_uninitialized_variables
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, prefer_typing_uninitialized_variables, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
@@ -661,7 +661,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                   );
                                 });
                           } else {
-                            return Container(
+                            return SizedBox(
                               height: 200,
                               child: Center(
                                 child: Text(

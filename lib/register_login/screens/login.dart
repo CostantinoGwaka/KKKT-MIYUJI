@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, deprecated_member_use
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -219,7 +220,9 @@ class _LoginState extends State<Login> {
       );
     } catch (e) {
       // Handle Firebase error silently or log it
-      print("Firebase error: $e");
+      if (kDebugMode) {
+        print("Firebase error: $e");
+      }
     }
   }
 

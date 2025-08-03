@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables, use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -781,7 +781,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              // ignore: deprecated_member_use
               color: MyColors.primaryLight.withOpacity(0.3),
               blurRadius: 12,
               offset: const Offset(0, 6),
@@ -793,7 +792,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -844,7 +842,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                 margin: const EdgeInsets.all(8),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  // ignore: deprecated_member_use
                   color: MyColors.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -907,7 +904,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         border: Border.all(color: Colors.grey.shade200, width: 1.5),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.08),
             blurRadius: 8,
             offset: const Offset(0, 2),
@@ -926,46 +922,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
             ),
           ),
           const SizedBox(height: 16),
-          ...options
-              .map((option) => Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: InkWell(
-                      onTap: () => onChanged(option),
+          ...options.map((option) => Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: InkWell(
+                  onTap: () => onChanged(option),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: groupValue == option ? MyColors.primaryLight.withOpacity(0.1) : Colors.transparent,
-                          border: Border.all(
-                            color: groupValue == option ? MyColors.primaryLight : Colors.transparent,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Radio<String>(
-                              value: option,
-                              groupValue: groupValue,
-                              onChanged: (value) => onChanged(value!),
-                              activeColor: MyColors.primaryLight,
-                            ),
-                            Expanded(
-                              child: Text(
-                                option,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: groupValue == option ? MyColors.primaryLight : Colors.black87,
-                                  fontWeight: groupValue == option ? FontWeight.w600 : FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      color: groupValue == option ? MyColors.primaryLight.withOpacity(0.1) : Colors.transparent,
+                      border: Border.all(
+                        color: groupValue == option ? MyColors.primaryLight : Colors.transparent,
+                        width: 1.5,
                       ),
                     ),
-                  ))
-              .toList(),
+                    child: Row(
+                      children: [
+                        Radio<String>(
+                          value: option,
+                          groupValue: groupValue,
+                          onChanged: (value) => onChanged(value!),
+                          activeColor: MyColors.primaryLight,
+                        ),
+                        Expanded(
+                          child: Text(
+                            option,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: groupValue == option ? MyColors.primaryLight : Colors.black87,
+                              fontWeight: groupValue == option ? FontWeight.w600 : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
         ],
       ),
     );
@@ -1053,7 +1047,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  // ignore: deprecated_member_use
                   color: MyColors.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -1074,7 +1067,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      // ignore: deprecated_member_use
                       color: MyColors.primaryLight.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),

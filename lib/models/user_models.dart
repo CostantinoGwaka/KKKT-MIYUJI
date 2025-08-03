@@ -1,4 +1,6 @@
 // Base user model
+// ignore_for_file: use_super_parameters
+
 abstract class BaseUser {
   final String memberNo;
   final String kanisaId;
@@ -25,7 +27,6 @@ class AdminUser extends BaseUser {
   final int status;
   final String fullName;
 
-  // ignore: use_super_parameters
   AdminUser({
     required this.id,
     required this.phonenumber,
@@ -90,7 +91,6 @@ class MzeeUser extends BaseUser {
   final String status;
   final String tarehe;
 
-  // ignore: use_super_parameters
   MzeeUser({
     required this.id,
     required this.jina,
@@ -200,6 +200,7 @@ class KatibuUser extends BaseUser {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -346,6 +347,7 @@ class MsharikaUser extends BaseUser {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

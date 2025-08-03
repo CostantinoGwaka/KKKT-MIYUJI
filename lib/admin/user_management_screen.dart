@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/models/user_models.dart';
@@ -168,7 +170,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> with Single
 
   Widget _buildSearchResults() {
     if (_isSearching) {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: CircularProgressIndicator(color: MyColors.primaryLight),
@@ -177,7 +179,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> with Single
     }
 
     if (_searchResults.isEmpty) {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: Text(
@@ -191,7 +193,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> with Single
       );
     }
 
-    return Container(
+    return SizedBox(
       height: 200,
       child: ListView.builder(
         itemCount: _searchResults.length,
@@ -586,7 +588,6 @@ class _UserManagementScreenState extends State<UserManagementScreen> with Single
   }
 
   void _editUser(BaseUser user) {
-    // TODO: Implement edit user functionality
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Hariri ${UserManager.getUserDisplayName(user)}'),
@@ -624,7 +625,6 @@ class _UserManagementScreenState extends State<UserManagementScreen> with Single
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              // TODO: Implement delete user functionality
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Mtumiaji amefutwa'),
