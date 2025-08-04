@@ -24,7 +24,10 @@ class MatangazoScreen extends StatefulWidget {
 
 class _MatangazoScreenState extends State<MatangazoScreen> {
   List<Matangazo> listmatangazo = <Matangazo>[];
+  List<Matangazo> filteredMatangazo = <Matangazo>[];
   BaseUser? currentUser;
+  TextEditingController searchController = TextEditingController();
+  bool isSearching = false;
 
   Future<List<Matangazo>> getMatangazoNew() async {
     String myApi = "${ApiUrl.BASEURL}get_matangazo.php";
@@ -65,6 +68,33 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   void initState() {
     super.initState();
     checkLogin();
+    searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    searchController.removeListener(_onSearchChanged);
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      // Trigger rebuild when search text changes
+    });
+  }
+
+  void _filterMatangazo(List<Matangazo> allMatangazo) {
+    String searchText = searchController.text.toLowerCase().trim();
+
+    if (searchText.isEmpty) {
+      filteredMatangazo = allMatangazo;
+    } else {
+      filteredMatangazo = allMatangazo.where((matangazo) {
+        return matangazo.title?.toLowerCase().contains(searchText) == true ||
+            matangazo.descp?.toLowerCase().contains(searchText) == true;
+      }).toList();
+    }
   }
 
   void checkLogin() async {
@@ -108,6 +138,29 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
+            actions: [
+              Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    isSearching ? Icons.close_rounded : Icons.search_rounded,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isSearching = !isSearching;
+                      if (!isSearching) {
+                        searchController.clear();
+                      }
+                    });
+                  },
+                ),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -170,6 +223,10 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
               ),
             ),
           ),
+          if (isSearching)
+            SliverToBoxAdapter(
+              child: _buildSearchBar(),
+            ),
           SliverToBoxAdapter(
             child: RefreshIndicator(
               onRefresh: _pullRefresh,
@@ -177,6 +234,62 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: searchController,
+        decoration: InputDecoration(
+          hintText: 'Tafuta matangazo kwa jina au maudhui...',
+          hintStyle: GoogleFonts.poppins(
+            color: Colors.grey[500],
+            fontSize: 14,
+          ),
+          prefixIcon: Icon(
+            Icons.search_rounded,
+            color: MyColors.primaryLight,
+          ),
+          suffixIcon: searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: Icon(
+                    Icons.clear_rounded,
+                    color: Colors.grey[500],
+                  ),
+                  onPressed: () {
+                    searchController.clear();
+                  },
+                )
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
+        ),
+        style: GoogleFonts.poppins(
+          fontSize: 14,
+          color: Colors.grey[800],
+        ),
       ),
     );
   }
@@ -190,7 +303,8 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
         } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
           return _buildEmptyState();
         } else if (snapshot.hasData) {
-          return _buildAnnouncementsGrid(snapshot.data!);
+          _filterMatangazo(snapshot.data!);
+          return _buildAnnouncementsGrid(filteredMatangazo);
         } else {
           return _buildEmptyState();
         }
@@ -286,7 +400,96 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     );
   }
 
+  Widget _buildNoSearchResults() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "Hakuna matokeo",
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: MyColors.primaryLight,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Hakuna matangazo yoyote yanayolingana na utafutaji wako",
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  searchController.clear();
+                },
+                icon: const Icon(Icons.clear_rounded, color: Colors.white),
+                label: Text(
+                  "Futa utafutaji",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.primaryLight,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                ),
+              ),
+              const SizedBox(width: 15),
+              OutlinedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    isSearching = false;
+                    searchController.clear();
+                  });
+                },
+                icon: Icon(Icons.close_rounded, color: MyColors.primaryLight),
+                label: Text(
+                  "Funga",
+                  style: GoogleFonts.poppins(
+                    color: MyColors.primaryLight,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: MyColors.primaryLight),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildAnnouncementsGrid(List<Matangazo> announcements) {
+    if (announcements.isEmpty && searchController.text.isNotEmpty) {
+      return _buildNoSearchResults();
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -295,13 +498,15 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
           Row(
             children: [
               Icon(
-                Icons.notifications_active_rounded,
+                searchController.text.isNotEmpty ? Icons.search_rounded : Icons.notifications_active_rounded,
                 color: MyColors.primaryLight,
                 size: 24,
               ),
               const SizedBox(width: 10),
               Text(
-                "Matangazo (${announcements.length})",
+                searchController.text.isNotEmpty
+                    ? "Matokeo ya utafutaji (${announcements.length})"
+                    : "Matangazo (${announcements.length})",
                 style: GoogleFonts.poppins(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -310,6 +515,24 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
               ),
             ],
           ),
+          if (searchController.text.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: MyColors.primaryLight.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                'Unatafuta: "${searchController.text}"',
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  color: MyColors.primaryLight,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 10),
           ListView.builder(
             padding: EdgeInsets.zero,
@@ -510,16 +733,16 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
             ],
           ),
           const SizedBox(height: 15),
-          Text(
+          _buildHighlightedText(
             announcement.title.toString(),
-            style: GoogleFonts.poppins(
+            searchController.text,
+            GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.grey[800],
               height: 1.3,
             ),
             maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           Row(
@@ -541,6 +764,65 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildHighlightedText(
+    String text,
+    String searchTerm,
+    TextStyle style, {
+    int? maxLines,
+  }) {
+    if (searchTerm.isEmpty) {
+      return Text(
+        text,
+        style: style,
+        maxLines: maxLines,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    List<TextSpan> spans = [];
+    String lowerText = text.toLowerCase();
+    String lowerSearchTerm = searchTerm.toLowerCase();
+
+    int start = 0;
+    int indexOfHighlight = lowerText.indexOf(lowerSearchTerm, start);
+
+    while (indexOfHighlight >= 0) {
+      // Add normal text before highlight
+      if (indexOfHighlight > start) {
+        spans.add(TextSpan(
+          text: text.substring(start, indexOfHighlight),
+          style: style,
+        ));
+      }
+
+      // Add highlighted text
+      spans.add(TextSpan(
+        text: text.substring(indexOfHighlight, indexOfHighlight + searchTerm.length),
+        style: style.copyWith(
+          backgroundColor: MyColors.primaryLight.withOpacity(0.3),
+          fontWeight: FontWeight.bold,
+        ),
+      ));
+
+      start = indexOfHighlight + searchTerm.length;
+      indexOfHighlight = lowerText.indexOf(lowerSearchTerm, start);
+    }
+
+    // Add remaining text
+    if (start < text.length) {
+      spans.add(TextSpan(
+        text: text.substring(start),
+        style: style,
+      ));
+    }
+
+    return RichText(
+      text: TextSpan(children: spans),
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
