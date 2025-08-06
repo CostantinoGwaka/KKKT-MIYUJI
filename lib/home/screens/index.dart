@@ -392,23 +392,23 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
         border: Border.all(
-          color: MyColors.primaryLight.withOpacity(0.15),
-          width: 0.8,
+          color: MyColors.primaryLight.withOpacity(0.08),
+          width: 1,
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
           onTap: () => _handleMenuNavigation(menuItem['pushTo']),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -416,32 +416,42 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       colors: [
-                        MyColors.primaryLight.withOpacity(0.15),
-                        MyColors.primaryLight.withOpacity(0.08),
+                        MyColors.primaryLight.withOpacity(0.12),
+                        MyColors.primaryLight.withOpacity(0.05),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyColors.primaryLight.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Image.asset(
                     menuItem['image'],
-                    height: 32,
-                    width: 32,
+                    height: 28,
+                    width: 28,
                     color: MyColors.primaryLight,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Text(
                   menuItem['name'],
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 9,
+                    fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: MyColors.primaryLight,
+                    color: Colors.black87,
                     height: 1.2,
+                    letterSpacing: 0.3,
                   ),
                 ),
               ],
@@ -497,12 +507,20 @@ class _HomePageState extends State<HomePage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -854,12 +872,20 @@ class _HomePageState extends State<HomePage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            MyColors.primaryLight.withOpacity(0.05),
+            Colors.white,
+          ],
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: MyColors.primaryLight.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -1020,14 +1046,14 @@ class _HomePageState extends State<HomePage> {
   Widget _buildSermonBanner() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      height: 180,
+      height: 200,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: MyColors.primaryLight.withOpacity(0.2),
+            blurRadius: 25,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -1160,7 +1186,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Huduma Zetus",
+                      "Huduma Zetu",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -1199,14 +1225,14 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                blurRadius: 15,
-                offset: const Offset(0, -5),
+                color: MyColors.primaryLight.withOpacity(0.1),
+                blurRadius: 25,
+                offset: const Offset(0, -8),
               ),
             ],
           ),
