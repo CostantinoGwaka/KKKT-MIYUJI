@@ -122,7 +122,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        // jumuiya = (json as List).map((item) => Jumuiya.fromJson(item)).toList();
         if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
           jumuiya = (json['data'] as List).map((item) => Jumuiya.fromJson(item)).toList();
         }

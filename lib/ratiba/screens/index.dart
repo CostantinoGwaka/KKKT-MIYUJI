@@ -7,10 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/models/akaunti.dart';
 import 'package:kanisaapp/models/ratiba_ibada.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 import 'package:http/http.dart' as http;
+import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
 
 class RatibaZaIbada extends StatefulWidget {
@@ -21,33 +23,46 @@ class RatibaZaIbada extends StatefulWidget {
 }
 
 class _RatibaZaIbadaState extends State<RatibaZaIbada> {
+  BaseUser? currentUser;
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {});
+    } catch (e) {
+      // Handle error
+    }
+  }
+
   Future<List<IbadaRatiba>> getRatiba() async {
     String myApi = "${ApiUrl.BASEURL}get_ibada.php";
-    final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+      }),
+    );
 
-    var barazaList = <IbadaRatiba>[];
     var baraza;
+
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        baraza = json;
+         var json = jsonDecode(response.body);
+         if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
+          baraza = (json['data'] as List).map((item) => IbadaRatiba.fromJson(item)).toList();
+        }
       }
     }
-
-    baraza.forEach(
-      (element) {
-        IbadaRatiba video = IbadaRatiba.fromJson(element);
-        barazaList.add(video);
-      },
-    );
-    return barazaList;
+    return baraza;
   }
 
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     String myApi = "${ApiUrl.BASEURL}get_akaunti.php";
-    final response = await http.post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
+    final response = await http
+        .post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
 
     var barazaList = <AkauntiUsharikaPodo>[];
     var baraza;
@@ -85,6 +100,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   @override
   void initState() {
     super.initState();
+    _loadCurrentUser();
     getAkaunti();
     getRatiba();
   }
@@ -94,25 +110,46 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  MyColors.primaryLight.withOpacity(0.9),
+                  Colors.white.withOpacity(0.8)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           bottom: TabBar(
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: MyColors.primaryLight.withOpacity(0.15),
+            ),
             tabs: [
               Tab(
+                icon: Icon(Icons.event_note, color: MyColors.primaryLight),
                 child: Text(
                   "Ratiba Za Ibada",
                   style: GoogleFonts.montserrat(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: MyColors.primaryLight,
                   ),
                 ),
               ),
               Tab(
+                icon: Icon(Icons.account_balance_wallet,
+                    color: MyColors.primaryLight),
                 child: Text(
                   "Akaunti za Kanisa",
                   style: GoogleFonts.montserrat(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: MyColors.primaryLight,
                   ),
@@ -120,89 +157,75 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
               ),
             ],
           ),
-          // title: Text('Tabs Demo'),
         ),
-        body: TabBarView(
-          children: [
-            Column(
-              children: [
-                // Text(
-                //   "Ratiba Za Ibada",
-                //   style: TextStyles.headline(context).copyWith(
-                //     fontSize: 18,
-                //     fontWeight: FontWeight.bold,
-                //     color: MyColors.primaryLight,
-                //   ),
-                // ),
-                Expanded(
-                  child: Container(
-                    // height: deviceHeight(context) / 1,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, MyColors.primaryLight.withOpacity(0.07)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: TabBarView(
+            children: [
+              // Ratiba Za Ibada Tab
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
+                    child: Text(
+                      "Ratiba Za Ibada",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.primaryLight,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                  Expanded(
                     child: RefreshIndicator(
                       onRefresh: _pullRefresh,
-                      child: FutureBuilder(
+                      child: FutureBuilder<List<IbadaRatiba>>(
                         future: getRatiba(),
-                        builder: (context, AsyncSnapshot<List<IbadaRatiba>> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 50.0),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(90.0),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        child: Lottie.asset(
-                                          'assets/animation/fetching.json',
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        "inapanga taarifa",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
-                                          color: MyColors.primaryLight,
-                                        ),
-                                      )
-                                    ],
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset('assets/animation/fetching.json',
+                                      height: 120),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    "Inapanga taarifa...",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                      color: MyColors.primaryLight,
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           } else if (snapshot.hasError || !snapshot.hasData) {
-                            return RefreshIndicator(
-                              onRefresh: _pullRefresh,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(70.0),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          child: Lottie.asset(
-                                            'assets/animation/nodata.json',
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Material(
-                                          child: Text(
-                                            "Hakuna taarifa zilizopatikana",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.0,
-                                              color: MyColors.primaryLight,
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset('assets/animation/nodata.json',
+                                      height: 120),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    "Hakuna taarifa zilizopatikana",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0,
+                                      color: MyColors.primaryLight,
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           } else if (snapshot.hasData) {
@@ -210,102 +233,60 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                               physics: const BouncingScrollPhysics(),
                               itemCount: snapshot.data!.length,
                               itemBuilder: (_, index) {
+                                final item = snapshot.data![index];
                                 return Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
                                   child: Card(
-                                    elevation: 5,
+                                    elevation: 8,
                                     shape: RoundedRectangleBorder(
-                                      side: const BorderSide(color: MyColors.white, width: 2.0),
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        height: 100,
-                                        margin: const EdgeInsets.only(bottom: 10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: const EdgeInsets.only(
-                                                left: 10,
-                                                top: 10,
-                                                bottom: 10,
+                                    shadowColor:
+                                        MyColors.primaryLight.withOpacity(0.2),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.white,
+                                            MyColors.primaryLight
+                                                .withOpacity(0.05)
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                      ),
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundColor: MyColors.white,
+                                          radius: 28,
+                                          child: Image.asset(
+                                            "assets/images/kanisa.png",
+                                            height: 40,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          item.jina ?? '',
+                                          style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: MyColors.primaryLight,
+                                          ),
+                                        ),
+                                        subtitle: Row(
+                                          children: [
+                                            Icon(Icons.access_time,
+                                                size: 16,
+                                                color: MyColors.primaryLight),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              item.muda ?? '',
+                                              style: GoogleFonts.montserrat(
+                                                fontSize: 14,
+                                                color: MyColors.primaryLight,
                                               ),
-                                              child: Row(children: <Widget>[
-                                                Container(
-                                                  margin: const EdgeInsets.only(left: 10),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        width: 290,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          mainAxisAlignment: MainAxisAlignment.start,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Column(
-                                                                  children: <Widget>[
-                                                                    SizedBox(
-                                                                      height: 50,
-                                                                      child: CircleAvatar(
-                                                                        backgroundColor: MyColors.white,
-                                                                        // backgroundImage: AssetImage("assets/images/viongozi.png"),
-                                                                        child: Image.asset(
-                                                                          "assets/images/kanisa.png",
-                                                                          // color: MyColors.primaryLight,
-                                                                          height: 70,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                manualSpacer(step: 5),
-                                                                Text(
-                                                                  snapshot.data![index].jina!,
-                                                                  maxLines: 2,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                  softWrap: false,
-                                                                  style: GoogleFonts.montserrat(
-                                                                    fontSize: 12,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    color: MyColors.primaryLight,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            manualStepper(step: 10),
-                                                            Row(
-                                                              children: [
-                                                                // Icon(
-                                                                //   Icons.watch,
-                                                                //   color: MyColors.primaryLight,
-                                                                // ),
-                                                                manualSpacer(step: 5),
-                                                                Text(
-                                                                  snapshot.data![index].muda!,
-                                                                  maxLines: 1,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                  softWrap: false,
-                                                                  style: GoogleFonts.montserrat(
-                                                                    fontSize: 12,
-                                                                    fontWeight: FontWeight.normal,
-                                                                    color: MyColors.primaryLight,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ]),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -321,88 +302,66 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                // Text(
-                //   "Ratiba Za Ibada",
-                //   style: TextStyles.headline(context).copyWith(
-                //     fontSize: 18,
-                //     fontWeight: FontWeight.bold,
-                //     color: MyColors.primaryLight,
-                //   ),
-                // ),
-                Expanded(
-                  child: Container(
-                    // height: deviceHeight(context) / 1,
+                ],
+              ),
+              // Akaunti za Kanisa Tab
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
+                    child: Text(
+                      "Akaunti za Kanisa",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.primaryLight,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
+                  Expanded(
                     child: RefreshIndicator(
                       onRefresh: _pullRefresh,
-                      child: FutureBuilder(
+                      child: FutureBuilder<List<AkauntiUsharikaPodo>>(
                         future: getAkaunti(),
-                        builder: (context, AsyncSnapshot<List<AkauntiUsharikaPodo>> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 50.0),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(90.0),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        child: Lottie.asset(
-                                          'assets/animation/fetching.json',
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        "inapanga taarifa",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
-                                          color: MyColors.primaryLight,
-                                        ),
-                                      )
-                                    ],
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset('assets/animation/fetching.json',
+                                      height: 120),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    "Inapanga taarifa...",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14.0,
+                                      color: MyColors.primaryLight,
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           } else if (snapshot.hasError || !snapshot.hasData) {
-                            return RefreshIndicator(
-                              onRefresh: _pullRefresh,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(70.0),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          child: Lottie.asset(
-                                            'assets/animation/nodata.json',
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Material(
-                                          child: Text(
-                                            "Hakuna taarifa zilizopatikana",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.0,
-                                              color: MyColors.primaryLight,
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset('assets/animation/nodata.json',
+                                      height: 120),
+                                  const SizedBox(height: 10.0),
+                                  Text(
+                                    "Hakuna taarifa zilizopatikana",
+                                    style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0,
+                                      color: MyColors.primaryLight,
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             );
                           } else if (snapshot.hasData) {
@@ -410,213 +369,90 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                               physics: const BouncingScrollPhysics(),
                               itemCount: snapshot.data!.length,
                               itemBuilder: (_, index) {
+                                final item = snapshot.data![index];
                                 return Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
                                   child: Card(
-                                    elevation: 5,
+                                    elevation: 8,
                                     shape: RoundedRectangleBorder(
-                                      side: const BorderSide(color: MyColors.white, width: 2.0),
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        height: 100,
-                                        margin: const EdgeInsets.only(bottom: 10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () {
-                                                Clipboard.setData(
-                                                  ClipboardData(
-                                                    text: snapshot.data![index].namba!,
-                                                  ),
-                                                ).then((_) {
-                                                  // ignore: use_build_context_synchronously
-                                                  ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(
-                                                      content: Text("Nambari ya akaunti imenakiliwa"),
-                                                    ),
-                                                  );
-                                                });
-                                              },
-                                              child: ListTile(
-                                                leading: CircleAvatar(
-                                                  backgroundColor: MyColors.white,
-                                                  child: Image.asset(
-                                                    snapshot.data![index].jina == "VODACOM"
-                                                        ? "assets/payicons/mpesa.png"
-                                                        : snapshot.data![index].jina == "TIGO PESA"
-                                                            ? "assets/payicons/tigopesa.png"
-                                                            : "assets/payicons/cash.png",
-                                                    height: 50,
-                                                  ),
+                                    shadowColor:
+                                        MyColors.primaryLight.withOpacity(0.2),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.white,
+                                            MyColors.primaryLight
+                                                .withOpacity(0.05)
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                      ),
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundColor: MyColors.white,
+                                          radius: 28,
+                                          child: Image.asset(
+                                            item.jina == "VODACOM"
+                                                ? "assets/payicons/mpesa.png"
+                                                : item.jina == "TIGO PESA"
+                                                    ? "assets/payicons/tigopesa.png"
+                                                    : "assets/payicons/cash.png",
+                                            height: 40,
+                                          ),
+                                        ),
+                                        title: Text(
+                                          item.jina ?? '',
+                                          style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: MyColors.primaryLight,
+                                          ),
+                                        ),
+                                        subtitle: GestureDetector(
+                                          onTap: () {
+                                            Clipboard.setData(
+                                              ClipboardData(
+                                                  text: item.namba ?? ''),
+                                            ).then((_) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      "Nambari ya akaunti imenakiliwa"),
                                                 ),
-                                                title: Text(
-                                                  snapshot.data![index].jina!,
-                                                  style: Theme.of(context).textTheme.bodyLarge,
-                                                ),
-                                                trailing: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      snapshot.data![index].namba!,
-                                                    ),
-                                                    const Text(
-                                                      "bonyeza kunakili",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
+                                              );
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.copy,
+                                                  size: 16,
+                                                  color: MyColors.primaryLight),
+                                              const SizedBox(width: 6),
+                                              Text(
+                                                item.namba ?? '',
+                                                style: GoogleFonts.montserrat(
+                                                  fontSize: 14,
+                                                  color: MyColors.primaryLight,
                                                 ),
                                               ),
-                                            )
-                                            // Container(
-                                            //   margin: EdgeInsets.only(
-                                            //     left: 10,
-                                            //     top: 10,
-                                            //     bottom: 10,
-                                            //   ),
-                                            //   child: Row(children: <Widget>[
-                                            //     Container(
-                                            //       margin:
-                                            //           EdgeInsets.only(left: 10),
-                                            //       child: Column(
-                                            //         crossAxisAlignment:
-                                            //             CrossAxisAlignment
-                                            //                 .start,
-                                            //         children: <Widget>[
-                                            //           Container(
-                                            //             width: 290,
-                                            //             child: Column(
-                                            //               crossAxisAlignment:
-                                            //                   CrossAxisAlignment
-                                            //                       .start,
-                                            //               mainAxisAlignment:
-                                            //                   MainAxisAlignment
-                                            //                       .start,
-                                            //               children: [
-                                            //                 Row(
-                                            //                   children: [
-                                            //                     Column(
-                                            //                       children: <
-                                            //                           Widget>[
-                                            //                         Container(
-                                            //                           height:
-                                            //                               50,
-                                            //                           child:
-                                            //                               CircleAvatar(
-                                            //                             backgroundColor:
-                                            //                                 MyColors.white,
-                                            //                             // backgroundImage: AssetImage("assets/images/viongozi.png"),
-                                            //                             child: Image
-                                            //                                 .asset(
-                                            //                               snapshot.data![index].jina == "VODACOM"
-                                            //                                   ? "assets/payicons/mpesa.png"
-                                            //                                   : snapshot.data![index].jina == "TIGO PESA"
-                                            //                                       ? "assets/payicons/tigopesa.png"
-                                            //                                       : "assets/payicons/cash.png",
-                                            //                               // color: MyColors.primaryLight,
-                                            //                               height:
-                                            //                                   50,
-                                            //                             ),
-                                            //                           ),
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                     manualSpacer(
-                                            //                         step: 2),
-                                            //                     Text(
-                                            //                       ,
-                                            //                       maxLines: 1,
-                                            //                       overflow:
-                                            //                           TextOverflow
-                                            //                               .ellipsis,
-                                            //                       softWrap:
-                                            //                           false,
-                                            //                       style: GoogleFonts
-                                            //                           .montserrat(
-                                            //                         fontSize:
-                                            //                             12,
-                                            //                         fontWeight:
-                                            //                             FontWeight
-                                            //                                 .normal,
-                                            //                         color: MyColors
-                                            //                             .primaryLight,
-                                            //                       ),
-                                            //                     ),
-                                            //                   ],
-                                            //                 ),
-                                            //                 manualStepper(
-                                            //                     step: 2),
-                                            //                 Row(
-                                            //                   children: [
-                                            //                     manualSpacer(
-                                            //                         step: 2),
-                                            //                     Row(
-                                            //                       mainAxisAlignment:
-                                            //                           MainAxisAlignment
-                                            //                               .spaceBetween,
-                                            //                       children: [
-                                            //                         Text(
-                                            //                           "Akaunti : ${snapshot.data![index].namba}",
-                                            //                           maxLines:
-                                            //                               1,
-                                            //                           overflow:
-                                            //                               TextOverflow
-                                            //                                   .ellipsis,
-                                            //                           softWrap:
-                                            //                               false,
-                                            //                           style: GoogleFonts
-                                            //                               .montserrat(
-                                            //                             fontSize:
-                                            //                                 12,
-                                            //                             fontWeight:
-                                            //                                 FontWeight.bold,
-                                            //                             color: MyColors
-                                            //                                 .primaryLight,
-                                            //                           ),
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                     manualSpacer(
-                                            //                         step: 3),
-                                            //                     GestureDetector(
-                                            //                       onTap: () {
-                                            //                         Clipboard
-                                            //                             .setData(
-                                            //                           new ClipboardData(
-                                            //                             text:
-                                            //                                 "${snapshot.data![index].namba}",
-                                            //                           ),
-                                            //                         ).then((_) {
-                                            //                           Scaffold.of(
-                                            //                                   context)
-                                            //                               .showSnackBar(
-                                            //                                   SnackBar(content: Text("Nambari ya akaunti imenakiliwa")));
-                                            //                         });
-                                            //                       },
-                                            //                       child: Icon(
-                                            //                         Icons.copy,
-                                            //                       ),
-                                            //                     )
-                                            //                   ],
-                                            //                 ),
-
-                                            //                 // Icon(
-                                            //               ],
-                                            //             ),
-                                            //           ),
-                                            //         ],
-                                            //       ),
-                                            //     )
-                                            //   ]),
-                                            // )
-                                          ],
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                "Bonyeza kunakili",
+                                                style: GoogleFonts.montserrat(
+                                                  fontSize: 12,
+                                                  color: MyColors.primaryLight
+                                                      .withOpacity(0.7),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -631,10 +467,10 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
