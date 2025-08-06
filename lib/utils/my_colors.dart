@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'Utility.dart';
 
 class MyColors {
-  static Color primary = Utility.hexToColor("#000080");
-  static Color primaryDark = Utility.hexToColor("#000080");
-  // static Color primaryLight = Colors.blue[900];
-  static Color primaryLight = Utility.hexToColor("#800080");
-  static Color primaryVeryLight = Colors.blue[900]!;
+  static Color primary = Utility.hexToColor("#E8BCB9");
+  static Color primaryDark = Utility.hexToColor("#AE445A");
+  static Color primaryLight = Utility.hexToColor("#4B4376");
+  static Color primaryVeryLight = Utility.hexToColor("#432E54");
   static const Color accent = Color(0xFFFF4081);
   static const Color accentDark = Color(0xFFF50057);
   static const Color accentLight = Color(0xFFFF80AB);
