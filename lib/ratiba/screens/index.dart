@@ -49,8 +49,13 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
-          baraza = (json['data'] as List).map((item) => IbadaRatiba.fromJson(item)).toList();
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          baraza = (json['data'] as List)
+              .map((item) => IbadaRatiba.fromJson(item))
+              .toList();
         }
       }
     }
@@ -60,7 +65,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     String myApi = "${ApiUrl.BASEURL}get_akaunti.php";
     final response = await http.post(
-      Uri.parse(myApi), 
+      Uri.parse(myApi),
       headers: {'Accept': 'application/json'},
       body: jsonEncode({
         "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
@@ -73,8 +78,13 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
-          baraza = (json['data'] as List).map((item) => AkauntiUsharikaPodo.fromJson(item)).toList();
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          baraza = (json['data'] as List)
+              .map((item) => AkauntiUsharikaPodo.fromJson(item))
+              .toList();
         }
       }
     }
@@ -147,51 +157,58 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  MyColors.primaryLight,
-                  MyColors.primaryLight.withOpacity(0.8),
+                  MyColors.primaryLight.withOpacity(0.15),
                 ],
               ),
             ),
           ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Ratiba na Akaunti",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: MyColors.primaryLight,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        "Orodha ratiba za ibada na akaunti za kanisa",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.church, color: Colors.white, size: 22),
-                ),
-                const SizedBox(width: 15),
-                Text(
-                  "Ratiba na Akaunti",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyColors.primaryLight.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.group,
+                      color: MyColors.primaryLight,
+                      size: 24,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(65),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(25),
-              ),
               child: TabBar(
                 padding: const EdgeInsets.all(5),
                 indicatorSize: TabBarIndicatorSize.tab,
@@ -269,277 +286,36 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
               // Ratiba Za Ibada Tab
               SafeArea(
                 child: Column(
-                children: [
-                  // Container(
-                  //   margin: const EdgeInsets.all(16),
-                  //   padding: const EdgeInsets.all(16),
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     borderRadius: BorderRadius.circular(20),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.1),
-                  //         spreadRadius: 1,
-                  //         blurRadius: 10,
-                  //         offset: const Offset(0, 1),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         padding: const EdgeInsets.all(12),
-                  //         decoration: BoxDecoration(
-                  //           color: MyColors.primaryLight.withOpacity(0.1),
-                  //           borderRadius: BorderRadius.circular(12),
-                  //         ),
-                  //         child: Icon(
-                  //           Icons.calendar_today,
-                  //           color: MyColors.primaryLight,
-                  //           size: 24,
-                  //         ),
-                  //       ),
-                  //       const SizedBox(width: 16),
-                  //       Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Text(
-                  //             "Ratiba Za Ibada",
-                  //             style: GoogleFonts.poppins(
-                  //               fontSize: 20,
-                  //               fontWeight: FontWeight.bold,
-                  //               color: MyColors.primaryLight,
-                  //             ),
-                  //           ),
-                  //           Text(
-                  //             "Angalia ratiba zote za ibada",
-                  //             style: GoogleFonts.poppins(
-                  //               fontSize: 14,
-                  //               color: Colors.grey[600],
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _pullRefresh,
-                      child: FutureBuilder<List<IbadaRatiba>>(
-                        future: getRatiba(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return _buildLoadingState();
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return _buildEmptyState();
-                          }
-                          return ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) {
-                              final item = snapshot.data![index];
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.05),
-                                      spreadRadius: 0,
-                                      blurRadius: 15,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(12),
-                                        decoration: BoxDecoration(
-                                          color: MyColors.primaryLight.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(15),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: MyColors.primaryLight.withOpacity(0.05),
-                                              spreadRadius: 0,
-                                              blurRadius: 10,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Image.asset(
-                                          "assets/images/kanisa.png",
-                                          height: 30,
-                                          width: 30,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              item.jina ?? '',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: MyColors.primaryLight,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Row(
-                                                children: [
-                                                Icon(
-                                                  Icons.access_time,
-                                                  size: 16,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                const SizedBox(width: 4),
-                                                Flexible(
-                                                  child: Text(
-                                                  item.muda ?? '',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 16,
-                                        color: Colors.grey[400],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Akaunti za Kanisa Tab
-            SafeArea(
-              child: Column(
-                children: [
-                  // Container(
-                  //   margin: const EdgeInsets.all(16),
-                  //   padding: const EdgeInsets.all(16),
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     borderRadius: BorderRadius.circular(20),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.grey.withOpacity(0.1),
-                  //         spreadRadius: 1,
-                  //         blurRadius: 10,
-                  //         offset: const Offset(0, 1),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         padding: const EdgeInsets.all(12),
-                  //         decoration: BoxDecoration(
-                  //           color: MyColors.primaryLight.withOpacity(0.1),
-                  //           borderRadius: BorderRadius.circular(12),
-                  //         ),
-                  //         child: Icon(
-                  //           Icons.account_balance_wallet,
-                  //           color: MyColors.primaryLight,
-                  //           size: 24,
-                  //         ),
-                  //       ),
-                  //       const SizedBox(width: 16),
-                  //       Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Text(
-                  //             "Akaunti za Kanisa",
-                  //             style: GoogleFonts.poppins(
-                  //               fontSize: 20,
-                  //               fontWeight: FontWeight.bold,
-                  //               color: MyColors.primaryLight,
-                  //             ),
-                  //           ),
-                  //           Text(
-                  //             "Bonyeza kuona namba ya akaunti",
-                  //             style: GoogleFonts.poppins(
-                  //               fontSize: 14,
-                  //               color: Colors.grey[600],
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _pullRefresh,
-                      child: FutureBuilder<List<AkauntiUsharikaPodo>>(
-                        future: getAkaunti(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return _buildLoadingState();
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return _buildEmptyState();
-                          }
-                          return ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) {
-                              final item = snapshot.data![index];
-                              return GestureDetector(
-                                onTap: () {
-                                  Clipboard.setData(ClipboardData(text: item.namba ?? ''));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Row(
-                                        children: [
-                                          const Icon(Icons.check_circle, color: Colors.white),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            'Namba ya akaunti imenakiliwa',
-                                            style: GoogleFonts.poppins(),
-                                          ),
-                                        ],
-                                      ),
-                                      backgroundColor: MyColors.primaryLight,
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      margin: const EdgeInsets.all(16),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  children: [
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: _pullRefresh,
+                        child: FutureBuilder<List<IbadaRatiba>>(
+                          future: getRatiba(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return _buildLoadingState();
+                            } else if (snapshot.hasError || !snapshot.hasData) {
+                              return _buildEmptyState();
+                            }
+                            return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) {
+                                final item = snapshot.data![index];
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 10,
-                                        offset: const Offset(0, 1),
+                                        color: Colors.black.withOpacity(0.05),
+                                        spreadRadius: 0,
+                                        blurRadius: 15,
+                                        offset: const Offset(0, 2),
                                       ),
                                     ],
                                   ),
@@ -550,19 +326,31 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         Container(
                                           padding: const EdgeInsets.all(12),
                                           decoration: BoxDecoration(
-                                            color: MyColors.primaryLight.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(15),
+                                            color: MyColors.primaryLight
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: MyColors.primaryLight
+                                                    .withOpacity(0.05),
+                                                spreadRadius: 0,
+                                                blurRadius: 10,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
                                           ),
-                                          child: Icon(
-                                            Icons.account_balance,
-                                            color: MyColors.primaryLight,
-                                            size: 24,
+                                          child: Image.asset(
+                                            "assets/images/kanisa.png",
+                                            height: 30,
+                                            width: 30,
                                           ),
                                         ),
                                         const SizedBox(width: 16),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 item.jina ?? '',
@@ -576,16 +364,21 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                               Row(
                                                 children: [
                                                   Icon(
-                                                    Icons.numbers,
+                                                    Icons.access_time,
                                                     size: 16,
                                                     color: Colors.grey[600],
                                                   ),
                                                   const SizedBox(width: 4),
-                                                  Text(
-                                                    item.namba ?? '',
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[600],
+                                                  Flexible(
+                                                    child: Text(
+                                                      item.muda ?? '',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
@@ -593,32 +386,170 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             ],
                                           ),
                                         ),
-                                        Container(
-                                          padding: const EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                            color: MyColors.primaryLight.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                          child: Icon(
-                                            Icons.copy,
-                                            size: 16,
-                                            color: MyColors.primaryLight,
-                                          ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 16,
+                                          color: Colors.grey[400],
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              // Akaunti za Kanisa Tab
+              SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: _pullRefresh,
+                        child: FutureBuilder<List<AkauntiUsharikaPodo>>(
+                          future: getAkaunti(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return _buildLoadingState();
+                            } else if (snapshot.hasError || !snapshot.hasData) {
+                              return _buildEmptyState();
+                            }
+                            return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) {
+                                final item = snapshot.data![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Clipboard.setData(
+                                        ClipboardData(text: item.namba ?? ''));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Row(
+                                          children: [
+                                            const Icon(Icons.check_circle,
+                                                color: Colors.white),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'Namba ya akaunti imenakiliwa',
+                                              style: GoogleFonts.poppins(),
+                                            ),
+                                          ],
+                                        ),
+                                        backgroundColor: MyColors.primaryLight,
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        margin: const EdgeInsets.all(16),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          spreadRadius: 1,
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 1),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: MyColors.primaryLight
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Icon(
+                                              Icons.account_balance,
+                                              color: MyColors.primaryLight,
+                                              size: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  item.jina ?? '',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        MyColors.primaryLight,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.numbers,
+                                                      size: 16,
+                                                      color: Colors.grey[600],
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                    Text(
+                                                      item.namba ?? '',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: MyColors.primaryLight
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Icon(
+                                              Icons.copy,
+                                              size: 16,
+                                              color: MyColors.primaryLight,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

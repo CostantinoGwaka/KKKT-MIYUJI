@@ -78,6 +78,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
+              // ignore: deprecated_member_use
               MyColors.primaryLight.withOpacity(0.15),
               Colors.white,
               Colors.white,
@@ -88,7 +89,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
           child: Column(
             children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 25),
+                  padding: const EdgeInsets.fromLTRB(20, 2, 17, 25),
                   child: Column(
                     children: [
                       Row(
@@ -119,6 +120,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
+                              // ignore: deprecated_member_use
                               color: MyColors.primaryLight.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
