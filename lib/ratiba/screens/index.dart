@@ -136,45 +136,75 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.grey[50],
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: MyColors.primaryLight,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30),
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  MyColors.primaryLight,
+                  MyColors.primaryLight.withOpacity(0.8),
+                ],
+              ),
             ),
           ),
-          title: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
+          title: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.church, color: Colors.white, size: 22),
                 ),
-                child: const Icon(Icons.church, color: Colors.white),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "Ratiba na Akaunti",
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                const SizedBox(width: 15),
+                Text(
+                  "Ratiba na Akaunti",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(70),
+            preferredSize: const Size.fromHeight(65),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(25),
+              ),
               child: TabBar(
+                padding: const EdgeInsets.all(5),
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(20),
                   color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 unselectedLabelColor: Colors.white,
                 labelColor: MyColors.primaryLight,
@@ -222,66 +252,77 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            // Ratiba Za Ibada Tab
-            Container(
-              color: Colors.grey[50],
-              child: Column(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                MyColors.primaryLight.withOpacity(0.15),
+                Colors.white,
+                Colors.white,
+              ],
+            ),
+          ),
+          child: TabBarView(
+            children: [
+              // Ratiba Za Ibada Tab
+              SafeArea(
+                child: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: MyColors.primaryLight.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            Icons.calendar_today,
-                            color: MyColors.primaryLight,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Ratiba Za Ibada",
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: MyColors.primaryLight,
-                              ),
-                            ),
-                            Text(
-                              "Angalia ratiba zote za ibada",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.all(16),
+                  //   padding: const EdgeInsets.all(16),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.1),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 10,
+                  //         offset: const Offset(0, 1),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Container(
+                  //         padding: const EdgeInsets.all(12),
+                  //         decoration: BoxDecoration(
+                  //           color: MyColors.primaryLight.withOpacity(0.1),
+                  //           borderRadius: BorderRadius.circular(12),
+                  //         ),
+                  //         child: Icon(
+                  //           Icons.calendar_today,
+                  //           color: MyColors.primaryLight,
+                  //           size: 24,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(width: 16),
+                  //       Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             "Ratiba Za Ibada",
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 20,
+                  //               fontWeight: FontWeight.bold,
+                  //               color: MyColors.primaryLight,
+                  //             ),
+                  //           ),
+                  //           Text(
+                  //             "Angalia ratiba zote za ibada",
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 14,
+                  //               color: Colors.grey[600],
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: _pullRefresh,
@@ -305,10 +346,10 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 1),
+                                      color: Colors.black.withOpacity(0.05),
+                                      spreadRadius: 0,
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
@@ -321,6 +362,14 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         decoration: BoxDecoration(
                                           color: MyColors.primaryLight.withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(15),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: MyColors.primaryLight.withOpacity(0.05),
+                                              spreadRadius: 0,
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
                                         ),
                                         child: Image.asset(
                                           "assets/images/kanisa.png",
@@ -384,63 +433,62 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
               ),
             ),
             // Akaunti za Kanisa Tab
-            Container(
-              color: Colors.grey[50],
+            SafeArea(
               child: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: MyColors.primaryLight.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            Icons.account_balance_wallet,
-                            color: MyColors.primaryLight,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Akaunti za Kanisa",
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: MyColors.primaryLight,
-                              ),
-                            ),
-                            Text(
-                              "Bonyeza kuona namba ya akaunti",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.all(16),
+                  //   padding: const EdgeInsets.all(16),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(20),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.1),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 10,
+                  //         offset: const Offset(0, 1),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Container(
+                  //         padding: const EdgeInsets.all(12),
+                  //         decoration: BoxDecoration(
+                  //           color: MyColors.primaryLight.withOpacity(0.1),
+                  //           borderRadius: BorderRadius.circular(12),
+                  //         ),
+                  //         child: Icon(
+                  //           Icons.account_balance_wallet,
+                  //           color: MyColors.primaryLight,
+                  //           size: 24,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(width: 16),
+                  //       Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             "Akaunti za Kanisa",
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 20,
+                  //               fontWeight: FontWeight.bold,
+                  //               color: MyColors.primaryLight,
+                  //             ),
+                  //           ),
+                  //           Text(
+                  //             "Bonyeza kuona namba ya akaunti",
+                  //             style: GoogleFonts.poppins(
+                  //               fontSize: 14,
+                  //               color: Colors.grey[600],
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: _pullRefresh,
@@ -571,7 +619,8 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                 ],
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
