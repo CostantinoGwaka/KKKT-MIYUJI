@@ -460,19 +460,8 @@ class _HomePageState extends State<HomePage> {
         bottom: 8,
       ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [MyColors.primaryLight, MyColors.primary],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: MyColors.primaryLight,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
       ),
       child: Column(
         children: [

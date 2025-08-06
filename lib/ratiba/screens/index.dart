@@ -62,30 +62,25 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
   Future<List<AkauntiUsharikaPodo>> getAkaunti() async {
     String myApi = "${ApiUrl.BASEURL}get_akaunti.php";
     final response = await http
-        .post(Uri.parse(myApi), headers: {'Accept': 'application/json'});
+        .post(Uri.parse(myApi), headers: {'Accept': 'application/json'},
+         body: jsonEncode({
+        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+      }),
+        );
 
-    var barazaList = <AkauntiUsharikaPodo>[];
     var baraza;
+
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        baraza = json;
+         var json = jsonDecode(response.body);
+         if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
+          baraza = (json['data'] as List).map((item) => AkauntiUsharikaPodo.fromJson(item)).toList();
+        }
       }
     }
-
-    try {
-      baraza.forEach(
-        (element) {
-          AkauntiUsharikaPodo video = AkauntiUsharikaPodo.fromJson(element);
-          barazaList.add(video);
-        },
-      );
-      return barazaList;
-    } catch (e) {
-      return [];
-    }
+    return baraza;
   }
 
   Future<void> _pullRefresh() async {
@@ -110,368 +105,267 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  MyColors.primaryLight.withOpacity(0.9),
-                  Colors.white.withOpacity(0.8)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+      backgroundColor: MyColors.primaryLight,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: MyColors.primaryLight,
+        title: Text(
+        "Ratiba na Akaunti",
+        style: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        ),
+        bottom: TabBar(
+        indicatorColor: Colors.white,
+        tabs: [
+          Tab(
+          icon: const Icon(Icons.event_note, color: Colors.white),
+          child: Text(
+            "Ratiba Za Ibada",
+            style: GoogleFonts.montserrat(
+            fontSize: 14,
+            color: Colors.white,
             ),
           ),
-          bottom: TabBar(
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: MyColors.primaryLight.withOpacity(0.15),
+          ),
+          Tab(
+          icon: const Icon(Icons.account_balance_wallet, color: Colors.white),
+          child: Text(
+            "Akaunti za Kanisa",
+            style: GoogleFonts.montserrat(
+            fontSize: 14,
+            color: Colors.white,
             ),
-            tabs: [
-              Tab(
-                icon: Icon(Icons.event_note, color: MyColors.primaryLight),
-                child: Text(
-                  "Ratiba Za Ibada",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: MyColors.primaryLight,
-                  ),
-                ),
+          ),
+          ),
+        ],
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        ),
+        child: TabBarView(
+        children: [
+          // Ratiba Za Ibada Tab
+          Column(
+          children: [
+            Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              "Ratiba Za Ibada",
+              style: GoogleFonts.montserrat(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: MyColors.primaryLight,
               ),
-              Tab(
-                icon: Icon(Icons.account_balance_wallet,
-                    color: MyColors.primaryLight),
+            ),
+            ),
+            Expanded(
+            child: RefreshIndicator(
+              onRefresh: _pullRefresh,
+              child: FutureBuilder<List<IbadaRatiba>>(
+              future: getRatiba(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('assets/animation/fetching.json', height: 120),
+                    const SizedBox(height: 20),
+                    Text(
+                    "Inapanga taarifa...",
+                    style: GoogleFonts.montserrat(
+                      color: MyColors.primaryLight,
+                    ),
+                    ),
+                  ],
+                  ),
+                );
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                return Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('assets/animation/nodata.json', height: 120),
+                    Text(
+                    "Hakuna taarifa zilizopatikana",
+                    style: GoogleFonts.montserrat(
+                      color: MyColors.primaryLight,
+                    ),
+                    ),
+                  ],
+                  ),
+                );
+                }
+                return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) {
+                  final item = snapshot.data![index];
+                  return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: MyColors.primaryLight,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                    BoxShadow(
+                      color: MyColors.primaryLight.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                    ],
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    leading: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 25,
+                    child: Image.asset("assets/images/kanisa.png", height: 30),
+                    ),
+                    title: Text(
+                    item.jina ?? '',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    ),
+                    subtitle: Text(
+                    item.muda ?? '',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.white70,
+                    ),
+                    ),
+                  ),
+                  );
+                },
+                );
+              },
+              ),
+            ),
+            ),
+          ],
+          ),
+          // Akaunti za Kanisa Tab
+          Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   "Akaunti za Kanisa",
                   style: GoogleFonts.montserrat(
-                    fontSize: 15,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: MyColors.primaryLight,
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, MyColors.primaryLight.withOpacity(0.07)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: TabBarView(
-            children: [
-              // Ratiba Za Ibada Tab
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    child: Text(
-                      "Ratiba Za Ibada",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: MyColors.primaryLight,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _pullRefresh,
-                      child: FutureBuilder<List<IbadaRatiba>>(
-                        future: getRatiba(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Lottie.asset('assets/animation/fetching.json',
-                                      height: 120),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    "Inapanga taarifa...",
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.0,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                ],
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: _pullRefresh,
+                  child: FutureBuilder<List<AkauntiUsharikaPodo>>(
+                    future: getAkaunti(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset('assets/animation/fetching.json', height: 120),
+                              const SizedBox(height: 20),
+                              Text(
+                                "Inapanga taarifa...",
+                                style: GoogleFonts.montserrat(
+                                  color: MyColors.primaryLight,
+                                ),
                               ),
-                            );
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Lottie.asset('assets/animation/nodata.json',
-                                      height: 120),
-                                  const SizedBox(height: 10.0),
-                                  Text(
-                                    "Hakuna taarifa zilizopatikana",
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                ],
+                            ],
+                          ),
+                        );
+                      } else if (snapshot.hasError || !snapshot.hasData) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset('assets/animation/nodata.json', height: 120),
+                              Text(
+                                "Hakuna taarifa zilizopatikana",
+                                style: GoogleFonts.montserrat(
+                                  color: MyColors.primaryLight,
+                                ),
                               ),
-                            );
-                          } else if (snapshot.hasData) {
-                            return ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (_, index) {
-                                final item = snapshot.data![index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  child: Card(
-                                    elevation: 8,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    shadowColor:
-                                        MyColors.primaryLight.withOpacity(0.2),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.white,
-                                            MyColors.primaryLight
-                                                .withOpacity(0.05)
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                      ),
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundColor: MyColors.white,
-                                          radius: 28,
-                                          child: Image.asset(
-                                            "assets/images/kanisa.png",
-                                            height: 40,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          item.jina ?? '',
-                                          style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: MyColors.primaryLight,
-                                          ),
-                                        ),
-                                        subtitle: Row(
-                                          children: [
-                                            Icon(Icons.access_time,
-                                                size: 16,
-                                                color: MyColors.primaryLight),
-                                            const SizedBox(width: 6),
-                                            Text(
-                                              item.muda ?? '',
-                                              style: GoogleFonts.montserrat(
-                                                fontSize: 14,
-                                                color: MyColors.primaryLight,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                            ],
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) {
+                          final item = snapshot.data![index];
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: MyColors.primaryLight,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: MyColors.primaryLight.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 25,
+                                child: Icon(Icons.account_balance, color: MyColors.primaryLight),
+                              ),
+                              title: Text(
+                                item.jina ?? '',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: Text(
+                                item.namba ?? '',
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(text: item.namba ?? ''));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Namba ya akaunti imenakiliwa'),
+                                    backgroundColor: MyColors.primaryLight,
                                   ),
                                 );
                               },
-                            );
-                          } else {
-                            return const Text("new videos");
-                          }
+                            ),
+                          );
                         },
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              // Akaunti za Kanisa Tab
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0, bottom: 10.0),
-                    child: Text(
-                      "Akaunti za Kanisa",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: MyColors.primaryLight,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _pullRefresh,
-                      child: FutureBuilder<List<AkauntiUsharikaPodo>>(
-                        future: getAkaunti(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Lottie.asset('assets/animation/fetching.json',
-                                      height: 120),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    "Inapanga taarifa...",
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.0,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Lottie.asset('assets/animation/nodata.json',
-                                      height: 120),
-                                  const SizedBox(height: 10.0),
-                                  Text(
-                                    "Hakuna taarifa zilizopatikana",
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.0,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else if (snapshot.hasData) {
-                            return ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (_, index) {
-                                final item = snapshot.data![index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  child: Card(
-                                    elevation: 8,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    shadowColor:
-                                        MyColors.primaryLight.withOpacity(0.2),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.white,
-                                            MyColors.primaryLight
-                                                .withOpacity(0.05)
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                      ),
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundColor: MyColors.white,
-                                          radius: 28,
-                                          child: Image.asset(
-                                            item.jina == "VODACOM"
-                                                ? "assets/payicons/mpesa.png"
-                                                : item.jina == "TIGO PESA"
-                                                    ? "assets/payicons/tigopesa.png"
-                                                    : "assets/payicons/cash.png",
-                                            height: 40,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          item.jina ?? '',
-                                          style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: MyColors.primaryLight,
-                                          ),
-                                        ),
-                                        subtitle: GestureDetector(
-                                          onTap: () {
-                                            Clipboard.setData(
-                                              ClipboardData(
-                                                  text: item.namba ?? ''),
-                                            ).then((_) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      "Nambari ya akaunti imenakiliwa"),
-                                                ),
-                                              );
-                                            });
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.copy,
-                                                  size: 16,
-                                                  color: MyColors.primaryLight),
-                                              const SizedBox(width: 6),
-                                              Text(
-                                                item.namba ?? '',
-                                                style: GoogleFonts.montserrat(
-                                                  fontSize: 14,
-                                                  color: MyColors.primaryLight,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              Text(
-                                                "Bonyeza kunakili",
-                                                style: GoogleFonts.montserrat(
-                                                  fontSize: 12,
-                                                  color: MyColors.primaryLight
-                                                      .withOpacity(0.7),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          } else {
-                            return const Text("new videos");
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
+        ],
         ),
+      ),
       ),
     );
   }
