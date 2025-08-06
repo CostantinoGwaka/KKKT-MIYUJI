@@ -462,6 +462,7 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         color: MyColors.primaryLight,
         borderRadius: BorderRadius.circular(16),
+         
       ),
       child: Column(
         children: [

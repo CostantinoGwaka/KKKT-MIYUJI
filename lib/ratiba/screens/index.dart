@@ -159,7 +159,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
             child: Text(
               "Ratiba Za Ibada",
               style: GoogleFonts.montserrat(
-              fontSize: 22,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: MyColors.primaryLight,
               ),
@@ -211,20 +211,21 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                   return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: MyColors.primaryLight,
+                    color: MyColors.white,
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
-                    BoxShadow(
-                      color: MyColors.primaryLight.withOpacity(0.3),
+                     BoxShadow(
+                      color: MyColors.primaryLight,
                       blurRadius: 8,
-                      offset: const Offset(0, 3),
+                      offset: const Offset(0, 1),
                     ),
                     ],
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(16),
                     leading: CircleAvatar(
-                    backgroundColor: Colors.white,
+                    // ignore: deprecated_member_use
+                    backgroundColor: MyColors.primaryLight.withOpacity(0.3),
                     radius: 25,
                     child: Image.asset("assets/images/kanisa.png", height: 30),
                     ),
@@ -233,13 +234,13 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: MyColors.primaryLight,
                     ),
                     ),
                     subtitle: Text(
                     item.muda ?? '',
                     style: GoogleFonts.montserrat(
-                      color: Colors.white70,
+                      color: MyColors.primaryLight,
                     ),
                     ),
                   ),
@@ -311,17 +312,17 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                           final item = snapshot.data![index];
                           return Container(
                             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: MyColors.primaryLight,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: MyColors.primaryLight.withOpacity(0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
+                             decoration: BoxDecoration(
+                    color: MyColors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                     BoxShadow(
+                      color: MyColors.primaryLight,
+                      blurRadius: 8,
+                      offset: const Offset(0, 1),
+                    ),
+                    ],
+                  ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(16),
                               leading: CircleAvatar(
@@ -334,20 +335,20 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                 style: GoogleFonts.montserrat(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: MyColors.primaryLight,
                                 ),
                               ),
                               subtitle: Text(
                                 item.namba ?? '',
                                 style: GoogleFonts.montserrat(
-                                  color: Colors.white70,
+                                  color: MyColors.primaryLight,
                                 ),
                               ),
                               onTap: () {
                                 Clipboard.setData(ClipboardData(text: item.namba ?? ''));
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Namba ya akaunti imenakiliwa'),
+                                    content: const Text('Namba ya akaunti imenakiliwa'),
                                     backgroundColor: MyColors.primaryLight,
                                   ),
                                 );
