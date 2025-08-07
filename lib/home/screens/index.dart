@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
 import 'package:kanisaapp/chatroom/screen/chat_screen.dart';
 import 'package:kanisaapp/jumuiyazetu/screens/index.dart';
@@ -29,7 +30,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:kanisaapp/models/user_models.dart';
 
-import '../../akaunti/screens/index.dart';
+import '../../akaunti/screens/akaunti_za_kanisa_screen.dart';
 
 // var host;
 // var data;
@@ -563,6 +564,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _buildMatoleoButton(),
             ],
+            if (currentUser != null) ...[
+              const SizedBox(height: 20),
+              _buildAkauntiButton(),
+            ],
           ],
         ),
       ),
@@ -847,6 +852,36 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Icons.account_balance_wallet, size: 18),
         label: Text(
           'Matoleo yako',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: MyColors.primaryLight,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          elevation: 0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAkauntiButton(){
+     return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
+          );
+        },
+        icon: const Icon(Icons.account_balance_wallet, size: 18),
+        label: Text(
+          'Akaunti za kanisa',
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w600,
