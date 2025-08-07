@@ -20,6 +20,7 @@ import 'package:kanisaapp/neno/screens/index.dart';
 import 'package:kanisaapp/ratiba/screens/index.dart';
 import 'package:kanisaapp/register_login/screens/login.dart';
 import 'package:kanisaapp/uongozi/screens/index.dart';
+import 'package:kanisaapp/uongozi/screens/wadhifa_screen.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -568,6 +569,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _buildAkauntiButton(),
             ],
+            if (currentUser != null) ...[
+              const SizedBox(height: 20),
+              _buildWadhifaButton(),
+            ],
           ],
         ),
       ),
@@ -882,6 +887,36 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Icons.account_balance_wallet, size: 18),
         label: Text(
           'Akaunti za kanisa',
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: MyColors.primaryLight,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          elevation: 0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWadhifaButton(){
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const WadhifaScreen()),
+          );
+        },
+        icon: const Icon(Icons.people_outline, size: 18),
+        label: Text(
+          'Nyadhifa Za Uongozi',
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w600,

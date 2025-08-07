@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   final TextEditingController _nambaController = TextEditingController();
   bool _isLoading = false;
   List<AkauntiModel> _akauntiList = [];
-   BaseUser? currentUser;
+  BaseUser? currentUser;
 
   Future<void> _loadCurrentUser() async {
     try {
@@ -46,13 +46,13 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     await _loadCurrentUser();
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}api2/akaunti_kanisa/get_akaunti_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/akaunti_kanisa/get_akaunti_kanisa.php"),
         headers: {'Accept': 'application/json'},
-         body: jsonEncode({
-        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
-      }),
+        body: jsonEncode({
+          "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+        }),
       );
-
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -73,20 +73,21 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
-  Future<void> _createAkaunti() async {
+  Future<void> _createAkaunti(String? id) async {
     if (!_formKey.currentState!.validate()) return;
 
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}api2/akaunti_kanisa/ongeza_akaunti_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/akaunti_kanisa/ongeza_akaunti_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
+          'id': id,
           'jina': _jinaController.text,
           'namba': _nambaController.text,
-           "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+          "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
         }),
       );
-
 
       if (response.statusCode == 200) {
         Navigator.pop(context);
@@ -104,11 +105,11 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   Future<void> _deleteAkaunti(String id) async {
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}api2/akaunti_kanisa/delete_akaunti_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/akaunti_kanisa/delete_akaunti_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({'id': id}),
       );
-
 
       if (response.statusCode == 200) {
         _fetchAkaunti();
@@ -120,7 +121,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
-  void _showCreateBottomSheet() {
+  void _showCreateBottomSheet(String? id) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -185,7 +186,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _createAkaunti,
+                  onPressed: () => _createAkaunti(id),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: MyColors.primaryLight,
                     padding: const EdgeInsets.symmetric(vertical: 15),
@@ -218,15 +219,13 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
         title: Text(
           'Akaunti za Kanisa',
           style: GoogleFonts.poppins(
-        fontWeight: FontWeight.w600,
-        color: MyColors.darkText
-          ),
+              fontWeight: FontWeight.w600, color: MyColors.darkText),
         ),
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showCreateBottomSheet,
+        onPressed: () => _showCreateBottomSheet(null),
         backgroundColor: MyColors.primaryLight,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -253,7 +252,6 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: [
                               BoxShadow(
-                                // ignore: deprecated_member_use
                                 color: Colors.grey.withOpacity(0.1),
                                 spreadRadius: 2,
                                 blurRadius: 8,
@@ -277,10 +275,12 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: MyColors.primaryLight.withOpacity(0.2),
+                                        color: MyColors.primaryLight
+                                            .withOpacity(0.2),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(Icons.account_balance, 
+                                      child: Icon(
+                                        Icons.account_balance,
                                         color: MyColors.primaryLight,
                                         size: 24,
                                       ),
@@ -298,50 +298,87 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                     ),
                                     PopupMenuButton(
                                       icon: const Icon(Icons.more_vert),
-                                        itemBuilder: (context) => [
+                                      itemBuilder: (context) => [
                                         PopupMenuItem(
                                           child: const Row(
-                                          children: [
-                                            Icon(Icons.edit, color: Colors.blue, size: 20),
-                                            SizedBox(width: 8),
-                                            Text('Edit'),
-                                          ],
+                                            children: [
+                                              Icon(Icons.edit,
+                                                  color: Colors.blue, size: 20),
+                                              SizedBox(width: 8),
+                                              Text('Hariri'),
+                                            ],
                                           ),
                                           onTap: () {
-                                          // TODO: Implement edit functionality
+                                            setState(() {
+                                              _jinaController.text =
+                                                  akaunti.jina;
+                                              _nambaController.text =
+                                                  akaunti.namba;
+                                            });
+                                            _showCreateBottomSheet(akaunti.id);
                                           },
                                         ),
                                         PopupMenuItem(
                                           child: const Row(
-                                          children: [
-                                            Icon(Icons.delete, color: Colors.red, size: 20),
-                                            SizedBox(width: 8),
-                                            Text('Delete'),
-                                          ],
+                                            children: [
+                                              Icon(Icons.delete,
+                                                  color: Colors.red, size: 20),
+                                              SizedBox(width: 8),
+                                              Text('Futa'),
+                                            ],
                                           ),
                                           onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text('Thibitisha'),
-                                              content: const Text('Una uhakika unataka kufuta akaunti hii?'),
-                                              actions: [
-                                              TextButton(
-                                                child: const Text('Hapana'),
-                                                onPressed: () => Navigator.of(context).pop(),
-                                              ),
-                                              TextButton(
-                                                child: const Text('Ndiyo'),
-                                                onPressed: () {
-                                                Navigator.of(context).pop();
-                                                _deleteAkaunti(akaunti.id);
-                                                },
-                                              ),
-                                              ],
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'Thibitisha',
+                                                    style: GoogleFonts.poppins(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                  content: Text(
+                                                    'Una uhakika unataka kufuta akaunti hii?',
+                                                    style:
+                                                        GoogleFonts.poppins(),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: Text(
+                                                        'Hapana',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(),
+                                                    ),
+                                                    TextButton(
+                                                      child: Text(
+                                                        'Ndiyo',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        _deleteAkaunti(
+                                                            akaunti.id);
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             );
-                                            },
-                                          );
                                           },
                                         ),
                                       ],
@@ -356,10 +393,8 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.numbers, 
-                                          size: 18, 
-                                          color: Colors.grey
-                                        ),
+                                        const Icon(Icons.numbers,
+                                            size: 18, color: Colors.grey),
                                         const SizedBox(width: 8),
                                         Text(
                                           'Namba ya Akaunti:',
@@ -381,10 +416,8 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                     const SizedBox(height: 8),
                                     Row(
                                       children: [
-                                        const Icon(Icons.calendar_today, 
-                                          size: 18, 
-                                          color: Colors.grey
-                                        ),
+                                        const Icon(Icons.calendar_today,
+                                            size: 18, color: Colors.grey),
                                         const SizedBox(width: 8),
                                         Text(
                                           'Iliundwa:',
