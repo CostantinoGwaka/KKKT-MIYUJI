@@ -103,32 +103,31 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<List<NenoLaSikuData>> getRatiba() async {
+  Future<List<NenoLaSikuData>> getNenoLaSiku() async {
     String myApi = "${ApiUrl.BASEURL}get_nenolasiku.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
         'Accept': 'application/json',
       },
+       body: jsonEncode({
+        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+      }),
     );
-
-    var barazaList = <NenoLaSikuData>[];
-    var baraza = [];
+    var baraza;
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        baraza = json;
+      if (jsonResponse['status'] == '200' && jsonResponse['data'] != null) {
+        baraza = [NenoLaSikuData.fromJson(jsonResponse['data'])];
+      } else {
+        baraza = [];
       }
+    } else {
+      baraza = [];
     }
 
-    for (var element in baraza) {
-      NenoLaSikuData video = NenoLaSikuData.fromJson(element);
-      barazaList.add(video);
-    }
-
-    return barazaList;
+    return baraza;
   }
 
   void checkLogin() async {
@@ -933,7 +932,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 16),
             FutureBuilder<List<NenoLaSikuData>>(
-              future: getRatiba(),
+              future: getNenoLaSiku(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -979,28 +978,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  return Container(
-                    constraints: const BoxConstraints(maxHeight: 120),
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            snapshot.data![index].neno.toString(),
-                            style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87,
-                              height: 1.4,
-                            ),
-                          ),
-                        );
-                      },
+                    return Text(
+                    snapshot.data![0].neno.toString(),
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                      height: 1.4,
                     ),
-                  );
+                    );
                 } else {
                   return Text(
                     "Hakuna neno la siku",

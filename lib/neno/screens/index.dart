@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/models/manenosiku.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/spacer.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
 
 class NenoLaSiku extends StatefulWidget {
@@ -22,6 +24,8 @@ class NenoLaSiku extends StatefulWidget {
 }
 
 class _NenoLaSikuState extends State<NenoLaSiku> {
+  BaseUser? currentUser;
+
   Future<List<Manenosiku>> getManeno() async {
     try {
       String myApi = "${ApiUrl.BASEURL}get_maneno.php";
@@ -30,25 +34,29 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
         headers: {
           'Accept': 'application/json',
         },
+         body: jsonEncode({
+        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+      }),
       );
 
-      var barazaList = <Manenosiku>[];
-      var baraza = [];
+
+      var baraza = <Manenosiku>[];
 
       if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-
-        if (jsonResponse != null && jsonResponse != 404) {
-          var json = jsonDecode(response.body);
-          baraza = json;
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          baraza = (json['data'] as List)
+              .map((item) => Manenosiku.fromJson(item))
+              .toList();
         }
       }
-
-      for (var element in baraza) {
-        Manenosiku video = Manenosiku.fromJson(element);
-        barazaList.add(video);
-      }
-      return barazaList;
+    }
+      return baraza;
     } catch (e) {
       return [];
     }
@@ -60,6 +68,20 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
         //finish
       });
       return;
+    });
+  }
+
+   @override
+  void initState() {
+    checkLogin();
+    super.initState();
+  }
+
+   void checkLogin() async {
+    // Get current user using UserManager
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
     });
   }
 
@@ -161,77 +183,104 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (cintext, index) {
-                  return Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        color: MyColors.white,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          // ignore: deprecated_member_use
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data![index].neno!,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
-                              wordSpacing: 1.5,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: MyColors.primaryLight,
+                              width: 4,
                             ),
                           ),
-                          manualStepper(step: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: MyColors.primaryLight,
-                                    size: 15,
-                                  ),
-                                  manualSpacer(step: 5),
-                                  Text(
-                                    snapshot.data![index].tarehe!,
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                      wordSpacing: 1.5,
-                                      color: MyColors.primaryLight,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                snapshot.data![index].neno!,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.3,
+                                  height: 1.5,
+                                  color: Colors.black87,
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.person,
-                                    color: MyColors.primaryLight,
-                                    size: 15,
-                                  ),
-                                  manualSpacer(step: 5),
-                                  Text(
-                                    "@mchungaji",
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                      wordSpacing: 1.5,
-                                      color: MyColors.primaryLight,
+                              manualStepper(step: 12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[50],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.calendar_today_rounded,
+                                          color: MyColors.primaryLight,
+                                          size: 16,
+                                        ),
+                                        manualSpacer(step: 8),
+                                        Text(
+                                          snapshot.data![index].tarehe!,
+                                          style: GoogleFonts.montserrat(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColors.primaryLight,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      height: 20,
+                                      width: 1,
+                                      color: Colors.grey[300],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.person_rounded,
+                                          color: MyColors.primaryLight,
+                                          size: 16,
+                                        ),
+                                        manualSpacer(step: 8),
+                                        Text(
+                                          "@mchungaji",
+                                          style: GoogleFonts.montserrat(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColors.primaryLight,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   );
