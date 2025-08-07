@@ -9,8 +9,9 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:lottie/lottie.dart';
 
-List<dynamic> videoList = [];
+List<VideoKwaya> videoList = [];
 late List<YoutubePlayerController> _controllers;
 
 /// Creates list of video players
@@ -27,7 +28,7 @@ class VideoListScreen extends StatefulWidget {
 
 class _VideoListScreenState extends State<VideoListScreen> {
   bool load = false;
-  Future<List<dynamic>> getVideoKwaya() async {
+  Future<List<VideoKwaya>> getVideoKwaya() async {
     setState(() {
       load = true;
     });
@@ -37,38 +38,38 @@ class _VideoListScreenState extends State<VideoListScreen> {
     try {
       final response = await http.post(Uri.parse(myApi), headers: {
         'Accept': 'application/json',
-      }, body: {
+      }, body: jsonEncode(
+        {
         "kwaya_id": '${widget.kwayaid}',
-      });
+        "kanisa_id": '1',
+      }
+      ));
+
 
       // ignore: prefer_typing_uninitialized_variables
-      var tangazo;
+      var videos;
 
       if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404) {
-          var json = jsonDecode(response.body);
-          tangazo = json;
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+
+          videos = (json['data'] as List)
+              .map((item) => VideoKwaya.fromJson(item))
+              .toList();
+
+        setState(() {
+          videoList = videos;
+          load = false;
+        });
         }
       }
-
-      videoList.clear();
-
-      tangazo.forEach(
-        (element) {
-          VideoKwaya video = VideoKwaya.fromJson(element);
-          videoList.add(video.videoId);
-        },
-      );
-
-      setState(() {
-        load = false;
-      });
-
-      setState(() {
-        videoList = videoList;
-      });
-      return videoList;
+    }
+      return videos;
     } catch (e) {
       return [];
     }
@@ -77,26 +78,56 @@ class _VideoListScreenState extends State<VideoListScreen> {
   @override
   void initState() {
     super.initState();
-    // videoList.clear();
-    getVideoKwaya();
-    _controllers = videoList
-        .map<YoutubePlayerController>(
-          (videoId) => YoutubePlayerController(
-            initialVideoId: videoId,
-            flags: const YoutubePlayerFlags(
-              autoPlay: false,
-            ),
-          ),
-        )
-        .toList();
+    getVideoKwaya().then((_) {
+      if (mounted) {
+        setState(() {
+          _controllers = videoList
+              .map<YoutubePlayerController>(
+                (videoId) {
+                  return YoutubePlayerController(
+                  initialVideoId: videoId.videoId.toString(),
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: false,
+                     disableDragSeek: false,
+                      loop: false,
+                      isLive: false,
+                      forceHD: false,
+                      enableCaption: true,
+                  ),
+                );
+              })
+              .toList();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      backgroundColor: Colors.grey[100],
       navigationBar: CupertinoNavigationBar(
+        // ignore: deprecated_member_use
+        backgroundColor: Colors.white.withOpacity(0.9),
+        border: const Border(
+          bottom: BorderSide(
+            color: Colors.transparent,
+            width: 0.0,
+          ),
+        ),
         leading: GestureDetector(
-          child: const Icon(Icons.arrow_back_ios),
+          child:  Icon(
+            Icons.arrow_back_ios,
+            color: MyColors.primaryLight,
+          ),
           onTap: () {
             Navigator.pop(context);
           },
@@ -118,35 +149,107 @@ class _VideoListScreenState extends State<VideoListScreen> {
           ),
         ),
       ),
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            elevation: 5,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: YoutubePlayer(
-                key: ObjectKey(_controllers[index]),
-                controller: _controllers[index],
-                actionsPadding: const EdgeInsets.only(left: 16.0),
-                bottomActions: const [
-                  CurrentPosition(),
-                  SizedBox(width: 10.0),
-                  ProgressBar(isExpanded: true),
-                  SizedBox(width: 10.0),
-                  RemainingDuration(),
-                  FullScreenButton(),
-                ],
+      child: load 
+          ? Center(
+              child: Lottie.asset(
+                'assets/animation/loading.json',
+                width: 200,
+                height: 200,
               ),
-            ),
-          );
-        },
-        itemCount: _controllers.length,
-        separatorBuilder: (context, _) => const SizedBox(height: 10.0),
-      ),
+            )
+          : videoList.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        'assets/animation/nodata.json',
+                        width: 200,
+                        height: 200,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'No videos available',
+                        style: TextStyles.subtitle(context).copyWith(
+                          color: MyColors.primaryLight,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    transform: Matrix4.translationValues(0, 0, 0)
+                      ..scale(1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                        // ignore: deprecated_member_use
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                        ),
+                      ],
+                      ),
+                      child: Card(
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      elevation: 0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Column(
+                        children: [
+                          Text(_controllers[index].metadata.title),
+                          YoutubePlayer(
+                          key: ObjectKey(_controllers[index]),
+                          controller: _controllers[index],
+                          actionsPadding: const EdgeInsets.only(left: 16.0),
+                          bottomActions: [
+                            const CurrentPosition(),
+                            const SizedBox(width: 10.0),
+                            const ProgressBar(isExpanded: true),
+                            const SizedBox(width: 10.0),
+                            const RemainingDuration(),
+                            Container(
+                            margin: const EdgeInsets.only(right: 8.0),
+                            child: const FullScreenButton(),
+                            ),
+                          ],
+                          ),
+                          Container(
+                          padding: const EdgeInsets.all(12.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              // ignore: deprecated_member_use
+                              Colors.black.withOpacity(0.05),
+                            ],
+                            ),
+                          ),
+                          ),
+                        ],
+                        ),
+                      ),
+                      ),
+                    ),
+                    );
+                  },
+                  itemCount: _controllers.length,
+                  separatorBuilder: (context, _) => const SizedBox(height: 16.0),
+                  ),
+                )
     );
   }
 }
