@@ -158,6 +158,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                 end: Alignment.bottomCenter,
                 colors: [
                   MyColors.primaryLight.withOpacity(0.15),
+                  Colors.transparent,
                 ],
               ),
             ),
