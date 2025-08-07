@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, deprecated_member_use
 
 import 'dart:convert';
 
@@ -23,32 +23,37 @@ class ViongoziJumuiya extends StatefulWidget {
 }
 
 class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
+
   Future<List<ViongoziJumuiyaPodo>> getWatumishiWasharika() async {
     String myApi = "${ApiUrl.BASEURL}get_jumuiya_viongozi_id.php";
     final response = await http.post(
       Uri.parse(myApi),
-      body: {
+      body: jsonEncode({
         "jumuiya_id": widget.jumuiya.id,
-      },
+      }),
       headers: {
         'Accept': 'application/json',
       },
     );
 
+
+
     var barazaList = <ViongoziJumuiyaPodo>[];
-    var baraza = [];
+
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        baraza = json;
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          barazaList = (json['data'] as List)
+              .map((item) => ViongoziJumuiyaPodo.fromJson(item))
+              .toList();
+        }
       }
-    }
-
-    for (var element in baraza) {
-      ViongoziJumuiyaPodo video = ViongoziJumuiyaPodo.fromJson(element);
-      barazaList.add(video);
     }
     return barazaList;
   }
@@ -118,7 +123,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                   ),
                 ),
               );
-            } else if (snapshot.hasError || !snapshot.hasData) {
+            } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
               return RefreshIndicator(
                 onRefresh: _pullRefresh,
                 child: Center(
@@ -159,151 +164,113 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
-                  return Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ExpansionTileCard(
-                      baseColor: MyColors.white,
-                      expandedColor: Colors.red[50],
-                      // key: "$cardA",
-                      leading: CircleAvatar(
-                        backgroundColor: MyColors.white,
-                        radius: 25,
-                        child: Image.asset("assets/images/profile.png"),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                    child: Card(
+                      elevation: 3,
+                      shadowColor: MyColors.primaryLight.withOpacity(0.2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      title: Text(snapshot.data![index].fname!),
-                      subtitle: Text(snapshot.data![index].wadhifa!),
-                      children: <Widget>[
-                        const Divider(
-                          thickness: 1.0,
-                          height: 1.0,
+                      child: ExpansionTileCard(
+                        baseColor: MyColors.white,
+                        expandedColor: Colors.red[50],
+                        elevation: 0,
+                        leading: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: MyColors.primaryLight.withOpacity(0.2)),
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: MyColors.white,
+                            radius: 25,
+                            child: Image.asset("assets/images/profile.png"),
+                          ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 8.0,
-                            ),
+                        title: Text(
+                          snapshot.data![index].fname!,
+                          style: TextStyles.headline(context).copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Text(
+                          snapshot.data![index].wadhifa!,
+                          style: TextStyles.caption(context).copyWith(
+                            color: MyColors.primaryLight.withOpacity(0.7),
+                          ),
+                        ),
+                        children: <Widget>[
+                          const Divider(thickness: 1.0, height: 1.0),
+                          Container(
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "${snapshot.data![index].wadhifa} : ",
-                                      style: TextStyles.caption(context).copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyColors.primaryLight,
-                                      ),
-                                    ),
-                                    manualSpacer(step: 5),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          snapshot.data![index].fname!,
-                                          style: TextStyles.caption(context).copyWith(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: MyColors.primaryLight,
+                                _buildInfoRow(
+                                  context,
+                                  leading: Row(
+                                    children: [
+                                      // Text(
+                                      //   "${snapshot.data![index].wadhifa} : ",
+                                      //   style: TextStyles.caption(context).copyWith(
+                                      //     fontSize: 15,
+                                      //     fontWeight: FontWeight.w600,
+                                      //     color: MyColors.primaryLight,
+                                      //   ),
+                                      // ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot.data![index].fname!,
+                                            style: TextStyles.body2(context),
                                           ),
-                                        ),
-                                        Text(
-                                          snapshot.data![index].phoneNo!,
-                                          style: TextStyles.caption(context).copyWith(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: MyColors.primaryLight,
+                                          Text(
+                                            snapshot.data![index].phoneNo!,
+                                            style: TextStyles.body2(context),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    manualSpacer(step: 5),
-                                    InkWell(
-                                      onTap: () {
-                                        // ignore: deprecated_member_use
-                                        launch("tel://${snapshot.data![index].phoneNo}");
-                                      },
-                                      child: CircleAvatar(
-                                        backgroundColor: MyColors.primaryLight,
-                                        radius: 20,
-                                        child: const Icon(
-                                          Icons.call,
-                                          size: 20,
-                                          color: MyColors.white,
-                                        ),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                                manualStepper(step: 5),
-                                const Divider(
-                                  thickness: 2,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Jina La Jumuiya: ",
-                                      style: TextStyles.caption(context).copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
+                                    ],
+                                  ),
+                                  trailing: InkWell(
+                                    // ignore: deprecated_member_use
+                                    onTap: () => launch("tel://${snapshot.data![index].phoneNo}"),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
                                         color: MyColors.primaryLight,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            // ignore: deprecated_member_use
+                                            color: MyColors.primaryLight.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
                                       ),
+                                      child: const Icon(Icons.call, color: MyColors.white, size: 20),
                                     ),
-                                    manualSpacer(step: 5),
-                                    Text(
-                                      snapshot.data![index].jumuiya!,
-                                      style: TextStyles.caption(context).copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyColors.primaryLight,
-                                      ),
-                                    ),
-                                    manualSpacer(step: 5),
-                                  ],
+                                  ),
                                 ),
-                                const Divider(
-                                  thickness: 2,
+                                const Divider(height: 24),
+                                _buildInfoRow(
+                                  context,
+                                  label: "Jina La Jumuiya",
+                                  value: snapshot.data![index].jumuiya!,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Tarehe ya kuadiwa ",
-                                      style: TextStyles.caption(context).copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyColors.primaryLight,
-                                      ),
-                                    ),
-                                    manualSpacer(step: 5),
-                                    Text(
-                                      snapshot.data![index].tarehe!,
-                                      style: TextStyles.caption(context).copyWith(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: MyColors.primaryLight,
-                                      ),
-                                    ),
-                                    manualSpacer(step: 5),
-                                  ],
+                                const Divider(height: 24),
+                                _buildInfoRow(
+                                  context,
+                                  label: "Tarehe ya kuadiwa",
+                                  value: snapshot.data![index].tarehe!,
                                 ),
-                                const Divider(
-                                  thickness: 3,
-                                )
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -316,4 +283,44 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
       ),
     );
   }
+
+   Widget _buildInfoRow(
+                    BuildContext context, {
+                    Widget? leading,
+                    String? label,
+                    String? value,
+                    Widget? trailing,
+                  }) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (leading != null) 
+                          Expanded(child: leading)
+                        else
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (label != null)
+                                  Text(
+                                    label,
+                                    style: TextStyles.caption(context).copyWith(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                if (value != null)
+                                  Text(
+                                    value,
+                                    style: TextStyles.body2(context).copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        if (trailing != null) 
+                          trailing,
+                      ],
+                    );
+                  }
 }
