@@ -4,10 +4,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/models/video_kwaya.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
+import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:lottie/lottie.dart';
 
@@ -28,6 +30,18 @@ class VideoListScreen extends StatefulWidget {
 
 class _VideoListScreenState extends State<VideoListScreen> {
   bool load = false;
+
+   BaseUser? currentUser;
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      currentUser = await UserManager.getCurrentUser();
+      setState(() {});
+    } catch (e) {
+      // Handle error
+    }
+  }
+  
   Future<List<VideoKwaya>> getVideoKwaya() async {
     setState(() {
       load = true;
@@ -41,7 +55,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       }, body: jsonEncode(
         {
         "kwaya_id": '${widget.kwayaid}',
-        "kanisa_id": '1',
+        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
       }
       ));
 
@@ -78,6 +92,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
   @override
   void initState() {
     super.initState();
+    _loadCurrentUser();
     getVideoKwaya().then((_) {
       if (mounted) {
         setState(() {

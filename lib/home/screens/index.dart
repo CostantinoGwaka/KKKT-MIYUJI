@@ -226,12 +226,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   final menuList = <Map<String, dynamic>>[
-    {
-      'name': 'MAZUNGUMZO',
-      'image': 'assets/images/testimonials.png',
-      'selected': false,
-      'pushTo': 'MAZUNGUMZO',
-    },
+    // {
+    //   'name': 'MAZUNGUMZO',
+    //   'image': 'assets/images/testimonials.png',
+    //   'selected': false,
+    //   'pushTo': 'MAZUNGUMZO',
+    // },
     {
       'name': 'MATANGAZO',
       'image': 'assets/images/announcement.png',
