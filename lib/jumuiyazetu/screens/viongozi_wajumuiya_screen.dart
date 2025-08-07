@@ -9,7 +9,6 @@ import 'package:kanisaapp/models/viongozi_jumuiya.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
-import 'package:kanisaapp/utils/spacer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -234,7 +233,6 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ],
                                   ),
                                   trailing: InkWell(
-                                    // ignore: deprecated_member_use
                                     onTap: () => launch("tel://${snapshot.data![index].phoneNo}"),
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
@@ -243,7 +241,6 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            // ignore: deprecated_member_use
                                             color: MyColors.primaryLight.withOpacity(0.3),
                                             blurRadius: 8,
                                             offset: const Offset(0, 3),

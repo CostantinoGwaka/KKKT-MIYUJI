@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api,              ),
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api,              ),, deprecated_member_use, deprecated_member_use, deprecated_member_use, deprecated_member_use, deprecated_member_use
              // ignore: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
@@ -214,6 +214,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                 end: Alignment.centerRight,
                               ),
                               border: Border.all(
+                                // ignore: deprecated_member_use
                                 color: MyColors.primaryLight.withOpacity(0.3),
                                 width: 1.5,
                               ),
@@ -255,6 +256,7 @@ class _JumuiyaZetuState extends State<JumuiyaZetu> {
                                   padding: const EdgeInsets.only(right: 16.0),
                                   child: Icon(
                                     Icons.arrow_forward_ios,
+                                    // ignore: deprecated_member_use
                                     color: MyColors.primaryLight.withOpacity(0.5),
                                     size: 20,
                                   ),

@@ -1,8 +1,7 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, prefer_typing_uninitialized_variables, deprecated_member_use
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kanisaapp/models/user_models.dart';
@@ -78,7 +77,6 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              // ignore: deprecated_member_use
               MyColors.primaryLight.withOpacity(0.15),
               Colors.white,
               Colors.white,
@@ -120,7 +118,6 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              // ignore: deprecated_member_use
                               color: MyColors.primaryLight.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -223,7 +220,6 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                           ),
                                           child: CircleAvatar(
                                             radius: 30,
-                                            // ignore: deprecated_member_use
                                             backgroundColor: MyColors.primaryLight.withOpacity(0.1),
                                             child: Image.asset(
                                               "assets/images/useravatar.png",
