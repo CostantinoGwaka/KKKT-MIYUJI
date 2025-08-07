@@ -256,12 +256,12 @@ class _HomePageState extends State<HomePage> {
       'selected': false,
       'pushTo': 'JUMUIYA ZETU',
     },
-    {
-      'name': 'MUBASHARA',
-      'image': 'assets/images/youtube.png',
-      'selected': false,
-      'pushTo': 'MUBASHARA',
-    }
+    // {
+    //   'name': 'MUBASHARA',
+    //   'image': 'assets/images/youtube.png',
+    //   'selected': false,
+    //   'pushTo': 'MUBASHARA',
+    // }
   ];
 
   // Navigate based on menu selection

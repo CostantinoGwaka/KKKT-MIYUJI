@@ -50,6 +50,9 @@ class _VideoListScreenState extends State<VideoListScreen> {
     String myApi = "${ApiUrl.BASEURL}get_video_kwaya.php/";
 
     try {
+
+      await _loadCurrentUser();
+
       final response = await http.post(Uri.parse(myApi), headers: {
         'Accept': 'application/json',
       }, body: jsonEncode(
@@ -59,6 +62,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       }
       ));
 
+      
 
       // ignore: prefer_typing_uninitialized_variables
       var videos;
