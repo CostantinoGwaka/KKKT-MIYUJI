@@ -11,7 +11,7 @@ import 'package:kanisaapp/utils/user_manager.dart';
 import '../models/akaunti_model.dart';
 
 class AkauntiZaKanisaScreen extends StatefulWidget {
-  const AkauntiZaKanisaScreen({Key? key}) : super(key: key);
+  const AkauntiZaKanisaScreen({super.key});
 
   @override
   State<AkauntiZaKanisaScreen> createState() => _AkauntiZaKanisaScreenState();

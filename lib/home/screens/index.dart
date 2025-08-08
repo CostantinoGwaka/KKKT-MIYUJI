@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, depend_on_referenced_packages, prefer_typing_uninitialized_variables, library_private_types_in_public_api
+// ignore_for_file: deprecated_member_use, depend_on_referenced_packages, prefer_typing_uninitialized_variables, library_private_types_in_public_api, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -565,11 +565,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _buildMatoleoButton(),
             ],
-            if (currentUser != null) ...[
+            if (currentUser != null && currentUser!.userType == 'ADMIN') ...[
               const SizedBox(height: 20),
               _buildAkauntiButton(),
             ],
-            if (currentUser != null) ...[
+            if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
               const SizedBox(height: 20),
               _buildWadhifaButton(),
             ],
@@ -846,90 +846,192 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMatoleoButton() {
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const MatoleoScreen()),
-          );
-        },
-        icon: const Icon(Icons.account_balance_wallet, size: 18),
-        label: Text(
-          'Matoleo yako',
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            MyColors.primaryLight,
+            Color(0xFF4A90E2), // Add a complementary blue color
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: MyColors.primaryLight,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: MyColors.primaryLight.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          elevation: 0,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const MatoleoScreen()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.account_balance_wallet_rounded,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Matoleo Yako',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildAkauntiButton(){
-     return SizedBox(
+    return Container(
       width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
-          );
-        },
-        icon: const Icon(Icons.account_balance_wallet, size: 18),
-        label: Text(
-          'Akaunti za kanisa',
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            MyColors.primaryLight,
+            Color(0xFF4A90E2), // Add a complementary blue color
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: MyColors.primaryLight,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: MyColors.primaryLight.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          elevation: 0,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.account_balance_rounded,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Akaunti za Kanisa',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildWadhifaButton(){
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const WadhifaScreen()),
-          );
-        },
-        icon: const Icon(Icons.people_outline, size: 18),
-        label: Text(
-          'Nyadhifa Za Uongozi',
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            MyColors.primaryLight,
+            Color(0xFF4A90E2), // Add a complementary blue color
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: MyColors.primaryLight,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: MyColors.primaryLight.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          elevation: 0,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const WadhifaScreen()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.people_outline,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Nyadhifa Za Uongozi',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

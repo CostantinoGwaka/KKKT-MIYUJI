@@ -511,7 +511,10 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : error != null
+          : RefreshIndicator(
+            onRefresh: fetchWadhifa,
+            child:
+          error != null
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -710,6 +713,6 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                         );
                       },
                     ),
-    );
+    ),);
   }
 }
