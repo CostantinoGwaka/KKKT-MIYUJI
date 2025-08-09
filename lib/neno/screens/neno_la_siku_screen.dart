@@ -13,9 +13,10 @@ import 'package:lottie/lottie.dart';
 import '../../models/neno_lasiku.dart';
 
 class NenoLaSikuScreen extends StatefulWidget {
-  const NenoLaSikuScreen({Key? key}) : super(key: key);
+  const NenoLaSikuScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NenoLaSikuScreenState createState() => _NenoLaSikuScreenState();
 }
 
@@ -115,14 +116,21 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+
+        if (jsonResponse['status'] == 200) {
           _nenoController.clear();
           nenoUpdateId = null; // Reset the update ID after adding
           _loadNenoLaSiku();
+         
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Neno la siku limeongezwa kikamilifu')),
-          );
+                              SnackBar(
+                                content: Text(
+                                  'Neno la siku limeongezwa kikamilifu',
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -152,12 +160,10 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
         title: Text(
           'Neno la Siku',
           style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+              fontWeight: FontWeight.w600, color: MyColors.darkText),
         ),
-        centerTitle: true,
-        backgroundColor: MyColors.primaryLight,
+        backgroundColor: MyColors.white,
+        foregroundColor: MyColors.darkText,
       ),
       body: Column(
         children: [
