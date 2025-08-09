@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
 import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
 import 'package:kanisaapp/chatroom/screen/chat_screen.dart';
@@ -611,6 +612,13 @@ class _HomePageState extends State<HomePage> {
                     title: 'Jumuiya za Kanisa',
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => const JumuiyaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Makatibu Jumuiya',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const MakatibunJumuiyaScreen()),
                     ),
                   ),
                 ],
