@@ -21,6 +21,7 @@ class NenoLaSikuScreen extends StatefulWidget {
 
 class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
   final TextEditingController _nenoController = TextEditingController();
+  String? nenoUpdateId;
   bool _isLoading = false;
   List<NenoLaSikuData> _nenoList = [];
   BaseUser? currentUser;
@@ -56,17 +57,20 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
         }),
       );
 
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200' && jsonResponse['data'] != null) {
           setState(() {
             if (jsonResponse['data'] is List) {
-              _nenoList = (jsonResponse['data'] as List)
-                  .map((item) => NenoLaSikuData.fromJson(item))
-                  .toList();
+              setState(() {
+                _nenoList = (jsonResponse['data'] as List)
+                    .map((item) => NenoLaSikuData.fromJson(item))
+                    .toList();
+              });
             } else {
-              _nenoList = [NenoLaSikuData.fromJson(jsonResponse['data'])];
+              setState(() {
+                _nenoList = [NenoLaSikuData.fromJson(jsonResponse['data'])];
+              });
             }
           });
         }
@@ -95,13 +99,15 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
     });
 
     try {
-      String myApi = "${ApiUrl.BASEURL}api2/neno_la_siku/ongeza_neno_la_siku.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/neno_la_siku/ongeza_neno_la_siku.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
           'Accept': 'application/json',
         },
         body: jsonEncode({
+          "id": nenoUpdateId,
           "neno": _nenoController.text,
           "kanisa_id": currentUser?.kanisaId ?? '',
         }),
@@ -111,13 +117,17 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
           _nenoController.clear();
+          nenoUpdateId = null; // Reset the update ID after adding
           _loadNenoLaSiku();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Neno la siku limeongezwa kikamilifu')),
+            const SnackBar(
+                content: Text('Neno la siku limeongezwa kikamilifu')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(jsonResponse['message'] ?? 'Kuna tatizo, jaribu tena')),
+            SnackBar(
+                content: Text(
+                    jsonResponse['message'] ?? 'Kuna tatizo, jaribu tena')),
           );
         }
       }
@@ -158,6 +168,11 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                 children: [
                   TextField(
                     controller: _nenoController,
+                    onChanged: (value) {
+                      setState(() {
+                        // This will trigger a rebuild when text changes
+                      });
+                    },
                     decoration: InputDecoration(
                       labelText: 'Andika Neno la Siku',
                       border: OutlineInputBorder(
@@ -169,26 +184,40 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                     maxLines: 3,
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _addNenoLaSiku,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyColors.primaryLight,
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: _isLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  _nenoController.text.isNotEmpty
+                      ? ElevatedButton(
+                          onPressed: _isLoading ? null : _addNenoLaSiku,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.primaryLight,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          )
-                        : const Text('Ongeza Neno'),
-                  ),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Text(
+                                  'Ongeza Neno',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ))
+                      : const Text(
+                          'Andika Neno la Siku',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -244,12 +273,73 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    neno.neno ?? '',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      height: 1.5,
-                                    ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          neno.neno ?? '',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            height: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                      if (currentUser?.userType == 'ADMIN') ...[
+                                        PopupMenuButton<String>(
+                                          icon: const Icon(Icons.more_vert),
+                                          onSelected: (value) {
+                                            if (value == 'edit') {
+                                              _showEditDialog(neno);
+                                            } else if (value == 'delete') {
+                                              _showDeleteConfirmationDialog(
+                                                  neno);
+                                            }
+                                          },
+                                          itemBuilder: (BuildContext context) =>
+                                              [
+                                            PopupMenuItem(
+                                              value: 'edit',
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.edit,
+                                                    size: 20,
+                                                    color:
+                                                        MyColors.primaryLight,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    'Badili',
+                                                    style:
+                                                        GoogleFonts.poppins(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 'delete',
+                                              child: Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.delete,
+                                                    size: 20,
+                                                    color: Colors.red,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    'Futa',
+                                                    style:
+                                                        GoogleFonts.poppins(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ],
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -265,6 +355,106 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                           );
                         },
                       ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteNenoLaSiku(int? id) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      String myApi =
+          "${ApiUrl.BASEURL}api2/neno_la_siku/delete_neno_la_siku.php";
+      final response = await http.post(
+        Uri.parse(myApi),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          "id": id,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse['status'] == '200') {
+          _loadNenoLaSiku();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Neno la siku limefutwa kikamilifu')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(
+                    jsonResponse['message'] ?? 'Kuna tatizo, jaribu tena')),
+          );
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error deleting neno la siku: $e");
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Kuna tatizo, jaribu tena baadae')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showEditDialog(NenoLaSikuData neno) {
+    _nenoController.text = neno.neno ?? '';
+    nenoUpdateId = neno.id.toString();
+  }
+
+  void _showDeleteConfirmationDialog(NenoLaSikuData neno) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Futa Neno la Siku',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          'Una uhakika unataka kufuta neno hili?',
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Ghairi',
+              style: GoogleFonts.poppins(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _deleteNenoLaSiku(neno.id);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              'Futa',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
