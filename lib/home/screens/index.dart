@@ -569,24 +569,52 @@ class _HomePageState extends State<HomePage> {
               _buildMatoleoButton(),
             ],
             if (currentUser != null && currentUser!.userType == 'ADMIN') ...[
-              const SizedBox(height: 20),
-              _buildAkauntiButton(),
-            ],
-            if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
-              const SizedBox(height: 20),
-              _buildWadhifaButton(),
-            ],
-            if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
-              const SizedBox(height: 20),
-              _buildNenoLaSikuButton(),
-            ],
-            if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
-              const SizedBox(height: 20),
-              _buildKamatiButton(),
-            ],
-             if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
-              const SizedBox(height: 20),
-              _buildJumuiyaButton(),
+              const SizedBox(height: 10),
+              GridView.count(
+                padding: EdgeInsets.zero,
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildAdminGridButton(
+                    icon: Icons.account_balance_rounded,
+                    title: 'Akaunti za Kanisa',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.people_outline,
+                    title: 'Nyadhifa Za Uongozi',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const WadhifaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.book_outlined,
+                    title: 'Neno la Siku',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const NenoLaSikuScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Kamati za Kanisa',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const KamatiScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Jumuiya za Kanisa',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const JumuiyaScreen()),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ],
         ),
@@ -924,317 +952,56 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAkauntiButton(){
+  Widget _buildAdminGridButton({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return Container(
-      width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(
           colors: [
             MyColors.primaryLight,
-            Color(0xFF4A90E2), // Add a complementary blue color
+            Color(0xFF4A90E2),
           ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 4),
+            color: MyColors.primaryLight.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
-            );
-          },
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Row(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.account_balance_rounded,
-                  size: 20,
+                Icon(
+                  icon,
+                  size: 32,
                   color: Colors.white,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(height: 8),
                 Text(
-                  'Akaunti za Kanisa',
+                  title,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 15,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    letterSpacing: 0.5,
+                    height: 1.2,
                   ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildJumuiyaButton(){
-     return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            MyColors.primaryLight,
-            Color(0xFF4A90E2), // Add a complementary blue color
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const JumuiyaScreen()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.groups_outlined,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Jumuiya za Kanisa',
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildKamatiButton(){
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            MyColors.primaryLight,
-            Color(0xFF4A90E2), // Add a complementary blue color
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const KamatiScreen()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.groups_outlined,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Kamati za Kanisa',
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNenoLaSikuButton(){
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            MyColors.primaryLight,
-            Color(0xFF4A90E2), // Add a complementary blue color
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const NenoLaSikuScreen()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.book_outlined,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Neno la Siku',
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWadhifaButton(){
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            MyColors.primaryLight,
-            Color(0xFF4A90E2), // Add a complementary blue color
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const WadhifaScreen()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.people_outline,
-                  size: 20,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Nyadhifa Za Uongozi',
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
                 ),
               ],
             ),
