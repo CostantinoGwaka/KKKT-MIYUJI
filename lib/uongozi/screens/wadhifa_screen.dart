@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:lottie/lottie.dart';
 
 class WadhifaScreen extends StatefulWidget {
   const WadhifaScreen({super.key});
@@ -18,9 +19,12 @@ class WadhifaScreen extends StatefulWidget {
 }
 
 class _WadhifaScreenState extends State<WadhifaScreen> {
-  List<Map<String, dynamic>> wadhifa = [];
-  bool isLoading = true;
-  String? error;
+  final _wadhifa = <Map<String, dynamic>>[];
+  final _filteredWadhifa = <Map<String, dynamic>>[];
+  final _searchController = TextEditingController();
+  var _isLoading = true;
+  var _isSearching = false;
+  String? _error;
 
   @override
   void initState() {
@@ -28,16 +32,41 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
     fetchWadhifa();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterWadhifa(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredWadhifa.clear();
+        _filteredWadhifa.addAll(_wadhifa);
+      } else {
+        final searchLower = query.toLowerCase();
+        _filteredWadhifa.clear();
+        _filteredWadhifa.addAll(
+          _wadhifa.where((item) {
+            final wadhifaName = item['jina_wadhifa']?.toString().toLowerCase() ?? '';
+            return wadhifaName.contains(searchLower);
+          }),
+        );
+      }
+    });
+  }
+
   Future<void> fetchWadhifa() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
+      _error = null;
     });
     try {
       final currentUser = await UserManager.getCurrentUser();
       if (currentUser == null) {
         setState(() {
-          error = "User not logged in";
-          isLoading = false;
+          _error = "User not logged in";
+          _isLoading = false;
         });
         return;
       }
@@ -54,20 +83,24 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
+          final newWadhifa = List<Map<String, dynamic>>.from(jsonResponse['data']);
           setState(() {
-            wadhifa = List<Map<String, dynamic>>.from(jsonResponse['data']);
-            isLoading = false;
+            _wadhifa.clear();
+            _wadhifa.addAll(newWadhifa);
+            _filteredWadhifa.clear();
+            _filteredWadhifa.addAll(_wadhifa);
+            _isLoading = false;
           });
         } else {
           setState(() {
-            error = jsonResponse['message'] ?? "Failed to load wadhifa";
-            isLoading = false;
+            _error = jsonResponse['message'] ?? "Failed to load wadhifa";
+            _isLoading = false;
           });
         }
       } else {
         setState(() {
-          error = "Server error";
-          isLoading = false;
+          _error = "Server error";
+          _isLoading = false;
         });
       }
     } catch (e) {
@@ -75,8 +108,8 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
         print("Error fetching wadhifa: $e");
       }
       setState(() {
-        error = "Failed to connect to server";
-        isLoading = false;
+        _error = "Failed to connect to server";
+        _isLoading = false;
       });
     }
   }
@@ -111,13 +144,13 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
               onPressed: () async {
                 try {
                   setState(() {
-                    isLoading = true;
+                    _isLoading = true;
                   });
                   final currentUser = await UserManager.getCurrentUser();
                   if (currentUser == null) {
                     Navigator.pop(context);
                     setState(() {
-                      isLoading = false;
+                      _isLoading = false;
                     });
                     return;
                   }
@@ -137,7 +170,7 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                       if (mounted) {
                         Navigator.pop(context);
                         setState(() {
-                          wadhifa.removeWhere(
+                          _wadhifa.removeWhere(
                               (item) => item['id'] == wadhifaItem['id']);
                         });
                         fetchWadhifa(); // Refresh the list
@@ -502,20 +535,68 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       appBar: AppBar(
-        title: Text(
-          'Nyadhifa Za Uongozi',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: MyColors.darkText),
-        ),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta wadhifa...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterWadhifa,
+              )
+            : Text(
+                'Nyadhifa Za Uongozi',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _isSearching = false;
+                  _searchController.clear();
+                  _filteredWadhifa.clear();
+                  _filteredWadhifa.addAll(_wadhifa);
+                } else {
+                  _isSearching = true;
+                }
+              });
+            },
+          ),
+        ],
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+      body: _isLoading
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 100,
+                    child: Lottie.asset(
+                      'assets/animation/loading.json',
+                      height: 100,
+                    ),
+                  ),
+                  Text(
+                    'Inapakia...',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            )
           : RefreshIndicator(
             onRefresh: fetchWadhifa,
             child:
-          error != null
+          _error != null
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -527,7 +608,7 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        error!,
+                        _error!,
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.grey.shade700,
@@ -537,8 +618,8 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            isLoading = true;
-                            error = null;
+                            _isLoading = true;
+                            _error = null;
                           });
                           fetchWadhifa();
                         },
@@ -556,7 +637,7 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                     ],
                   ),
                 )
-              : wadhifa.isEmpty
+              : _filteredWadhifa.isEmpty
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -579,9 +660,9 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: wadhifa.length,
+                      itemCount: _filteredWadhifa.length,
                       itemBuilder: (context, index) {
-                        final wadhifaItem = wadhifa[index];
+                        final wadhifaItem = _filteredWadhifa[index];
                         return Container(
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
