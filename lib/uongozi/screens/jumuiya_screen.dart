@@ -19,10 +19,26 @@ class JumuiyaScreen extends StatefulWidget {
 
 class _JumuiyaScreenState extends State<JumuiyaScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<JumuiyaData> jumuiya = [];
+  List<JumuiyaData> filteredJumuiya = [];
   bool isLoading = true;
+  bool _isSearching = false;
+  String _searchQuery = '';
   String? error;
   BaseUser? currentUser;
+
+  void _filterJumuiya() {
+    if (_searchQuery.isEmpty) {
+      filteredJumuiya = List.from(jumuiya);
+    } else {
+      filteredJumuiya = jumuiya
+          .where((item) => item.jumuiyaName
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+  }
 
   @override
   void initState() {
@@ -41,6 +57,7 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -79,6 +96,7 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
             jumuiya = (jsonResponse['data'] as List)
                 .map((item) => JumuiyaData.fromJson(item))
                 .toList();
+            filteredJumuiya = List.from(jumuiya);
             isLoading = false;
           });
         } else {
@@ -483,13 +501,43 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       appBar: AppBar(
-        title: Text(
+        title: _isSearching ? TextField(
+          controller: _searchController,
+          style: GoogleFonts.poppins(color: MyColors.darkText),
+          decoration: InputDecoration(
+            hintText: 'Tafuta jumuiya...',
+            hintStyle: GoogleFonts.poppins(color: Colors.grey),
+            border: InputBorder.none,
+          ),
+          onChanged: (value) {
+            setState(() {
+              _searchQuery = value;
+              _filterJumuiya();
+            });
+          },
+          autofocus: true,
+        ) : Text(
           'Jumuiya Za Kanisa',
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600, color: MyColors.darkText),
         ),
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.clear : Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  _searchQuery = '';
+                  _filterJumuiya();
+                }
+              });
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -559,9 +607,9 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.all(16),
-                          itemCount: jumuiya.length,
+                          itemCount: filteredJumuiya.length,
                           itemBuilder: (context, index) {
-                            final jumuiyaItem = jumuiya[index];
+                            final jumuiyaItem = filteredJumuiya[index];
                             return Container(
                               margin: const EdgeInsets.only(bottom: 16),
                               decoration: BoxDecoration(
