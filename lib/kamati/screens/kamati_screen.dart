@@ -22,13 +22,23 @@ class KamatiScreen extends StatefulWidget {
 class _KamatiScreenState extends State<KamatiScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _jinaKamatiController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
+  bool _isSearching = false;
   BaseUser? currentUser;
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
     checkLogin();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _jinaKamatiController.dispose();
+    super.dispose();
   }
 
   void checkLogin() async {
@@ -125,13 +135,41 @@ class _KamatiScreenState extends State<KamatiScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
        appBar: AppBar(
-        title: Text(
+        title: _isSearching ? TextField(
+          controller: _searchController,
+          style: GoogleFonts.poppins(color: MyColors.darkText),
+          decoration: InputDecoration(
+            hintText: 'Tafuta kamati...',
+            hintStyle: GoogleFonts.poppins(color: Colors.grey),
+            border: InputBorder.none,
+          ),
+          onChanged: (value) {
+            setState(() {
+              _searchQuery = value;
+            });
+          },
+          autofocus: true,
+        ) : Text(
           'Kamati za Kanisa',
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600, color: MyColors.darkText),
         ),
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.clear : Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _searchController.clear();
+                  _searchQuery = '';
+                }
+              });
+            },
+          ),
+        ],
       ),
       body: _isLoading
           ? const SizedBox(
@@ -509,12 +547,16 @@ class _KamatiScreenState extends State<KamatiScreen> {
           );
         }
 
+        final filteredKamati = snapshot.data!.where((kamati) {
+          return kamati.jinaKamati?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
+        }).toList();
+
         return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: snapshot.data!.length,
+          itemCount: filteredKamati.length,
           itemBuilder: (context, index) {
-            final kamati = snapshot.data![index];
+            final kamati = filteredKamati[index];
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
