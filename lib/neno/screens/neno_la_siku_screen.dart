@@ -22,9 +22,12 @@ class NenoLaSikuScreen extends StatefulWidget {
 
 class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
   final TextEditingController _nenoController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   String? nenoUpdateId;
   bool _isLoading = false;
+  bool isSearching = false;
   List<NenoLaSikuData> _nenoList = [];
+  List<NenoLaSikuData> _filteredNenoList = [];
   BaseUser? currentUser;
 
   @override
@@ -32,6 +35,7 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
     super.initState();
     _loadCurrentUser();
     _loadNenoLaSiku();
+    _filteredNenoList = _nenoList;
   }
 
   Future<void> _loadCurrentUser() async {
@@ -67,10 +71,12 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                 _nenoList = (jsonResponse['data'] as List)
                     .map((item) => NenoLaSikuData.fromJson(item))
                     .toList();
+                _filteredNenoList = _nenoList;
               });
             } else {
               setState(() {
                 _nenoList = [NenoLaSikuData.fromJson(jsonResponse['data'])];
+                _filteredNenoList = _nenoList;
               });
             }
           });
@@ -157,11 +163,38 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Neno la Siku',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: MyColors.darkText),
-        ),
+        title: isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta neno...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterNenoLaSiku,
+              )
+            : Text(
+                'Neno la Siku',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (isSearching) {
+                  isSearching = false;
+                  _searchController.clear();
+                  _filteredNenoList = _nenoList;
+                } else {
+                  isSearching = true;
+                }
+              });
+            },
+          ),
+        ],
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
@@ -241,7 +274,7 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                       ),
                     ),
                   )
-                : _nenoList.isEmpty
+                : _filteredNenoList.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -254,7 +287,9 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                               ),
                             ),
                             Text(
-                              'Hakuna neno la siku kwa sasa',
+                              isSearching
+                                  ? 'Hakuna matokeo ya kutafuta'
+                                  : 'Hakuna neno la siku kwa sasa',
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -264,10 +299,10 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _nenoList.length,
+                        itemCount: _filteredNenoList.length,
                         padding: const EdgeInsets.all(16),
                         itemBuilder: (context, index) {
-                          final neno = _nenoList[index];
+                          final neno = _filteredNenoList[index];
                           return Card(
                             elevation: 2,
                             margin: const EdgeInsets.only(bottom: 16),
@@ -467,9 +502,25 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
     );
   }
 
+  void _filterNenoLaSiku(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredNenoList = _nenoList;
+      });
+    } else {
+      setState(() {
+        _filteredNenoList = _nenoList
+            .where((neno) =>
+                neno.neno?.toLowerCase().contains(query.toLowerCase()) ?? false)
+            .toList();
+      });
+    }
+  }
+
   @override
   void dispose() {
     _nenoController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 }
