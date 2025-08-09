@@ -21,8 +21,11 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _jinaController = TextEditingController();
   final TextEditingController _nambaController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
+  bool isSearching = false;
   List<AkauntiModel> _akauntiList = [];
+  List<AkauntiModel> _filteredAkauntiList = [];
   BaseUser? currentUser;
 
   Future<void> _loadCurrentUser() async {
@@ -34,10 +37,23 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
+  void _filterAkauntiList(String query) {
+    setState(() {
+      _filteredAkauntiList = _akauntiList
+          .where((akaunti) =>
+              akaunti.jina.toLowerCase().contains(query.toLowerCase()) ||
+              akaunti.namba.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _fetchAkaunti();
+    _searchController.addListener(() {
+      _filterAkauntiList(_searchController.text);
+    });
   }
 
   Future<void> _fetchAkaunti() async {
@@ -61,6 +77,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
             _akauntiList = (jsonResponse['data'] as List)
                 .map((item) => AkauntiModel.fromJson(item))
                 .toList();
+            _filteredAkauntiList = _akauntiList;
           });
         }
       }
@@ -216,11 +233,38 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Akaunti za Kanisa',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: MyColors.darkText),
-        ),
+        title: isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta akaunti...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterAkauntiList,
+              )
+            : Text(
+                'Akaunti za Kanisa',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (isSearching) {
+                  isSearching = false;
+                  _searchController.clear();
+                  _filteredAkauntiList = _akauntiList;
+                } else {
+                  isSearching = true;
+                }
+              });
+            },
+          ),
+        ],
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
@@ -233,7 +277,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _fetchAkaunti,
-              child: _akauntiList.isEmpty
+              child: _filteredAkauntiList.isEmpty
                   ? Center(
                       child: Text(
                         'Hakuna akaunti zilizopatikana',
@@ -242,9 +286,9 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: _akauntiList.length,
+                      itemCount: _filteredAkauntiList.length,
                       itemBuilder: (context, index) {
-                        final akaunti = _akauntiList[index];
+                        final akaunti = _filteredAkauntiList[index];
                         return Container(
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
@@ -452,6 +496,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   void dispose() {
     _jinaController.dispose();
     _nambaController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 }
