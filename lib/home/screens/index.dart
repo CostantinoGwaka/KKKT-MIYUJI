@@ -22,6 +22,7 @@ import 'package:kanisaapp/neno/screens/neno_la_siku_screen.dart';
 import 'package:kanisaapp/ratiba/screens/index.dart';
 import 'package:kanisaapp/register_login/screens/login.dart';
 import 'package:kanisaapp/uongozi/screens/index.dart';
+import 'package:kanisaapp/uongozi/screens/jumuiya_screen.dart';
 import 'package:kanisaapp/uongozi/screens/wadhifa_screen.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
@@ -583,6 +584,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _buildKamatiButton(),
             ],
+             if (currentUser != null  && currentUser!.userType == 'ADMIN') ...[
+              const SizedBox(height: 20),
+              _buildJumuiyaButton(),
+            ],
           ],
         ),
       ),
@@ -962,6 +967,70 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 12),
                 Text(
                   'Akaunti za Kanisa',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildJumuiyaButton(){
+     return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            MyColors.primaryLight,
+            Color(0xFF4A90E2), // Add a complementary blue color
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: MyColors.primaryLight.withOpacity(0.3),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const JumuiyaScreen()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.groups_outlined,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Jumuiya za Kanisa',
                   style: GoogleFonts.poppins(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
