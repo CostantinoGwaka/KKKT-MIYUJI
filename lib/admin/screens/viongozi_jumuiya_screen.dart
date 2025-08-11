@@ -156,6 +156,14 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
     getJumuiya();
   }
 
+  Future<void> fetchData() async {
+    await Future.wait([
+      getViongoziJumuiya(),
+      getWadhifa(),
+      getJumuiya(),
+    ]);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -474,17 +482,16 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
       setState(() {
         isLoading = true;
       });
-
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 jsonResponse['message'],
                 style: GoogleFonts.poppins(),
               ),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.green,
             ),
           );
           setState(() {
@@ -492,6 +499,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
           });
           getViongoziJumuiya();
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -927,176 +937,182 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.black,
-                      ),
-                    ),
-                  )
-                : filteredViongoziList.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Lottie.asset(
-                              'assets/animation/nodata.json',
-                              height: 120,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'Hakuna viongozi waliopatikana',
-                              style: GoogleFonts.poppins(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
+      body: RefreshIndicator(
+        onRefresh: fetchData,
+        child: Column(
+          children: [
+            Expanded(
+              child: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.black,
                         ),
-                      )
-                    : ListView.builder(
-                        itemCount: filteredViongoziList.length,
-                        itemBuilder: (context, index) {
-                          final kiongozi = filteredViongoziList[index];
-                          return Card(
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                    kiongozi.fname,
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Wadhifa: ${kiongozi.wadhifa}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
-                                      ),
-                                      Text(
-                                        'Jumuiya: ${kiongozi.jumuiya}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
-                                      ),
-                                      Text(
-                                        'Simu: ${kiongozi.phoneNo}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
+                      ),
+                    )
+                  : filteredViongoziList.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset(
+                                'assets/animation/nodata.json',
+                                height: 120,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Hakuna viongozi waliopatikana',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.grey,
                                 ),
-                                Divider(height: 0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    // Edit button
-                                    TextButton.icon(
-                                      onPressed: () {
-                                        _showEditKiongoziDialog(kiongozi);
-                                      },
-                                      icon: Icon(Icons.edit,
-                                          size: 20, color: Colors.blue),
-                                      label: Text('Hariri',
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                              color: Colors.blue)),
-                                    ),
-                                    // Delete button
-                                    TextButton.icon(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                'Thibitisha!',
-                                                style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              content: Text(
-                                                'Una uhakika unataka kumfuta ${kiongozi.fname}?',
-                                                style: GoogleFonts.poppins(),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: Text(
-                                                    'Ghairi',
-                                                    style: GoogleFonts.poppins(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    deleteKiongozi(kiongozi.id);
-                                                  },
-                                                  child: Text(
-                                                    'Futa',
-                                                    style: GoogleFonts.poppins(
-                                                      color: Colors.red,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: Icon(Icons.delete,
-                                          size: 20, color: Colors.red),
-                                      label: Text(
-                                        'Futa',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          color: Colors.red,
-                                        ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: filteredViongoziList.length,
+                          itemBuilder: (context, index) {
+                            final kiongozi = filteredViongoziList[index];
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      kiongozi.fname,
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    // Status switch
-                                    Row(
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('Hali:',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12)),
-                                        Switch(
-                                          value: kiongozi.status == 'active',
-                                          onChanged: (bool value) {
-                                            updateKiongoziStatus(
-                                              kiongozi.id.toString(),
-                                              value ? 'active' : 'not-active',
-                                            );
-                                          },
-                                          activeColor: MyColors.primaryLight,
+                                        Text(
+                                          'Wadhifa: ${kiongozi.wadhifa}',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 12),
+                                        ),
+                                        Text(
+                                          'Jumuiya: ${kiongozi.jumuiya}',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 12),
+                                        ),
+                                        Text(
+                                          'Simu: ${kiongozi.phoneNo}',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 12),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-          ),
-        ],
+                                  ),
+                                  Divider(height: 0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      // Edit button
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          _showEditKiongoziDialog(kiongozi);
+                                        },
+                                        icon: Icon(Icons.edit,
+                                            size: 20, color: Colors.blue),
+                                        label: Text('Hariri',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 12,
+                                                color: Colors.blue)),
+                                      ),
+                                      // Delete button
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'Thibitisha!',
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  'Una uhakika unataka kumfuta ${kiongozi.fname}?',
+                                                  style: GoogleFonts.poppins(),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    child: Text(
+                                                      'Ghairi',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                      deleteKiongozi(
+                                                          kiongozi.id);
+                                                    },
+                                                    child: Text(
+                                                      'Futa',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(Icons.delete,
+                                            size: 20, color: Colors.red),
+                                        label: Text(
+                                          'Futa',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                      // Status switch
+                                      Row(
+                                        children: [
+                                          Text('Hali:',
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 12)),
+                                          Switch(
+                                            value: kiongozi.status == 'active',
+                                            onChanged: (bool value) {
+                                              updateKiongoziStatus(
+                                                kiongozi.id.toString(),
+                                                value ? 'active' : 'not-active',
+                                              );
+                                            },
+                                            activeColor: MyColors.primaryLight,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddKiongoziDialog,
