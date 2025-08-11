@@ -274,7 +274,18 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.black,
+                  ),
+                ),
+              ),
+            )
           : RefreshIndicator(
               onRefresh: _fetchAkaunti,
               child: _filteredAkauntiList.isEmpty

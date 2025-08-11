@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_field
 
 import 'dart:convert';
 import 'dart:io';
@@ -496,22 +496,18 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       body: RefreshIndicator(
         onRefresh: _loadMatangazo,
         child: _isInitialLoading
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Lottie.asset(
-                      'assets/animation/loading.json',
-                      height: 100,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Loading...',
-                      style: GoogleFonts.poppins(),
-                    ),
-                  ],
+            ? const Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.black,
+                  ),
                 ),
-              )
+              ),
+            )
             : _matangazoList.isEmpty
                 ? Center(
                     child: Column(
