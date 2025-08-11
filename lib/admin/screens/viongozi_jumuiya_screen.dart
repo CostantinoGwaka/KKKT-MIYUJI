@@ -469,7 +469,7 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                         setState(() {
                           selectedJumuiyaId = newValue;
                           selectedJumuiyaName = jumuiyaList.firstWhere((j) =>
-                              j['jumuiya_id'] == newValue)['jumuiya_name'];
+                              j['id'].toString() == newValue)['jumuiya_name'];
                         });
                       },
                     ),
@@ -546,51 +546,14 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
       ),
       body: Column(
         children: [
-          if (!isSearching)
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline,
-                      color: Colors.grey.shade600, size: 20),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Bonyeza ikoni ya utafutaji hapo juu kutafuta kiongozi...',
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           Expanded(
             child: isLoading
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          'assets/animation/loading.json',
-                          height: 120,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Inapakia...',
-                          style: GoogleFonts.poppins(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.black,
+                      ),
                     ),
                   )
                 : filteredViongoziList.isEmpty

@@ -11,7 +11,6 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
 
-
 class KamatiScreen extends StatefulWidget {
   const KamatiScreen({super.key});
 
@@ -55,7 +54,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
       });
 
       try {
-        String myApi = "${ApiUrl.BASEURL}api2/kamati_kanisa/ongeza_kamati_kanisa.php";
+        String myApi =
+            "${ApiUrl.BASEURL}api2/kamati_kanisa/ongeza_kamati_kanisa.php";
         final response = await http.post(
           Uri.parse(myApi),
           headers: {
@@ -106,7 +106,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
   }
 
   Future<List<KamatiData>> getKamati() async {
-    String myApi = "${ApiUrl.BASEURL}api2/kamati_kanisa/get_kamati_za_kanisa.php";
+    String myApi =
+        "${ApiUrl.BASEURL}api2/kamati_kanisa/get_kamati_za_kanisa.php";
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -116,7 +117,7 @@ class _KamatiScreenState extends State<KamatiScreen> {
         "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
       }),
     );
-    
+
     List<KamatiData> kamati = [];
 
     if (response.statusCode == 200) {
@@ -134,26 +135,28 @@ class _KamatiScreenState extends State<KamatiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-       appBar: AppBar(
-        title: _isSearching ? TextField(
-          controller: _searchController,
-          style: GoogleFonts.poppins(color: MyColors.darkText),
-          decoration: InputDecoration(
-            hintText: 'Tafuta kamati...',
-            hintStyle: GoogleFonts.poppins(color: Colors.grey),
-            border: InputBorder.none,
-          ),
-          onChanged: (value) {
-            setState(() {
-              _searchQuery = value;
-            });
-          },
-          autofocus: true,
-        ) : Text(
-          'Kamati za Kanisa',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: MyColors.darkText),
-        ),
+      appBar: AppBar(
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta kamati...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+                autofocus: true,
+              )
+            : Text(
+                'Kamati za Kanisa',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
         actions: [
@@ -173,21 +176,22 @@ class _KamatiScreenState extends State<KamatiScreen> {
       ),
       body: _isLoading
           ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
-                                    ),
-                                  ),
-                                )
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.white,
+                ),
+              ),
+            )
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (currentUser != null && currentUser!.userType == 'ADMIN') ...[
+                  if (currentUser != null &&
+                      currentUser!.userType == 'ADMIN') ...[
                     _buildAddKamatiForm(),
                   ],
                   _buildKamatiList(),
@@ -315,7 +319,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
                   }
 
                   final response = await http.post(
-                    Uri.parse("${ApiUrl.BASEURL}api2/kamati_kanisa/delete_kamati_za_kanisa.php"),
+                    Uri.parse(
+                        "${ApiUrl.BASEURL}api2/kamati_kanisa/delete_kamati_za_kanisa.php"),
                     headers: {'Accept': 'application/json'},
                     body: jsonEncode({
                       "id": kamati.id,
@@ -341,7 +346,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            jsonResponse['message'] ?? 'Imeshindwa kufuta kamati',
+                            jsonResponse['message'] ??
+                                'Imeshindwa kufuta kamati',
                             style: GoogleFonts.poppins(),
                           ),
                           backgroundColor: Colors.red,
@@ -385,7 +391,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
 
   void _showEditBottomSheet(KamatiData kamati) {
     final formKey = GlobalKey<FormState>();
-    final TextEditingController controller = TextEditingController(text: kamati.jinaKamati);
+    final TextEditingController controller =
+        TextEditingController(text: kamati.jinaKamati);
 
     showModalBottomSheet(
       context: context,
@@ -445,7 +452,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
                         }
 
                         final response = await http.post(
-                          Uri.parse("${ApiUrl.BASEURL}api2/kamati_kanisa/ongeza_kamati_kanisa.php"),
+                          Uri.parse(
+                              "${ApiUrl.BASEURL}api2/kamati_kanisa/ongeza_kamati_kanisa.php"),
                           headers: {'Accept': 'application/json'},
                           body: jsonEncode({
                             "id": kamati.id,
@@ -453,7 +461,6 @@ class _KamatiScreenState extends State<KamatiScreen> {
                             "kanisa_id": currentUser.kanisaId,
                           }),
                         );
-
 
                         if (response.statusCode == 200) {
                           final jsonResponse = json.decode(response.body);
@@ -473,7 +480,8 @@ class _KamatiScreenState extends State<KamatiScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  jsonResponse['message'] ?? 'Imeshindwa kubadili kamati',
+                                  jsonResponse['message'] ??
+                                      'Imeshindwa kubadili kamati',
                                   style: GoogleFonts.poppins(),
                                 ),
                                 backgroundColor: Colors.red,
@@ -548,7 +556,10 @@ class _KamatiScreenState extends State<KamatiScreen> {
         }
 
         final filteredKamati = snapshot.data!.where((kamati) {
-          return kamati.jinaKamati?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
+          return kamati.jinaKamati
+                  ?.toLowerCase()
+                  .contains(_searchQuery.toLowerCase()) ??
+              false;
         }).toList();
 
         return ListView.builder(
