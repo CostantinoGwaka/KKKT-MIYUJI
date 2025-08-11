@@ -22,7 +22,6 @@ class ViongoziJumuiya extends StatefulWidget {
 }
 
 class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
-
   Future<List<ViongoziJumuiyaPodo>> getWatumishiWasharika() async {
     String myApi = "${ApiUrl.BASEURL}get_jumuiya_viongozi_id.php";
     final response = await http.post(
@@ -35,10 +34,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
       },
     );
 
-
-
     var barazaList = <ViongoziJumuiyaPodo>[];
-
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
@@ -90,7 +86,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
         child: StreamBuilder(
           //Error number 2
           stream: getWatumishiWasharika().asStream(),
-          builder: (context, AsyncSnapshot<List<ViongoziJumuiyaPodo>> snapshot) {
+          builder:
+              (context, AsyncSnapshot<List<ViongoziJumuiyaPodo>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Padding(
                 padding: const EdgeInsets.only(top: 50.0),
@@ -122,7 +119,9 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                   ),
                 ),
               );
-            } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+            } else if (snapshot.hasError ||
+                !snapshot.hasData ||
+                snapshot.data!.isEmpty) {
               return RefreshIndicator(
                 onRefresh: _pullRefresh,
                 child: Center(
@@ -164,7 +163,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (_, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 6.0),
                     child: Card(
                       elevation: 3,
                       shadowColor: MyColors.primaryLight.withOpacity(0.2),
@@ -178,7 +178,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                         leading: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: MyColors.primaryLight.withOpacity(0.2)),
+                            border: Border.all(
+                                color: MyColors.primaryLight.withOpacity(0.2)),
                           ),
                           child: CircleAvatar(
                             backgroundColor: MyColors.white,
@@ -218,7 +219,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                       //   ),
                                       // ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             snapshot.data![index].fname!,
@@ -233,7 +235,8 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     ],
                                   ),
                                   trailing: InkWell(
-                                    onTap: () => launch("tel://${snapshot.data![index].phoneNo}"),
+                                    onTap: () => launch(
+                                        "tel://${snapshot.data![index].phoneNo}"),
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
@@ -241,13 +244,15 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: MyColors.primaryLight.withOpacity(0.3),
+                                            color: MyColors.primaryLight
+                                                .withOpacity(0.3),
                                             blurRadius: 8,
                                             offset: const Offset(0, 3),
                                           ),
                                         ],
                                       ),
-                                      child: const Icon(Icons.call, color: MyColors.white, size: 20),
+                                      child: const Icon(Icons.call,
+                                          color: MyColors.white, size: 20),
                                     ),
                                   ),
                                 ),
@@ -281,43 +286,42 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
     );
   }
 
-   Widget _buildInfoRow(
-                    BuildContext context, {
-                    Widget? leading,
-                    String? label,
-                    String? value,
-                    Widget? trailing,
-                  }) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (leading != null) 
-                          Expanded(child: leading)
-                        else
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (label != null)
-                                  Text(
-                                    label,
-                                    style: TextStyles.caption(context).copyWith(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                if (value != null)
-                                  Text(
-                                    value,
-                                    style: TextStyles.body2(context).copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        if (trailing != null) 
-                          trailing,
-                      ],
-                    );
-                  }
+  Widget _buildInfoRow(
+    BuildContext context, {
+    Widget? leading,
+    String? label,
+    String? value,
+    Widget? trailing,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        if (leading != null)
+          Expanded(child: leading)
+        else
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (label != null)
+                  Text(
+                    label,
+                    style: TextStyles.caption(context).copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
+                if (value != null)
+                  Text(
+                    value,
+                    style: TextStyles.body2(context).copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        if (trailing != null) trailing,
+      ],
+    );
+  }
 }
