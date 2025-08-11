@@ -28,11 +28,9 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   BaseUser? currentUser;
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
-  late Future<List<Matangazo>> _matangazoFuture;
+  Future<List<Matangazo>>? _matangazoFuture;
 
   Future<List<Matangazo>> getMatangazoNew() async {
-    checkLogin();
-
     String myApi = "${ApiUrl.BASEURL}get_matangazo.php";
 
     final response = await http.post(Uri.parse(myApi),
@@ -52,7 +50,6 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
           matangazoList = data.map((item) => Matangazo.fromJson(item)).toList();
         }
       }
-
       return matangazoList;
     } catch (e) {
       if (kDebugMode) {
@@ -65,9 +62,15 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   @override
   void initState() {
     super.initState();
-    checkLogin();
-    _matangazoFuture = getMatangazoNew();
+    _initializeData();
     searchController.addListener(_onSearchChanged);
+  }
+
+  Future<void> _initializeData() async {
+    await checkLogin();
+    setState(() {
+      _matangazoFuture = getMatangazoNew();
+    });
   }
 
   @override
@@ -96,7 +99,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     }
   }
 
-  void checkLogin() async {
+  Future<void> checkLogin() async {
     // Get current user using UserManager
     BaseUser? user = await UserManager.getCurrentUser();
     setState(() {
@@ -292,6 +295,63 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   }
 
   Widget _buildAnnouncementsList() {
+    if (_matangazoFuture == null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.announcement_rounded,
+              size: 80,
+              color: Colors.grey[300],
+            ),
+            const SizedBox(height: 20),
+            Text(
+              "Karibu kwenye Matangazo",
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: MyColors.primaryLight,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Bonyeza kitufe hapo chini kuona matangazo yote",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  _matangazoFuture = getMatangazoNew();
+                });
+              },
+              icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+              label: Text(
+                "Onyesha Matangazo",
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MyColors.primaryLight,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return FutureBuilder<List<Matangazo>>(
       future: _matangazoFuture,
       builder: (context, AsyncSnapshot<List<Matangazo>> snapshot) {
