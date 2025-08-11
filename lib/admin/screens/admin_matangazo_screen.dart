@@ -27,19 +27,36 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _dateController = TextEditingController();
+  final _searchController = TextEditingController();
   String? _selectedImage;
-  // ignore: unused_field
   bool _isLoading = false;
   BaseUser? currentUser;
   File? _image;
   List<Matangazo> _matangazoList = [];
+  List<Matangazo> _filteredMatangazoList = [];
   bool _isInitialLoading = true;
+  bool isSearching = false;
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUser();
     _loadMatangazo();
+    _filteredMatangazoList = _matangazoList;
+  }
+
+  void _filterMatangazo(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredMatangazoList = _matangazoList;
+      } else {
+        _filteredMatangazoList = _matangazoList
+            .where((matangazo) =>
+                (matangazo.title ?? '').toLowerCase().contains(query.toLowerCase()) ||
+                (matangazo.descp ?? '').toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   Future<void> _loadCurrentUser() async {
@@ -82,6 +99,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
               _matangazoList = (jsonResponse['data'] as List)
                   .map((item) => Matangazo.fromJson(item))
                   .toList();
+              _filteredMatangazoList = _matangazoList;
             }
           });
         }
@@ -435,13 +453,40 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Manage Matangazo',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.bold,
+        title: isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta neno...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterMatangazo,
+              )
+            : Text(
+                'Matangazo ya Kanisa',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (isSearching) {
+                  isSearching = false;
+                  _searchController.clear();
+                  _filteredMatangazoList = _matangazoList;
+                } else {
+                  isSearching = true;
+                }
+              });
+            },
           ),
-        ),
-        backgroundColor: MyColors.primaryLight,
+        ],
+        backgroundColor: MyColors.white,
+        foregroundColor: MyColors.darkText,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEditDialog(),
@@ -485,9 +530,9 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                   )
                 : ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: _matangazoList.length,
+        itemCount: _filteredMatangazoList.length,
         itemBuilder: (context, index) {
-          final matangazo = _matangazoList[index];
+          final matangazo = _filteredMatangazoList[index];
             return Card(
             elevation: 2,
             margin: const EdgeInsets.symmetric(vertical: 4),
