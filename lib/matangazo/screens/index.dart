@@ -30,7 +30,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   bool isSearching = false;
 
   Future<List<Matangazo>> getMatangazoNew() async {
-    String myApi = "${ApiUrl.BASEURL}get_matangazo.php";
+    String myApi = "${ApiUrl.BASEURL}/get_matangazo_kanisa.php";
 
     final response = await http.post(
       Uri.parse(myApi),
