@@ -175,7 +175,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tangazo added successfully')),
+            const SnackBar(content: Text('Tangazo limeongezwa kwa mafanikio')),
           );
           _clearForm();
           _loadMatangazo(); // Refresh the list
@@ -203,22 +203,24 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   Future<void> _deleteMatangazo(String id) async {
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}delete_matangazo.php"),
-        body: {'id': id},
+        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/delete_matangazo_makanisa.php"),
+        body: jsonEncode({'id': id}),
       );
 
       var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tangazo deleted successfully')),
+             SnackBar(content: Text('Tangazo limefutwa kwa mafanikio', style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
+            
           );
           _loadMatangazo(); // Refresh the list
         }
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to delete tangazo')),
+            const SnackBar(content: Text('imefaili kufuta tangazo')),
           );
         }
       }
@@ -623,7 +625,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                       ),
                       TextButton(
                       onPressed: () {
-                        _deleteMatangazo(matangazo.id);
+                        _deleteMatangazo(matangazo.id.toString());
                         Navigator.pop(context);
                       },
                       child: Text(
