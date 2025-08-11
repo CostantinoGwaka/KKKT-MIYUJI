@@ -208,7 +208,6 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       );
 
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
