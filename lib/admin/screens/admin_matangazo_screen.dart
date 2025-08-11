@@ -93,7 +93,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == "200" && jsonResponse['data'] != null) {
+        if (jsonResponse['status'] == '200' && jsonResponse['data'] != null) {
           setState(() {
             if (jsonResponse['data'] is List) {
               _matangazoList = (jsonResponse['data'] as List)
@@ -171,10 +171,10 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
-      if (response.statusCode == 200 && jsonResponse['status'] == '200') {
+      if (response.statusCode == 200 && jsonResponse['status'] == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tangazo limeongezwa kwa mafanikio')),
+             SnackBar(content: Text('Tangazo limeongezwa kwa mafanikio',style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
           );
           _clearForm();
           _loadMatangazo(); // Refresh the list
