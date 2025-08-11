@@ -52,8 +52,12 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       } else {
         _filteredMatangazoList = _matangazoList
             .where((matangazo) =>
-                (matangazo.title ?? '').toLowerCase().contains(query.toLowerCase()) ||
-                (matangazo.descp ?? '').toLowerCase().contains(query.toLowerCase()))
+                (matangazo.title ?? '')
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                (matangazo.descp ?? '')
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -80,7 +84,8 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     currentUser = await UserManager.getCurrentUser();
 
     try {
-      String myApi = "${ApiUrl.BASEURL}api2/matangazo_kanisa/get_matangazo_kanisa.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/matangazo_kanisa/get_matangazo_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -117,14 +122,14 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
         _isInitialLoading = false;
       });
     }
-
   }
 
   Future<void> _pickImage() async {
     try {
       final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
+
       if (pickedFile != null) {
         setState(() {
           _image = File(pickedFile.path);
@@ -141,7 +146,8 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   Future<void> _addMatangazo() async {
     if (!_formKey.currentState!.validate() || _image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select an image')),
+        const SnackBar(
+            content: Text('Please fill all fields and select an image')),
       );
       return;
     }
@@ -151,14 +157,16 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
       );
 
       // Add text fields
       request.fields['title'] = _titleController.text;
       request.fields['descp'] = _descriptionController.text;
       request.fields['tarehe'] = _dateController.text;
-      request.fields['kanisa_id'] =currentUser?.kanisaId ?? '';// Replace with actual kanisa_id
+      request.fields['kanisa_id'] =
+          currentUser?.kanisaId ?? ''; // Replace with actual kanisa_id
 
       // Add image file
       if (_image != null) {
@@ -174,31 +182,35 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       if (response.statusCode == 200 && jsonResponse['status'] == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('Tangazo limeongezwa kwa mafanikio',style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
+            SnackBar(
+              content: Text(
+                'Tangazo limeongezwa kwa mafanikio',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
           _clearForm();
           _loadMatangazo(); // Refresh the list
         }
       } else {
         if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: ${jsonResponse['message']}', 
-              style: const TextStyle(color: Colors.white)
-              ),
+              content: Text('Error: ${jsonResponse['message']}',
+                  style: const TextStyle(color: Colors.white)),
               backgroundColor: Colors.red,
             ),
-            );
+          );
         }
       }
     } catch (e) {
       if (mounted) {
-          SnackBar(
-              content: Text('Error: $e', 
-              style: const TextStyle(color: Colors.white)
-              ),
-              backgroundColor: Colors.red,
-            );
+        SnackBar(
+          content:
+              Text('Error: $e', style: const TextStyle(color: Colors.white)),
+          backgroundColor: Colors.red,
+        );
       }
     } finally {
       if (mounted) {
@@ -210,7 +222,8 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   Future<void> _deleteMatangazo(String id) async {
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/delete_matangazo_makanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/matangazo_kanisa/delete_matangazo_makanisa.php"),
         body: jsonEncode({'id': id}),
       );
 
@@ -218,8 +231,13 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('Tangazo limefutwa kwa mafanikio', style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
-            
+            SnackBar(
+              content: Text(
+                'Tangazo limefutwa kwa mafanikio',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
           _loadMatangazo(); // Refresh the list
         }
@@ -233,11 +251,10 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     } catch (e) {
       if (mounted) {
         SnackBar(
-              content: Text('Error: $e', 
-              style: const TextStyle(color: Colors.white)
-              ),
-              backgroundColor: Colors.red,
-            );
+          content:
+              Text('Error: $e', style: const TextStyle(color: Colors.white)),
+          backgroundColor: Colors.red,
+        );
       }
     }
   }
@@ -246,15 +263,16 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
       );
 
       request.fields['id'] = matangazo.id.toString();
       request.fields['title'] = _titleController.text;
       request.fields['descp'] = _descriptionController.text;
       request.fields['tarehe'] = _dateController.text;
-      request.fields['kanisa_id'] =currentUser?.kanisaId ?? ''; // Replace with actual kanisa_id
-
+      request.fields['kanisa_id'] =
+          currentUser?.kanisaId ?? ''; // Replace with actual kanisa_id
 
       if (_image != null) {
         request.files.add(await http.MultipartFile.fromPath(
@@ -270,7 +288,13 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       if (response.statusCode == 200 && jsonResponse['status'] == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('Tangazo limesasasishwa kwa mafanikio', style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
+            SnackBar(
+              content: Text(
+                'Tangazo limesasasishwa kwa mafanikio',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
           _clearForm();
           _loadMatangazo(); // Refresh the list
@@ -278,10 +302,10 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${jsonResponse['message']}', 
-            style: const TextStyle(color: Colors.white)
-            ),
-            backgroundColor: Colors.red,
+            SnackBar(
+              content: Text('Error: ${jsonResponse['message']}',
+                  style: const TextStyle(color: Colors.white)),
+              backgroundColor: Colors.red,
             ),
           );
         }
@@ -289,10 +313,10 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e', 
-          style: const TextStyle(color: Colors.white)
-          ),
-          backgroundColor: Colors.red,
+          SnackBar(
+            content:
+                Text('Error: $e', style: const TextStyle(color: Colors.white)),
+            backgroundColor: Colors.red,
           ),
         );
       }
@@ -475,216 +499,228 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: isSearching
-            ? TextField(
-                controller: _searchController,
-                style: GoogleFonts.poppins(color: MyColors.darkText),
-                decoration: InputDecoration(
-                  hintText: 'Tafuta neno...',
-                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
-                  border: InputBorder.none,
+        appBar: AppBar(
+          title: isSearching
+              ? TextField(
+                  controller: _searchController,
+                  style: GoogleFonts.poppins(color: MyColors.darkText),
+                  decoration: InputDecoration(
+                    hintText: 'Tafuta neno...',
+                    hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: _filterMatangazo,
+                )
+              : Text(
+                  'Matangazo ya Kanisa',
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600, color: MyColors.darkText),
                 ),
-                onChanged: _filterMatangazo,
-              )
-            : Text(
-                'Matangazo ya Kanisa',
-                style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600, color: MyColors.darkText),
-              ),
-        actions: [
-          IconButton(
-            icon: Icon(isSearching ? Icons.close : Icons.search),
-            onPressed: () {
-              setState(() {
-                if (isSearching) {
-                  isSearching = false;
-                  _searchController.clear();
-                  _filteredMatangazoList = _matangazoList;
-                } else {
-                  isSearching = true;
-                }
-              });
-            },
+          actions: [
+            IconButton(
+              icon: Icon(isSearching ? Icons.close : Icons.search),
+              onPressed: () {
+                setState(() {
+                  if (isSearching) {
+                    isSearching = false;
+                    _searchController.clear();
+                    _filteredMatangazoList = _matangazoList;
+                  } else {
+                    isSearching = true;
+                  }
+                });
+              },
+            ),
+          ],
+          backgroundColor: MyColors.white,
+          foregroundColor: MyColors.darkText,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddEditDialog(),
+          backgroundColor: MyColors.primaryLight,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
           ),
-        ],
-        backgroundColor: MyColors.white,
-        foregroundColor: MyColors.darkText,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddEditDialog(),
-        backgroundColor: MyColors.primaryLight,
-        child: const Icon(Icons.add, color: Colors.white,),
-      ),
-      body: RefreshIndicator(
-        onRefresh: _loadMatangazo,
-        child: _isInitialLoading
-            ? const Center(
-              child: SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.black,
-                  ),
-                ),
-              ),
-            )
-            : _matangazoList.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          'assets/animation/nodata.json',
-                          height: 200,
-                        ),
-                        Text(
-                          'No matangazo found',
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: _filteredMatangazoList.length,
-        itemBuilder: (context, index) {
-          final matangazo = _filteredMatangazoList[index];
-            return Card(
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                    child: Image.network(
-                    ApiUrl.IMAGEURL + (matangazo.image ?? ''),
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                      width: 80,
-                      height: 80,
-                      color: Colors.grey[100],
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        ),
-                      ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                      width: 80,
-                      height: 80,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error),
-                      );
-                    },
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Text(
-                      matangazo.title ?? '',
-                      style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+        ),
+        body: RefreshIndicator(
+          onRefresh: _loadMatangazo,
+          child: _isInitialLoading
+              ? const Center(
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Date: ${matangazo.tarehe ?? ''}',
-                      style: GoogleFonts.poppins(
-                      color: Colors.grey[600],
-                      fontSize: 12,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      matangazo.descp ?? '',
-                      style: GoogleFonts.poppins(fontSize: 12),
-                    ),
-                    ],
                   ),
-                  ),
-                ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                  icon: const Icon(Icons.edit, size: 20),
-                  onPressed: () => _showAddEditDialog(matangazo),
-                  color: Colors.blue,
-                  ),
-                  IconButton(
-                  icon: const Icon(Icons.delete, size: 20),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                    title: Text(
-                      'Delete Tangazo',
-                      style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                )
+              : _matangazoList.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset(
+                            'assets/animation/nodata.json',
+                            height: 200,
+                          ),
+                          Text(
+                            'No matangazo found',
+                            style: GoogleFonts.poppins(),
+                          ),
+                        ],
                       ),
-                    ),
-                    content: Text(
-                      'Are you sure you want to delete this tangazo?',
-                      style: GoogleFonts.poppins(fontSize: 12),
-                    ),
-                    actions: [
-                      TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text('Cancel', 
-                        style: GoogleFonts.poppins(fontSize: 12)),
-                      ),
-                      TextButton(
-                      onPressed: () {
-                        _deleteMatangazo(matangazo.id.toString());
-                        Navigator.pop(context);
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: _filteredMatangazoList.length,
+                      itemBuilder: (context, index) {
+                        final matangazo = _filteredMatangazoList[index];
+                        return Card(
+                          elevation: 2,
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Image.network(
+                                        ApiUrl.IMAGEURL +
+                                            (matangazo.image ?? ''),
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors.grey[100],
+                                            child: const Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors.grey[300],
+                                            child: const Icon(Icons.error),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            matangazo.title ?? '',
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            'Date: ${matangazo.tarehe ?? ''}',
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.grey[600],
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            matangazo.descp ?? '',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit, size: 20),
+                                      onPressed: () =>
+                                          _showAddEditDialog(matangazo),
+                                      color: Colors.blue,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete, size: 20),
+                                      onPressed: () => showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text(
+                                            'Delete Tangazo',
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          content: Text(
+                                            'Are you sure you want to delete this tangazo?',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 12),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('Cancel',
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 12)),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                _deleteMatangazo(
+                                                    matangazo.id.toString());
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'Delete',
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.red,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
-                      child: Text(
-                        'Delete',
-                        style: GoogleFonts.poppins(
-                        color: Colors.red,
-                        fontSize: 12,
-                        ),
-                      ),
-                      ),
-                    ],
                     ),
-                  ),
-                  color: Colors.red,
-                  ),
-                ],
-                ),
-              ],
-              ),
-            ),
-            );
-        },
-          
-        
-                ),)
-    );
+        ));
   }
 }
