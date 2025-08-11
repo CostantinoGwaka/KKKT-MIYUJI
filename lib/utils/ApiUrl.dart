@@ -2,4 +2,6 @@
 
 class ApiUrl {
   static const String BASEURL = "https://kkktmiyuji.nitusue.com/api/";
+  static const String IMAGEURL = "https://kkktmiyuji.nitusue.com/admin/matangazo/";
+
 }

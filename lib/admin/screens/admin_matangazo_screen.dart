@@ -151,14 +151,14 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("${ApiUrl.BASEURL}add_matangazo.php"),
+        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
       );
 
       // Add text fields
       request.fields['title'] = _titleController.text;
       request.fields['descp'] = _descriptionController.text;
       request.fields['tarehe'] = _dateController.text;
-      request.fields['kanisa_id'] = '1'; // Replace with actual kanisa_id
+      request.fields['kanisa_id'] =currentUser?.kanisaId ?? '';// Replace with actual kanisa_id
 
       // Add image file
       if (_image != null) {
@@ -171,7 +171,6 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       var response = await request.send();
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
-
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -546,20 +545,33 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                 children: [
                   ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Image.network(
-                    matangazo.image ?? '',
+                    child: Image.network(
+                    ApiUrl.IMAGEURL + (matangazo.image ?? ''),
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[100],
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        ),
+                      ),
+                      );
+                    },
                     errorBuilder: (context, error, stackTrace) {
-                    return Container(
+                      return Container(
                       width: 80,
                       height: 80,
                       color: Colors.grey[300],
                       child: const Icon(Icons.error),
-                    );
+                      );
                     },
-                  ),
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
