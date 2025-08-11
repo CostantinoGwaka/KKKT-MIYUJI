@@ -446,7 +446,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEditDialog(),
         backgroundColor: MyColors.primaryLight,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
       body: RefreshIndicator(
         onRefresh: _loadMatangazo,
@@ -488,108 +488,122 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
         itemCount: _matangazoList.length,
         itemBuilder: (context, index) {
           final matangazo = _matangazoList[index];
-          return Card(
+            return Card(
             elevation: 2,
-            margin: const EdgeInsets.symmetric(vertical: 8),
+            margin: const EdgeInsets.symmetric(vertical: 4),
             shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: ListTile(
-          contentPadding: const EdgeInsets.all(16),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              matangazo.image ?? '',
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-            return Container(
-              width: 60,
-              height: 60,
-              color: Colors.grey[300],
-              child: const Icon(Icons.error),
-            );
-              },
-            ),
-          ),
-          title: Text(
-            matangazo.title ?? '',
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-            matangazo.descp ?? '',
-            style: GoogleFonts.poppins(),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              Text(
-            'Date: ${matangazo.tarehe?.toString().split(' ')[0] ?? ''}',
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
-              ),
-            ],
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _showAddEditDialog(matangazo),
-            color: Colors.blue,
-              ),
-              IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(
-              'Delete Tangazo',
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-              ),
-                ),
-                content: Text(
-              'Are you sure you want to delete this tangazo?',
-              style: GoogleFonts.poppins(),
-                ),
-                actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'Cancel',
-                  style: GoogleFonts.poppins(),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  _deleteMatangazo(matangazo.id);
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Delete',
-                  style: GoogleFonts.poppins(
-                color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.network(
+                    matangazo.image ?? '',
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error),
+                    );
+                    },
                   ),
-                ),
-              ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Text(
+                      matangazo.title ?? '',
+                      style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Date: ${matangazo.tarehe ?? ''}',
+                      style: GoogleFonts.poppins(
+                      color: Colors.grey[600],
+                      fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      matangazo.descp ?? '',
+                      style: GoogleFonts.poppins(fontSize: 12),
+                    ),
+                    ],
+                  ),
+                  ),
                 ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                  icon: const Icon(Icons.edit, size: 20),
+                  onPressed: () => _showAddEditDialog(matangazo),
+                  color: Colors.blue,
+                  ),
+                  IconButton(
+                  icon: const Icon(Icons.delete, size: 20),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                    title: Text(
+                      'Delete Tangazo',
+                      style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      ),
+                    ),
+                    content: Text(
+                      'Are you sure you want to delete this tangazo?',
+                      style: GoogleFonts.poppins(fontSize: 12),
+                    ),
+                    actions: [
+                      TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel', 
+                        style: GoogleFonts.poppins(fontSize: 12)),
+                      ),
+                      TextButton(
+                      onPressed: () {
+                        _deleteMatangazo(matangazo.id);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Delete',
+                        style: GoogleFonts.poppins(
+                        color: Colors.red,
+                        fontSize: 12,
+                        ),
+                      ),
+                      ),
+                    ],
+                    ),
+                  ),
+                  color: Colors.red,
+                  ),
+                ],
+                ),
+              ],
               ),
             ),
-            color: Colors.red,
-              ),
-            ],
-          ),
-            ),
-          );
+            );
         },
           
         
