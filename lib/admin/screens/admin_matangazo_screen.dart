@@ -235,13 +235,15 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse("${ApiUrl.BASEURL}update_matangazo.php"),
+        Uri.parse("${ApiUrl.BASEURL}api2/matangazo_kanisa/ongeza_matangazo_kanisa.php"),
       );
 
       request.fields['id'] = matangazo.id.toString();
       request.fields['title'] = _titleController.text;
       request.fields['descp'] = _descriptionController.text;
       request.fields['tarehe'] = _dateController.text;
+      request.fields['kanisa_id'] =currentUser?.kanisaId ?? ''; // Replace with actual kanisa_id
+
 
       if (_image != null) {
         request.files.add(await http.MultipartFile.fromPath(
@@ -257,7 +259,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       if (response.statusCode == 200 && jsonResponse['status'] == '200') {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tangazo updated successfully')),
+             SnackBar(content: Text('Tangazo limesasasishwa kwa mafanikio', style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
           );
           _clearForm();
           _loadMatangazo(); // Refresh the list
@@ -382,6 +384,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  // if (_selectedImage == null) ...[
                   ElevatedButton.icon(
                     onPressed: _pickImage,
                     icon: const Icon(Icons.image),
@@ -394,10 +397,11 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                       ),
                     ),
                   ),
+                  // ],
                   if (_selectedImage != null) ...[
                     const SizedBox(height: 8),
                     Text(
-                      'Image selected',
+                      '✅ Image selected',
                       style: GoogleFonts.poppins(
                         color: Colors.green,
                       ),
