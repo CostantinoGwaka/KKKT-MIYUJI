@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:kanisaapp/admin/screens/admin_matangazo_screen.dart';
 import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/viongozi_jumuiya_screen.dart';
+import 'package:kanisaapp/admin/screens/walimu_kanisani_screen.dart';
 import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
 import 'package:kanisaapp/chatroom/screen/chat_screen.dart';
@@ -655,6 +656,14 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => const ViongoziJumuiyaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Walimu Kanisani',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const WalimuKanisaniScreen()),
                     ),
                   ),
                 ],

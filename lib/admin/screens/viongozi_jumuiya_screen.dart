@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, prefer_const_constructors, use_super_parameters
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
