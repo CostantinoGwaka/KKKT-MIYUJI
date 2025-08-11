@@ -222,8 +222,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
   }
 
   Future<void> addKiongoziJumuiya() async {
-    if (_nameController.text.isEmpty ||
-        _phoneController.text.isEmpty ||
+    // Validate all required fields
+    if (_nameController.text.trim().isEmpty ||
+        _phoneController.text.trim().isEmpty ||
         selectedWadhifa == null ||
         selectedJumuiyaId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -363,146 +364,163 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
   }
 
   void _showAddKiongoziDialog() {
+    String? dialogWadhifa = selectedWadhifa;
+    String? dialogJumuiyaId = selectedJumuiyaId;
+    String? dialogJumuiyaName = selectedJumuiyaName;
+
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Ongeza Kiongozi wa Jumuiya',
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Jina la Kiongozi',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, StateSetter setDialogState) {
+              return AlertDialog(
+                title: Text(
+                  'Ongeza Kiongozi wa Jumuiya',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: 'Namba ya Simu',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedWadhifa,
-                      isExpanded: true,
-                      hint: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'Chagua Wadhifa',
-                          style: GoogleFonts.poppins(fontSize: 14),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Jina la Kiongozi',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
-                      items: wadhifaList.map((wadhifa) {
-                        return DropdownMenuItem<String>(
-                          value: wadhifa['jina_wadhifa'],
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              wadhifa['jina_wadhifa'],
-                              style: GoogleFonts.poppins(fontSize: 14),
-                            ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: 'Namba ya Simu',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedWadhifa = newValue;
-                          _wadhifaController.text = newValue ?? '';
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedJumuiyaId,
-                      isExpanded: true,
-                      hint: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'Chagua Jumuiya',
-                          style: GoogleFonts.poppins(fontSize: 14),
                         ),
                       ),
-                      items: jumuiyaList.map((jumuiya) {
-                        return DropdownMenuItem<String>(
-                          value: jumuiya['id'].toString(),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              jumuiya['jumuiya_name'],
-                              style: GoogleFonts.poppins(fontSize: 14),
+                      const SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dialogWadhifa,
+                            isExpanded: true,
+                            hint: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                'Chagua Wadhifa',
+                                style: GoogleFonts.poppins(fontSize: 14),
+                              ),
                             ),
+                            items: wadhifaList.map((wadhifa) {
+                              return DropdownMenuItem<String>(
+                                value: wadhifa['jina_wadhifa'],
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Text(
+                                    wadhifa['jina_wadhifa'],
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setDialogState(() {
+                                dialogWadhifa = newValue;
+                                _wadhifaController.text = newValue ?? '';
+                              });
+                            },
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedJumuiyaId = newValue;
-                          selectedJumuiyaName = jumuiyaList.firstWhere((j) =>
-                              j['id'].toString() == newValue)['jumuiya_name'];
-                        });
-                      },
-                    ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dialogJumuiyaId,
+                            isExpanded: true,
+                            hint: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                'Chagua Jumuiya',
+                                style: GoogleFonts.poppins(fontSize: 14),
+                              ),
+                            ),
+                            items: jumuiyaList.map((jumuiya) {
+                              return DropdownMenuItem<String>(
+                                value: jumuiya['id'].toString(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Text(
+                                    jumuiya['jumuiya_name'],
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setDialogState(() {
+                                dialogJumuiyaId = newValue;
+                                dialogJumuiyaName = jumuiyaList.firstWhere(
+                                        (j) => j['id'].toString() == newValue)[
+                                    'jumuiya_name'];
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Ghairi',
-                style: GoogleFonts.poppins(color: Colors.grey),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                addKiongoziJumuiya();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: MyColors.primaryLight,
-              ),
-              child: Text(
-                'Ongeza',
-                style: GoogleFonts.poppins(color: Colors.white),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Ghairi',
+                      style: GoogleFonts.poppins(color: Colors.grey),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedWadhifa = dialogWadhifa;
+                        selectedJumuiyaId = dialogJumuiyaId;
+                        selectedJumuiyaName = dialogJumuiyaName;
+                      });
+                      Navigator.pop(context);
+                      addKiongoziJumuiya();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: MyColors.primaryLight,
+                    ),
+                    child: Text(
+                      'Ongeza',
+                      style: GoogleFonts.poppins(color: Colors.white),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        });
   }
 
   @override
