@@ -181,16 +181,24 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
         }
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${jsonResponse['message']}')),
-          );
+            ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${jsonResponse['message']}', 
+              style: const TextStyle(color: Colors.white)
+              ),
+              backgroundColor: Colors.red,
+            ),
+            );
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+          SnackBar(
+              content: Text('Error: $e', 
+              style: const TextStyle(color: Colors.white)
+              ),
+              backgroundColor: Colors.red,
+            );
       }
     } finally {
       if (mounted) {
@@ -224,9 +232,12 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        SnackBar(
+              content: Text('Error: $e', 
+              style: const TextStyle(color: Colors.white)
+              ),
+              backgroundColor: Colors.red,
+            );
       }
     }
   }
@@ -256,7 +267,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       var responseData = await response.stream.bytesToString();
       var jsonResponse = json.decode(responseData);
 
-      if (response.statusCode == 200 && jsonResponse['status'] == '200') {
+      if (response.statusCode == 200 && jsonResponse['status'] == 200) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
              SnackBar(content: Text('Tangazo limesasasishwa kwa mafanikio', style: GoogleFonts.poppins(),), backgroundColor: Colors.green,),
@@ -267,14 +278,22 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${jsonResponse['message']}')),
+            SnackBar(content: Text('Error: ${jsonResponse['message']}', 
+            style: const TextStyle(color: Colors.white)
+            ),
+            backgroundColor: Colors.red,
+            ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text('Error: $e', 
+          style: const TextStyle(color: Colors.white)
+          ),
+          backgroundColor: Colors.red,
+          ),
         );
       }
     }
