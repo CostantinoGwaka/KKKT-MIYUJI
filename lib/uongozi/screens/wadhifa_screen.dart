@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
-import 'package:lottie/lottie.dart';
 
 class WadhifaScreen extends StatefulWidget {
   const WadhifaScreen({super.key});
@@ -572,25 +571,16 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
         foregroundColor: MyColors.darkText,
       ),
       body: _isLoading
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    child: Lottie.asset(
-                      'assets/animation/loading.json',
-                      height: 100,
-                    ),
+          ? const Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.black,
                   ),
-                  Text(
-                    'Inapakia...',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
+                ),
               ),
             )
           : RefreshIndicator(

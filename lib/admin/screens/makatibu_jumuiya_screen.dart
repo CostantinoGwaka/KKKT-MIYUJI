@@ -9,7 +9,6 @@ import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
-import 'package:lottie/lottie.dart';
 import '../../models/jumuiya_data.dart';
 import '../../models/katibu_data.dart';
 
@@ -301,7 +300,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       //   error = "Failed to connect to server";
       // });
     } finally {
-      
       setState(() {
         isLoading = false;
       });
@@ -371,7 +369,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         ),
       );
     } finally {
-     
       setState(() {
         isLoading = false;
       });
@@ -412,15 +409,15 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         //   error = jsonResponse['message'] ?? "Failed to delete katibu";
         // });
         Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Imeshindwa kufuta katibu",
-            style: GoogleFonts.poppins(),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Imeshindwa kufuta katibu",
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red,
           ),
-          backgroundColor: Colors.red,
-        ),
-      );
+        );
       }
     } catch (e) {
       // setState(() {
@@ -576,32 +573,33 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
               style: GoogleFonts.poppins(),
             ),
           ),
-          isLoading ? const CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Colors.white,
-            ),
-          )
-          :ElevatedButton(
-            onPressed: isLoading
-                ? null
-                : () {
-                    if (katibu == null) {
-                      addKatibu();
-                    } else {
-                      updateKatibu(katibu.id);
-                    }
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyColors.primaryLight,
-            ),
-            child: Text(
-              isLoading
-                  ? 'Inahifadhi...'
-                  : (katibu == null ? 'Ongeza' : 'Badilisha'),
-              style: GoogleFonts.poppins(color: Colors.white),
-            ),
-          ),
+          isLoading
+              ? const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white,
+                  ),
+                )
+              : ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          if (katibu == null) {
+                            addKatibu();
+                          } else {
+                            updateKatibu(katibu.id);
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyColors.primaryLight,
+                  ),
+                  child: Text(
+                    isLoading
+                        ? 'Inahifadhi...'
+                        : (katibu == null ? 'Ongeza' : 'Badilisha'),
+                    style: GoogleFonts.poppins(color: Colors.white),
+                  ),
+                ),
         ],
       ),
     );
@@ -646,232 +644,261 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
-      body: isLoading
-          ? const Center(
-            child:  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.black,
-                                      ),
-                                    ),
-                                  ),
-          )
-          : error != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 60,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        error!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: Colors.red,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: fetchData,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColors.primaryLight,
-                        ),
-                        child: Text(
-                          'Jaribu tena',
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ),
-                    ],
+      body: RefreshIndicator(
+        onRefresh: fetchData,
+        child: isLoading
+            ? const Center(
+                child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.black,
+                    ),
                   ),
-                )
-              : filteredMakatibu.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.people_outline,
-                            size: 60,
-                            color: Colors.grey,
+                ),
+              )
+            : error != null
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 60,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          error!,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.red,
                           ),
-                          const SizedBox(height: 16),
-                          Text(
-                            isSearching
-                                ? 'Hakuna matokeo'
-                                : 'Hakuna makatibu bado',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: fetchData,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.primaryLight,
+                          ),
+                          child: Text(
+                            'Jaribu tena',
+                            style: GoogleFonts.poppins(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : filteredMakatibu.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.people_outline,
+                              size: 60,
                               color: Colors.grey,
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: filteredMakatibu.length,
-                      padding: const EdgeInsets.all(8),
-                      itemBuilder: (context, index) {
-                        final katibu = filteredMakatibu[index];
-                        final jumuiyaName = jumuiya
-                            .firstWhere(
-                              (j) => j.id == katibu.jumuiyaId,
-                              orElse: () => JumuiyaData(
-                                id: '',
-                                jumuiyaName: 'Unknown',
-                                tarehe: '',
-                                kanisaId: '',
+                            const SizedBox(height: 16),
+                            Text(
+                              isSearching
+                                  ? 'Hakuna matokeo'
+                                  : 'Hakuna makatibu bado',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.grey,
                               ),
-                            )
-                            .jumuiyaName;
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: filteredMakatibu.length,
+                        padding: const EdgeInsets.all(8),
+                        itemBuilder: (context, index) {
+                          final katibu = filteredMakatibu[index];
+                          final jumuiyaName = jumuiya
+                              .firstWhere(
+                                (j) => j.id == katibu.jumuiyaId,
+                                orElse: () => JumuiyaData(
+                                  id: '',
+                                  jumuiyaName: 'Unknown',
+                                  tarehe: '',
+                                  kanisaId: '',
+                                ),
+                              )
+                              .jumuiyaName;
 
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: ExpansionTile(
-                            leading: CircleAvatar(
-                              backgroundColor:
-                                  MyColors.primaryLight.withOpacity(0.2),
-                              child: Text(
-                                katibu.jina[0].toUpperCase(),
-                                style: GoogleFonts.poppins(
-                                    color: MyColors.primaryLight,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                            title: Text(
-                              katibu.jina,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: Text(
-                              'Namba ya Usajili: ${katibu.memberNo}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: [
-                                    _buildInfoRow(
-                                      Icons.people_outline,
-                                      'Jumuiya',
-                                      jumuiyaName,
-                                    ),
-                                    _buildInfoRow(
-                                      Icons.phone_outlined,
-                                      'Namba ya Simu',
-                                      katibu.nambaYaSimu,
-                                    ),
-                                    _buildInfoRow(
-                                      Icons.calendar_today_outlined,
-                                      'Mwaka',
-                                      katibu.mwaka,
-                                    ),
-                                    _buildInfoRow(
-                                      Icons.access_time_outlined,
-                                      'Tarehe ya Usajili',
-                                      katibu.tarehe,
-                                    ),
-                                    _buildInfoRow(
-                                      Icons.info_outline,
-                                      'Status',
-                                      katibu.status,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        TextButton.icon(
-                                          icon:
-                                              const Icon(Icons.edit, size: 20),
-                                          label: Text('Hariri',
-                                              style: GoogleFonts.poppins()),
-                                          onPressed: () => _showAddEditDialog(
-                                              katibu: katibu),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        TextButton.icon(
-                                          icon: const Icon(Icons.delete,
-                                              size: 20, color: Colors.red),
-                                          label: Text(
-                                            'Futa',
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.red),
-                                          ),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: Text(
-                                                  'Futa Katibu',
-                                                  style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                content: Text(
-                                                  'Una uhakika unataka kumfuta ${katibu.jina}?',
-                                                  style: GoogleFonts.poppins(),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child: Text('Ghairi',
-                                                        style: GoogleFonts
-                                                            .poppins()),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      deleteKatibu(katibu.id);
-                                                    },
-                                                    child: Text('Futa',
-                                                        style: GoogleFonts
-                                                            .poppins()),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                            child: ExpansionTile(
+                              leading: CircleAvatar(
+                                backgroundColor:
+                                    MyColors.primaryLight.withOpacity(0.2),
+                                child: Text(
+                                  katibu.jina[0].toUpperCase(),
+                                  style: GoogleFonts.poppins(
+                                      color: MyColors.primaryLight,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                              title: Text(
+                                katibu.jina,
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                'Namba ya Usajili: ${katibu.memberNo}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      _buildInfoRow(
+                                        Icons.people_outline,
+                                        'Jumuiya',
+                                        jumuiyaName,
+                                      ),
+                                      _buildInfoRow(
+                                        Icons.phone_outlined,
+                                        'Namba ya Simu',
+                                        katibu.nambaYaSimu,
+                                      ),
+                                      _buildInfoRow(
+                                        Icons.calendar_today_outlined,
+                                        'Mwaka',
+                                        katibu.mwaka,
+                                      ),
+                                      _buildInfoRow(
+                                        Icons.access_time_outlined,
+                                        'Tarehe ya Usajili',
+                                        katibu.tarehe,
+                                      ),
+                                      _buildInfoRow(
+                                        Icons.info_outline,
+                                        'Status',
+                                        katibu.status,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton.icon(
+                                            icon: const Icon(Icons.edit,
+                                                size: 20),
+                                            label: Text('Hariri',
+                                                style: GoogleFonts.poppins()),
+                                            onPressed: () => _showAddEditDialog(
+                                                katibu: katibu),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          TextButton.icon(
+                                            icon: const Icon(Icons.delete,
+                                                size: 20, color: Colors.red),
+                                            label: Text(
+                                              'Futa',
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.red),
+                                            ),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                        title: Text(
+                                                          'Futa Neno la Siku',
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        content: Text(
+                                                          'Una uhakika unataka kufuta neno hili?',
+                                                          style: GoogleFonts
+                                                              .poppins(),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            child: Text(
+                                                              'Ghairi',
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              deleteKatibu(
+                                                                  katibu.id);
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                              ),
+                                                            ),
+                                                            child: Text(
+                                                              'Futa',
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ));
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEditDialog(),
         backgroundColor: MyColors.primaryLight,
