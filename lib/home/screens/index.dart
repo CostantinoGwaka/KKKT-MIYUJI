@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kanisaapp/admin/screens/admin_matangazo_screen.dart';
 import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
+import 'package:kanisaapp/admin/screens/viongozi_jumuiya_screen.dart';
 import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
 import 'package:kanisaapp/chatroom/screen/chat_screen.dart';
@@ -62,7 +63,8 @@ class _HeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => kToolbarHeight + 60;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return child;
   }
 
@@ -104,7 +106,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Background message handler function
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
     if (kDebugMode) {
       print("Handling a background message: ${message.messageId}");
     }
@@ -117,7 +120,7 @@ class _HomePageState extends State<HomePage> {
       headers: {
         'Accept': 'application/json',
       },
-       body: jsonEncode({
+      body: jsonEncode({
         "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
       }),
     );
@@ -275,25 +278,32 @@ class _HomePageState extends State<HomePage> {
   void _handleMenuNavigation(String pushTo) {
     switch (pushTo) {
       case "BARAZA WAZEE":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BarazaLaWazee()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const BarazaLaWazee()));
         break;
       case "MUBASHARA":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LiveYoutubePlayer()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const LiveYoutubePlayer()));
         break;
       case "MATANGAZO":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MatangazoScreen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const MatangazoScreen()));
         break;
       case "JISAJILI MSHARIKA":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const RegistrationPageScreen()));
         break;
       case "KWAYA ZETU":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const KwayaZetu()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const KwayaZetu()));
         break;
       case "MAZUNGUMZO":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChatScreen()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const ChatScreen()));
         break;
       case "JUMUIYA ZETU":
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const JumuiyaZetu()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const JumuiyaZetu()));
         break;
     }
   }
@@ -478,12 +488,13 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         color: MyColors.primaryLight,
         borderRadius: BorderRadius.circular(16),
-         
       ),
       child: Column(
         children: [
           Text(
-            (currentUser != null && currentUser!.kanisaName.isNotEmpty) ? currentUser!.kanisaName : "KANISANI",
+            (currentUser != null && currentUser!.kanisaName.isNotEmpty)
+                ? currentUser!.kanisaName
+                : "KANISANI",
             style: GoogleFonts.poppins(
               fontSize: 20,
               color: Colors.white,
@@ -555,7 +566,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: currentUser != null ? _buildUserInfo() : _buildGuestInfo(),
+                  child: currentUser != null
+                      ? _buildUserInfo()
+                      : _buildGuestInfo(),
                 ),
               ],
             ),
@@ -584,49 +597,64 @@ class _HomePageState extends State<HomePage> {
                     icon: Icons.account_balance_rounded,
                     title: 'Akaunti za Kanisa',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const AkauntiZaKanisaScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const AkauntiZaKanisaScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.people_outline,
                     title: 'Nyadhifa Za Uongozi',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const WadhifaScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const WadhifaScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.book_outlined,
                     title: 'Neno la Siku',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const NenoLaSikuScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const NenoLaSikuScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.groups_outlined,
                     title: 'Kamati za Kanisa',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const KamatiScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const KamatiScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.groups_outlined,
                     title: 'Jumuiya za Kanisa',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const JumuiyaScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const JumuiyaScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.groups_outlined,
                     title: 'Makatibu Jumuiya',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const MakatibunJumuiyaScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const MakatibunJumuiyaScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
                     icon: Icons.newspaper,
                     title: 'Matangazo',
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const AdminMatangazoScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const AdminMatangazoScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Viongozi Jumuiya',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const ViongoziJumuiyaScreen()),
                     ),
                   ),
                 ],
@@ -1140,7 +1168,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    return Text(
+                  return Text(
                     snapshot.data![0].neno.toString(),
                     style: GoogleFonts.poppins(
                       fontSize: 13,
@@ -1148,7 +1176,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black87,
                       height: 1.4,
                     ),
-                    );
+                  );
                 } else {
                   return Text(
                     "Hakuna neno la siku",
@@ -1236,7 +1264,8 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                       borderRadius: BorderRadius.circular(20),
@@ -1263,7 +1292,8 @@ class _HomePageState extends State<HomePage> {
                   ElevatedButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const MahubiriScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const MahubiriScreen()),
                       );
                     },
                     icon: const Icon(Icons.play_arrow, size: 18),
@@ -1280,7 +1310,8 @@ class _HomePageState extends State<HomePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       elevation: 0,
                     ),
                   ),
@@ -1408,9 +1439,12 @@ class _HomePageState extends State<HomePage> {
               items: [
                 BottomNavigationBarItem(
                   icon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: _currentIndex == 0 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      color: _currentIndex == 0
+                          ? MyColors.primaryLight.withOpacity(0.15)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
@@ -1422,9 +1456,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: _currentIndex == 1 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      color: _currentIndex == 1
+                          ? MyColors.primaryLight.withOpacity(0.15)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
@@ -1436,9 +1473,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: _currentIndex == 2 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      color: _currentIndex == 2
+                          ? MyColors.primaryLight.withOpacity(0.15)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
@@ -1450,9 +1490,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: _currentIndex == 3 ? MyColors.primaryLight.withOpacity(0.15) : Colors.transparent,
+                      color: _currentIndex == 3
+                          ? MyColors.primaryLight.withOpacity(0.15)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
