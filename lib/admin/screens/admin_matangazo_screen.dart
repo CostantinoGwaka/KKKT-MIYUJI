@@ -153,6 +153,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     }
 
     setState(() => _isLoading = true);
+    setState(() => _isInitialLoading = true);
 
     try {
       var request = http.MultipartRequest(
@@ -215,12 +216,15 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
+        setState(() => _isInitialLoading = false);
       }
     }
   }
 
   Future<void> _deleteMatangazo(String id) async {
     try {
+      setState(() => _isInitialLoading = true);
+
       final response = await http.post(
         Uri.parse(
             "${ApiUrl.BASEURL}api2/matangazo_kanisa/delete_matangazo_makanisa.php"),
@@ -249,6 +253,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
         }
       }
     } catch (e) {
+      setState(() => _isInitialLoading = false);
       if (mounted) {
         SnackBar(
           content:
@@ -261,6 +266,8 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
 
   Future<void> _updateMatangazo(Matangazo matangazo) async {
     try {
+      setState(() => _isInitialLoading = true);
+
       var request = http.MultipartRequest(
         'POST',
         Uri.parse(
@@ -312,6 +319,8 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
       }
     } catch (e) {
       if (mounted) {
+        setState(() => _isInitialLoading = false);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
@@ -441,7 +450,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                     ),
                   ),
                   // ],
-                  if (_selectedImage != null) ...[
+                  if (_selectedImage != null || _image != null) ...[
                     const SizedBox(height: 8),
                     Text(
                       '✅ Image selected',
@@ -642,7 +651,7 @@ class _AdminMatangazoScreenState extends State<AdminMatangazoScreen> {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            'Date: ${matangazo.tarehe ?? ''}',
+                                            'Tarehe: ${matangazo.tarehe?.toString().split(' ')[0] ?? ''}',
                                             style: GoogleFonts.poppins(
                                               color: Colors.grey[600],
                                               fontSize: 12,
