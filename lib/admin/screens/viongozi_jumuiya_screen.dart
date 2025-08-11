@@ -192,7 +192,6 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
       );
 
       if (response.statusCode == 200) {
-        print((response.body));
         final jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 200) {
           List<KiongoziJumuiya> viongozi = (jsonResponse['data'] as List)
@@ -244,6 +243,10 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
       return;
     }
 
+    setState(() {
+      isLoading = true;
+    });
+
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/ongeza_kiongozi_wa_kanisa.php";
@@ -254,10 +257,13 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
         },
         body: jsonEncode({
           "fname": _nameController.text,
-          "phone_no": _phoneController.text,
+          "phone_no": _phoneController.text.startsWith('0')
+              ? '255${_phoneController.text.substring(1)}'
+              : _phoneController.text,
           "wadhifa": _wadhifaController.text,
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
+          "status": 'active',
           "kanisa_id": currentUser?.kanisaId ?? '',
         }),
       );
@@ -274,9 +280,15 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
               backgroundColor: Colors.red,
             ),
           );
+          setState(() {
+            isLoading = false;
+          });
           _clearFields();
           getViongoziJumuiya();
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -289,6 +301,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
         }
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -304,10 +319,147 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
     }
   }
 
-  Future<void> updateKiongoziStatus(String kiongoziId, String newStatus) async {
+  Future<void> deleteKiongozi(int kiongoziId) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      String myApi =
+          "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/delete_kiongozi_wa_kanisa.php";
+      final response = await http.post(
+        Uri.parse(myApi),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          "id": kiongoziId.toString(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              jsonResponse['message'],
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor:
+                jsonResponse['status'] == 200 ? Colors.green : Colors.red,
+          ),
+        );
+        setState(() {
+          isLoading = false;
+        });
+        if (jsonResponse['status'] == 200) {
+          getViongoziJumuiya();
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Kuna tatizo, jaribu tena baadae",
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      if (kDebugMode) {
+        print("Error deleting kiongozi: $e");
+      }
+    }
+  }
+
+  Future<void> updateKiongoziJumuiya(int kiongoziId) async {
+    if (_nameController.text.trim().isEmpty ||
+        _phoneController.text.trim().isEmpty ||
+        selectedWadhifa == null ||
+        selectedJumuiyaId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Tafadhali jaza taarifa zote muhimu',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/ongeza_kiongozi_wa_kanisa.php";
+      final response = await http.post(
+        Uri.parse(myApi),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          "id": kiongoziId.toString(),
+          "fname": _nameController.text,
+          "phone_no": _phoneController.text.startsWith('0')
+              ? '255${_phoneController.text.substring(1)}'
+              : _phoneController.text,
+          "wadhifa": selectedWadhifa,
+          "jumuiya_id": selectedJumuiyaId,
+          "jumuiya": selectedJumuiyaName,
+          "status": 'active',
+          "kanisa_id": currentUser?.kanisaId ?? '',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              jsonResponse['message'],
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor:
+                jsonResponse['status'] == 200 ? Colors.green : Colors.red,
+          ),
+        );
+        setState(() {
+          isLoading = false;
+        });
+        if (jsonResponse['status'] == 200) {
+          _clearFields();
+          getViongoziJumuiya();
+        }
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Kuna tatizo, jaribu tena baadae",
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      if (kDebugMode) {
+        print("Error updating kiongozi: $e");
+      }
+    }
+  }
+
+  Future<void> updateKiongoziStatus(String kiongoziId, String newStatus) async {
+    try {
+      String myApi =
+          "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/update_status_kiongozi_wa_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -318,6 +470,10 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
           "status": newStatus,
         }),
       );
+
+      setState(() {
+        isLoading = true;
+      });
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -331,6 +487,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
               backgroundColor: Colors.red,
             ),
           );
+          setState(() {
+            isLoading = false;
+          });
           getViongoziJumuiya();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -345,6 +504,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
         }
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -358,6 +520,201 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
         print("Error updating kiongozi status: $e");
       }
     }
+  }
+
+  void _showEditKiongoziDialog(KiongoziJumuiya kiongozi) {
+    _nameController.text = kiongozi.fname;
+    _phoneController.text = kiongozi.phoneNo.startsWith('255')
+        ? '0${kiongozi.phoneNo.substring(3)}'
+        : kiongozi.phoneNo;
+    String? dialogWadhifa = kiongozi.wadhifa;
+    String? dialogJumuiyaId = kiongozi.jumuiyaId;
+    String? dialogJumuiyaName = kiongozi.jumuiya;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, StateSetter setDialogState) {
+            return AlertDialog(
+              title: Text(
+                'Hariri Kiongozi wa Jumuiya',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Jina la Kiongozi',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                        labelText: 'Namba ya Simu',
+                        hintText: '07xxxxxxxx or 06xxxxxxxx',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        counterText: '',
+                      ),
+                      onChanged: (value) {
+                        if (value.length >= 2) {
+                          if (!value.startsWith('07') &&
+                              !value.startsWith('06')) {
+                            _phoneController.clear();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Namba ya simu ianze na 06 au 07',
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dialogWadhifa,
+                          isExpanded: true,
+                          hint: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              'Chagua Wadhifa',
+                              style: GoogleFonts.poppins(fontSize: 14),
+                            ),
+                          ),
+                          items: wadhifaList.map((wadhifa) {
+                            return DropdownMenuItem<String>(
+                              value: wadhifa['jina_wadhifa'],
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  wadhifa['jina_wadhifa'],
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setDialogState(() {
+                              dialogWadhifa = newValue;
+                              _wadhifaController.text = newValue ?? '';
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: dialogJumuiyaId!.isNotEmpty &&
+                                  jumuiyaList.any((j) =>
+                                      j['id'].toString() == dialogJumuiyaId)
+                              ? dialogJumuiyaId
+                              : null,
+                          isExpanded: true,
+                          hint: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              'Chagua Jumuiya',
+                              style: GoogleFonts.poppins(fontSize: 14),
+                            ),
+                          ),
+                          items: jumuiyaList.map((jumuiya) {
+                            return DropdownMenuItem<String>(
+                              value: jumuiya['id'].toString(),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  jumuiya['jumuiya_name'] ?? '',
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setDialogState(() {
+                              dialogJumuiyaId = newValue;
+                              if (newValue != null) {
+                                final selectedJumuiya = jumuiyaList.firstWhere(
+                                  (j) => j['id'].toString() == newValue,
+                                  orElse: () => {'jumuiya_name': ''},
+                                );
+                                dialogJumuiyaName =
+                                    selectedJumuiya['jumuiya_name'] ?? '';
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    _clearFields();
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Ghairi',
+                    style: GoogleFonts.poppins(color: Colors.grey),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedWadhifa = dialogWadhifa;
+                      selectedJumuiyaId = dialogJumuiyaId;
+                      selectedJumuiyaName = dialogJumuiyaName;
+                    });
+                    Navigator.pop(context);
+                    updateKiongoziJumuiya(kiongozi.id);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyColors.primaryLight,
+                  ),
+                  child: Text(
+                    'Hariri',
+                    style: GoogleFonts.poppins(color: Colors.white),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   void _clearFields() {
@@ -649,7 +1006,7 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                     // Edit button
                                     TextButton.icon(
                                       onPressed: () {
-                                        // TODO: Implement edit functionality
+                                        _showEditKiongoziDialog(kiongozi);
                                       },
                                       icon: Icon(Icons.edit,
                                           size: 20, color: Colors.blue),
@@ -661,7 +1018,47 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                     // Delete button
                                     TextButton.icon(
                                       onPressed: () {
-                                        // TODO: Implement delete functionality
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Thibitisha!',
+                                                style: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              content: Text(
+                                                'Una uhakika unataka kumfuta ${kiongozi.fname}?',
+                                                style: GoogleFonts.poppins(),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text(
+                                                    'Ghairi',
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    deleteKiongozi(kiongozi.id);
+                                                  },
+                                                  child: Text(
+                                                    'Futa',
+                                                    style: GoogleFonts.poppins(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       icon: Icon(Icons.delete,
                                           size: 20, color: Colors.red),
@@ -680,11 +1077,11 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                             style: GoogleFonts.poppins(
                                                 fontSize: 12)),
                                         Switch(
-                                          value: kiongozi.status == '1',
+                                          value: kiongozi.status == 'active',
                                           onChanged: (bool value) {
                                             updateKiongoziStatus(
                                               kiongozi.id.toString(),
-                                              value ? '1' : '0',
+                                              value ? 'active' : 'not-active',
                                             );
                                           },
                                           activeColor: MyColors.primaryLight,
