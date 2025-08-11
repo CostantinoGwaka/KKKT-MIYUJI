@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -12,7 +12,7 @@ import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
 
 class KiongoziJumuiya {
-  final String id;
+  final int id;
   final String fname;
   final String phoneNo;
   final String wadhifa;
@@ -174,9 +174,13 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
     setState(() {
       isLoading = true;
     });
-
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
     try {
-      String myApi = "${ApiUrl.BASEURL}get_viongozi_jumuiya.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/get_kiongozi_wa_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -188,8 +192,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
       );
 
       if (response.statusCode == 200) {
+        print((response.body));
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           List<KiongoziJumuiya> viongozi = (jsonResponse['data'] as List)
               .map((item) => KiongoziJumuiya.fromJson(item))
               .toList();
@@ -240,7 +245,8 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
     }
 
     try {
-      String myApi = "${ApiUrl.BASEURL}add_kiongozi_jumuiya.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/ongeza_kiongozi_wa_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -251,6 +257,7 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
           "phone_no": _phoneController.text,
           "wadhifa": _wadhifaController.text,
           "jumuiya_id": selectedJumuiyaId,
+          "jumuiya": selectedJumuiyaName,
           "kanisa_id": currentUser?.kanisaId ?? '',
         }),
       );
@@ -299,7 +306,8 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
 
   Future<void> updateKiongoziStatus(String kiongoziId, String newStatus) async {
     try {
-      String myApi = "${ApiUrl.BASEURL}update_kiongozi_status.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/viongozi_wa_jumuiya/ongeza_kiongozi_wa_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -602,40 +610,90 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                               horizontal: 16,
                               vertical: 8,
                             ),
-                            child: ListTile(
-                              title: Text(
-                                kiongozi.fname,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                    kiongozi.fname,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Wadhifa: ${kiongozi.wadhifa}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 12),
+                                      ),
+                                      Text(
+                                        'Jumuiya: ${kiongozi.jumuiya}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 12),
+                                      ),
+                                      Text(
+                                        'Simu: ${kiongozi.phoneNo}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Wadhifa: ${kiongozi.wadhifa}',
-                                    style: GoogleFonts.poppins(fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Jumuiya: ${kiongozi.jumuiya}',
-                                    style: GoogleFonts.poppins(fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Simu: ${kiongozi.phoneNo}',
-                                    style: GoogleFonts.poppins(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              trailing: Switch(
-                                value: kiongozi.status == '1',
-                                onChanged: (bool value) {
-                                  updateKiongoziStatus(
-                                    kiongozi.id,
-                                    value ? '1' : '0',
-                                  );
-                                },
-                                activeColor: MyColors.primaryLight,
-                              ),
+                                Divider(height: 0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    // Edit button
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        // TODO: Implement edit functionality
+                                      },
+                                      icon: Icon(Icons.edit,
+                                          size: 20, color: Colors.blue),
+                                      label: Text('Hariri',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: Colors.blue)),
+                                    ),
+                                    // Delete button
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        // TODO: Implement delete functionality
+                                      },
+                                      icon: Icon(Icons.delete,
+                                          size: 20, color: Colors.red),
+                                      label: Text(
+                                        'Futa',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 12,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    // Status switch
+                                    Row(
+                                      children: [
+                                        Text('Hali:',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 12)),
+                                        Switch(
+                                          value: kiongozi.status == '1',
+                                          onChanged: (bool value) {
+                                            updateKiongoziStatus(
+                                              kiongozi.id.toString(),
+                                              value ? '1' : '0',
+                                            );
+                                          },
+                                          activeColor: MyColors.primaryLight,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           );
                         },
