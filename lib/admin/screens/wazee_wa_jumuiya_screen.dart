@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages, deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -6,24 +6,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/models/mwaka_wa_kanisa.dart';
 import 'package:kanisaapp/models/user_models.dart';
+import 'package:kanisaapp/models/wazee_data.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
 import '../../models/jumuiya_data.dart';
-import '../../models/katibu_data.dart';
 
-class MakatibunJumuiyaScreen extends StatefulWidget {
-  const MakatibunJumuiyaScreen({Key? key}) : super(key: key);
+class WazeeWaJumuiyaScreen extends StatefulWidget {
+  const WazeeWaJumuiyaScreen({Key? key}) : super(key: key);
 
   @override
-  State<MakatibunJumuiyaScreen> createState() => _MakatibunJumuiyaScreenState();
+  State<WazeeWaJumuiyaScreen> createState() => _WazeeWaJumuiyaScreenState();
 }
 
-class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
+class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
   bool isLoading = false;
   String? error;
-  List<KatibuData> makatibu = [];
-  List<KatibuData> filteredMakatibu = [];
+  List<WazeeData> wazee = [];
+  List<WazeeData> filteredWazee = [];
   List<JumuiyaData> jumuiya = [];
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
@@ -37,6 +37,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
   final TextEditingController _nambaYaSimuController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _memberNoController = TextEditingController();
+  final TextEditingController _eneoController = TextEditingController();
   String? selectedJumuiyaId;
   String? selectedJumuiyaName;
 
@@ -47,58 +48,27 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     getActiveKanisaYearDetails();
   }
 
-  Future<InactiveYear?> getActiveKanisaYearDetails() async {
-    String myApi = "${ApiUrl.BASEURL}get_kanisa_year.php";
-    final response = await http.post(
-      Uri.parse(myApi),
-      headers: {'Accept': 'application/json'},
-    );
-
-    // ignore: prefer_typing_uninitialized_variables
-    var mwaka;
-
-    var jsonResponse = json.decode(response.body);
-
-    if (response.statusCode == 200) {
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        mwaka = json;
-      }
-    }
-
-    if (mwaka != null) {
-      if (mwaka is Map && mwaka.containsKey('data')) {
-        // Handle single object response
-        setState(() {
-          inactiveYearData = InactiveYear.fromJson(mwaka['data']);
-          krid = inactiveYearData!.yearId;
-        });
-      }
-    }
-
-    return inactiveYearData; // Return a list with the kanisa data or an empty list
-  }
-
   @override
   void dispose() {
     _jinaController.dispose();
     _nambaYaSimuController.dispose();
     _passwordController.dispose();
     _memberNoController.dispose();
+    _eneoController.dispose();
     _searchController.dispose();
     super.dispose();
   }
 
-  void _filterMakatibu(String query) {
+  void _filterWazee(String query) {
     setState(() {
       if (query.isEmpty) {
-        filteredMakatibu = makatibu;
+        filteredWazee = wazee;
       } else {
-        filteredMakatibu = makatibu.where((katibu) {
+        filteredWazee = wazee.where((mzee) {
           final searchLower = query.toLowerCase();
           final jumuiyaName = jumuiya
               .firstWhere(
-                (j) => j.id == katibu.jumuiyaId,
+                (j) => j.id == mzee.jumuiyaId,
                 orElse: () => JumuiyaData(
                   id: '',
                   jumuiyaName: '',
@@ -109,9 +79,9 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
               .jumuiyaName
               .toLowerCase();
 
-          return katibu.jina.toLowerCase().contains(searchLower) ||
-              katibu.nambaYaSimu.toLowerCase().contains(searchLower) ||
-              katibu.memberNo.toLowerCase().contains(searchLower) ||
+          return mzee.jina.toLowerCase().contains(searchLower) ||
+              mzee.nambaYaSimu.toLowerCase().contains(searchLower) ||
+              mzee.memberNo.toLowerCase().contains(searchLower) ||
               jumuiyaName.contains(searchLower);
         }).toList();
       }
@@ -120,9 +90,27 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
 
   Future<void> fetchData() async {
     await Future.wait([
-      fetchMakatibu(),
+      fetchWazee(),
       fetchJumuiya(),
     ]);
+  }
+
+  Future<void> getActiveKanisaYearDetails() async {
+    String myApi = "${ApiUrl.BASEURL}get_kanisa_year.php";
+    final response = await http.get(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse['status'] == 200) {
+        setState(() {
+          inactiveYearData = InactiveYear.fromJson(jsonResponse['data']);
+          krid = inactiveYearData?.id.toString();
+        });
+      }
+    }
   }
 
   Future<void> fetchJumuiya() async {
@@ -178,7 +166,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     }
   }
 
-  Future<void> fetchMakatibu() async {
+  Future<void> fetchWazee() async {
     setState(() {
       isLoading = true;
       error = null;
@@ -200,7 +188,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
 
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/makatibu_kanisa/get_makatibu_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/wazee_wajumuiya/get_wazee_wanajumuiya.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "kanisa_id": currentUser!.kanisaId,
@@ -210,16 +198,16 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
 
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == "200") {
           setState(() {
-            makatibu = (jsonResponse['data'] as List)
-                .map((item) => KatibuData.fromJson(item))
+            wazee = (jsonResponse['data'] as List)
+                .map((item) => WazeeData.fromJson(item))
                 .toList();
-            filteredMakatibu = makatibu;
+            filteredWazee = wazee;
           });
         } else {
           setState(() {
-            error = jsonResponse['message'] ?? "Failed to load makatibu";
+            error = jsonResponse['message'] ?? "Failed to load wazee";
           });
         }
       } else {
@@ -238,7 +226,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     }
   }
 
-  Future<void> addKatibu() async {
+  Future<void> addMzee() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -249,13 +237,14 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/makatibu_kanisa/ongeza_katibu_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/wazee_wajumuiya/ongeza_wazee_jumuiya.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "jina": _jinaController.text,
           "namba_ya_simu":
               _nambaYaSimuController.text.replaceFirst(RegExp(r'^0'), '255'),
           "password": _passwordController.text,
+          "eneo": _eneoController.text,
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
           "mwaka": krid,
@@ -267,11 +256,11 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
-        fetchMakatibu();
+        fetchWazee();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Katibu ameongezwa!',
+              'Mzee ameongezwa!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
@@ -283,22 +272,15 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              jsonResponse['message'] ?? "Imeshindwa kuongeza katibu",
+              jsonResponse['message'] ?? "Imeshindwa kuongeza mzee",
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.red,
           ),
         );
-        // setState(() {
-        //   error = jsonResponse['message'] ?? "Failed to add katibu";
-        // });
       }
     } catch (e) {
       Navigator.pop(context);
-
-      // setState(() {
-      //   error = "Failed to connect to server";
-      // });
     } finally {
       setState(() {
         isLoading = false;
@@ -306,7 +288,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     }
   }
 
-  Future<void> updateKatibu(int id) async {
+  Future<void> updateMzee(int id) async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -317,13 +299,14 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/makatibu_kanisa/ongeza_katibu_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/wazee_wajumuiya/ongeza_wazee_jumuiya.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "id": id.toString(),
           "jina": _jinaController.text,
           "namba_ya_simu":
               _nambaYaSimuController.text.replaceFirst(RegExp(r'^0'), '255'),
+          "eneo": _eneoController.text,
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
           "mwaka": krid,
@@ -333,13 +316,14 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       );
 
       final jsonResponse = json.decode(response.body);
+
       if (jsonResponse['status'] == 200) {
-        fetchMakatibu();
+        fetchWazee();
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Katibu amesahihishwa!',
+              'Taarifa za mzee zimesahihishwa!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
@@ -350,7 +334,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              jsonResponse['message'] ?? "Imeshindwa kuongeza katibu",
+              jsonResponse['message'] ?? "Imeshindwa kubadili taarifa",
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.red,
@@ -362,7 +346,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Imeshindwa kuongeza katibu",
+            "Imeshindwa kubadili taarifa",
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.red,
@@ -375,44 +359,41 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     }
   }
 
-  Future<void> deleteKatibu(int id) async {
+  Future<void> deleteMzee(int id) async {
     setState(() {
       isLoading = true;
-      error = null;
     });
 
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/makatibu_kanisa/delete_katibu_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/wazee_wajumuiya/delete_mzee_jumuiya.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "id": id.toString(),
-          "kanisa_id": currentUser!.kanisaId,
         }),
       );
 
       final jsonResponse = json.decode(response.body);
+
       if (jsonResponse['status'] == 200) {
+        await fetchWazee();
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Katibu amefutwa!',
+              'Mzee amefutwa!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
           ),
         );
-        fetchMakatibu();
       } else {
-        // setState(() {
-        //   error = jsonResponse['message'] ?? "Failed to delete katibu";
-        // });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "Imeshindwa kufuta katibu",
+              "Imeshindwa kufuta mzee",
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.red,
@@ -420,14 +401,11 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         );
       }
     } catch (e) {
-      // setState(() {
-      //   error = "Failed to connect to server";
-      // });
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Imeshindwa kufuta katibu",
+            "Imeshindwa kufuta mzee",
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.red,
@@ -440,20 +418,21 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
     }
   }
 
-  void _showAddEditDialog({KatibuData? katibu}) {
-    _jinaController.text = katibu?.jina ?? '';
+  void _showAddEditDialog({WazeeData? mzee}) {
+    _jinaController.text = mzee?.jina ?? '';
     _nambaYaSimuController.text =
-        katibu?.nambaYaSimu.replaceFirst('255', '0') ?? '';
-    _memberNoController.text = katibu?.memberNo ?? '';
-    selectedJumuiyaId = katibu?.jumuiyaId;
-    selectedJumuiyaName = katibu?.jumuiya;
+        mzee?.nambaYaSimu.replaceFirst('255', '0') ?? '';
+    _memberNoController.text = mzee?.memberNo ?? '';
+    _eneoController.text = mzee?.eneo ?? '';
+    selectedJumuiyaId = mzee?.jumuiyaId.toString();
+    selectedJumuiyaName = mzee?.jumuiya;
     _passwordController.clear();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          katibu == null ? 'Ongeza Katibu' : 'Badilisha Taarifa',
+          mzee == null ? 'Ongeza Mzee' : 'Badilisha Taarifa',
           style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -468,7 +447,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                 TextFormField(
                   controller: _jinaController,
                   decoration: const InputDecoration(
-                    labelText: 'Jina la Katibu',
+                    labelText: 'Jina la Mzee',
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -532,7 +511,20 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                     return null;
                   },
                 ),
-                if (katibu == null) ...[
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _eneoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Eneo',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Tafadhali jaza eneo';
+                    }
+                    return null;
+                  },
+                ),
+                if (mzee == null) ...[
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
@@ -551,16 +543,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                     },
                   ),
                 ],
-                if (error != null) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    error!,
-                    style: GoogleFonts.poppins(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
@@ -573,33 +555,59 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
               style: GoogleFonts.poppins(),
             ),
           ),
-          isLoading
-              ? const CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white,
-                  ),
-                )
-              : ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          if (katibu == null) {
-                            addKatibu();
-                          } else {
-                            updateKatibu(katibu.id);
-                          }
-                        },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: MyColors.primaryLight,
-                  ),
-                  child: Text(
-                    isLoading
-                        ? 'Inahifadhi...'
-                        : (katibu == null ? 'Ongeza' : 'Badilisha'),
-                    style: GoogleFonts.poppins(color: Colors.white),
-                  ),
-                ),
+          ElevatedButton(
+            onPressed: isLoading
+                ? null
+                : () {
+                    if (mzee == null) {
+                      addMzee();
+                    } else {
+                      updateMzee(mzee.id);
+                    }
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: MyColors.primaryLight,
+            ),
+            child: Text(
+              isLoading
+                  ? 'Inahifadhi...'
+                  : (mzee == null ? 'Ongeza' : 'Badilisha'),
+              style: GoogleFonts.poppins(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: Colors.grey[600],
+          ),
+          const SizedBox(width: 8),
+          Text(
+            '$label:',
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.poppins(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -614,14 +622,14 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                 controller: _searchController,
                 style: GoogleFonts.poppins(color: MyColors.darkText),
                 decoration: InputDecoration(
-                  hintText: 'Tafuta katibu...',
+                  hintText: 'Tafuta mzee...',
                   hintStyle: GoogleFonts.poppins(color: Colors.grey),
                   border: InputBorder.none,
                 ),
-                onChanged: _filterMakatibu,
+                onChanged: _filterWazee,
               )
             : Text(
-                'Makatibu wa Jumuiya',
+                'Wazee wa Jumuiya',
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600, color: MyColors.darkText),
               ),
@@ -633,7 +641,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                 if (isSearching) {
                   isSearching = false;
                   _searchController.clear();
-                  filteredMakatibu = makatibu;
+                  filteredWazee = wazee;
                 } else {
                   isSearching = true;
                 }
@@ -693,7 +701,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                       ],
                     ),
                   )
-                : filteredMakatibu.isEmpty
+                : filteredWazee.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -707,7 +715,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                             Text(
                               isSearching
                                   ? 'Hakuna matokeo'
-                                  : 'Hakuna makatibu bado',
+                                  : 'Hakuna wazee bado',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -717,13 +725,13 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: filteredMakatibu.length,
+                        itemCount: filteredWazee.length,
                         padding: const EdgeInsets.all(8),
                         itemBuilder: (context, index) {
-                          final katibu = filteredMakatibu[index];
+                          final mzee = filteredWazee[index];
                           final jumuiyaName = jumuiya
                               .firstWhere(
-                                (j) => j.id == katibu.jumuiyaId,
+                                (j) => j.id == mzee.jumuiyaId,
                                 orElse: () => JumuiyaData(
                                   id: '',
                                   jumuiyaName: 'Unknown',
@@ -753,24 +761,36 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                 backgroundColor:
                                     MyColors.primaryLight.withOpacity(0.2),
                                 child: Text(
-                                  katibu.jina[0].toUpperCase(),
+                                  mzee.jina[0].toUpperCase(),
                                   style: GoogleFonts.poppins(
                                       color: MyColors.primaryLight,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
                               title: Text(
-                                katibu.jina,
+                                mzee.jina,
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              subtitle: Text(
-                                'Namba ya Usajili: ${katibu.memberNo}',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Namba ya Usajili: ${mzee.memberNo}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  Text(
+                                    'Jumuiya: $jumuiyaName',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
                               ),
                               children: [
                                 Padding(
@@ -785,22 +805,27 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                       _buildInfoRow(
                                         Icons.phone_outlined,
                                         'Namba ya Simu',
-                                        katibu.nambaYaSimu,
+                                        mzee.nambaYaSimu,
+                                      ),
+                                      _buildInfoRow(
+                                        Icons.location_on_outlined,
+                                        'Eneo',
+                                        mzee.eneo,
                                       ),
                                       _buildInfoRow(
                                         Icons.calendar_today_outlined,
                                         'Mwaka',
-                                        katibu.mwaka,
+                                        mzee.mwaka,
                                       ),
                                       _buildInfoRow(
                                         Icons.access_time_outlined,
                                         'Tarehe ya Usajili',
-                                        katibu.tarehe,
+                                        mzee.tarehe,
                                       ),
                                       _buildInfoRow(
                                         Icons.info_outline,
                                         'Status',
-                                        katibu.status,
+                                        mzee.status,
                                       ),
                                       const SizedBox(height: 16),
                                       Row(
@@ -812,8 +837,8 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                                 size: 20),
                                             label: Text('Hariri',
                                                 style: GoogleFonts.poppins()),
-                                            onPressed: () => _showAddEditDialog(
-                                                katibu: katibu),
+                                            onPressed: () =>
+                                                _showAddEditDialog(mzee: mzee),
                                           ),
                                           const SizedBox(width: 8),
                                           TextButton.icon(
@@ -826,68 +851,62 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                             ),
                                             onPressed: () {
                                               showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                        title: Text(
-                                                          'Futa Neno la Siku',
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                  title: Text(
+                                                    'Futa Mzee',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  content: Text(
+                                                    'Una uhakika unataka kumfuta mzee huyu?',
+                                                    style:
+                                                        GoogleFonts.poppins(),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text(
+                                                        'Ghairi',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors.grey,
                                                         ),
-                                                        content: Text(
-                                                          'Una uhakika unataka kufuta neno hili?',
-                                                          style: GoogleFonts
-                                                              .poppins(),
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        deleteMzee(mzee.id);
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
                                                         ),
-                                                        actions: [
-                                                          TextButton(
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            child: Text(
-                                                              'Ghairi',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              deleteKatibu(
-                                                                  katibu.id);
-                                                            },
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                              ),
-                                                            ),
-                                                            child: Text(
-                                                              'Futa',
-                                                              style: GoogleFonts
-                                                                  .poppins(
+                                                      ),
+                                                      child: Text(
+                                                        'Futa',
+                                                        style:
+                                                            GoogleFonts.poppins(
                                                                 color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ));
+                                                                    .white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
                                             },
                                           ),
                                         ],
@@ -908,36 +927,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
           Icons.add,
           color: Colors.white,
         ),
-      ),
-    );
-  }
-
-  // Add this helper method in the class
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Icon(icon, size: 18, color: Colors.grey[600]),
-          const SizedBox(width: 8),
-          Text(
-            '$label:',
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              color: Colors.grey[600],
-            ),
-          ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
