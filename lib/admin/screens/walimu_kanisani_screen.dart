@@ -725,131 +725,134 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.black,
-                      ),
-                    ),
-                  )
-                : hasError
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error_outline,
-                                size: 60, color: Colors.red),
-                            const SizedBox(height: 16),
-                            Text(
-                              errorMessage,
-                              style: GoogleFonts.poppins(),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: getWalimuKanisa,
-                              child: Text('Jaribu tena'),
-                            ),
-                          ],
+      body: RefreshIndicator(
+        onRefresh: getWalimuKanisa,
+        child: Column(
+          children: [
+            Expanded(
+              child: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.black,
                         ),
-                      )
-                    : filteredWalimuList.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Lottie.asset(
-                                  'assets/animation/nodata.json',
-                                  height: 120,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'Hakuna walimu waliosajiliwa',
-                                  style: GoogleFonts.poppins(),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: filteredWalimuList.length,
-                            itemBuilder: (context, index) {
-                              final mwalimu = filteredWalimuList[index];
-                              final isActive = mwalimu['status'] == 'active';
+                      ),
+                    )
+                  : hasError
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error_outline,
+                                  size: 60, color: Colors.red),
+                              const SizedBox(height: 16),
+                              Text(
+                                errorMessage,
+                                style: GoogleFonts.poppins(),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: getWalimuKanisa,
+                                child: Text('Jaribu tena'),
+                              ),
+                            ],
+                          ),
+                        )
+                      : filteredWalimuList.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    'assets/animation/nodata.json',
+                                    height: 120,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Hakuna walimu waliosajiliwa',
+                                    style: GoogleFonts.poppins(),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: filteredWalimuList.length,
+                              itemBuilder: (context, index) {
+                                final mwalimu = filteredWalimuList[index];
+                                final isActive = mwalimu['status'] == 'active';
 
-                              return Card(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.all(16),
-                                  title: Text(
-                                    mwalimu['fname'],
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w600,
+                                return Card(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(16),
+                                    title: Text(
+                                      mwalimu['fname'],
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Wadhifa: ${mwalimu['wadhifa']}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Simu: ${mwalimu['phone_no']}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Switch(
+                                          value: isActive,
+                                          onChanged: (bool value) {
+                                            updateMwalimuStatus(
+                                              mwalimu['id'].toString(),
+                                              value ? 'active' : 'inactive',
+                                            );
+                                          },
+                                          activeColor: MyColors.primaryLight,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () =>
+                                              _showEditMwalimuDialog(mwalimu),
+                                          color: Colors.blue,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () =>
+                                              _showDeleteConfirmationDialog(
+                                                  mwalimu['id'].toString()),
+                                          color: Colors.red,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Wadhifa: ${mwalimu['wadhifa']}',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Simu: ${mwalimu['phone_no']}',
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Switch(
-                                        value: isActive,
-                                        onChanged: (bool value) {
-                                          updateMwalimuStatus(
-                                            mwalimu['id'].toString(),
-                                            value ? 'active' : 'inactive',
-                                          );
-                                        },
-                                        activeColor: MyColors.primaryLight,
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () =>
-                                            _showEditMwalimuDialog(mwalimu),
-                                        color: Colors.blue,
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () =>
-                                            _showDeleteConfirmationDialog(
-                                                mwalimu['id'].toString()),
-                                        color: Colors.red,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-          ),
-        ],
+                                );
+                              },
+                            ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddMwalimuDialog,
