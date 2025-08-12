@@ -194,7 +194,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
           isLoading = false;
         });
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           // Clear form and refresh list
           _clearFields();
           getWalimuKanisa();
@@ -265,7 +265,13 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
         if (jsonResponse['status'] == 200) {
           getWalimuKanisa();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Taarifa zimebadilishwa kikamilifu')),
+            SnackBar(
+              content: Text(
+                'Taarifa zimebadilishwa kikamilifu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
         } else {
           setState(() {
@@ -309,10 +315,16 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
           isLoading = false;
         });
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           getWalimuKanisa();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Mwalimu amefutwa kikamilifu')),
+            SnackBar(
+              content: Text(
+                'Mwalimu amefutwa kikamilifu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
         } else {
           setState(() {
@@ -507,6 +519,13 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                     selectedWadhifa == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Tafadhali jaza taarifa zote')),
+                  );
+                  return;
+                }
+                if (!phoneController.text.startsWith('06') &&
+                    !phoneController.text.startsWith('07')) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Namba ya simu ianze na 06 au 07')),
                   );
                   return;
                 }
