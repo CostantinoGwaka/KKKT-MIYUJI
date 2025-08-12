@@ -199,7 +199,13 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
           _clearFields();
           getWalimuKanisa();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Mwalimu ameongezwa kikamilifu')),
+            SnackBar(
+              content: Text(
+                'Mwalimu ameongezwa kikamilifu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
         } else {
           setState(() {
@@ -250,8 +256,6 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
           "kanisa_id": currentUser?.kanisaId ?? '',
         }),
       );
-
-      print(response.body);
 
       if (response.statusCode == 200) {
         setState(() {
@@ -430,7 +434,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: phoneController,
                   decoration: InputDecoration(
                     labelText: 'Namba ya Simu',
@@ -441,25 +445,27 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                   ),
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      if (!value.startsWith('0')) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Namba ianze na 0')),
-                        );
-                        phoneController.clear();
-                      } else if (!value.startsWith('06') &&
-                          !value.startsWith('07')) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Namba ianze na 06 au 07')),
-                        );
-                        phoneController.clear();
-                      } else if (value.length > 10) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Namba iwe na tarakimu 10')),
-                        );
-                        phoneController.text = value.substring(0, 10);
-                      }
+                    if (value.length > 10) {
+                      phoneController.text = value.substring(0, 10);
+                      phoneController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: 10),
+                      );
                     }
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Tafadhali ingiza namba ya simu';
+                    }
+                    if (!value.startsWith('0')) {
+                      return 'Namba ianze na 0';
+                    }
+                    if (!value.startsWith('06') && !value.startsWith('07')) {
+                      return 'Namba ianze na 06 au 07';
+                    }
+                    if (value.length != 10) {
+                      return 'Namba iwe na tarakimu 10';
+                    }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 16),
