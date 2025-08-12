@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, use_super_parameters, library_private_types_in_public_api, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -89,7 +89,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
     });
 
     try {
-      String myApi = "${ApiUrl.BASEURL}get_walimu_wa_kanisa.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/get_walimu_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
@@ -100,7 +101,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           setState(() {
             walimuList = List<Map<String, dynamic>>.from(jsonResponse['data']);
             filteredWalimuList = walimuList;
@@ -383,7 +384,6 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
               ),
-              // ignore: prefer_const_constructors
               child: Text('Hifadhi'),
             ),
           ],
@@ -686,8 +686,16 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddMwalimuDialog,
-        label: Text('Ongeza Mwalimu'),
-        icon: Icon(Icons.add),
+        label: const Text(
+          'Ongeza Mwalimu',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         backgroundColor: MyColors.primaryLight,
       ),
     );
