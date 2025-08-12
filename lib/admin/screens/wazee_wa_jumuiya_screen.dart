@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -755,7 +755,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
 
                           return Container(
                             margin: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 8),
+                              vertical: 4,
+                              horizontal: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
