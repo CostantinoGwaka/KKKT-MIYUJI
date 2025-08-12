@@ -256,6 +256,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
+        setState(() {
+          isLoading = false;
+        });
         fetchWazee();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -268,6 +271,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
         Navigator.pop(context);
       } else {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -280,6 +286,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pop(context);
     } finally {
       setState(() {
@@ -318,6 +327,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
+        setState(() {
+          isLoading = false;
+        });
         fetchWazee();
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -330,6 +342,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           ),
         );
       } else {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -342,6 +357,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -429,155 +447,170 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
     _passwordController.clear();
 
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          mzee == null ? 'Ongeza Mzee' : 'Badilisha Taarifa',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _jinaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Jina la Mzee',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza jina';
-                    }
-                    return null;
-                  },
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setStateDialog) => AlertDialog(
+              title: Text(
+                mzee == null ? 'Ongeza Mzee' : 'Badilisha Taarifa',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _nambaYaSimuController,
-                  decoration: const InputDecoration(
-                    labelText: 'Namba ya Simu',
+              ),
+              content: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: _jinaController,
+                        decoration: InputDecoration(
+                          labelText: 'Jina la Mzee',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza jina';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _memberNoController,
+                        decoration: InputDecoration(
+                          labelText: 'Namba ya Usajili',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza namba ya usajili';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _nambaYaSimuController,
+                        decoration: InputDecoration(
+                          labelText: 'Namba ya Simu',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza namba ya simu';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      if (mzee == null)
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: GoogleFonts.poppins(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Tafadhali jaza password';
+                            }
+                            return null;
+                          },
+                        ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _eneoController,
+                        decoration: InputDecoration(
+                          labelText: 'Eneo',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza eneo';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        value: selectedJumuiyaId,
+                        decoration: InputDecoration(
+                          labelText: 'Jumuiya',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        items: jumuiya.map((JumuiyaData jumuiya) {
+                          return DropdownMenuItem<String>(
+                            value: jumuiya.id,
+                            child: Text(
+                              jumuiya.jumuiyaName,
+                              style: GoogleFonts.poppins(),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setStateDialog(() {
+                            selectedJumuiyaId = newValue;
+                            selectedJumuiyaName = jumuiya
+                                .firstWhere((j) => j.id == newValue)
+                                .jumuiyaName;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali chagua jumuiya';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
-                  maxLength: 10,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza namba ya simu';
-                    }
-                    if (!RegExp(r'^(0[67])\d{8}$').hasMatch(value)) {
-                      return 'Namba ya simu inapaswa kuanza na 06 au 07 na kuwa na tarakimu 10';
-                    }
-                    return null;
-                  },
                 ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: selectedJumuiyaId,
-                  hint: const Text('Chagua Jumuiya'),
-                  items: jumuiya.map((j) {
-                    return DropdownMenuItem<String>(
-                      value: j.id,
-                      child: Text(j.jumuiyaName),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedJumuiyaId = value;
-                      selectedJumuiyaName =
-                          jumuiya.firstWhere((j) => j.id == value).jumuiyaName;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali chagua jumuiya';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _memberNoController,
-                  decoration: const InputDecoration(
-                    labelText: 'Namba ya Usajili',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Ghairi',
+                    style: GoogleFonts.poppins(),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza namba ya usajili';
-                    }
-                    return null;
-                  },
                 ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _eneoController,
-                  decoration: const InputDecoration(
-                    labelText: 'Eneo',
+                ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          if (mzee == null) {
+                            addMzee();
+                          } else {
+                            updateMzee(mzee.id);
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MyColors.primaryLight,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza eneo';
-                    }
-                    return null;
-                  },
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Text(
+                          mzee == null ? 'Ongeza' : 'Badilisha',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
-                if (mzee == null) ...[
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                    ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Tafadhali jaza password';
-                      }
-                      if (value.length < 6) {
-                        return 'Password inapaswa kuwa na urefu wa angalau herufi 6';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
               ],
             ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Ghairi',
-              style: GoogleFonts.poppins(),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: isLoading
-                ? null
-                : () {
-                    if (mzee == null) {
-                      addMzee();
-                    } else {
-                      updateMzee(mzee.id);
-                    }
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyColors.primaryLight,
-            ),
-            child: Text(
-              isLoading
-                  ? 'Inahifadhi...'
-                  : (mzee == null ? 'Ongeza' : 'Badilisha'),
-              style: GoogleFonts.poppins(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
   Widget _buildInfoRow(IconData icon, String label, String value) {

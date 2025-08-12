@@ -854,19 +854,13 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: _showAddMwalimuDialog,
-        label: const Text(
-          'Ongeza Mwalimu',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        icon: const Icon(
+        backgroundColor: MyColors.primaryLight,
+        child: Icon(
           Icons.add,
           color: Colors.white,
         ),
-        backgroundColor: MyColors.primaryLight,
       ),
     );
   }
