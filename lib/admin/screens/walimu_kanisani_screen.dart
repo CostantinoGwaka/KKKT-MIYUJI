@@ -121,23 +121,47 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
             isLoading = false;
           });
         } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                jsonResponse['message'] ?? 'Imeshindwa kupakua taarifa',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
           setState(() {
             hasError = true;
-            errorMessage = jsonResponse['message'] ?? 'Failed to load data';
             isLoading = false;
           });
         }
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Imeshindwa kupakua taarifa',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
         setState(() {
           hasError = true;
-          errorMessage = 'Server error occurred';
           isLoading = false;
         });
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Hitilafu kwenye mtandao',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
       setState(() {
         hasError = true;
-        errorMessage = 'Network error occurred';
         isLoading = false;
       });
     }
@@ -145,6 +169,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
 
   // Add new mwalimu
   Future<void> addMwalimuKanisa() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/walimu_kanisani/ongeza_mwalimu_kanisani.php";
@@ -153,7 +180,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "fname": fnameController.text,
-          "phone_no": phoneController.text,
+          "phone_no": phoneController.text.startsWith('0')
+              ? '255${phoneController.text.substring(1)}'
+              : phoneController.text,
           "wadhifa": selectedWadhifa,
           "status": "active",
           "kanisa_id": currentUser?.kanisaId ?? '',
@@ -161,6 +190,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
           // Clear form and refresh list
@@ -170,16 +202,29 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
             const SnackBar(content: Text('Mwalimu ameongezwa kikamilifu')),
           );
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content:
-                    Text(jsonResponse['message'] ?? 'Failed to add mwalimu')),
+              content: Text(
+                jsonResponse['message'] ?? 'Imeshindwa kuongeza mwalimu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(
+          content: Text('Error: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -187,6 +232,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   // Update mwalimu
   Future<void> updateMwalimuKanisa(
       String id, String fname, String phone, String wadhifa) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/walimu_kanisani/update_mwalimu_kanisani.php";
@@ -203,13 +251,19 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           getWalimuKanisa();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Taarifa zimebadilishwa kikamilifu')),
           );
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text(jsonResponse['message'] ?? 'Failed to update')),
@@ -217,6 +271,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
         }
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -225,6 +282,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
 
   // Delete mwalimu
   Future<void> deleteMwalimu(String id) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/walimu_kanisani/delete_walimu_kanisa.php";
@@ -238,6 +298,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
           getWalimuKanisa();
@@ -245,6 +308,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
             const SnackBar(content: Text('Mwalimu amefutwa kikamilifu')),
           );
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text(jsonResponse['message'] ?? 'Failed to delete')),
@@ -260,6 +326,9 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
 
   // Update mwalimu status
   Future<void> updateMwalimuStatus(String id, String status) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       String myApi =
           "${ApiUrl.BASEURL}api2/walimu_kanisani/update_mwalimu_kanisa_status.php";
@@ -274,12 +343,27 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Mwalimu wa kanisa amesahihishwa kikamilifu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
           getWalimuKanisa();
         }
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       if (kDebugMode) {
         print("Error updating status: $e");
       }
@@ -347,11 +431,33 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                   controller: phoneController,
                   decoration: InputDecoration(
                     labelText: 'Namba ya Simu',
+                    hintText: '0xxxxxxxxx',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   keyboardType: TextInputType.phone,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      if (!value.startsWith('0')) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Namba ianze na 0')),
+                        );
+                        phoneController.clear();
+                      } else if (!value.startsWith('06') &&
+                          !value.startsWith('07')) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Namba ianze na 06 au 07')),
+                        );
+                        phoneController.clear();
+                      } else if (value.length > 10) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Namba iwe na tarakimu 10')),
+                        );
+                        phoneController.text = value.substring(0, 10);
+                      }
+                    }
+                  },
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
@@ -401,7 +507,12 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
               ),
-              child: Text('Hifadhi'),
+              child: Text(
+                'Hifadhi',
+                style: TextStyle(
+                  color: MyColors.white,
+                ),
+              ),
             ),
           ],
         ),
@@ -461,8 +572,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                   ),
                   items: wadhifaList.map((wadhifa) {
                     return DropdownMenuItem<String>(
-                      value: wadhifa['wadhifa'],
-                      child: Text(wadhifa['wadhifa']),
+                      value: wadhifa['jina_wadhifa'],
+                      child: Text(wadhifa['jina_wadhifa']),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -500,7 +611,12 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
               ),
-              child: Text('Hifadhi'),
+              child: Text(
+                'Hifadhi',
+                style: TextStyle(
+                  color: MyColors.white,
+                ),
+              ),
             ),
           ],
         ),
@@ -677,7 +793,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                                         value: isActive,
                                         onChanged: (bool value) {
                                           updateMwalimuStatus(
-                                            mwalimu['id'],
+                                            mwalimu['id'].toString(),
                                             value ? 'active' : 'inactive',
                                           );
                                         },
@@ -693,7 +809,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                                         icon: Icon(Icons.delete),
                                         onPressed: () =>
                                             _showDeleteConfirmationDialog(
-                                                mwalimu['id']),
+                                                mwalimu['id'].toString()),
                                         color: Colors.red,
                                       ),
                                     ],
