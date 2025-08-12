@@ -703,6 +703,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    setDialogState(() {
+                      isLoading = true;
+                    });
                     setState(() {
                       selectedWadhifa = dialogWadhifa;
                       selectedJumuiyaId = dialogJumuiyaId;
@@ -875,6 +878,9 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      setDialogState(() {
+                        isLoading = true;
+                      });
                       setState(() {
                         selectedWadhifa = dialogWadhifa;
                         selectedJumuiyaId = dialogJumuiyaId;
@@ -1022,10 +1028,13 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                         },
                                         icon: Icon(Icons.edit,
                                             size: 20, color: Colors.blue),
-                                        label: Text('Hariri',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12,
-                                                color: Colors.blue)),
+                                        label: Text(
+                                          'Hariri',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
                                       ),
                                       // Delete button
                                       TextButton.icon(
@@ -1088,9 +1097,12 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                       // Status switch
                                       Row(
                                         children: [
-                                          Text('Hali:',
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 12)),
+                                          Text(
+                                            'Hali:',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                           Switch(
                                             value: kiongozi.status == 'active',
                                             onChanged: (bool value) {

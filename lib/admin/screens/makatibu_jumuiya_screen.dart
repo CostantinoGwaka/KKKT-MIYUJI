@@ -451,156 +451,175 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          katibu == null ? 'Ongeza Katibu' : 'Badilisha Taarifa',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _jinaController,
-                  decoration: const InputDecoration(
-                    labelText: 'Jina la Katibu',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza jina';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _nambaYaSimuController,
-                  decoration: const InputDecoration(
-                    labelText: 'Namba ya Simu',
-                  ),
-                  maxLength: 10,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza namba ya simu';
-                    }
-                    if (!RegExp(r'^(0[67])\d{8}$').hasMatch(value)) {
-                      return 'Namba ya simu inapaswa kuanza na 06 au 07 na kuwa na tarakimu 10';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: selectedJumuiyaId,
-                  hint: const Text('Chagua Jumuiya'),
-                  items: jumuiya.map((j) {
-                    return DropdownMenuItem<String>(
-                      value: j.id,
-                      child: Text(j.jumuiyaName),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedJumuiyaId = value;
-                      selectedJumuiyaName =
-                          jumuiya.firstWhere((j) => j.id == value).jumuiyaName;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali chagua jumuiya';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _memberNoController,
-                  decoration: const InputDecoration(
-                    labelText: 'Namba ya Usajili',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tafadhali jaza namba ya usajili';
-                    }
-                    return null;
-                  },
-                ),
-                if (katibu == null) ...[
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
+      builder: (context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) => Dialog(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      katibu == null ? 'Ongeza Katibu' : 'Badilisha Taarifa',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Tafadhali jaza password';
-                      }
-                      if (value.length < 6) {
-                        return 'Password inapaswa kuwa na urefu wa angalau herufi 6';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-                if (error != null) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    error!,
-                    style: GoogleFonts.poppins(
-                      color: Colors.red,
-                      fontSize: 12,
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _jinaController,
+                      decoration: const InputDecoration(
+                        labelText: 'Jina la Katibu',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tafadhali jaza jina';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Ghairi',
-              style: GoogleFonts.poppins(),
-            ),
-          ),
-          isLoading
-              ? const CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white,
-                  ),
-                )
-              : ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          if (katibu == null) {
-                            addKatibu();
-                          } else {
-                            updateKatibu(katibu.id);
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nambaYaSimuController,
+                      decoration: const InputDecoration(
+                        labelText: 'Namba ya Simu',
+                      ),
+                      maxLength: 10,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tafadhali jaza namba ya simu';
+                        }
+                        if (!RegExp(r'^(0[67])\d{8}$').hasMatch(value)) {
+                          return 'Namba ya simu inapaswa kuanza na 06 au 07 na kuwa na tarakimu 10';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: selectedJumuiyaId,
+                      hint: const Text('Chagua Jumuiya'),
+                      items: jumuiya.map((j) {
+                        return DropdownMenuItem<String>(
+                          value: j.id,
+                          child: Text(j.jumuiyaName),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedJumuiyaId = value;
+                          selectedJumuiyaName = jumuiya
+                              .firstWhere((j) => j.id == value)
+                              .jumuiyaName;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tafadhali chagua jumuiya';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _memberNoController,
+                      decoration: const InputDecoration(
+                        labelText: 'Namba ya Usajili',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tafadhali jaza namba ya usajili';
+                        }
+                        return null;
+                      },
+                    ),
+                    if (katibu == null) ...[
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza password';
                           }
+                          if (value.length < 6) {
+                            return 'Password inapaswa kuwa na urefu wa angalau herufi 6';
+                          }
+                          return null;
                         },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: MyColors.primaryLight,
-                  ),
-                  child: Text(
-                    isLoading
-                        ? 'Inahifadhi...'
-                        : (katibu == null ? 'Ongeza' : 'Badilisha'),
-                    style: GoogleFonts.poppins(color: Colors.white),
-                  ),
+                      ),
+                    ],
+                    if (error != null) ...[
+                      const SizedBox(height: 16),
+                      Text(
+                        error!,
+                        style: GoogleFonts.poppins(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            'Ghairi',
+                            style: GoogleFonts.poppins(),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        isLoading
+                            ? const CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.black,
+                                ),
+                              )
+                            : ElevatedButton(
+                                onPressed: isLoading
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        if (katibu == null) {
+                                          addKatibu();
+                                        } else {
+                                          updateKatibu(katibu.id);
+                                        }
+                                      },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: MyColors.primaryLight,
+                                ),
+                                child: Text(
+                                  isLoading
+                                      ? 'Inahifadhi...'
+                                      : (katibu == null
+                                          ? 'Ongeza'
+                                          : 'Badilisha'),
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ],
                 ),
-        ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -826,68 +845,62 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                             ),
                                             onPressed: () {
                                               showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      AlertDialog(
-                                                        title: Text(
-                                                          'Futa Neno la Siku',
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                  title: Text(
+                                                    'Futa Neno la Siku',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  content: Text(
+                                                    'Una uhakika unataka kufuta neno hili?',
+                                                    style:
+                                                        GoogleFonts.poppins(),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text(
+                                                        'Ghairi',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors.grey,
                                                         ),
-                                                        content: Text(
-                                                          'Una uhakika unataka kufuta neno hili?',
-                                                          style: GoogleFonts
-                                                              .poppins(),
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        deleteKatibu(katibu.id);
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
                                                         ),
-                                                        actions: [
-                                                          TextButton(
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            child: Text(
-                                                              'Ghairi',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                              deleteKatibu(
-                                                                  katibu.id);
-                                                            },
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                              ),
-                                                            ),
-                                                            child: Text(
-                                                              'Futa',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ));
+                                                      ),
+                                                      child: Text(
+                                                        'Futa',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
                                             },
                                           ),
                                         ],

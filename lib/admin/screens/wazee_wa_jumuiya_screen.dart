@@ -229,10 +229,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
   Future<void> addMzee() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      isLoading = true;
-      error = null;
-    });
+    error = null;
 
     try {
       final response = await http.post(
@@ -256,10 +253,8 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
-        setState(() {
-          isLoading = false;
-        });
-        fetchWazee();
+        await fetchWazee();
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -269,11 +264,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
       } else {
-        setState(() {
-          isLoading = false;
-        });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -286,9 +277,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
       }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
       Navigator.pop(context);
     } finally {
       setState(() {
@@ -300,10 +288,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
   Future<void> updateMzee(int id) async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      isLoading = true;
-      error = null;
-    });
+    error = null;
 
     try {
       final response = await http.post(
@@ -327,10 +312,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
-        setState(() {
-          isLoading = false;
-        });
-        fetchWazee();
+        await fetchWazee();
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -342,9 +324,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           ),
         );
       } else {
-        setState(() {
-          isLoading = false;
-        });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -357,9 +336,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
       }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -581,6 +557,9 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
                   onPressed: isLoading
                       ? null
                       : () {
+                          setStateDialog(() {
+                            isLoading = true;
+                          });
                           if (mzee == null) {
                             addMzee();
                           } else {
