@@ -237,18 +237,21 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
     });
     try {
       String myApi =
-          "${ApiUrl.BASEURL}api2/walimu_kanisani/update_mwalimu_kanisani.php";
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/ongeza_mwalimu_kanisani.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "id": id,
           "fname": fname,
-          "phone_no": phone,
+          "phone_no":
+              phone.startsWith('0') ? '255${phone.substring(1)}' : phone,
           "wadhifa": wadhifa,
           "kanisa_id": currentUser?.kanisaId ?? '',
         }),
       );
+
+      print(response.body);
 
       if (response.statusCode == 200) {
         setState(() {
@@ -522,8 +525,10 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
 
   void _showEditMwalimuDialog(Map<String, dynamic> mwalimu) {
     final editFnameController = TextEditingController(text: mwalimu['fname']);
-    final editPhoneController =
-        TextEditingController(text: mwalimu['phone_no']);
+    final editPhoneController = TextEditingController(
+        text: mwalimu['phone_no'].toString().startsWith('255')
+            ? '0${mwalimu['phone_no'].toString().substring(3)}'
+            : mwalimu['phone_no']);
     String? editWadhifa = mwalimu['wadhifa'];
 
     showDialog(
@@ -602,7 +607,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                 }
                 Navigator.pop(context);
                 updateMwalimuKanisa(
-                  mwalimu['id'],
+                  mwalimu['id'].toString(),
                   editFnameController.text,
                   editPhoneController.text,
                   editWadhifa!,
