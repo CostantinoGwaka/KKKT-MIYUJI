@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -8,24 +8,25 @@ import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
-import '../models/akaunti_model.dart';
+import '../models/ratiba_model.dart';
 
-class AkauntiZaKanisaScreen extends StatefulWidget {
-  const AkauntiZaKanisaScreen({super.key});
+class RatibaZaIbadaScreen extends StatefulWidget {
+  const RatibaZaIbadaScreen({super.key});
 
   @override
-  State<AkauntiZaKanisaScreen> createState() => _AkauntiZaKanisaScreenState();
+  State<RatibaZaIbadaScreen> createState() => _RatibaZaIbadaScreenState();
 }
 
-class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
+class _RatibaZaIbadaScreenState extends State<RatibaZaIbadaScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _jinaController = TextEditingController();
-  final TextEditingController _nambaController = TextEditingController();
+  final TextEditingController _mudaController = TextEditingController();
+  // final TextEditingController _tareheController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = false;
   bool isSearching = false;
-  List<AkauntiModel> _akauntiList = [];
-  List<AkauntiModel> _filteredAkauntiList = [];
+  List<RatibaModel> _ratibaList = [];
+  List<RatibaModel> _filteredRatibaList = [];
   BaseUser? currentUser;
 
   Future<void> _loadCurrentUser() async {
@@ -37,12 +38,13 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
-  void _filterAkauntiList(String query) {
+  void _filterRatibaList(String query) {
     setState(() {
-      _filteredAkauntiList = _akauntiList
-          .where((akaunti) =>
-              akaunti.jina.toLowerCase().contains(query.toLowerCase()) ||
-              akaunti.namba.toLowerCase().contains(query.toLowerCase()))
+      _filteredRatibaList = _ratibaList
+          .where((ratiba) =>
+              ratiba.jina.toLowerCase().contains(query.toLowerCase()) ||
+              ratiba.muda.toLowerCase().contains(query.toLowerCase()) ||
+              ratiba.tarehe.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -50,20 +52,20 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchAkaunti();
+    _fetchRatiba();
     _searchController.addListener(() {
-      _filterAkauntiList(_searchController.text);
+      _filterRatibaList(_searchController.text);
     });
   }
 
-  Future<void> _fetchAkaunti() async {
+  Future<void> _fetchRatiba() async {
     setState(() => _isLoading = true);
 
     await _loadCurrentUser();
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/akaunti_kanisa/get_akaunti_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/ratiba_za_kanisa/get_ratiba_za_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
@@ -72,12 +74,12 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           setState(() {
-            _akauntiList = (jsonResponse['data'] as List)
-                .map((item) => AkauntiModel.fromJson(item))
+            _ratibaList = (jsonResponse['data'] as List)
+                .map((item) => RatibaModel.fromJson(item))
                 .toList();
-            _filteredAkauntiList = _akauntiList;
+            _filteredRatibaList = _ratibaList;
           });
         }
       }
@@ -90,36 +92,39 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
-  Future<void> _createAkaunti(String? id) async {
+  Future<void> _createRatiba(String? id) async {
     if (!_formKey.currentState!.validate()) return;
 
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/akaunti_kanisa/ongeza_akaunti_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/ratiba_za_kanisa/ongeza_ratiba_za_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           'id': id,
           'jina': _jinaController.text,
-          'namba': _nambaController.text,
+          'muda': _mudaController.text,
+          // 'tarehe': _tareheController.text,
           "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
         }),
       );
 
       if (response.statusCode == 200) {
         Navigator.pop(context);
-        _fetchAkaunti();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Akaunti imeongezwa kikamilifu',
+              'Ratiba Imeongezwa Kikamilifu',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
           ),
         );
+        _fetchRatiba();
         _jinaController.clear();
-        _nambaController.clear();
+        _mudaController.clear();
+        // _tareheController.clear();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -128,11 +133,11 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
     }
   }
 
-  Future<void> _deleteAkaunti(String id) async {
+  Future<void> _deleteRatiba(String id) async {
     try {
       final response = await http.post(
         Uri.parse(
-            "${ApiUrl.BASEURL}api2/akaunti_kanisa/delete_akaunti_kanisa.php"),
+            "${ApiUrl.BASEURL}api2/ratiba_za_kanisa/delete_ratiba_za_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({'id': id}),
       );
@@ -141,13 +146,13 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'akaunti imefutwa kikamilifu',
+              'Ratiba Imefutwa Kikamilifu',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
           ),
         );
-        _fetchAkaunti();
+        _fetchRatiba();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -179,7 +184,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ongeza Akaunti',
+                'Ongeza Ratiba',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -189,39 +194,55 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
               TextFormField(
                 controller: _jinaController,
                 decoration: InputDecoration(
-                  labelText: 'Jina la Akaunti',
+                  labelText: 'Jina la Ratiba',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Tafadhali jaza jina la akaunti';
+                    return 'Tafadhali jaza jina la ratiba';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _nambaController,
+                controller: _mudaController,
                 decoration: InputDecoration(
-                  labelText: 'Namba ya Akaunti',
+                  labelText: 'Muda',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Tafadhali jaza namba ya akaunti';
+                    return 'Tafadhali jaza muda';
                   }
                   return null;
                 },
               ),
+              // const SizedBox(height: 16),
+              // TextFormField(
+              //   controller: _tareheController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Tarehe',
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(12),
+              //     ),
+              //   ),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Tafadhali jaza tarehe';
+              //     }
+              //     return null;
+              //   },
+              // ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => _createAkaunti(id),
+                  onPressed: () => _createRatiba(id),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: MyColors.primaryLight,
                     padding: const EdgeInsets.symmetric(vertical: 15),
@@ -256,14 +277,14 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                 controller: _searchController,
                 style: GoogleFonts.poppins(color: MyColors.darkText),
                 decoration: InputDecoration(
-                  hintText: 'Tafuta akaunti...',
+                  hintText: 'Tafuta ratiba...',
                   hintStyle: GoogleFonts.poppins(color: Colors.grey),
                   border: InputBorder.none,
                 ),
-                onChanged: _filterAkauntiList,
+                onChanged: _filterRatibaList,
               )
             : Text(
-                'Akaunti za Kanisa',
+                'Ratiba za Ibada',
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600, color: MyColors.darkText),
               ),
@@ -275,7 +296,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                 if (isSearching) {
                   isSearching = false;
                   _searchController.clear();
-                  _filteredAkauntiList = _akauntiList;
+                  _filteredRatibaList = _ratibaList;
                 } else {
                   isSearching = true;
                 }
@@ -305,19 +326,19 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
               ),
             )
           : RefreshIndicator(
-              onRefresh: _fetchAkaunti,
-              child: _filteredAkauntiList.isEmpty
+              onRefresh: _fetchRatiba,
+              child: _filteredRatibaList.isEmpty
                   ? Center(
                       child: Text(
-                        'Hakuna akaunti zilizopatikana',
+                        'Hakuna ratiba zilizopatikana',
                         style: GoogleFonts.poppins(),
                       ),
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: _filteredAkauntiList.length,
+                      itemCount: _filteredRatibaList.length,
                       itemBuilder: (context, index) {
-                        final akaunti = _filteredAkauntiList[index];
+                        final ratiba = _filteredRatibaList[index];
                         return Container(
                           margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
@@ -353,7 +374,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Icon(
-                                        Icons.account_balance,
+                                        Icons.schedule,
                                         color: MyColors.primaryLight,
                                         size: 24,
                                       ),
@@ -361,7 +382,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
-                                        akaunti.jina,
+                                        ratiba.jina,
                                         style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16,
@@ -384,11 +405,14 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                           onTap: () {
                                             setState(() {
                                               _jinaController.text =
-                                                  akaunti.jina;
-                                              _nambaController.text =
-                                                  akaunti.namba;
+                                                  ratiba.jina;
+                                              _mudaController.text =
+                                                  ratiba.muda;
+                                              // _tareheController.text =
+                                              //     ratiba.tarehe;
                                             });
-                                            _showCreateBottomSheet(akaunti.id);
+                                            _showCreateBottomSheet(
+                                                ratiba.id.toString());
                                           },
                                         ),
                                         PopupMenuItem(
@@ -414,7 +438,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                                     ),
                                                   ),
                                                   content: Text(
-                                                    'Una uhakika unataka kufuta akaunti hii?',
+                                                    'Una uhakika unataka kufuta ratiba hii?',
                                                     style:
                                                         GoogleFonts.poppins(),
                                                   ),
@@ -444,8 +468,9 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                                       onPressed: () {
                                                         Navigator.of(context)
                                                             .pop();
-                                                        _deleteAkaunti(
-                                                            akaunti.id);
+                                                        _deleteRatiba(
+                                                          ratiba.id.toString(),
+                                                        );
                                                       },
                                                     ),
                                                   ],
@@ -466,22 +491,25 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.numbers,
+                                        const Icon(Icons.access_time,
                                             size: 18, color: Colors.grey),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Namba ya Akaunti:',
+                                          'Muda:',
                                           style: GoogleFonts.poppins(
                                             color: Colors.grey,
                                             fontSize: 14,
                                           ),
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(
-                                          akaunti.namba,
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
+                                        Expanded(
+                                          child: Text(
+                                            ratiba.muda,
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ],
@@ -493,7 +521,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                             size: 18, color: Colors.grey),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Iliundwa:',
+                                          'Tarehe:',
                                           style: GoogleFonts.poppins(
                                             color: Colors.grey,
                                             fontSize: 14,
@@ -501,7 +529,7 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          akaunti.tarehe,
+                                          ratiba.tarehe,
                                           style: GoogleFonts.poppins(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 14,
@@ -524,7 +552,8 @@ class _AkauntiZaKanisaScreenState extends State<AkauntiZaKanisaScreen> {
   @override
   void dispose() {
     _jinaController.dispose();
-    _nambaController.dispose();
+    _mudaController.dispose();
+    // _tareheController.dispose();
     _searchController.dispose();
     super.dispose();
   }

@@ -25,6 +25,7 @@ import 'package:kanisaapp/models/neno_lasiku.dart';
 import 'package:kanisaapp/neno/screens/index.dart';
 import 'package:kanisaapp/neno/screens/neno_la_siku_screen.dart';
 import 'package:kanisaapp/ratiba/screens/index.dart';
+import 'package:kanisaapp/ratiba/screens/ratiba_za_ibada_screen.dart';
 import 'package:kanisaapp/register_login/screens/login.dart';
 import 'package:kanisaapp/uongozi/screens/index.dart';
 import 'package:kanisaapp/uongozi/screens/jumuiya_screen.dart';
@@ -601,6 +602,14 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => const AkauntiZaKanisaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.watch_later_outlined,
+                    title: 'Ratiba za Ibada',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const RatibaZaIbadaScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
