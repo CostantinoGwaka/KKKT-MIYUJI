@@ -47,7 +47,8 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
         _filteredWadhifa.clear();
         _filteredWadhifa.addAll(
           _wadhifa.where((item) {
-            final wadhifaName = item['jina_wadhifa']?.toString().toLowerCase() ?? '';
+            final wadhifaName =
+                item['jina_wadhifa']?.toString().toLowerCase() ?? '';
             return wadhifaName.contains(searchLower);
           }),
         );
@@ -82,7 +83,8 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
-          final newWadhifa = List<Map<String, dynamic>>.from(jsonResponse['data']);
+          final newWadhifa =
+              List<Map<String, dynamic>>.from(jsonResponse['data']);
           setState(() {
             _wadhifa.clear();
             _wadhifa.addAll(newWadhifa);
@@ -451,7 +453,8 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
                         }
 
                         final response = await http.post(
-                          Uri.parse("${ApiUrl.BASEURL}create_wadhifa.php"),
+                          Uri.parse(
+                              "${ApiUrl.BASEURL}api2/wadhifa_kanisa/ongeza_wadhifa.php"),
                           headers: {'Accept': 'application/json'},
                           body: jsonEncode({
                             "jina_wadhifa": jinaWadhifa,
@@ -462,7 +465,7 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
 
                         if (response.statusCode == 200) {
                           final jsonResponse = json.decode(response.body);
-                          if (jsonResponse['status'] == '200') {
+                          if (jsonResponse['status'] == 200) {
                             Navigator.pop(context);
                             fetchWadhifa(); // Refresh the list
                           } else {
@@ -523,7 +526,7 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
       },
     );
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -584,207 +587,213 @@ class _WadhifaScreenState extends State<WadhifaScreen> {
               ),
             )
           : RefreshIndicator(
-            onRefresh: fetchWadhifa,
-            child:
-          _error != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 48,
-                        color: Colors.red.shade300,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        _error!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLoading = true;
-                            _error = null;
-                          });
-                          fetchWadhifa();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColors.primaryLight,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(
-                          'Jaribu tena',
-                          style: GoogleFonts.poppins(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : _filteredWadhifa.isEmpty
+              onRefresh: fetchWadhifa,
+              child: _error != null
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.info_outline,
+                            Icons.error_outline,
                             size: 48,
-                            color: Colors.blue.shade300,
+                            color: Colors.red.shade300,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Hakuna nyadhifa zilizopatikana',
+                            _error!,
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               color: Colors.grey.shade700,
                             ),
                           ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLoading = true;
+                                _error = null;
+                              });
+                              fetchWadhifa();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: MyColors.primaryLight,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              'Jaribu tena',
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                          ),
                         ],
                       ),
                     )
-                  : ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _filteredWadhifa.length,
-                      itemBuilder: (context, index) {
-                        final wadhifaItem = _filteredWadhifa[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 10,
-                                offset: const Offset(0, 1),
+                  : _filteredWadhifa.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                size: 48,
+                                color: Colors.blue.shade300,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Hakuna nyadhifa zilizopatikana',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  color: Colors.grey.shade700,
+                                ),
                               ),
                             ],
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => _showEditBottomSheet(wadhifaItem),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 50,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          color: MyColors.primaryLight
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Icon(
-                                          Icons.work_rounded,
-                                          color: MyColors.primaryLight,
-                                          size: 24,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              wadhifaItem['jina_wadhifa'] ??
-                                                  'Unknown',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: MyColors.darkText,
-                                              ),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _filteredWadhifa.length,
+                          itemBuilder: (context, index) {
+                            final wadhifaItem = _filteredWadhifa[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () =>
+                                        _showEditBottomSheet(wadhifaItem),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              color: MyColors.primaryLight
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
                                             ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              'Tarehe: ${wadhifaItem['tarehe'] ?? 'N/A'}',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 13,
-                                                color: Colors.grey[600],
-                                              ),
+                                            child: Icon(
+                                              Icons.work_rounded,
+                                              color: MyColors.primaryLight,
+                                              size: 24,
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuButton<String>(
-                                        icon: Icon(
-                                          Icons.more_vert,
-                                          color: Colors.grey[600],
-                                        ),
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        onSelected: (value) {
-                                          if (value == 'edit') {
-                                            _showEditBottomSheet(wadhifaItem);
-                                          } else if (value == 'delete') {
-                                            _showDeleteDialog(wadhifaItem);
-                                          }
-                                        },
-                                        itemBuilder: (BuildContext context) => [
-                                          PopupMenuItem(
-                                            value: 'edit',
-                                            child: Row(
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Icon(
-                                                  Icons.edit_rounded,
-                                                  color: MyColors.primaryLight,
-                                                  size: 20,
-                                                ),
-                                                const SizedBox(width: 12),
                                                 Text(
-                                                  'Hariri',
+                                                  wadhifaItem['jina_wadhifa'] ??
+                                                      'Unknown',
                                                   style: GoogleFonts.poppins(
-                                                    fontSize: 14,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: MyColors.darkText,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  'Tarehe: ${wadhifaItem['tarehe'] ?? 'N/A'}',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 13,
+                                                    color: Colors.grey[600],
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          PopupMenuItem(
-                                            value: 'delete',
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.delete_rounded,
-                                                  color: Colors.red,
-                                                  size: 20,
-                                                ),
-                                                const SizedBox(width: 12),
-                                                Text(
-                                                  'Futa',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ],
+                                          PopupMenuButton<String>(
+                                            icon: Icon(
+                                              Icons.more_vert,
+                                              color: Colors.grey[600],
                                             ),
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            onSelected: (value) {
+                                              if (value == 'edit') {
+                                                _showEditBottomSheet(
+                                                    wadhifaItem);
+                                              } else if (value == 'delete') {
+                                                _showDeleteDialog(wadhifaItem);
+                                              }
+                                            },
+                                            itemBuilder:
+                                                (BuildContext context) => [
+                                              PopupMenuItem(
+                                                value: 'edit',
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.edit_rounded,
+                                                      color:
+                                                          MyColors.primaryLight,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    Text(
+                                                      'Hariri',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              PopupMenuItem(
+                                                value: 'delete',
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.delete_rounded,
+                                                      color: Colors.red,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    Text(
+                                                      'Futa',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-    ),);
+                            );
+                          },
+                        ),
+            ),
+    );
   }
 }

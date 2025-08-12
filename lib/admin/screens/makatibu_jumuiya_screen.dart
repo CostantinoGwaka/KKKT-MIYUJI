@@ -571,7 +571,12 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.pop(context);
+                          },
                           child: Text(
                             'Ghairi',
                             style: GoogleFonts.poppins(),
@@ -589,12 +594,15 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                 onPressed: isLoading
                                     ? null
                                     : () {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
                                         if (katibu == null) {
+                                          setState(() {
+                                            isLoading = true;
+                                          });
                                           addKatibu();
                                         } else {
+                                          setState(() {
+                                            isLoading = true;
+                                          });
                                           updateKatibu(katibu.id);
                                         }
                                       },
