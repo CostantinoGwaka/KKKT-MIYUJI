@@ -24,8 +24,10 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   List<Map<String, dynamic>> wadhifaList = [];
   bool isLoading = true;
   bool hasError = false;
+  bool isSearching = false;
   String errorMessage = '';
   BaseUser? currentUser;
+  final TextEditingController _searchController = TextEditingController();
 
   // Controllers for form fields
   final TextEditingController fnameController = TextEditingController();
@@ -37,6 +39,17 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   void initState() {
     super.initState();
     checkLogin();
+    _searchController.addListener(() {
+      if (_searchController.text.isEmpty && isSearching) {
+        filterWalimu('');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void checkLogin() async {
@@ -133,7 +146,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   // Add new mwalimu
   Future<void> addMwalimuKanisa() async {
     try {
-      String myApi = "${ApiUrl.BASEURL}ongeza_mwalimu_wa_kanisa.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/ongeza_mwalimu_kanisani.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
@@ -174,7 +188,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   Future<void> updateMwalimuKanisa(
       String id, String fname, String phone, String wadhifa) async {
     try {
-      String myApi = "${ApiUrl.BASEURL}update_mwalimu_wa_kanisa.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/update_mwalimu_kanisani.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
@@ -211,7 +226,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   // Delete mwalimu
   Future<void> deleteMwalimu(String id) async {
     try {
-      String myApi = "${ApiUrl.BASEURL}delete_mwalimu_wa_kanisa.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/delete_walimu_kanisa.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
@@ -245,7 +261,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   // Update mwalimu status
   Future<void> updateMwalimuStatus(String id, String status) async {
     try {
-      String myApi = "${ApiUrl.BASEURL}update_mwalimu_status.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/walimu_kanisani/update_mwalimu_kanisa_status.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {'Accept': 'application/json'},
@@ -527,47 +544,51 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Walimu wa Kanisa',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+        title: isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta mwalimu...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: filterWalimu,
+              )
+            : Text(
+                'Walimu wa Kanisa',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (isSearching) {
+                  isSearching = false;
+                  _searchController.clear();
+                  filteredWalimuList = walimuList;
+                } else {
+                  isSearching = true;
+                }
+              });
+            },
           ),
-        ),
-        backgroundColor: MyColors.primaryLight,
+        ],
+        backgroundColor: MyColors.white,
+        foregroundColor: MyColors.darkText,
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: filterWalimu,
-              decoration: InputDecoration(
-                hintText: 'Tafuta...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
           Expanded(
             child: isLoading
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          'assets/animation/loading.json',
-                          height: 120,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Inapakia...',
-                          style: GoogleFonts.poppins(),
-                        ),
-                      ],
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.black,
+                      ),
                     ),
                   )
                 : hasError
