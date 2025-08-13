@@ -15,7 +15,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:lottie/lottie.dart';
 
 List<VideoKwaya> videoList = [];
-late List<YoutubePlayerController> _controllers;
+// late List<YoutubePlayerController> _controllers;
 
 /// Creates list of video players
 class VideoListScreen extends StatefulWidget {
