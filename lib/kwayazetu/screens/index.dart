@@ -187,27 +187,27 @@ class _KwayaZetuState extends State<KwayaZetu>
                           children: [
                             _buildChoir(
                               title: 'Kwaya Kuu',
-                              kwayaId: 0,
+                              kwayaId: 1,
                               isPrimary: false,
                             ),
                             _buildChoir(
                               title: 'Kwaya ya Vijana',
-                              kwayaId: 1,
+                              kwayaId: 2,
                               isPrimary: true,
                             ),
                             _buildChoir(
                               title: 'Kwaya ya Uinjilisti',
-                              kwayaId: 2,
+                              kwayaId: 3,
                               isPrimary: false,
                             ),
                             _buildChoir(
                               title: 'Kwaya ya Nazareti',
-                              kwayaId: 3,
+                              kwayaId: 4,
                               isPrimary: true,
                             ),
                             _buildChoir(
                               title: 'Praise Team',
-                              kwayaId: 4,
+                              kwayaId: 5,
                               isPrimary: false,
                             ),
                             SizedBox(height: deviceHeight(context) / 20),
