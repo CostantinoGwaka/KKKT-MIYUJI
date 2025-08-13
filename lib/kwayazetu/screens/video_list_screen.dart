@@ -48,6 +48,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
   Future<List<VideoKwaya>> getVideoKwaya() async {
     setState(() {
       load = true;
+      videoList = [];
     });
 
     String myApi = "${ApiUrl.BASEURL}get_video_kwaya.php/";
@@ -84,6 +85,12 @@ class _VideoListScreenState extends State<VideoListScreen> {
               load = false;
             });
           }
+        } else {
+          setState(() {
+            videoList = [];
+            load = false;
+          });
+          return [];
         }
       }
       return videos;
@@ -101,9 +108,9 @@ class _VideoListScreenState extends State<VideoListScreen> {
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
+    // for (var controller in _controllers) {
+    //   controller.dispose();
+    // }
     super.dispose();
   }
 
@@ -132,7 +139,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
                       ? "Uinjilisti"
                       : widget.kwayaid == 4
                           ? "Nazareti"
-                          : "Praise Team",
+                          : "Praise Team ${videoList.length} ${videoList.isEmpty}",
           style: TextStyles.headline(context).copyWith(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -149,23 +156,10 @@ class _VideoListScreenState extends State<VideoListScreen> {
               ),
             )
           : videoList.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Lottie.asset(
-                        'assets/animation/nodata.json',
-                        width: 200,
-                        height: 200,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'No videos available',
-                        style: TextStyles.subtitle(context).copyWith(
-                          color: MyColors.primaryLight,
-                        ),
-                      ),
-                    ],
+              ? Text(
+                  'No videos available',
+                  style: TextStyles.subtitle(context).copyWith(
+                    color: MyColors.nearlyBlack,
                   ),
                 )
               : Padding(

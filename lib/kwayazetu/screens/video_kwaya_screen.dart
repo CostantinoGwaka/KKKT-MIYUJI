@@ -145,7 +145,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Video added successfully!",
+                "Video imeongezwa kikamilifu!",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.green,
@@ -157,7 +157,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                jsonResponse['message'] ?? "Failed to add video",
+                jsonResponse['message'] ?? "imeshindwa kuongeza video",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.red,
@@ -211,7 +211,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Video updated successfully!",
+                "Video imesahihishwa kikamirifu!",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.green,
@@ -223,7 +223,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                jsonResponse['message'] ?? "Failed to update video",
+                jsonResponse['message'] ?? "imeshindwa kusasisha video",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.red,
@@ -269,7 +269,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Video deleted successfully!",
+                "Video imefutwa kikamilifu!",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.green,
@@ -280,7 +280,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                jsonResponse['message'] ?? "Failed to delete video",
+                jsonResponse['message'] ?? "imeshindwa kufuta video",
                 style: GoogleFonts.poppins(),
               ),
               backgroundColor: Colors.red,
@@ -292,7 +292,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Error deleting video: $e",
+            "kuna changamoto kwenye kufuta video: $e",
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.red,
