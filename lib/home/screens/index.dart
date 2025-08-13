@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kanisaapp/admin/screens/admin_matangazo_screen.dart';
+import 'package:kanisaapp/admin/screens/baraza_la_wazee_screen.dart';
 import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/viongozi_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/walimu_kanisani_screen.dart';
@@ -643,6 +644,14 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => const JumuiyaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.people_outline,
+                    title: 'Baraza la wazee',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const BarazaLaWazeeScreen()),
                     ),
                   ),
                   _buildAdminGridButton(
