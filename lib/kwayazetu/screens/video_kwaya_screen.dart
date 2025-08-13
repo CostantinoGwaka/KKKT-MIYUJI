@@ -37,8 +37,22 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
       } else {
         _filteredVideos = kwayaVideos
             .where((video) =>
-                video['kwaya']
-                    .toString()
+                (() {
+                  switch (video['kwaya']) {
+                    case '0':
+                      return 'Kwaya Kuu';
+                    case '1':
+                      return 'Kwaya ya Vijana';
+                    case '2':
+                      return 'Kwaya ya Uinjilisti';
+                    case '3':
+                      return 'Kwaya ya Nazareti';
+                    case '4':
+                      return 'Praise Team';
+                    default:
+                      return 'Unknown Kwaya';
+                  }
+                })()
                     .toLowerCase()
                     .contains(query.toLowerCase()) ||
                 video['video_id']
@@ -122,9 +136,17 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
           "kwaya": _kwayaController.text,
           "video_id": _videoIdController.text,
           "kanisa_id": currentUser?.kanisaId ?? '',
-          "tarehe": DateTime.now().toIso8601String(),
         }),
       );
+
+      print(response);
+
+      print(jsonEncode({
+        "kwaya": _kwayaController.text,
+        "video_id": _videoIdController.text,
+        "kanisa_id": currentUser?.kanisaId ?? '',
+      }));
+      print(response.body);
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
@@ -325,12 +347,12 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                   ),
                 ),
                 items: const [
-                  DropdownMenuItem(value: 0, child: Text('Kwaya Kuu')),
-                  DropdownMenuItem(value: 1, child: Text('Kwaya ya Vijana')),
+                  DropdownMenuItem(value: 1, child: Text('Kwaya Kuu')),
+                  DropdownMenuItem(value: 2, child: Text('Kwaya ya Vijana')),
                   DropdownMenuItem(
-                      value: 2, child: Text('Kwaya ya Uinjilisti')),
-                  DropdownMenuItem(value: 3, child: Text('Kwaya ya Nazareti')),
-                  DropdownMenuItem(value: 4, child: Text('Praise Team')),
+                      value: 3, child: Text('Kwaya ya Uinjilisti')),
+                  DropdownMenuItem(value: 4, child: Text('Kwaya ya Nazareti')),
+                  DropdownMenuItem(value: 5, child: Text('Praise Team')),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -522,15 +544,15 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                                 Text(
                                   (() {
                                     switch (video['kwaya']) {
-                                      case '0':
-                                        return 'Kwaya Kuu';
                                       case '1':
-                                        return 'Kwaya ya Vijana';
+                                        return 'Kwaya Kuu';
                                       case '2':
-                                        return 'Kwaya ya Uinjilisti';
+                                        return 'Kwaya ya Vijana';
                                       case '3':
-                                        return 'Kwaya ya Nazareti';
+                                        return 'Kwaya ya Uinjilisti';
                                       case '4':
+                                        return 'Kwaya ya Nazareti';
+                                      case '5':
                                         return 'Praise Team';
                                       default:
                                         return 'Unknown Kwaya';

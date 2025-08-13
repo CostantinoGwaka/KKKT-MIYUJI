@@ -97,26 +97,6 @@ class _VideoListScreenState extends State<VideoListScreen> {
     super.initState();
     _loadCurrentUser();
     getVideoKwaya();
-
-    // .then((_) {
-    //   if (mounted) {
-    //     setState(() {
-    //       _controllers = videoList.map<YoutubePlayerController>((videoId) {
-    //         return YoutubePlayerController(
-    //           initialVideoId: videoId.videoId.toString(),
-    //           flags: const YoutubePlayerFlags(
-    //             autoPlay: false,
-    //             disableDragSeek: false,
-    //             loop: false,
-    //             isLive: false,
-    //             forceHD: false,
-    //             enableCaption: true,
-    //           ),
-    //         );
-    //       }).toList();
-    //     });
-    //   }
-    // });
   }
 
   @override
@@ -144,13 +124,13 @@ class _VideoListScreenState extends State<VideoListScreen> {
           },
         ),
         title: Text(
-          widget.kwayaid == 0
+          widget.kwayaid == 1
               ? "Kwaya Kuu"
-              : widget.kwayaid == 1
+              : widget.kwayaid == 2
                   ? "Kwaya ya Vijana"
-                  : widget.kwayaid == 2
+                  : widget.kwayaid == 3
                       ? "Uinjilisti"
-                      : widget.kwayaid == 3
+                      : widget.kwayaid == 4
                           ? "Nazareti"
                           : "Praise Team",
           style: TextStyles.headline(context).copyWith(
