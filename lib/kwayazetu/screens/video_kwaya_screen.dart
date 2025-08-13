@@ -9,7 +9,6 @@ import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
-import '../../shared/alerts.dart';
 import 'package:lottie/lottie.dart';
 
 class VideoKwayaScreen extends StatefulWidget {
@@ -47,7 +46,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
     });
 
     try {
-      String myApi = "${ApiUrl.BASEURL}get_kwaya_videos.php";
+      String myApi = "${ApiUrl.BASEURL}api2/kwaya_kanisa/get_kwaya_videos.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -85,7 +84,8 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
     });
 
     try {
-      String myApi = "${ApiUrl.BASEURL}add_kwaya_video.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/kwaya_kanisa/ongeza_kwaya_video.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -102,16 +102,39 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
-          Alerts.showMessage(context, "Video added successfully!");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Video added successfully!",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
           _clearForm();
           _fetchKwayaVideos();
         } else {
-          Alerts.showMessage(
-              context, jsonResponse['message'] ?? "Failed to add video");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                jsonResponse['message'] ?? "Failed to add video",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       }
     } catch (e) {
-      Alerts.showMessage(context, "Error adding video: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error adding video: $e",
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         isLoading = false;
@@ -127,7 +150,8 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
     });
 
     try {
-      String myApi = "${ApiUrl.BASEURL}update_kwaya_video.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/kwaya_kanisa/ongeza_kwaya_video.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -144,16 +168,39 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
-          Alerts.showMessage(context, "Video updated successfully!");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Video updated successfully!",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
           _clearForm();
           _fetchKwayaVideos();
         } else {
-          Alerts.showMessage(
-              context, jsonResponse['message'] ?? "Failed to update video");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                jsonResponse['message'] ?? "Failed to update video",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       }
     } catch (e) {
-      Alerts.showMessage(context, "Error updating video: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error updating video: $e",
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
       setState(() {
         isLoading = false;
@@ -163,7 +210,8 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
   Future<void> _deleteKwayaVideo(String id) async {
     try {
-      String myApi = "${ApiUrl.BASEURL}delete_kwaya_video.php";
+      String myApi =
+          "${ApiUrl.BASEURL}api2/kwaya_kanisa/delete_kwaya_video.php";
       final response = await http.post(
         Uri.parse(myApi),
         headers: {
@@ -178,15 +226,38 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == '200') {
-          Alerts.showMessage(context, "Video deleted successfully!");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Video deleted successfully!",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
           _fetchKwayaVideos();
         } else {
-          Alerts.showMessage(
-              context, jsonResponse['message'] ?? "Failed to delete video");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                jsonResponse['message'] ?? "Failed to delete video",
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       }
     } catch (e) {
-      Alerts.showMessage(context, "Error deleting video: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error deleting video: $e",
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
