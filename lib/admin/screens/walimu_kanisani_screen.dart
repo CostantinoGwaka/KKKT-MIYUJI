@@ -593,7 +593,10 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: editWadhifa,
+                  value:
+                      wadhifaList.any((w) => w['jina_wadhifa'] == editWadhifa)
+                          ? editWadhifa
+                          : null,
                   decoration: InputDecoration(
                     labelText: 'Wadhifa',
                     border: OutlineInputBorder(

@@ -829,17 +829,16 @@ class _HomePageState extends State<HomePage> {
     return currentUser != null
         ? Row(
             children: [
-              Expanded(
-                child: _buildInfoCard(
-                  "Jumuiya",
-                  _getUserJumuiya(),
-                  Icons.group,
-                ),
-              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   children: [
+                    _buildInfoCard(
+                      "Jumuiya",
+                      _getUserJumuiya(),
+                      Icons.group,
+                    ),
+                    const SizedBox(height: 6),
                     _buildInfoCard(
                       "Ahadi",
                       _getUserAhadi(money),
