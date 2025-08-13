@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, use_super_parameters, depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -10,6 +10,7 @@ import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoKwayaScreen extends StatefulWidget {
   const VideoKwayaScreen({Key? key}) : super(key: key);
@@ -22,9 +23,32 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _kwayaController = TextEditingController();
   final TextEditingController _videoIdController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   BaseUser? currentUser;
   bool isLoading = false;
+  bool _isSearching = false;
   List<Map<String, dynamic>> kwayaVideos = [];
+  List<Map<String, dynamic>> _filteredVideos = [];
+
+  void _filterVideos(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredVideos = List.from(kwayaVideos);
+      } else {
+        _filteredVideos = kwayaVideos
+            .where((video) =>
+                video['kwaya']
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                video['video_id']
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -44,7 +68,10 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
     setState(() {
       isLoading = true;
     });
-
+    BaseUser? user = await UserManager.getCurrentUser();
+    setState(() {
+      currentUser = user;
+    });
     try {
       String myApi = "${ApiUrl.BASEURL}api2/kwaya_kanisa/get_kwaya_videos.php";
       final response = await http.post(
@@ -59,7 +86,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == "200") {
           setState(() {
             kwayaVideos = List<Map<String, dynamic>>.from(jsonResponse['data']);
           });
@@ -101,7 +128,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -167,7 +194,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -225,7 +252,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -377,37 +404,61 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Kwaya Videos',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.bold,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta video...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterVideos,
+              )
+            : Text(
+                'Kwaya Videos',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _isSearching = false;
+                  _searchController.clear();
+                  _filteredVideos = List.from(kwayaVideos);
+                } else {
+                  _isSearching = true;
+                  _filteredVideos = List.from(kwayaVideos);
+                }
+              });
+            },
           ),
-        ),
-        backgroundColor: MyColors.primaryLight,
+        ],
+        backgroundColor: MyColors.white,
+        foregroundColor: MyColors.darkText,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEditDialog(),
         backgroundColor: MyColors.primaryLight,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: isLoading
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 100,
-                    child: Lottie.asset(
-                      'assets/animation/loading.json',
-                      fit: BoxFit.contain,
-                    ),
+          ? const Center(
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.black,
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Loading...',
-                    style: GoogleFonts.poppins(),
-                  ),
-                ],
+                ),
               ),
             )
           : kwayaVideos.isEmpty
@@ -431,43 +482,116 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: kwayaVideos.length,
+                  itemCount: _isSearching
+                      ? _filteredVideos.length
+                      : kwayaVideos.length,
                   padding: const EdgeInsets.all(16),
                   itemBuilder: (context, index) {
-                    final video = kwayaVideos[index];
-                    return Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    final video = _isSearching
+                        ? _filteredVideos[index]
+                        : kwayaVideos[index];
+                    return Container(
                       margin: const EdgeInsets.only(bottom: 16),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(16),
-                        title: Text(
-                          video['kwaya'],
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
                           ),
-                        ),
-                        subtitle: Text(
-                          'Video ID: ${video['video_id']}',
-                          style: GoogleFonts.poppins(),
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () => _showAddEditDialog(video: video),
-                              color: Colors.blue,
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: MyColors.primaryLight.withOpacity(0.1),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () => _deleteKwayaVideo(video['id']),
-                              color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  (() {
+                                    switch (video['kwaya']) {
+                                      case '0':
+                                        return 'Kwaya Kuu';
+                                      case '1':
+                                        return 'Kwaya ya Vijana';
+                                      case '2':
+                                        return 'Kwaya ya Uinjilisti';
+                                      case '3':
+                                        return 'Kwaya ya Nazareti';
+                                      case '4':
+                                        return 'Praise Team';
+                                      default:
+                                        return 'Unknown Kwaya';
+                                    }
+                                  })(),
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: MyColors.primaryLight,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit, size: 20),
+                                      onPressed: () =>
+                                          _showAddEditDialog(video: video),
+                                      color: Colors.blue,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete, size: 20),
+                                      onPressed: () =>
+                                          _deleteKwayaVideo(video['id']),
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Text(
+                              'Video ID: ${video['video_id']}',
+                              style: GoogleFonts.poppins(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                            child: YoutubePlayer(
+                              controller: YoutubePlayerController(
+                                initialVideoId: video['video_id'].toString(),
+                                flags: const YoutubePlayerFlags(
+                                  autoPlay: false,
+                                  disableDragSeek: false,
+                                  loop: false,
+                                  isLive: false,
+                                  forceHD: false,
+                                  enableCaption: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },

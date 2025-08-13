@@ -1,6 +1,7 @@
-// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, deprecated_member_use
 
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,11 @@ late List<YoutubePlayerController> _controllers;
 /// Creates list of video players
 class VideoListScreen extends StatefulWidget {
   final dynamic kwayaid;
+  final String? title;
   const VideoListScreen({
     super.key,
     this.kwayaid,
+    this.title,
   });
 
   @override
@@ -31,7 +34,7 @@ class VideoListScreen extends StatefulWidget {
 class _VideoListScreenState extends State<VideoListScreen> {
   bool load = false;
 
-   BaseUser? currentUser;
+  BaseUser? currentUser;
 
   Future<void> _loadCurrentUser() async {
     try {
@@ -41,7 +44,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       // Handle error
     }
   }
-  
+
   Future<List<VideoKwaya>> getVideoKwaya() async {
     setState(() {
       load = true;
@@ -50,43 +53,39 @@ class _VideoListScreenState extends State<VideoListScreen> {
     String myApi = "${ApiUrl.BASEURL}get_video_kwaya.php/";
 
     try {
-
       await _loadCurrentUser();
 
-      final response = await http.post(Uri.parse(myApi), headers: {
-        'Accept': 'application/json',
-      }, body: jsonEncode(
-        {
-        "kwaya_id": '${widget.kwayaid}',
-        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
-      }
-      ));
-
-      
+      final response = await http.post(Uri.parse(myApi),
+          headers: {
+            'Accept': 'application/json',
+          },
+          body: jsonEncode({
+            "kwaya_id": '${widget.kwayaid}',
+            "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+          }));
 
       // ignore: prefer_typing_uninitialized_variables
       var videos;
 
       if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        if (json is Map &&
-            json.containsKey('data') &&
-            json['data'] != null &&
-            json['data'] is List) {
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse != null && jsonResponse != 404) {
+          var json = jsonDecode(response.body);
+          if (json is Map &&
+              json.containsKey('data') &&
+              json['data'] != null &&
+              json['data'] is List) {
+            videos = (json['data'] as List)
+                .map((item) => VideoKwaya.fromJson(item))
+                .toList();
 
-          videos = (json['data'] as List)
-              .map((item) => VideoKwaya.fromJson(item))
-              .toList();
-
-        setState(() {
-          videoList = videos;
-          load = false;
-        });
+            setState(() {
+              videoList = videos;
+              load = false;
+            });
+          }
         }
       }
-    }
       return videos;
     } catch (e) {
       return [];
@@ -97,28 +96,27 @@ class _VideoListScreenState extends State<VideoListScreen> {
   void initState() {
     super.initState();
     _loadCurrentUser();
-    getVideoKwaya().then((_) {
-      if (mounted) {
-        setState(() {
-          _controllers = videoList
-              .map<YoutubePlayerController>(
-                (videoId) {
-                  return YoutubePlayerController(
-                  initialVideoId: videoId.videoId.toString(),
-                  flags: const YoutubePlayerFlags(
-                    autoPlay: false,
-                     disableDragSeek: false,
-                      loop: false,
-                      isLive: false,
-                      forceHD: false,
-                      enableCaption: true,
-                  ),
-                );
-              })
-              .toList();
-        });
-      }
-    });
+    getVideoKwaya();
+
+    // .then((_) {
+    //   if (mounted) {
+    //     setState(() {
+    //       _controllers = videoList.map<YoutubePlayerController>((videoId) {
+    //         return YoutubePlayerController(
+    //           initialVideoId: videoId.videoId.toString(),
+    //           flags: const YoutubePlayerFlags(
+    //             autoPlay: false,
+    //             disableDragSeek: false,
+    //             loop: false,
+    //             isLive: false,
+    //             forceHD: false,
+    //             enableCaption: true,
+    //           ),
+    //         );
+    //       }).toList();
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -131,19 +129,13 @@ class _VideoListScreenState extends State<VideoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[100],
-      navigationBar: CupertinoNavigationBar(
-        // ignore: deprecated_member_use
+      appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.9),
-        border: const Border(
-          bottom: BorderSide(
-            color: Colors.transparent,
-            width: 0.0,
-          ),
-        ),
+        elevation: 0,
         leading: GestureDetector(
-          child:  Icon(
+          child: Icon(
             Icons.arrow_back_ios,
             color: MyColors.primaryLight,
           ),
@@ -151,7 +143,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
             Navigator.pop(context);
           },
         ),
-        middle: Text(
+        title: Text(
           widget.kwayaid == 0
               ? "Kwaya Kuu"
               : widget.kwayaid == 1
@@ -168,7 +160,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
           ),
         ),
       ),
-      child: load 
+      body: load
           ? Center(
               child: Lottie.asset(
                 'assets/animation/loading.json',
@@ -196,79 +188,121 @@ class _VideoListScreenState extends State<VideoListScreen> {
                     ],
                   ),
                 )
-                : Padding(
+              : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    transform: Matrix4.translationValues(0, 0, 0)
-                      ..scale(1.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      boxShadow: [
-                        BoxShadow(
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                        ),
-                      ],
-                      ),
-                      child: Card(
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      elevation: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Column(
-                        children: [
-                          Text(_controllers[index].metadata.title),
-                          YoutubePlayer(
-                          key: ObjectKey(_controllers[index]),
-                          controller: _controllers[index],
-                          actionsPadding: const EdgeInsets.only(left: 16.0),
-                          bottomActions: [
-                            const CurrentPosition(),
-                            const SizedBox(width: 10.0),
-                            const ProgressBar(isExpanded: true),
-                            const SizedBox(width: 10.0),
-                            const RemainingDuration(),
-                            Container(
-                            margin: const EdgeInsets.only(right: 8.0),
-                            child: const FullScreenButton(),
-                            ),
-                          ],
-                          ),
-                          Container(
-                          padding: const EdgeInsets.all(12.0),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        transform: Matrix4.translationValues(0, 0, 0)
+                          ..scale(1.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              // ignore: deprecated_member_use
-                              Colors.black.withOpacity(0.05),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
                             ],
-                            ),
                           ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: MyColors.primaryLight.withOpacity(0.1),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      (() {
+                                        return widget.title ?? 'Kwaya Videos';
+                                      })(),
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: MyColors.primaryLight,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'Video ID: ${videoList[index].videoId}',
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.grey[600],
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Tarehe: ${videoList[index].tarehe?.toString().split(' ')[0] ?? 'N/A'}',
+                                          style: const TextStyle(
+                                            color: Color(0xFF757575),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                ),
+                                child: YoutubePlayer(
+                                  controller: YoutubePlayerController(
+                                    initialVideoId:
+                                        videoList[index].videoId.toString(),
+                                    flags: const YoutubePlayerFlags(
+                                      autoPlay: false,
+                                      disableDragSeek: false,
+                                      loop: false,
+                                      isLive: false,
+                                      forceHD: false,
+                                      enableCaption: true,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
                         ),
-                      ),
-                      ),
-                    ),
-                    );
-                  },
-                  itemCount: _controllers.length,
-                  separatorBuilder: (context, _) => const SizedBox(height: 16.0),
+                      );
+                    },
+                    itemCount: videoList.length,
                   ),
-                )
+                ),
     );
   }
 }

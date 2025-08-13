@@ -15,7 +15,8 @@ class KwayaZetu extends StatefulWidget {
   _KwayaZetuState createState() => _KwayaZetuState();
 }
 
-class _KwayaZetuState extends State<KwayaZetu> with SingleTickerProviderStateMixin {
+class _KwayaZetuState extends State<KwayaZetu>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
@@ -58,7 +59,8 @@ class _KwayaZetuState extends State<KwayaZetu> with SingleTickerProviderStateMix
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => VideoListScreen(kwayaid: kwayaId),
+                        builder: (context) =>
+                            VideoListScreen(kwayaid: kwayaId, title: title),
                       ),
                     );
                   },
@@ -85,7 +87,9 @@ class _KwayaZetuState extends State<KwayaZetu> with SingleTickerProviderStateMix
                         ),
                       ],
                       border: Border.all(
-                        color: isPrimary ? Colors.transparent : MyColors.primaryLight,
+                        color: isPrimary
+                            ? Colors.transparent
+                            : MyColors.primaryLight,
                         width: 2,
                       ),
                     ),
@@ -94,7 +98,8 @@ class _KwayaZetuState extends State<KwayaZetu> with SingleTickerProviderStateMix
                         title,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: isPrimary ? Colors.white : MyColors.primaryLight,
+                          color:
+                              isPrimary ? Colors.white : MyColors.primaryLight,
                           fontSize: deviceHeight(context) / 30,
                           fontWeight: FontWeight.bold,
                         ),
