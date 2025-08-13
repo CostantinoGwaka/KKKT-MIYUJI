@@ -265,7 +265,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == 200) {
+        if (jsonResponse['status'] == "200") {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -636,7 +636,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        'Video ID: ${video['video_Id']}',
+                                        'Video ID: ${video['video_id']}',
                                         style: GoogleFonts.poppins(
                                           color: Colors.grey[600],
                                           fontSize: 14,
