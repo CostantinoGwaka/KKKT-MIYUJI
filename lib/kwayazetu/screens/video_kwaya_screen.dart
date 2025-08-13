@@ -139,15 +139,6 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
         }),
       );
 
-      print(response);
-
-      print(jsonEncode({
-        "kwaya": _kwayaController.text,
-        "video_id": _videoIdController.text,
-        "kanisa_id": currentUser?.kanisaId ?? '',
-      }));
-      print(response.body);
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse['status'] == 200) {
@@ -160,7 +151,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
               backgroundColor: Colors.green,
             ),
           );
-          _clearForm();
+          clearForm();
           _fetchKwayaVideos();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -226,7 +217,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
               backgroundColor: Colors.green,
             ),
           );
-          _clearForm();
+          clearForm();
           _fetchKwayaVideos();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -310,7 +301,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
     }
   }
 
-  void _clearForm() {
+  void clearForm() {
     _kwayaController.clear();
     _videoIdController.clear();
   }
@@ -387,9 +378,9 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => {clearForm(), Navigator.pop(context)},
             child: Text(
-              'Cancel',
+              'Sitisha',
               style: GoogleFonts.poppins(
                 color: Colors.grey,
               ),
@@ -411,7 +402,7 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
               ),
             ),
             child: Text(
-              video == null ? 'Add' : 'Update',
+              video == null ? 'Ongeza' : 'Sasisha',
               style: GoogleFonts.poppins(
                 color: Colors.white,
               ),
@@ -574,8 +565,58 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.delete, size: 20),
-                                      onPressed: () =>
-                                          _deleteKwayaVideo(video['id']),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text(
+                                              'Delete Video',
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            content: Text(
+                                              'Are you sure you want to delete this video?',
+                                              style: GoogleFonts.poppins(),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => {
+                                                  clearForm(),
+                                                  Navigator.pop(context),
+                                                },
+                                                child: Text(
+                                                  'Sitisha',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  _deleteKwayaVideo(
+                                                      video['id'].toString());
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Delete',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                       color: Colors.red,
                                     ),
                                   ],
@@ -586,12 +627,36 @@ class _VideoKwayaScreenState extends State<VideoKwayaScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
-                            child: Text(
-                              'Video ID: ${video['video_id']}',
-                              style: GoogleFonts.poppins(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        'Video ID: ${video['video_Id']}',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.grey[600],
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Tarehe: ${video['tarehe']?.toString().split(' ')[0] ?? 'N/A'}',
+                                      style: const TextStyle(
+                                        color: Color(0xFF757575),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                           ClipRRect(
