@@ -82,7 +82,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
       }
 
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}api2/jumuiya_kanisa/get_jumuiya_za_kanisa.php"),
+        Uri.parse(
+            "${ApiUrl.BASEURL}api2/jumuiya_kanisa/get_jumuiya_za_kanisa.php"),
         headers: {'Accept': 'application/json'},
         body: jsonEncode({
           "kanisa_id": currentUser!.kanisaId,
@@ -151,7 +152,7 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  
+
                   if (currentUser == null) {
                     Navigator.pop(context);
                     setState(() {
@@ -161,7 +162,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                   }
 
                   final response = await http.post(
-                    Uri.parse("${ApiUrl.BASEURL}api2/jumuiya_kanisa/delete_jumuiya_kanisa.php"),
+                    Uri.parse(
+                        "${ApiUrl.BASEURL}api2/jumuiya_kanisa/delete_jumuiya_kanisa.php"),
                     headers: {'Accept': 'application/json'},
                     body: jsonEncode({
                       "id": jumuiyaItem.id,
@@ -187,7 +189,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            jsonResponse['message'] ?? 'Imeshindwa kufuta jumuiya',
+                            jsonResponse['message'] ??
+                                'Imeshindwa kufuta jumuiya',
                             style: GoogleFonts.poppins(),
                           ),
                           backgroundColor: Colors.red,
@@ -425,7 +428,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                         }
 
                         final response = await http.post(
-                          Uri.parse("${ApiUrl.BASEURL}api2/jumuiya_kanisa/ongeza_jumuiya_kanisa.php"),
+                          Uri.parse(
+                              "${ApiUrl.BASEURL}api2/jumuiya_kanisa/ongeza_jumuiya_kanisa.php"),
                           headers: {'Accept': 'application/json'},
                           body: jsonEncode({
                             "jumuiya_name": _nameController.text,
@@ -433,7 +437,6 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                             "tarehe": DateTime.now().toIso8601String(),
                           }),
                         );
-
 
                         if (response.statusCode == 200) {
                           final jsonResponse = json.decode(response.body);
@@ -501,26 +504,30 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       appBar: AppBar(
-        title: _isSearching ? TextField(
-          controller: _searchController,
-          style: GoogleFonts.poppins(color: MyColors.darkText),
-          decoration: InputDecoration(
-            hintText: 'Tafuta jumuiya...',
-            hintStyle: GoogleFonts.poppins(color: Colors.grey),
-            border: InputBorder.none,
-          ),
-          onChanged: (value) {
-            setState(() {
-              _searchQuery = value;
-              _filterJumuiya();
-            });
-          },
-          autofocus: true,
-        ) : Text(
-          'Jumuiya Za Kanisa',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600, color: MyColors.darkText),
-        ),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta jumuiya...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                    _filterJumuiya();
+                  });
+                },
+                autofocus: true,
+              )
+            : Text(
+                'Jumuiya Za Kanisa',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  color: MyColors.darkText,
+                ),
+              ),
         backgroundColor: MyColors.white,
         foregroundColor: MyColors.darkText,
         actions: [
@@ -629,7 +636,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                                 child: Material(
                                   color: Colors.transparent,
                                   child: InkWell(
-                                    onTap: () => _showEditBottomSheet(jumuiyaItem),
+                                    onTap: () =>
+                                        _showEditBottomSheet(jumuiyaItem),
                                     child: Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Row(
@@ -665,59 +673,112 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                                                 ),
                                                 const SizedBox(height: 4),
                                                 Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       'Tarehe: ${jumuiyaItem.tarehe}',
-                                                      style: GoogleFonts.poppins(
+                                                      style:
+                                                          GoogleFonts.poppins(
                                                         fontSize: 13,
                                                         color: Colors.grey[600],
                                                       ),
                                                     ),
-                                                    if (jumuiyaItem.katibuJina != null && jumuiyaItem.katibuJina!.isNotEmpty)
+                                                    if (jumuiyaItem
+                                                                .katibuJina !=
+                                                            null &&
+                                                        jumuiyaItem.katibuJina!
+                                                            .isNotEmpty)
                                                       Container(
-                                                        margin: const EdgeInsets.only(top: 8),
-                                                        padding: const EdgeInsets.all(8),
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.grey[50],
-                                                          borderRadius: BorderRadius.circular(8),
-                                                          border: Border.all(color: Colors.grey[200]!),
+                                                        margin: const EdgeInsets
+                                                            .only(top: 8),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Colors.grey[50],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          border: Border.all(
+                                                              color: Colors
+                                                                  .grey[200]!),
                                                         ),
                                                         child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                const Icon(Icons.person_outline, size: 16, color: Colors.grey),
-                                                                const SizedBox(width: 8),
+                                                                const Icon(
+                                                                    Icons
+                                                                        .person_outline,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .grey),
+                                                                const SizedBox(
+                                                                    width: 8),
                                                                 Expanded(
                                                                   child: Text(
                                                                     'Katibu: ${jumuiyaItem.katibuJina}',
-                                                                    style: GoogleFonts.poppins(
-                                                                      fontSize: 13,
-                                                                      color: Colors.grey[700],
-                                                                      fontWeight: FontWeight.w500,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      fontSize:
+                                                                          13,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          700],
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
                                                                     ),
-                                                                    overflow: TextOverflow.ellipsis,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
-                                                            if (jumuiyaItem.katibuSimu != null && jumuiyaItem.katibuSimu!.isNotEmpty)
+                                                            if (jumuiyaItem
+                                                                        .katibuSimu !=
+                                                                    null &&
+                                                                jumuiyaItem
+                                                                    .katibuSimu!
+                                                                    .isNotEmpty)
                                                               Padding(
-                                                                padding: const EdgeInsets.only(top: 4),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        top: 4),
                                                                 child: Row(
                                                                   children: [
-                                                                    const Icon(Icons.phone_outlined, size: 16, color: Colors.grey),
-                                                                    const SizedBox(width: 8),
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .phone_outlined,
+                                                                        size:
+                                                                            16,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            8),
                                                                     Expanded(
-                                                                      child: Text(
-                                                                        jumuiyaItem.katibuSimu!,
-                                                                        style: GoogleFonts.poppins(
-                                                                          fontSize: 13,
-                                                                          color: Colors.grey[600],
+                                                                      child:
+                                                                          Text(
+                                                                        jumuiyaItem
+                                                                            .katibuSimu!,
+                                                                        style: GoogleFonts
+                                                                            .poppins(
+                                                                          fontSize:
+                                                                              13,
+                                                                          color:
+                                                                              Colors.grey[600],
                                                                         ),
-                                                                        overflow: TextOverflow.ellipsis,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
                                                                       ),
                                                                     ),
                                                                   ],
@@ -743,25 +804,29 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                                             ),
                                             onSelected: (value) {
                                               if (value == 'edit') {
-                                                _showEditBottomSheet(jumuiyaItem);
+                                                _showEditBottomSheet(
+                                                    jumuiyaItem);
                                               } else if (value == 'delete') {
                                                 _showDeleteDialog(jumuiyaItem);
                                               }
                                             },
-                                            itemBuilder: (BuildContext context) => [
+                                            itemBuilder:
+                                                (BuildContext context) => [
                                               PopupMenuItem(
                                                 value: 'edit',
                                                 child: Row(
                                                   children: [
                                                     Icon(
                                                       Icons.edit_rounded,
-                                                      color: MyColors.primaryLight,
+                                                      color:
+                                                          MyColors.primaryLight,
                                                       size: 20,
                                                     ),
                                                     const SizedBox(width: 12),
                                                     Text(
                                                       'Hariri',
-                                                      style: GoogleFonts.poppins(
+                                                      style:
+                                                          GoogleFonts.poppins(
                                                         fontSize: 14,
                                                       ),
                                                     ),
@@ -780,7 +845,8 @@ class _JumuiyaScreenState extends State<JumuiyaScreen> {
                                                     const SizedBox(width: 12),
                                                     Text(
                                                       'Futa',
-                                                      style: GoogleFonts.poppins(
+                                                      style:
+                                                          GoogleFonts.poppins(
                                                         fontSize: 14,
                                                       ),
                                                     ),

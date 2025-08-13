@@ -17,6 +17,7 @@ import 'package:kanisaapp/chatroom/screen/chat_screen.dart';
 import 'package:kanisaapp/jumuiyazetu/screens/index.dart';
 import 'package:kanisaapp/kamati/screens/kamati_screen.dart';
 import 'package:kanisaapp/kwayazetu/screens/index.dart';
+import 'package:kanisaapp/kwayazetu/screens/video_kwaya_screen.dart';
 import 'package:kanisaapp/livestream/screens/index.dart';
 import 'package:kanisaapp/mahubiri/screens/index.dart';
 import 'package:kanisaapp/matangazo/screens/index.dart';
@@ -682,6 +683,14 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => const WazeeWaJumuiyaScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.groups_outlined,
+                    title: 'Video Kwaya',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const VideoKwayaScreen()),
                     ),
                   ),
                 ],
