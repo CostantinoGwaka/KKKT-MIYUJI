@@ -9,6 +9,7 @@ import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:kanisaapp/admin/screens/edit_msharika_screen.dart';
 
 class WasharikaKanisaniScreen extends StatefulWidget {
   const WasharikaKanisaniScreen({Key? key}) : super(key: key);
@@ -105,6 +106,26 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
   final _ujuziController = TextEditingController();
   final _mahaliPakaziController = TextEditingController();
   final _jumuiyaController = TextEditingController();
+  final _jinaMtoto1Controller = TextEditingController();
+  final _tareheMtoto1Controller = TextEditingController();
+  final _uhusianoMtoto1Controller = TextEditingController();
+  final _jinaMtoto2Controller = TextEditingController();
+  final _tareheMtoto2Controller = TextEditingController();
+  final _uhusianoMtoto2Controller = TextEditingController();
+  final _jinaMtoto3Controller = TextEditingController();
+  final _tareheMtoto3Controller = TextEditingController();
+  final _uhusianoMtoto3Controller = TextEditingController();
+  final _jumuiyaUshirikiController = TextEditingController();
+  final _idYaJumuiyaController = TextEditingController();
+  final _katibuJumuiyaController = TextEditingController();
+  final _kamaUshirikiController = TextEditingController();
+  final _katibuStatusController = TextEditingController();
+  final _mzeeStatusController = TextEditingController();
+  final _usharikaStatusController = TextEditingController();
+  final _regYearIdController = TextEditingController();
+  final _tareheController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _jinaLaJumuiyaController = TextEditingController();
 
   @override
   void initState() {
@@ -146,6 +167,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
       final response = await http.post(
         Uri.parse("${ApiUrl.BASEURL}add_msharika.php"),
         body: {
+          'id': '', // New record, no ID
           'jina_la_msharika': _jinaController.text,
           'jinsia': _jinsiaController.text,
           'umri': _umriController.text,
@@ -153,6 +175,15 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
           'jina_la_mwenzi_wako': _jinaLaMwenziController.text,
           'namba_ya_ahadi': _nambaYaAhadiController.text,
           'aina_ya_ndoa': _ainaNdoaController.text,
+          'jina_mtoto_1': _jinaMtoto1Controller.text,
+          'tarehe_mtoto_1': _tareheMtoto1Controller.text,
+          'uhusiano_mtoto_1': _uhusianoMtoto1Controller.text,
+          'jina_mtoto_2': _jinaMtoto2Controller.text,
+          'tarehe_mtoto_2': _tareheMtoto2Controller.text,
+          'uhusiano_mtoto_2': _uhusianoMtoto2Controller.text,
+          'jina_mtoto_3': _jinaMtoto3Controller.text,
+          'tarehe_mtoto_3': _tareheMtoto3Controller.text,
+          'uhusiano_mtoto_3': _uhusianoMtoto3Controller.text,
           'namba_ya_simu': _nambaSimuController.text,
           'jengo': _jengoController.text,
           'ahadi': _ahadiController.text,
@@ -160,7 +191,18 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
           'elimu': _elimuController.text,
           'ujuzi': _ujuziController.text,
           'mahali_pakazi': _mahaliPakaziController.text,
-          'jina_la_jumuiya': _jumuiyaController.text,
+          'jumuiya_ushiriki': _jumuiyaUshirikiController.text,
+          'jina_la_jumuiya': _jinaLaJumuiyaController.text,
+          'id_ya_jumuiya': _idYaJumuiyaController.text,
+          'katibu_jumuiya': _katibuJumuiyaController.text,
+          'kama_ushiriki': _kamaUshirikiController.text,
+          'katibu_status': _katibuStatusController.text,
+          'mzee_status': _mzeeStatusController.text,
+          'usharika_status': _usharikaStatusController.text,
+          'reg_year_id': _regYearIdController.text,
+          'tarehe': _tareheController.text,
+          'kanisa_id': currentUser?.kanisaId ?? '',
+          'password': _passwordController.text,
         },
       );
 
@@ -484,8 +526,20 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                         style: GoogleFonts.poppins(),
                                       ),
                                     ),
-                                    onTap: () {
-                                      // Implement edit functionality
+                                    onTap: () async {
+                                      Navigator.of(context).pop();
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditMsharikaScreen(
+                                            msharika: msharika,
+                                            onUpdateSuccess: () {
+                                              fetchWasharika();
+                                            },
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                   PopupMenuItem(
@@ -617,6 +671,26 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
     _ujuziController.dispose();
     _mahaliPakaziController.dispose();
     _jumuiyaController.dispose();
+    _jinaMtoto1Controller.dispose();
+    _tareheMtoto1Controller.dispose();
+    _uhusianoMtoto1Controller.dispose();
+    _jinaMtoto2Controller.dispose();
+    _tareheMtoto2Controller.dispose();
+    _uhusianoMtoto2Controller.dispose();
+    _jinaMtoto3Controller.dispose();
+    _tareheMtoto3Controller.dispose();
+    _uhusianoMtoto3Controller.dispose();
+    _jumuiyaUshirikiController.dispose();
+    _idYaJumuiyaController.dispose();
+    _katibuJumuiyaController.dispose();
+    _kamaUshirikiController.dispose();
+    _katibuStatusController.dispose();
+    _mzeeStatusController.dispose();
+    _usharikaStatusController.dispose();
+    _regYearIdController.dispose();
+    _tareheController.dispose();
+    _passwordController.dispose();
+    _jinaLaJumuiyaController.dispose();
     super.dispose();
   }
 
