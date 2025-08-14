@@ -73,10 +73,15 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   late final TextEditingController _kanisaIdController;
   late final TextEditingController _passwordController;
 
+  String _haliNdoa = '';
+  String _ndoa = '';
+
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+    _haliNdoa = widget.msharika.haliYaNdoa;
+    _ndoa = widget.msharika.ainaNdoa;
   }
 
   void _initializeControllers() {
@@ -147,12 +152,15 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     IconData icon, {
     bool isDate = false,
     bool isRequired = false,
+    bool isPhoneNumber = false,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
         readOnly: isDate,
+        keyboardType: isPhoneNumber ? TextInputType.phone : TextInputType.text,
+        maxLength: isPhoneNumber ? 10 : null,
         onTap: isDate ? () => _selectDate(context, controller) : null,
         decoration: InputDecoration(
           labelText: label,
@@ -170,10 +178,25 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: MyColors.primaryLight),
           ),
+          counterText: '',
         ),
         validator: (value) {
           if (isRequired && (value == null || value.isEmpty)) {
             return 'Please enter $label';
+          }
+          if (isPhoneNumber) {
+            if (value == null || value.isEmpty) {
+              return 'Tafadhali ingiza namba ya simu';
+            }
+            if (value.length != 10) {
+              return 'Namba ya simu lazima iwe na tarakimu 10';
+            }
+            if (!value.startsWith('06') && !value.startsWith('07')) {
+              return 'Namba ya simu lazima ianze na 06 au 07';
+            }
+            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+              return 'Namba ya simu lazima iwe na tarakimu tu';
+            }
           }
           return null;
         },
@@ -196,51 +219,73 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
 
   List<Step> get formSteps => [
         Step(
-          title: Text('Personal Information', style: GoogleFonts.poppins()),
+          title: Text('Taarifa Binafsi', style: GoogleFonts.poppins()),
           content: Column(
             children: [
-              _buildTextField(_jinaController, 'Full Name', Icons.person),
+              _buildTextField(_jinaController, 'Jina Kamili', Icons.person),
               _buildTextField(
-                  _jinsiaController, 'Gender', Icons.person_outline),
-              _buildTextField(_umriController, 'Age', Icons.calendar_today),
-              _buildTextField(
-                  _haliYaNdoaController, 'Marital Status', Icons.favorite),
+                  _jinsiaController, 'Jinsia', Icons.person_outline),
+              _buildTextField(_umriController, 'Umri', Icons.calendar_today),
+              _buildRadioGroup(
+                title: 'Hali ya ndoa',
+                options: ['Nimeoa', 'Sijaoa', 'Mgane', 'Talakiwa'],
+                groupValue: _haliNdoa,
+                onChanged: (value) {
+                  setState(() {
+                    _haliNdoa = value;
+                    _haliYaNdoaController.text = value;
+                  });
+                },
+              ),
             ],
           ),
           isActive: _currentStep >= 0,
         ),
         Step(
-          title: Text('Family Information', style: GoogleFonts.poppins()),
+          title: Text('Taarifa za Familia', style: GoogleFonts.poppins()),
           content: Column(
             children: [
               _buildTextField(
-                  _jinaLaMwenziController, 'Spouse Name', Icons.people),
-              _buildTextField(
-                  _ainaNdoaController, 'Marriage Type', Icons.family_restroom),
+                  _jinaLaMwenziController, 'Jina la Mwenzi', Icons.people),
+              _buildRadioGroup(
+                title: '7. Aina ya ndoa',
+                options: [
+                  'Ndoa ya Kikristo',
+                  'Ndoa isiyo ya Kikristo',
+                  'Hakuna Ndoa'
+                ],
+                groupValue: _ndoa,
+                onChanged: (value) {
+                  setState(() {
+                    _ndoa = value;
+                    _ainaNdoaController.text = value;
+                  });
+                },
+              ),
             ],
           ),
           isActive: _currentStep >= 1,
         ),
         Step(
-          title: Text('Children Information', style: GoogleFonts.poppins()),
+          title: Text('Taarifa za Watoto', style: GoogleFonts.poppins()),
           content: Column(
             children: [
               _buildChildSection(
-                'Child 1',
+                'Mtoto 1',
                 _jinaMtoto1Controller,
                 _tareheMtoto1Controller,
                 _uhusianoMtoto1Controller,
                 isDateEnabled: true,
               ),
               _buildChildSection(
-                'Child 2',
+                'Mtoto 2',
                 _jinaMtoto2Controller,
                 _tareheMtoto2Controller,
                 _uhusianoMtoto2Controller,
                 isDateEnabled: true,
               ),
               _buildChildSection(
-                'Child 3',
+                'Mtoto 3',
                 _jinaMtoto3Controller,
                 _tareheMtoto3Controller,
                 _uhusianoMtoto3Controller,
@@ -251,16 +296,20 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           isActive: _currentStep >= 2,
         ),
         Step(
-          title: Text('Contact & Work', style: GoogleFonts.poppins()),
+          title: Text('Mawasiliano na Kazi', style: GoogleFonts.poppins()),
           content: Column(
             children: [
               _buildTextField(
-                  _nambaSimuController, 'Phone Number', Icons.phone),
-              _buildTextField(_kaziController, 'Occupation', Icons.work),
-              _buildTextField(_elimuController, 'Education', Icons.school),
-              _buildTextField(_ujuziController, 'Skills', Icons.psychology),
+                _nambaSimuController,
+                'Namba ya Simu',
+                Icons.phone,
+                isPhoneNumber: true,
+              ),
+              _buildTextField(_kaziController, 'Kazi', Icons.work),
+              _buildTextField(_elimuController, 'Elimu', Icons.school),
+              _buildTextField(_ujuziController, 'Ujuzi', Icons.psychology),
               _buildTextField(
-                  _mahaliPakaziController, 'Work Location', Icons.location_on),
+                  _mahaliPakaziController, 'Mahali pa Kazi', Icons.location_on),
             ],
           ),
           isActive: _currentStep >= 3,
@@ -269,27 +318,27 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           title: Text('Church Information', style: GoogleFonts.poppins()),
           content: Column(
             children: [
-              _buildTextField(_nambaYaAhadiController, 'Promise Number',
+              _buildTextField(_nambaYaAhadiController, 'Namba ya Ahadi',
                   Icons.confirmation_number),
-              _buildTextField(_jengoController, 'Building', Icons.home),
-              _buildTextField(_ahadiController, 'Promise', Icons.description),
+              _buildTextField(_jengoController, 'Jengo', Icons.home),
+              _buildTextField(_ahadiController, 'Ahadi', Icons.description),
               _buildTextField(
-                  _jinaLaJumuiyaController, 'Community Name', Icons.groups),
-              _buildTextField(_jumuiyaUshirikiController,
-                  'Community Participation', Icons.group_add),
+                  _jinaLaJumuiyaController, 'Jina la Jumuiya', Icons.groups),
+              _buildTextField(_jumuiyaUshirikiController, 'Ushiriki wa Jumuiya',
+                  Icons.group_add),
             ],
           ),
           isActive: _currentStep >= 4,
         ),
         Step(
-          title: Text('Status Information', style: GoogleFonts.poppins()),
+          title: Text('Taarifa za Hadhi', style: GoogleFonts.poppins()),
           content: Column(
             children: [
-              _buildTextField(_katibuStatusController, 'Secretary Status',
+              _buildTextField(_katibuStatusController, 'Hadhi ya Ukatibu',
                   Icons.assignment_ind),
               _buildTextField(
-                  _mzeeStatusController, 'Elder Status', Icons.person_outline),
-              _buildTextField(_usharikaStatusController, 'Fellowship Status',
+                  _mzeeStatusController, 'Hadhi ya Uzee', Icons.person_outline),
+              _buildTextField(_usharikaStatusController, 'Hadhi ya Ushirika',
                   Icons.people_outline),
             ],
           ),
@@ -316,14 +365,14 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        _buildTextField(nameController, 'Name', Icons.child_care),
+        _buildTextField(nameController, 'Jina', Icons.child_care),
         _buildTextField(
           dateController,
-          'Date',
+          'Tarehe',
           Icons.date_range,
           isDate: isDateEnabled,
         ),
-        _buildTextField(relationController, 'Relation', Icons.family_restroom),
+        _buildTextField(relationController, 'Uhusiano', Icons.family_restroom),
         const SizedBox(height: 16),
       ],
     );
@@ -336,7 +385,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}update_msharika.php"),
+        Uri.parse("${ApiUrl.BASEURL}jisajili.php"),
         body: {
           'id': widget.msharika.id,
           'jina_la_msharika': _jinaController.text,
@@ -355,7 +404,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           'jina_mtoto3': _jinaMtoto3Controller.text,
           'tarehe_mtoto3': _tareheMtoto3Controller.text,
           'uhusiano_mtoto3': _uhusianoMtoto3Controller.text,
-          'namba_simuh': _nambaSimuController.text,
+          'namba_ya_simu': _nambaSimuController.text,
           'jengo': _jengoController.text,
           'ahadi': _ahadiController.text,
           'kazi': _kaziController.text,
@@ -472,6 +521,91 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           },
           steps: formSteps,
         ),
+      ),
+    );
+  }
+
+  Widget _buildRadioGroup({
+    required String title,
+    required List<String> options,
+    required String groupValue,
+    required Function(String) onChanged,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...options.map((option) => Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: InkWell(
+                  onTap: () => onChanged(option),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: groupValue == option
+                          ? MyColors.primaryLight.withOpacity(0.1)
+                          : Colors.transparent,
+                      border: Border.all(
+                        color: groupValue == option
+                            ? MyColors.primaryLight
+                            : Colors.transparent,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Radio<String>(
+                          value: option,
+                          groupValue: groupValue,
+                          onChanged: (value) => onChanged(value!),
+                          activeColor: MyColors.primaryLight,
+                        ),
+                        Expanded(
+                          child: Text(
+                            option,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: groupValue == option
+                                  ? MyColors.primaryLight
+                                  : Colors.black87,
+                              fontWeight: groupValue == option
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+        ],
       ),
     );
   }

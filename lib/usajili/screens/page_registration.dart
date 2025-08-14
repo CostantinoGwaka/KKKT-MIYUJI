@@ -26,7 +26,8 @@ class RegistrationScreen extends StatefulWidget {
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> with TickerProviderStateMixin {
+class _RegistrationScreenState extends State<RegistrationScreen>
+    with TickerProviderStateMixin {
   final PageController _pageController = PageController();
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -122,8 +123,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
-          jumuiya = (json['data'] as List).map((item) => Jumuiya.fromJson(item)).toList();
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          jumuiya = (json['data'] as List)
+              .map((item) => Jumuiya.fromJson(item))
+              .toList();
         }
       }
     }
@@ -146,8 +152,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       var jsonResponse = json.decode(response.body);
       if (jsonResponse != null && jsonResponse != 404) {
         var json = jsonDecode(response.body);
-        if (json is Map && json.containsKey('data') && json['data'] != null && json['data'] is List) {
-          katibus = (json['data'] as List).map((item) => Katibu.fromJson(item)).toList();
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          katibus = (json['data'] as List)
+              .map((item) => Katibu.fromJson(item))
+              .toList();
         } else if (json is List) {
           katibus = json.map((item) => Katibu.fromJson(item)).toList();
         } else {
@@ -231,7 +242,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       await getActiveKanisaYearDetails();
 
       // Check if the entered kanisa code exists
-      bool kanisaExists = kanisaObj != null && kanisaObj.kanisacode.toLowerCase() == kanisaCode.toLowerCase();
+      bool kanisaExists = kanisaObj != null &&
+          kanisaObj.kanisacode.toLowerCase() == kanisaCode.toLowerCase();
 
       return kanisaExists;
     } catch (e) {
@@ -249,7 +261,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
           "value# ${nambaYaSimu.value.text.length} ${nambaYaSimu.value.text.startsWith("06") || nambaYaSimu.value.text.startsWith("07")}");
     }
     if (nambaYaSimu.value.text.length != 10 ||
-        (!nambaYaSimu.value.text.startsWith("06") && !nambaYaSimu.value.text.startsWith("07"))) {
+        (!nambaYaSimu.value.text.startsWith("06") &&
+            !nambaYaSimu.value.text.startsWith("07"))) {
       setState(() {
         msgErrorPhoneNumber =
             "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).";
@@ -266,7 +279,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
     final List l = s.split(' ');
     if (l.length < 3) {
       setState(() {
-        msgErrorPhoneNumber3 = "Tafadhali weka jina ya sahihi jina linatakiwa kuwa matatu";
+        msgErrorPhoneNumber3 =
+            "Tafadhali weka jina ya sahihi jina linatakiwa kuwa matatu";
       });
     } else {
       setState(() {
@@ -276,7 +290,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
   }
 
   productCountListener2() {
-    if (kamaUshiriki.value.text.length != 10 || !kamaUshiriki.value.text.startsWith("0")) {
+    if (kamaUshiriki.value.text.length != 10 ||
+        !kamaUshiriki.value.text.startsWith("0")) {
       setState(() {
         msgErrorPhoneNumber2 =
             "Tafadhali weka namba ya simu sahihi namba ya simu lazima ianze na sifuri(0) na lazima ziwe tarakimu kumi(10).";
@@ -419,7 +434,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         umria == "") {
       Alerts.show(context, "Kuna shida",
           "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia,kanisa code,umri)");
-    } else if (nambaYaSimua.length != 10 || (!nambaYaSimua.startsWith("06") && !nambaYaSimua.startsWith("07"))) {
+    } else if (nambaYaSimua.length != 10 ||
+        (!nambaYaSimua.startsWith("06") && !nambaYaSimua.startsWith("07"))) {
       Alerts.show(context, "Kuna shida",
           "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).");
     } else if (jumuiyaUshirikia != '' &&
@@ -430,7 +446,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         "Kuna shida",
         "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya) $jumuiyaUshirikia",
       );
-    } else if ((_halindoa != '' && _halindoa == 'Nimeoa') && (jinaLaMwenziWako.text.isEmpty)) {
+    } else if ((_halindoa != '' && _halindoa == 'Nimeoa') &&
+        (jinaLaMwenziWako.text.isEmpty)) {
       Alerts.show(
         context,
         "Kuna shida",
@@ -442,8 +459,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         "Kuna shida",
         "Tafadhali Hakikisha umeweka majina matatu",
       );
-    } else if ((_ushiriki != '' && _ushiriki == 'ndio') && (jinaLaJumuiya.text.isEmpty)) {
-      Alerts.show(context, "Kuna shida", "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
+    } else if ((_ushiriki != '' && _ushiriki == 'ndio') &&
+        (jinaLaJumuiya.text.isEmpty)) {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
     } else {
       registerUser(
         jinaLaMsharikaa,
@@ -558,8 +577,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
 
       var jsonResponse = json.decode(response.body);
 
-      if (response.statusCode == 200 && (jsonResponse['status'] == '200' || jsonResponse['status'] == 200)) {
-        if (jsonResponse != null && jsonResponse['status'] != '404' && jsonResponse['status'] != '500') {
+      if (response.statusCode == 200 &&
+          (jsonResponse['status'] == '200' || jsonResponse['status'] == 200)) {
+        if (jsonResponse != null &&
+            jsonResponse['status'] != '404' &&
+            jsonResponse['status'] != '500') {
           setState(() {
             // Clear all controllers
             _clearAllControllers();
@@ -596,7 +618,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         } else if (jsonResponse == 500) {
           Navigator.pop(context);
           Fluttertoast.showToast(
-            msg: jsonResponse['message'] ?? "Server Error Please Try Again Later",
+            msg: jsonResponse['message'] ??
+                "Server Error Please Try Again Later",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             backgroundColor: MyColors.primaryLight,
@@ -661,7 +684,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Row(
             children: [
               Icon(Icons.check_circle_outline, color: MyColors.primaryLight),
@@ -681,7 +705,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
               ),
               child: const Text("Tuma", style: TextStyle(color: Colors.white)),
               onPressed: () {
@@ -722,7 +747,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   margin: EdgeInsets.only(right: index < 4 ? 8 : 0),
                   height: 6,
                   decoration: BoxDecoration(
-                    color: isCompleted ? MyColors.primaryLight : Colors.grey.shade300,
+                    color: isCompleted
+                        ? MyColors.primaryLight
+                        : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(3),
                     boxShadow: isCurrent
                         ? [
@@ -864,7 +891,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
               ),
               filled: true,
               fillColor: Colors.grey.shade50,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               labelStyle: TextStyle(
                 color: Colors.grey.shade600,
                 fontSize: 16,
@@ -927,12 +955,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   onTap: () => onChanged(option),
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: groupValue == option ? MyColors.primaryLight.withOpacity(0.1) : Colors.transparent,
+                      color: groupValue == option
+                          ? MyColors.primaryLight.withOpacity(0.1)
+                          : Colors.transparent,
                       border: Border.all(
-                        color: groupValue == option ? MyColors.primaryLight : Colors.transparent,
+                        color: groupValue == option
+                            ? MyColors.primaryLight
+                            : Colors.transparent,
                         width: 1.5,
                       ),
                     ),
@@ -949,8 +982,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                             option,
                             style: TextStyle(
                               fontSize: 15,
-                              color: groupValue == option ? MyColors.primaryLight : Colors.black87,
-                              fontWeight: groupValue == option ? FontWeight.w600 : FontWeight.normal,
+                              color: groupValue == option
+                                  ? MyColors.primaryLight
+                                  : Colors.black87,
+                              fontWeight: groupValue == option
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
                             ),
                           ),
                         ),
@@ -1049,7 +1086,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   color: MyColors.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.home_work_outlined, color: MyColors.primaryLight, size: 20),
+                child: Icon(Icons.home_work_outlined,
+                    color: MyColors.primaryLight, size: 20),
               ),
               const SizedBox(width: 12),
               const Text("Chagua Jumuiya yako"),
@@ -1069,7 +1107,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                       color: MyColors.primaryLight.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.home_work_outlined, color: MyColors.primaryLight, size: 18),
+                    child: Icon(Icons.home_work_outlined,
+                        color: MyColors.primaryLight, size: 18),
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -1091,7 +1130,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
               // // Find jumuiya name for selected id
               final selectedJumuiya =
                   // ignore: unrelated_type_equality_checks
-                  _dataProvince!.firstWhere((j) => j.id == value, orElse: () => _dataProvince!.first);
+                  _dataProvince!.firstWhere((j) => j.id == value,
+                      orElse: () => _dataProvince!.first);
 
               katibuJumuiya.text = selectedJumuiya.katibuId.toString();
               jinaLaJumuiya.text = selectedJumuiya.jumuiyaName;
@@ -1304,7 +1344,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildSectionHeader("B. Mawasiliano na makazi", Icons.contact_phone),
+            _buildSectionHeader(
+                "B. Mawasiliano na makazi", Icons.contact_phone),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1339,7 +1380,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildSectionHeader("C. Ahadi yako kwa Bwana", Icons.volunteer_activism),
+            _buildSectionHeader(
+                "C. Ahadi yako kwa Bwana", Icons.volunteer_activism),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1485,7 +1527,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildSectionHeader("E. Ushiriki wa huduma za kanisa na vikundi", Icons.group),
+            _buildSectionHeader(
+                "E. Ushiriki wa huduma za kanisa na vikundi", Icons.group),
             _buildRadioGroup(
               title: '1. Unashiriki ibada za nyumba kwa nyumba',
               options: ['ndio', 'hapana'],
@@ -1549,7 +1592,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                   const SizedBox(height: 8),
                   _buildTextField(
                     controller: kamaUshiriki,
-                    labelText: "Sababu ya kutokushiriki jumuiya $_ushiriki ${jumuiyaUshiriki.text}",
+                    labelText:
+                        "Sababu ya kutokushiriki jumuiya $_ushiriki ${jumuiyaUshiriki.text}",
                     icon: Icons.info_outline,
                     keyboardType: TextInputType.text,
                     // errorText: "Tafadhari weka sababu ya kutokushiriki jumuiya",
@@ -1676,7 +1720,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       label: const Text(
                         'Nyuma',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey.shade600,
@@ -1693,10 +1738,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
                     height: 48,
                     child: ElevatedButton.icon(
                       onPressed: nextPage,
-                      icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                      icon:
+                          const Icon(Icons.arrow_forward, color: Colors.white),
                       label: const Text(
                         'Mbele',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: MyColors.primaryLight,
@@ -1728,7 +1775,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         Alerts.show(context, "Kuna shida", "Tafadhali jaza jina la msharika");
         return;
       } else if (l.length < 3) {
-        Alerts.show(context, "Kuna shida", "Tafadhali Hakikisha umeweka majina matatu");
+        Alerts.show(
+            context, "Kuna shida", "Tafadhali Hakikisha umeweka majina matatu");
         return;
       } else if (kanisaCodea.isEmpty) {
         Alerts.show(context, "Kuna shida", "Tafadhali jaza kanisa code");
@@ -1744,7 +1792,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         return;
       } else {
         // Validate kanisa code before moving to step 2
-        Alerts.showProgressDialog(context, "Tafadhari subiri, tunakagua kanisa code...");
+        Alerts.showProgressDialog(
+            context, "Tafadhari subiri, tunakagua kanisa code...");
 
         bool kanisaExists = await validateKanisaCode(kanisaCodea);
         Navigator.pop(context); // Close progress dialog
@@ -1765,10 +1814,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> with TickerProv
         Alerts.show(context, "Kuna shida", "Tafadhali jaza namba ya simu");
         return;
       } else if (nambaYaSimua.length != 10) {
-        Alerts.show(context, "Kuna shida", "Namba ya simu lazima ziwe tarakimu kumi (10)");
+        Alerts.show(context, "Kuna shida",
+            "Namba ya simu lazima ziwe tarakimu kumi (10)");
         return;
-      } else if (!nambaYaSimua.startsWith("06") && !nambaYaSimua.startsWith("07")) {
-        Alerts.show(context, "Kuna shida", "Namba ya simu lazima ianze na 06 au 07");
+      } else if (!nambaYaSimua.startsWith("06") &&
+          !nambaYaSimua.startsWith("07")) {
+        Alerts.show(
+            context, "Kuna shida", "Namba ya simu lazima ianze na 06 au 07");
         return;
       }
     }
