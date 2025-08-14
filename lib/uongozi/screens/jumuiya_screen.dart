@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use, depend_on_referenced_packages
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

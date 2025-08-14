@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -127,16 +127,16 @@ class _NenoLaSikuScreenState extends State<NenoLaSikuScreen> {
           _nenoController.clear();
           nenoUpdateId = null; // Reset the update ID after adding
           _loadNenoLaSiku();
-         
+
           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Neno la siku limeongezwa kikamilifu',
-                                  style: GoogleFonts.poppins(),
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
+            SnackBar(
+              content: Text(
+                'Neno la siku limeongezwa kikamilifu',
+                style: GoogleFonts.poppins(),
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
