@@ -273,7 +273,9 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
         );
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -309,19 +311,24 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
       final jsonResponse = json.decode(response.body);
 
       if (jsonResponse['status'] == 200) {
+        setState(() {
+          isLoading = false;
+        });
         await fetchData();
-        Navigator.pop(context);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Mzee ametolewa kwenye baraza!',
+              'Mzee wa baraza amefutwa kikamilifu!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
           ),
         );
       } else {
-        Navigator.pop(context);
+        setState(() {
+          isLoading = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -390,13 +397,19 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _nambaYaSimuController,
+                      keyboardType: TextInputType.phone,
+                      maxLength: 10,
                       decoration: InputDecoration(
                         labelText: 'Namba ya Simu',
                         labelStyle: GoogleFonts.poppins(),
+                        hintText: '07XXXXXXXX',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Tafadhali jaza namba ya simu';
+                        }
+                        if (!RegExp(r'^(06|07)[0-9]{8}$').hasMatch(value)) {
+                          return 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10';
                         }
                         return null;
                       },
@@ -728,7 +741,7 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
                                                 builder: (context) =>
                                                     AlertDialog(
                                                   title: Text(
-                                                    'Toa Mzee',
+                                                    'Futa Mzee',
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 18,
                                                       fontWeight:
@@ -770,7 +783,7 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
                                                         ),
                                                       ),
                                                       child: Text(
-                                                        'Toa',
+                                                        'Futa',
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 color: Colors

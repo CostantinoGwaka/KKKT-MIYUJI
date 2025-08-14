@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, unused_field
+// ignore_for_file: use_build_context_synchronously, unused_field, curly_braces_in_flow_control_structures
 
 import 'dart:convert';
 import 'dart:io';
