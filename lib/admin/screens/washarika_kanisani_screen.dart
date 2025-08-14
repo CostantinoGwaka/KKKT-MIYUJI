@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, use_super_parameters, use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: depend_on_referenced_packages, use_super_parameters, use_build_context_synchronously, deprecated_member_use, library_private_types_in_public_api
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -362,6 +362,8 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
       appBar: AppBar(
         backgroundColor: MyColors.primaryLight,
         elevation: 0,
+        iconTheme:
+            const IconThemeData(color: Colors.white), // Makes back arrow white
         title: Text(
           'Washarika',
           style: GoogleFonts.poppins(

@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, deprecated_member_use
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, depend_on_referenced_packages
 
 import 'dart:convert';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,6 +32,7 @@ class EditMsharikaScreen extends StatefulWidget {
 
 class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   final _formKey = GlobalKey<FormState>();
+  // ignore: unused_field
   bool _isLoading = false;
   int _currentStep = 0;
 
@@ -409,7 +410,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.primaryLight,
-        title: Text('Edit Msharika',
+        title: Text('Sahihisha Msharika',
             style: GoogleFonts.poppins(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
