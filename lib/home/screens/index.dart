@@ -704,7 +704,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   _buildAdminGridButton(
-                    icon: Icons.groups_outlined,
+                    icon: Icons.video_collection_outlined,
                     title: 'Mahubiri Kanisani',
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
