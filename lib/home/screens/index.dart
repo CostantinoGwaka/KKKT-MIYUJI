@@ -1324,7 +1324,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      'Mahubiri ya tarehe 23-02-2021',
+                      'Mahubiri',
                       style: GoogleFonts.poppins(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -1334,7 +1334,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Na Mch. Moses',
+                    'Mahubiri ya kila wiki kutoka kwa wachungaji wetu.',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
