@@ -11,6 +11,7 @@ import 'package:kanisaapp/admin/screens/baraza_la_wazee_screen.dart';
 import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/viongozi_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/walimu_kanisani_screen.dart';
+import 'package:kanisaapp/admin/screens/washarika_kanisani_screen.dart';
 import 'package:kanisaapp/admin/screens/wazee_wa_jumuiya_screen.dart';
 import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
@@ -709,6 +710,15 @@ class _HomePageState extends State<HomePage> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) => const MahubiriKanisaniScreen()),
+                    ),
+                  ),
+                  _buildAdminGridButton(
+                    icon: Icons.people_outline,
+                    title: 'Washarika Kanisani',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const WasharikaKanisaniScreen(),
+                      ),
                     ),
                   ),
                 ],
