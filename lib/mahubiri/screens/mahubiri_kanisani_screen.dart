@@ -8,6 +8,7 @@ import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MahubiriKanisaniScreen extends StatefulWidget {
   const MahubiriKanisaniScreen({super.key});
@@ -23,13 +24,41 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
 
   BaseUser? currentUser;
   List<Map<String, dynamic>> mahubiriList = [];
+  List<Map<String, dynamic>> filteredMahubiri = [];
   bool isLoading = false;
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUser();
     _fetchMahubiri();
+    filteredMahubiri = mahubiriList;
+  }
+
+  void _filterMahubiri(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredMahubiri = mahubiriList;
+      } else {
+        filteredMahubiri = mahubiriList
+            .where((mahubiri) =>
+                mahubiri['mahubiri_name']
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                mahubiri['video_id']
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                mahubiri['tarehe']
+                    .toString()
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   Future<void> _loadCurrentUser() async {
@@ -42,6 +71,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
     setState(() {
       isLoading = true;
     });
+    currentUser = await UserManager.getCurrentUser();
 
     try {
       final response = await http.post(
@@ -55,10 +85,11 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == "200") {
           setState(() {
             mahubiriList =
                 List<Map<String, dynamic>>.from(jsonResponse['data']);
+            filteredMahubiri = List.from(mahubiriList);
           });
         }
       }
@@ -104,7 +135,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           Navigator.pop(context);
           _fetchMahubiri();
           _clearControllers();
@@ -175,7 +206,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           Navigator.pop(context);
           _fetchMahubiri();
           _clearControllers();
@@ -294,7 +325,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               TextField(
                 controller: _mahubiriNameController,
                 decoration: InputDecoration(
-                  labelText: 'Mahubiri Name',
+                  labelText: 'Jina la Mahubiri',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -304,7 +335,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               TextField(
                 controller: _videoIdController,
                 decoration: InputDecoration(
-                  labelText: 'Video ID',
+                  labelText: 'Namba ya Video',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -314,7 +345,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               TextField(
                 controller: _tareheController,
                 decoration: InputDecoration(
-                  labelText: 'Date',
+                  labelText: 'Tarehe',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -330,7 +361,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               _clearControllers();
             },
             child: Text(
-              'Cancel',
+              'Ghairi',
               style: GoogleFonts.poppins(color: Colors.grey),
             ),
           ),
@@ -339,7 +370,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               if (mahubiri == null) {
                 _addMahubiri();
               } else {
-                _updateMahubiri(mahubiri['id']);
+                _updateMahubiri(mahubiri['id'].toString());
               }
             },
             style: ElevatedButton.styleFrom(
@@ -349,7 +380,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
               ),
             ),
             child: Text(
-              mahubiri == null ? 'Add' : 'Update',
+              mahubiri == null ? 'Ongeza' : 'Sahihisha',
               style: GoogleFonts.poppins(color: Colors.white),
             ),
           ),
@@ -362,25 +393,57 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Mahubiri Management',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.bold,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                style: GoogleFonts.poppins(color: MyColors.darkText),
+                decoration: InputDecoration(
+                  hintText: 'Tafuta video...',
+                  hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterMahubiri,
+              )
+            : Text(
+                'Mahubiri Kanisani',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, color: MyColors.darkText),
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _isSearching = false;
+                  _searchController.clear();
+                  filteredMahubiri = List.from(mahubiriList);
+                } else {
+                  _isSearching = true;
+                }
+              });
+            },
           ),
-        ),
-        backgroundColor: MyColors.primaryLight,
+        ],
+        backgroundColor: MyColors.white,
+        foregroundColor: MyColors.darkText,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddEditDialog(),
         backgroundColor: MyColors.primaryLight,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : mahubiriList.isEmpty
+          : filteredMahubiri.isEmpty
               ? Center(
                   child: Text(
-                    'No mahubiri available',
+                    _isSearching
+                        ? 'Hakuna mahubiri yaliyopatikana'
+                        : 'Hakuna mahubiri yaliyopo',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.grey,
@@ -388,62 +451,230 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: mahubiriList.length,
+                  itemCount: filteredMahubiri.length,
                   padding: const EdgeInsets.all(16),
                   itemBuilder: (context, index) {
-                    final mahubiri = mahubiriList[index];
-                    return Card(
-                      elevation: 2,
+                    final mahubiri = filteredMahubiri[index];
+
+                    return Container(
                       margin: const EdgeInsets.only(bottom: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(16),
-                        title: Text(
-                          mahubiri['mahubiri_name'],
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
                           ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 8),
-                            Text(
-                              'Video ID: ${mahubiri['video_id']}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey[600],
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: MyColors.primaryLight.withOpacity(0.1),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
                               ),
                             ),
-                            Text(
-                              'Date: ${mahubiri['tarehe']}',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey[600],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  (() {
+                                    return mahubiri['mahubiri_name'] ??
+                                        'Jina la Mahubiri';
+                                  })(),
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: MyColors.primaryLight,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit, size: 20),
+                                      onPressed: () =>
+                                          _showAddEditDialog(mahubiri),
+                                      color: Colors.blue,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete, size: 20),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: Text(
+                                              'Delete Video',
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            content: Text(
+                                              'Are you sure you want to delete this video?',
+                                              style: GoogleFonts.poppins(),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => {
+                                                  Navigator.pop(context),
+                                                },
+                                                child: Text(
+                                                  'Sitisha',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  _deleteMahubiri(mahubiri['id']
+                                                      .toString());
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Delete',
+                                                  style: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        'Video ID: ${mahubiri['video_id']}',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.grey[600],
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Tarehe: ${mahubiri['tarehe']?.toString().split(' ')[0] ?? 'N/A'}',
+                                      style: const TextStyle(
+                                        color: Color(0xFF757575),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                            child: YoutubePlayer(
+                              controller: YoutubePlayerController(
+                                initialVideoId: mahubiri['video_id'].toString(),
+                                flags: const YoutubePlayerFlags(
+                                  autoPlay: false,
+                                  disableDragSeek: false,
+                                  loop: false,
+                                  isLive: false,
+                                  forceHD: false,
+                                  enableCaption: true,
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () => _showAddEditDialog(mahubiri),
-                              color: Colors.blue,
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () => _deleteMahubiri(mahubiri['id']),
-                              color: Colors.red,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
+
+                    // return Card(
+                    //   elevation: 2,
+                    //   margin: const EdgeInsets.only(bottom: 16),
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(12),
+                    //   ),
+                    //   child: ListTile(
+                    //     contentPadding: const EdgeInsets.all(16),
+                    //     title: Text(
+                    //       mahubiri['mahubiri_name'],
+                    //       style: GoogleFonts.poppins(
+                    //         fontWeight: FontWeight.bold,
+                    //         fontSize: 16,
+                    //       ),
+                    //     ),
+                    //     subtitle: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         const SizedBox(height: 8),
+                    //         Text(
+                    //           'Namba ya Video: ${mahubiri['video_id']}',
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: Colors.grey[600],
+                    //           ),
+                    //         ),
+                    //         Text(
+                    //           'Tarehe: ${mahubiri['tarehe']}',
+                    //           style: GoogleFonts.poppins(
+                    //             fontSize: 14,
+                    //             color: Colors.grey[600],
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     trailing: Row(
+                    //       mainAxisSize: MainAxisSize.min,
+                    //       children: [
+                    //         IconButton(
+                    //           icon: const Icon(Icons.edit),
+                    //           onPressed: () => _showAddEditDialog(mahubiri),
+                    //           color: Colors.blue,
+                    //         ),
+                    //         IconButton(
+                    //           icon: const Icon(Icons.delete),
+                    //           onPressed: () =>
+                    //               _deleteMahubiri(mahubiri['id'].toString()),
+                    //           color: Colors.red,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // );
                   },
                 ),
     );
@@ -454,6 +685,7 @@ class _MahubiriKanisaniScreenState extends State<MahubiriKanisaniScreen> {
     _mahubiriNameController.dispose();
     _videoIdController.dispose();
     _tareheController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 }
