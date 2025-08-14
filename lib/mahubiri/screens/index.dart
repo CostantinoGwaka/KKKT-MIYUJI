@@ -47,8 +47,6 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
         }),
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         setState(() {
