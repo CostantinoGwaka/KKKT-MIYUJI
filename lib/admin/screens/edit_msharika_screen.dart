@@ -75,6 +75,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
 
   String _haliNdoa = '';
   String _ndoa = '';
+  String _ushiriki = '';
 
   @override
   void initState() {
@@ -82,6 +83,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     _initializeControllers();
     _haliNdoa = widget.msharika.haliYaNdoa;
     _ndoa = widget.msharika.ainaNdoa;
+    _ushiriki = widget.msharika.jumuiyaUshiriki;
   }
 
   void _initializeControllers() {
@@ -315,7 +317,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           isActive: _currentStep >= 3,
         ),
         Step(
-          title: Text('Church Information', style: GoogleFonts.poppins()),
+          title: Text('Taarifa za Kanisa', style: GoogleFonts.poppins()),
           content: Column(
             children: [
               _buildTextField(_nambaYaAhadiController, 'Namba ya Ahadi',
@@ -324,8 +326,17 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
               _buildTextField(_ahadiController, 'Ahadi', Icons.description),
               _buildTextField(
                   _jinaLaJumuiyaController, 'Jina la Jumuiya', Icons.groups),
-              _buildTextField(_jumuiyaUshirikiController, 'Ushiriki wa Jumuiya',
-                  Icons.group_add),
+              _buildRadioGroup(
+                title: 'Unashiriki ibada za nyumba kwa nyumba',
+                options: ['Ndio', 'Hapana'],
+                groupValue: _ushiriki,
+                onChanged: (value) {
+                  setState(() {
+                    _ushiriki = value;
+                    _jumuiyaUshirikiController.text = value;
+                  });
+                },
+              ),
             ],
           ),
           isActive: _currentStep >= 4,
