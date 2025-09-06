@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, avoid_unnecessary_containers, deprecated_member_use, prefer_const_constructors
+// ignore_for_file: unused_element, avoid_unnecessary_containers, deprecated_member_use, prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -27,7 +27,8 @@ class ProfilePage extends StatefulWidget {
   MapScreenState createState() => MapScreenState();
 }
 
-class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMixin {
+class MapScreenState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
   final FocusNode myFocusNode = FocusNode();
 
   BaseUser? currentUser;
@@ -111,7 +112,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        currentUser != null ? UserManager.getUserDisplayName(currentUser) : "Guest User",
+                        currentUser != null
+                            ? UserManager.getUserDisplayName(currentUser)
+                            : "Guest User",
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -196,7 +199,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Login()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyColors.primaryLight,
@@ -263,7 +267,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
                 Expanded(
                   child: _buildStatItem(
                     "Ahadi",
-                    userData!['ahadi'] != null ? "${money.format(int.parse(userData!['ahadi']))} Tsh" : "N/A",
+                    userData!['ahadi'] != null
+                        ? "${money.format(int.parse(userData!['ahadi']))} Tsh"
+                        : "N/A",
                     Icons.volunteer_activism,
                     Colors.green,
                   ),
@@ -273,7 +279,9 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
             const SizedBox(height: 15),
             _buildStatItem(
               "Jengo",
-              userData!['jengo'] != null ? "${money.format(int.parse(userData!['jengo']))} Tsh" : "N/A",
+              userData!['jengo'] != null
+                  ? "${money.format(int.parse(userData!['jengo']))} Tsh"
+                  : "N/A",
               Icons.business,
               Colors.orange,
             ),
@@ -324,7 +332,8 @@ class MapScreenState extends State<ProfilePage> with SingleTickerProviderStateMi
     );
   }
 
-  Widget _buildStatItem(String label, String value, IconData icon, Color color) {
+  Widget _buildStatItem(
+      String label, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -376,7 +385,8 @@ class SocialIcon extends StatelessWidget {
   final IconData? iconData;
   final VoidCallback onPressed;
 
-  const SocialIcon({super.key, this.color, this.iconData, required this.onPressed});
+  const SocialIcon(
+      {super.key, this.color, this.iconData, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -436,7 +446,8 @@ class ProfileListItems extends StatelessWidget {
           subtitle: 'Badili neno lako la siri',
           color: Colors.orange,
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ChangePasswordScreen()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ChangePasswordScreen()));
           },
         ),
         const SizedBox(height: 10),
@@ -447,7 +458,8 @@ class ProfileListItems extends StatelessWidget {
           subtitle: 'Shirikisha app na marafiki',
           color: Colors.green,
           onTap: () {
-            String result = "https://play.google.com/store/apps/details?id=app.miyuji";
+            String result =
+                "https://play.google.com/store/apps/details?id=app.miyuji";
             Share.share(
                 "Pakua Application yetu mpya ya KKKT miyuji uweze kujipatia Neno la Mungu na Huduma Mbali Mbali za Kiroho Mahala Popote Wakati Wowote. \n\n\nPakua kupitia Kiunganishi : $result");
           },
@@ -460,7 +472,8 @@ class ProfileListItems extends StatelessWidget {
           subtitle: 'Tupe maoni yako',
           color: Colors.purple,
           onTap: () async {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapendekezoScreen()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const MapendekezoScreen()));
           },
         ),
         const SizedBox(height: 30),
@@ -679,26 +692,43 @@ class ProfileListItems extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                Navigator.of(context).pop();
-                Alerts.showProgressDialog(context, "Inatoka kwenye akaunt yako");
+                Navigator.of(context).pop(); // Close dialog
+                Alerts.showProgressDialog(
+                    context, "Inatoka kwenye akaunt yako");
 
-                await LocalStorage.removeItem("member_no").whenComplete(() async {
-                  await LocalStorage.removeItem("mydata").whenComplete(() async {
-                    // ignore: void_checks
-                    await LocalStorage.removeItem("mtumishi").whenComplete(() {
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
-                      SystemNavigator.pop();
-                      return Fluttertoast.showToast(
-                        msg: "Umefanikiwa kutoka kwenye akaunt yako",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: MyColors.primaryLight,
-                        textColor: Colors.white,
-                      );
-                    });
-                  });
-                });
+                try {
+                  // Clear all user related data
+                  await Future.wait([
+                    LocalStorage.removeItem("current_user"),
+                    LocalStorage.removeItem("member_no"),
+                    LocalStorage.removeItem("mtumishi"),
+                    LocalStorage.removeItem("mydata"),
+                  ]);
+
+                  // Navigate and show success message
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    (route) => false, // Clear navigation stack
+                  );
+
+                  Fluttertoast.showToast(
+                    msg: "Umefanikiwa kutoka kwenye akaunt yako",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: MyColors.primaryLight,
+                    textColor: Colors.white,
+                  );
+
+                  // Close app
+                  SystemNavigator.pop();
+                } catch (e) {
+                  Navigator.pop(context); // Close progress dialog
+                  Fluttertoast.showToast(
+                    msg: "Tatizo limetokea, jaribu tena",
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
@@ -731,18 +761,21 @@ class AppBarButton extends StatelessWidget {
     return Container(
       width: 55,
       height: 55,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: kAppPrimaryColor, boxShadow: [
-        BoxShadow(
-          color: kLightBlack,
-          offset: const Offset(1, 1),
-          blurRadius: 10,
-        ),
-        BoxShadow(
-          color: kWhite,
-          offset: const Offset(-1, -1),
-          blurRadius: 10,
-        ),
-      ]),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: kAppPrimaryColor,
+          boxShadow: [
+            BoxShadow(
+              color: kLightBlack,
+              offset: const Offset(1, 1),
+              blurRadius: 10,
+            ),
+            BoxShadow(
+              color: kWhite,
+              offset: const Offset(-1, -1),
+              blurRadius: 10,
+            ),
+          ]),
       child: Icon(
         icon,
         color: fCL,
