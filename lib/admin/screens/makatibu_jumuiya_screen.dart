@@ -39,6 +39,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
   final TextEditingController _memberNoController = TextEditingController();
   String? selectedJumuiyaId;
   String? selectedJumuiyaName;
+  String? katibuStatus;
 
   @override
   void initState() {
@@ -327,6 +328,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
           "mwaka": krid,
+          "status": katibuStatus ?? '1',
           "member_no": _memberNoController.text,
           "kanisa_id": currentUser!.kanisaId,
         }),
@@ -393,11 +395,12 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       );
 
       final jsonResponse = json.decode(response.body);
-      if (jsonResponse['status'] == 200) {
+      print(jsonResponse);
+      if (jsonResponse['status'] == '200') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Katibu amefutwa!',
+              'Katibu amefutwa Kikamirifu!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
@@ -405,10 +408,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         );
         fetchMakatibu();
       } else {
-        // setState(() {
-        //   error = jsonResponse['message'] ?? "Failed to delete katibu";
-        // });
-        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -420,10 +419,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
         );
       }
     } catch (e) {
-      // setState(() {
-      //   error = "Failed to connect to server";
-      // });
-      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -524,6 +519,44 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                         return null;
                       },
                     ),
+                    if (katibu != null) ...[
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        value: (katibu.status.toString() == '1' ||
+                                katibu.status.toString() == 'active'
+                            ? 'Bado Yupo Kazini'
+                            : 'Hayupo Kazini'),
+                        decoration: InputDecoration(
+                          labelText: 'Hali Ya Mzee',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'Bado Yupo Kazini',
+                            child: Text('Bado Yupo Kazini'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Hayupo Kazini',
+                            child: Text('Hayupo Kazini'),
+                          ),
+                        ],
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            if (newValue == 'Bado Yupo Kazini') {
+                              katibuStatus = '1';
+                            } else {
+                              katibuStatus = '0';
+                            }
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali chagua hali ya mzee';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _memberNoController,
@@ -826,8 +859,12 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
                                       ),
                                       _buildInfoRow(
                                         Icons.info_outline,
-                                        'Status',
-                                        katibu.status,
+                                        'Hali Ya Katibu',
+                                        katibu.status.toString() == '1' ||
+                                                katibu.status.toString() ==
+                                                    'active'
+                                            ? 'Bado Yupo Kazini'
+                                            : 'Hayupo Kazini',
                                       ),
                                       const SizedBox(height: 16),
                                       Row(
