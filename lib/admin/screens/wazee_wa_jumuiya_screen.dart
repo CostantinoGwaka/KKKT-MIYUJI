@@ -386,7 +386,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           ),
         );
       } else {
-        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -398,7 +397,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
         );
       }
     } catch (e) {
-      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
