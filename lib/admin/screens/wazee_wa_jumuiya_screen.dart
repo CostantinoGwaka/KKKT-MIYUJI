@@ -39,6 +39,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
   final TextEditingController _memberNoController = TextEditingController();
   final TextEditingController _eneoController = TextEditingController();
   String? selectedJumuiyaId;
+  String? mzeeStatus;
   String? selectedJumuiyaName;
 
   @override
@@ -202,6 +203,8 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           setState(() {
             wazee = (jsonResponse['data'] as List)
                 .map((item) => WazeeData.fromJson(item))
+                .toList()
+                .reversed
                 .toList();
             filteredWazee = wazee;
           });
@@ -240,7 +243,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           "jina": _jinaController.text,
           "namba_ya_simu":
               _nambaYaSimuController.text.replaceFirst(RegExp(r'^0'), '255'),
-          "password": _passwordController.text,
+          "password": _nambaYaSimuController.text,
           "eneo": _eneoController.text,
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
@@ -304,6 +307,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           "jumuiya_id": selectedJumuiyaId,
           "jumuiya": selectedJumuiyaName,
           "mwaka": krid,
+          "status": mzeeStatus ?? '1',
           "member_no": _memberNoController.text,
           "kanisa_id": currentUser!.kanisaId,
         }),
@@ -370,13 +374,13 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
 
       final jsonResponse = json.decode(response.body);
 
-      if (jsonResponse['status'] == 200) {
+      if (jsonResponse['status'] == '200') {
         await fetchWazee();
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Mzee amefutwa!',
+              'Mzee amefutwa kikamirifu!',
               style: GoogleFonts.poppins(),
             ),
             backgroundColor: Colors.green,
@@ -470,32 +474,76 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _nambaYaSimuController,
+                        keyboardType: TextInputType.phone,
+                        maxLength: 10,
                         decoration: InputDecoration(
                           labelText: 'Namba ya Simu',
                           labelStyle: GoogleFonts.poppins(),
+                          hintText: '07XXXXXXXX',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Tafadhali jaza namba ya simu';
                           }
+                          if (!RegExp(r'^(06|07)[0-9]{8}$').hasMatch(value)) {
+                            return 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10';
+                          }
                           return null;
                         },
                       ),
-                      const SizedBox(height: 16),
-                      if (mzee == null)
-                        TextFormField(
-                          controller: _passwordController,
+                      if (mzee != null) ...[
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<String>(
+                          value: (mzee.status.toString() == '1' ||
+                                  mzee.status.toString() == 'active'
+                              ? 'Bado Yupo Kazini'
+                              : 'Hayupo Kazini'),
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: 'Hali Ya Mzee',
                             labelStyle: GoogleFonts.poppins(),
                           ),
+                          items: const [
+                            DropdownMenuItem<String>(
+                              value: 'Bado Yupo Kazini',
+                              child: Text('Bado Yupo Kazini'),
+                            ),
+                            DropdownMenuItem<String>(
+                              value: 'Hayupo Kazini',
+                              child: Text('Hayupo Kazini'),
+                            ),
+                          ],
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (newValue == 'Bado Yupo Kazini') {
+                                mzeeStatus = '1';
+                              } else {
+                                mzeeStatus = '0';
+                              }
+                            });
+                          },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Tafadhali jaza password';
+                              return 'Tafadhali chagua hali ya mzee';
                             }
                             return null;
                           },
                         ),
+                      ],
+                      // const SizedBox(height: 16),
+                      // if (mzee == null)
+                      //   TextFormField(
+                      //     controller: _passwordController,
+                      //     decoration: InputDecoration(
+                      //       labelText: 'Password',
+                      //       labelStyle: GoogleFonts.poppins(),
+                      //     ),
+                      //     validator: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return 'Tafadhali jaza password';
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: _eneoController,
@@ -826,11 +874,11 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
                                         'Eneo',
                                         mzee.eneo,
                                       ),
-                                      _buildInfoRow(
-                                        Icons.calendar_today_outlined,
-                                        'Mwaka',
-                                        mzee.mwaka,
-                                      ),
+                                      // _buildInfoRow(
+                                      //   Icons.calendar_today_outlined,
+                                      //   'Mwaka',
+                                      //   mzee.mwaka,
+                                      // ),
                                       _buildInfoRow(
                                         Icons.access_time_outlined,
                                         'Tarehe ya Usajili',
@@ -838,8 +886,12 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
                                       ),
                                       _buildInfoRow(
                                         Icons.info_outline,
-                                        'Status',
-                                        mzee.status,
+                                        'Hali Ya Mzee',
+                                        mzee.status.toString() == '1' ||
+                                                mzee.status.toString() ==
+                                                    'active'
+                                            ? 'Bado Yupo Kazini'
+                                            : 'Hayupo Kazini',
                                       ),
                                       const SizedBox(height: 16),
                                       Row(
