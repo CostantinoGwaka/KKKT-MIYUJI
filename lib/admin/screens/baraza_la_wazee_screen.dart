@@ -34,6 +34,7 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
   final TextEditingController _fnameController = TextEditingController();
   final TextEditingController _nambaYaSimuController = TextEditingController();
   final TextEditingController _wadhifaController = TextEditingController();
+  String? mzeeStatus;
 
   @override
   void initState() {
@@ -242,6 +243,7 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
           "namba_ya_simu":
               _nambaYaSimuController.text.replaceFirst(RegExp(r'^0'), '255'),
           "wadhifa": _wadhifaController.text,
+          "status": mzeeStatus ?? '1',
           "kanisa_id": currentUser!.kanisaId,
         }),
       );
@@ -445,6 +447,44 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
                         return null;
                       },
                     ),
+                    if (mzee != null) ...[
+                      const SizedBox(height: 16),
+                      DropdownButtonFormField<String>(
+                        value: (mzee.status.toString() == '1' ||
+                                mzee.status.toString() == 'active'
+                            ? 'Bado Yupo Kazini'
+                            : 'Hayupo Kazini'),
+                        decoration: InputDecoration(
+                          labelText: 'Hali Ya Mzee',
+                          labelStyle: GoogleFonts.poppins(),
+                        ),
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'Bado Yupo Kazini',
+                            child: Text('Bado Yupo Kazini'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Hayupo Kazini',
+                            child: Text('Hayupo Kazini'),
+                          ),
+                        ],
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            if (newValue == 'Bado Yupo Kazini') {
+                              mzeeStatus = '1';
+                            } else {
+                              mzeeStatus = '0';
+                            }
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali chagua hali ya mzee';
+                          }
+                          return null;
+                        },
+                      ),
+                    ]
                   ],
                 ),
               ),
@@ -710,8 +750,12 @@ class _BarazaLaWazeeScreenState extends State<BarazaLaWazeeScreen> {
                                       ),
                                       _buildInfoRow(
                                         Icons.info_outline,
-                                        'Status',
-                                        mzee.status,
+                                        'Hali Ya Mzee',
+                                        mzee.status.toString() == '1' ||
+                                                mzee.status.toString() ==
+                                                    'active'
+                                            ? 'Bado Yupo Kazini'
+                                            : 'Hayupo Kazini',
                                       ),
                                       const SizedBox(height: 16),
                                       Row(

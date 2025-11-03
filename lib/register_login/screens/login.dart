@@ -49,7 +49,9 @@ class _LoginState extends State<Login> {
 
       if (response2.statusCode == 200) {
         var jsonResponse = json.decode(response2.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+        if (jsonResponse != null &&
+            jsonResponse != 404 &&
+            jsonResponse != 500) {
           var json2 = jsonDecode(response2.body);
           if (json2 is List && json2.isNotEmpty) {
             await UserManager.saveMtumishiData(json2[0]);
@@ -60,7 +62,8 @@ class _LoginState extends State<Login> {
   }
 
   Future<dynamic> login(String memberNo, String password) async {
-    Alerts.showProgressDialog(context, "Tafadhari Subiri,Inatafuta akaunti yako");
+    Alerts.showProgressDialog(
+        context, "Tafadhari Subiri,Inatafuta akaunti yako");
 
     if (memberNo == "" || password == "") {
       setState(() {
@@ -80,11 +83,8 @@ class _LoginState extends State<Login> {
       String token = await FireibaseClass.getUserToken();
 
       // Call the login service
-      LoginResponse loginResponse = await UserService.login(memberNo, password, token);
-
-      // Remove loader
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pop();
+      LoginResponse loginResponse =
+          await UserService.login(memberNo, password, token);
 
       if (loginResponse.status == 200 && loginResponse.user != null) {
         // Login successful
@@ -99,6 +99,10 @@ class _LoginState extends State<Login> {
         // Store user data using UserManager
         await UserManager.saveCurrentUser(user);
 
+        // Remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
+
         // Add user to Firebase database based on user type
         await _addUserToFirebase(user, token);
 
@@ -107,7 +111,8 @@ class _LoginState extends State<Login> {
 
         // Navigate to home page
         // ignore: use_build_context_synchronously
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage()));
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const HomePage()));
 
         return Fluttertoast.showToast(
           msg: "Umefanikiwa kuingia kwenye akaunti",
@@ -117,11 +122,14 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
         );
       } else if (loginResponse.status == 404) {
-        setState(() {
-          isregistered = false;
-          memberController.clear();
-          passwordController.clear();
-        });
+        // setState(() {
+        //   isregistered = false;
+        //   memberController.clear();
+        //   passwordController.clear();
+        // });
+        // Remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
 
         return Fluttertoast.showToast(
           msg: loginResponse.message,
@@ -131,11 +139,14 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
         );
       } else if (loginResponse.status == 500) {
-        setState(() {
-          isregistered = false;
-          memberController.clear();
-          passwordController.clear();
-        });
+        // setState(() {
+        //   isregistered = false;
+        //   memberController.clear();
+        //   passwordController.clear();
+        // });
+        // Remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
 
         return Fluttertoast.showToast(
           msg: loginResponse.message,
@@ -148,6 +159,9 @@ class _LoginState extends State<Login> {
         setState(() {
           isregistered = false;
         });
+        // Remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
 
         return Fluttertoast.showToast(
           msg: loginResponse.message,
@@ -249,7 +263,8 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight,
                       borderRadius: BorderRadius.circular(20),
@@ -375,7 +390,8 @@ class _LoginState extends State<Login> {
           ),
           fillColor: Colors.white,
           filled: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
@@ -396,7 +412,8 @@ class _LoginState extends State<Login> {
         onChanged: (value) {
           if (value.length == 1 && !(value.startsWith('0'))) {
             memberController.clear();
-          } else if (value.length == 2 && !(value.startsWith('06') || value.startsWith('07'))) {
+          } else if (value.length == 2 &&
+              !(value.startsWith('06') || value.startsWith('07'))) {
             memberController.clear();
           }
         },
@@ -440,7 +457,8 @@ class _LoginState extends State<Login> {
           ),
           fillColor: Colors.white,
           filled: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
@@ -481,7 +499,8 @@ class _LoginState extends State<Login> {
       height: 50,
       child: ElevatedButton(
         onPressed: () async {
-          if (memberController.text.isEmpty || passwordController.text.isEmpty) {
+          if (memberController.text.isEmpty ||
+              passwordController.text.isEmpty) {
             Fluttertoast.showToast(
               msg: "Tafadhari weka taarifa zote",
               toastLength: Toast.LENGTH_LONG,
@@ -542,7 +561,8 @@ Widget _passCode(context) {
           InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegistrationPageScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const RegistrationPageScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
