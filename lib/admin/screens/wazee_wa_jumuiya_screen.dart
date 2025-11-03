@@ -376,7 +376,6 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
 
       if (jsonResponse['status'] == '200') {
         await fetchWazee();
-        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
