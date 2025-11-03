@@ -278,14 +278,14 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        if (jsonResponse['status'] == '200') {
+        if (jsonResponse['status'] == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 jsonResponse['message'],
                 style: GoogleFonts.poppins(),
               ),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.green,
             ),
           );
           setState(() {
@@ -568,34 +568,23 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextField(
+                    TextFormField(
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
                       maxLength: 10,
                       decoration: InputDecoration(
                         labelText: 'Namba ya Simu',
-                        hintText: '07xxxxxxxx or 06xxxxxxxx',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        counterText: '',
+                        labelStyle: GoogleFonts.poppins(),
+                        hintText: '07XXXXXXXX',
                       ),
-                      onChanged: (value) {
-                        if (value.length >= 2) {
-                          if (!value.startsWith('07') &&
-                              !value.startsWith('06')) {
-                            _phoneController.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Namba ya simu ianze na 06 au 07',
-                                  style: GoogleFonts.poppins(),
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tafadhali jaza namba ya simu';
                         }
+                        if (!RegExp(r'^(06|07)[0-9]{8}$').hasMatch(value)) {
+                          return 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10';
+                        }
+                        return null;
                       },
                     ),
                     const SizedBox(height: 16),
@@ -773,15 +762,24 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      TextField(
+                      TextFormField(
                         controller: _phoneController,
                         keyboardType: TextInputType.phone,
+                        maxLength: 10,
                         decoration: InputDecoration(
                           labelText: 'Namba ya Simu',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          labelStyle: GoogleFonts.poppins(),
+                          hintText: '07XXXXXXXX',
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Tafadhali jaza namba ya simu';
+                          }
+                          if (!RegExp(r'^(06|07)[0-9]{8}$').hasMatch(value)) {
+                            return 'Namba ya simu ianze na 06 au 07 na iwe na tarakimu 10';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 16),
                       Container(
