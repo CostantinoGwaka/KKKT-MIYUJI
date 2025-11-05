@@ -1557,26 +1557,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                   const SizedBox(height: 16),
                 ],
               ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     const Text(
-              //       '3. Katibu wa jumuiya',
-              //       style: TextStyle(
-              //         fontSize: 16.0,
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black87,
-              //       ),
-              //     ),
-              //     const SizedBox(height: 8),
-              //     _buildTextField(
-              //       controller: katibuJumuiya,
-              //       labelText: "Katibu wa jumuiya",
-              //       icon: Icons.person_pin,
-              //       readOnly: true,
-              //     ),
-              //   ],
-              // ),
             ] else if (_ushiriki == 'hapana') ...[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

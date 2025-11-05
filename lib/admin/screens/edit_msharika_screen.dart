@@ -1,8 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, deprecated_member_use, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kanisaapp/models/jumuiya_data.dart';
+import 'package:kanisaapp/models/jumuiya_model.dart';
+import 'package:kanisaapp/models/kanisa_model.dart';
+import 'package:kanisaapp/models/makatibu.dart';
 import 'package:kanisaapp/models/msharika_model.dart';
+import 'package:kanisaapp/models/mwaka_wa_kanisa.dart';
+import 'package:kanisaapp/usajili/screens/index.dart';
+import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -34,6 +44,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   final _formKey = GlobalKey<FormState>();
   // ignore: unused_field
   bool _isLoading = false;
+  String idYaJumuiya = '';
   int _currentStep = 0;
 
   // All form controllers
@@ -72,18 +83,131 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   late final TextEditingController _tareheController;
   late final TextEditingController _kanisaIdController;
   late final TextEditingController _passwordController;
+  TextEditingController kamaUshiriki = TextEditingController();
 
   String _haliNdoa = '';
   String _ndoa = '';
   String _ushiriki = '';
+  var jumuiyaList = <JumuiyaData>[];
+  JumuiyaData? dropdownValue;
+  String? _valProvince;
+  List<Jumuiya>? _dataProvince;
+  List<Katibu> katibuWaJumuiya = [];
+  dynamic usajiliId;
+  Kanisa? kanisaData;
+  InactiveYear? inactiveYearData;
 
   @override
   void initState() {
     super.initState();
     _initializeControllers();
+
+    getKanisaDetails(widget.msharika.kanisaId);
     _haliNdoa = widget.msharika.haliYaNdoa;
     _ndoa = widget.msharika.ainaNdoa;
     _ushiriki = widget.msharika.jumuiyaUshiriki;
+    print(
+        "data: ${widget.msharika.idYaJumuiya} : ${widget.msharika.jinaLaJumuiya} : ${widget.msharika.katibuJumuiya}");
+    idYaJumuiya = widget.msharika.idYaJumuiya;
+    _valProvince = widget.msharika.idYaJumuiya;
+  }
+
+  Future<Kanisa?> getKanisaDetails(kanisaId) async {
+    String myApi = "${ApiUrl.BASEURL}get_kanisa_details_by_id.php";
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": kanisaId,
+      }),
+    );
+
+    dynamic kanisa;
+
+    var jsonResponse = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        kanisa = json;
+      }
+    }
+
+    if (kanisa != null) {
+      if (kanisa is Map && kanisa.containsKey('data')) {
+        // Handle single object response
+        setState(() {
+          kanisaData = Kanisa.fromJson(kanisa['data']);
+        });
+        getJumuiyaApi();
+        getKatibu();
+      }
+    }
+
+    return kanisaData; // Return a list with the kanisa data or an empty list
+  }
+
+  void getJumuiyaApi() async {
+    String myApi = "${ApiUrl.BASEURL}getjumuiya.php";
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": kanisaData != null ? kanisaData!.id : '',
+      }),
+    );
+    dynamic jumuiya;
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          jumuiya = (json['data'] as List)
+              .map((item) => Jumuiya.fromJson(item))
+              .toList();
+        }
+      }
+    }
+    setState(() {
+      _dataProvince = jumuiya;
+    });
+  }
+
+  void getKatibu() async {
+    String myApi = "${ApiUrl.BASEURL}getkatibu.php";
+    final response = await http.post(
+      Uri.parse(myApi),
+      headers: {'Accept': 'application/json'},
+      body: jsonEncode({
+        "kanisa_id": kanisaData != null ? kanisaData!.id : '',
+      }),
+    );
+    dynamic katibus;
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      if (jsonResponse != null && jsonResponse != 404) {
+        var json = jsonDecode(response.body);
+        if (json is Map &&
+            json.containsKey('data') &&
+            json['data'] != null &&
+            json['data'] is List) {
+          katibus = (json['data'] as List)
+              .map((item) => Katibu.fromJson(item))
+              .toList();
+        } else if (json is List) {
+          katibus = json.map((item) => Katibu.fromJson(item)).toList();
+        } else {
+          katibus = [];
+        }
+      }
+    }
+    setState(() {
+      katibuWaJumuiya = katibus;
+    });
   }
 
   void _initializeControllers() {
@@ -140,7 +264,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     _mzeeStatusController =
         TextEditingController(text: widget.msharika.mzeeStatus);
     _usharikaStatusController =
-        TextEditingController(text: widget.msharika.usharikaStatus);
+        TextEditingController(text: widget.msharika.idYaJumuiya);
     _regYearIdController =
         TextEditingController(text: widget.msharika.regYearId);
     _tareheController = TextEditingController(text: widget.msharika.tarehe);
@@ -155,12 +279,14 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     bool isDate = false,
     bool isRequired = false,
     bool isPhoneNumber = false,
+    bool readOnly = false,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        readOnly: isDate,
+        // readOnly: isDate,
+        readOnly: readOnly,
         keyboardType: isPhoneNumber ? TextInputType.phone : TextInputType.text,
         maxLength: isPhoneNumber ? 10 : null,
         onTap: isDate ? () => _selectDate(context, controller) : null,
@@ -247,8 +373,6 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           title: Text('Taarifa za Familia', style: GoogleFonts.poppins()),
           content: Column(
             children: [
-              _buildTextField(
-                  _jinaLaMwenziController, 'Jina la Mwenzi', Icons.people),
               _buildRadioGroup(
                 title: '7. Aina ya ndoa',
                 options: [
@@ -264,6 +388,10 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
                   });
                 },
               ),
+              if (_ndoa == 'Ndoa ya Kikristo') ...[
+                _buildTextField(
+                    _jinaLaMwenziController, 'Jina la Mwenzi', Icons.people),
+              ]
             ],
           ),
           isActive: _currentStep >= 1,
@@ -324,10 +452,10 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
                   Icons.confirmation_number),
               _buildTextField(_jengoController, 'Jengo', Icons.home),
               _buildTextField(_ahadiController, 'Ahadi', Icons.description),
-              _buildTextField(
-                  _jinaLaJumuiyaController, 'Jina la Jumuiya', Icons.groups),
+              // _buildTextField(
+              //     _jinaLaJumuiyaController, 'Jina la Jumuiya', Icons.groups),
               _buildRadioGroup(
-                title: 'Unashiriki ibada za nyumba kwa nyumba',
+                title: 'Unashiriki ibada za nyumba kwa nyumba $_ushiriki',
                 options: ['Ndio', 'Hapana'],
                 groupValue: _ushiriki,
                 onChanged: (value) {
@@ -337,6 +465,47 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
                   });
                 },
               ),
+              if (_ushiriki == 'Ndio') ...[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '2. Jina la jumuiya',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildDropdown(),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ] else if (_ushiriki == 'Hapana') ...[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Kama Haushiriki weka sababu ya kutokushiriki',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildTextFieldValue(
+                      controller: _kamaUshirikiController,
+                      labelText:
+                          "Sababu ya kutokushiriki jumuiya $_ushiriki ${_jumuiyaUshirikiController.text}",
+                      icon: Icons.info_outline,
+                      keyboardType: TextInputType.text,
+                      // errorText: "Tafadhari weka sababu ya kutokushiriki jumuiya",
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
           isActive: _currentStep >= 4,
@@ -346,16 +515,173 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           content: Column(
             children: [
               _buildTextField(_katibuStatusController, 'Hadhi ya Ukatibu',
-                  Icons.assignment_ind),
+                  Icons.assignment_ind,
+                  readOnly: true),
               _buildTextField(
-                  _mzeeStatusController, 'Hadhi ya Uzee', Icons.person_outline),
+                  _mzeeStatusController, 'Hadhi ya Uzee', Icons.person_outline,
+                  readOnly: true),
               _buildTextField(_usharikaStatusController, 'Hadhi ya Ushirika',
-                  Icons.people_outline),
+                  Icons.people_outline,
+                  readOnly: true),
             ],
           ),
           isActive: _currentStep >= 5,
         ),
       ];
+
+  Widget _buildTextFieldValue({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData icon,
+    TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
+    VoidCallback? onTap,
+    bool readOnly = false,
+    String? errorText,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            onTap: onTap,
+            readOnly: readOnly,
+            focusNode: readOnly ? AlwaysDisabledFocusNode() : null,
+            decoration: InputDecoration(
+              labelText: labelText,
+              prefixIcon: Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: MyColors.primaryLight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: MyColors.primaryLight, size: 20),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: MyColors.primaryLight, width: 2),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: const BorderSide(color: Colors.red, width: 2),
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              labelStyle: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          if (errorText != null && errorText.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 6, left: 16),
+              child: Text(
+                errorText,
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdown() {
+    if (_dataProvince == null) return const SizedBox();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300, width: 1.5),
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.grey.shade50,
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          hint: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: MyColors.primaryLight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(Icons.home_work_outlined,
+                    color: MyColors.primaryLight, size: 20),
+              ),
+              const SizedBox(width: 12),
+              const Text("Chagua Jumuiya yako"),
+            ],
+          ),
+          value: _valProvince,
+          icon: Icon(Icons.arrow_drop_down, color: MyColors.primaryLight),
+          style: TextStyle(color: MyColors.primaryLight, fontSize: 16),
+          items: _dataProvince!.map((item) {
+            return DropdownMenuItem<String>(
+              value: item.id.toString(), // Use jumuiya_id as value
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: MyColors.primaryLight.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(Icons.home_work_outlined,
+                        color: MyColors.primaryLight, size: 18),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    item.jumuiyaName,
+                    style: TextStyle(
+                      color: MyColors.primaryLight,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (value) async {
+            setState(() {
+              _valProvince = value;
+              idYaJumuiya = value ?? '';
+              _idYaJumuiyaController.text = value ?? '';
+              // // Find jumuiya name for selected id
+              final selectedJumuiya =
+                  // ignore: unrelated_type_equality_checks
+                  _dataProvince!.firstWhere((j) => j.id == value,
+                      orElse: () => _dataProvince!.first);
+
+              _katibuJumuiyaController.text =
+                  selectedJumuiya.katibuId.toString();
+              _jinaLaJumuiyaController.text = selectedJumuiya.jumuiyaName;
+            });
+          },
+        ),
+      ),
+    );
+  }
 
   Widget _buildChildSection(
     String label,
@@ -392,67 +718,121 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   Future<void> _updateMsharika() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-
-    try {
-      final response = await http.post(
-        Uri.parse("${ApiUrl.BASEURL}jisajili.php"),
-        body: {
-          'id': widget.msharika.id,
-          'jina_la_msharika': _jinaController.text,
-          'jinsia': _jinsiaController.text,
-          'umri': _umriController.text,
-          'hali_ya_ndoa': _haliYaNdoaController.text,
-          'jina_la_mwenzi_wako': _jinaLaMwenziController.text,
-          'namba_ya_ahadi': _nambaYaAhadiController.text,
-          'aina_ndoa': _ainaNdoaController.text,
-          'jina_mtoto1': _jinaMtoto1Controller.text,
-          'tarehe_mtoto1': _tareheMtoto1Controller.text,
-          'uhusiano_mtoto1': _uhusianoMtoto1Controller.text,
-          'jina_mtoto2': _jinaMtoto2Controller.text,
-          'tarehe_mtoto2': _tareheMtoto2Controller.text,
-          'uhusiano_mtoto2': _uhusianoMtoto2Controller.text,
-          'jina_mtoto3': _jinaMtoto3Controller.text,
-          'tarehe_mtoto3': _tareheMtoto3Controller.text,
-          'uhusiano_mtoto3': _uhusianoMtoto3Controller.text,
-          'namba_ya_simu': _nambaSimuController.text,
-          'jengo': _jengoController.text,
-          'ahadi': _ahadiController.text,
-          'kazi': _kaziController.text,
-          'elimu': _elimuController.text,
-          'ujuzi': _ujuziController.text,
-          'mahali_pakazi': _mahaliPakaziController.text,
-          'jumuiya_ushiriki': _jumuiyaUshirikiController.text,
-          'jina_la_jumuiya': _jinaLaJumuiyaController.text,
-          'id_ya_jumuiya': _idYaJumuiyaController.text,
-          'katibu_jumuiya': _katibuJumuiyaController.text,
-          'kama_ushiriki': _kamaUshirikiController.text,
-          'katibu_status': _katibuStatusController.text,
-          'mzee_status': _mzeeStatusController.text,
-          'usharika_status': _usharikaStatusController.text,
-          'reg_year_id': _regYearIdController.text,
-          'tarehe': _tareheController.text,
-          'kanisa_id': _kanisaIdController.text,
-        },
+    if (_jinaController.text == "" ||
+        _nambaSimuController.text == "" ||
+        _ahadiController.text == "" ||
+        _jengoController.text == "" ||
+        _jinsiaController.text == "" ||
+        _umriController.text == "") {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia,kanisa code,umri)");
+    } else if (_nambaSimuController.text.length != 10 ||
+        (!_nambaSimuController.text.startsWith("06") &&
+            !_nambaSimuController.text.startsWith("07"))) {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).");
+    } else if (_jinaLaJumuiyaController.text != '' &&
+        _jumuiyaUshirikiController.text == 'Ndio' &&
+        (_jinaLaJumuiyaController.text.isEmpty ||
+            _katibuJumuiyaController.text.isEmpty)) {
+      Alerts.show(
+        context,
+        "Kuna shida",
+        "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya) $_jumuiyaUshirikiController",
       );
+    } else if ((_haliNdoa != '' && _haliNdoa == 'Nimeoa') &&
+        (_jinaLaMwenziController.text.isEmpty)) {
+      Alerts.show(
+        context,
+        "Kuna shida",
+        "Umechagua nimeo tafadhari weka jina la mwenzi wako",
+      );
+    } else if (_jinaController.text.length < 3) {
+      Alerts.show(
+        context,
+        "Kuna shida",
+        "Tafadhali Hakikisha umeweka majina matatu",
+      );
+    } else if ((_ushiriki != '' && _ushiriki == 'ndio') &&
+        (_jinaLaJumuiyaController.text.isEmpty)) {
+      Alerts.show(context, "Kuna shida",
+          "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
+    } else {
+      setState(() => _isLoading = true);
 
-      if (response.statusCode == 200) {
-        widget.onUpdateSuccess();
-        Navigator.pop(context);
-        _showSuccessMessage('Msharika updated successfully');
-      } else {
-        _showErrorMessage('Failed to update msharika');
+      try {
+        final response = await http.post(
+          Uri.parse(
+              "${ApiUrl.BASEURL}api2/usajili_msharika/update_usajili_msharika.php"),
+          headers: {'Accept': 'application/json'},
+          body: jsonEncode({
+            'id': widget.msharika.id,
+            'jina_la_msharika': _jinaController.text,
+            'jinsia': _jinsiaController.text,
+            'umri': _umriController.text,
+            'hali_ya_ndoa': _haliYaNdoaController.text,
+            'jina_la_mwenzi_wako': _jinaLaMwenziController.text,
+            'namba_ya_ahadi': _nambaYaAhadiController.text,
+            'aina_ya_ndoa': _ainaNdoaController.text,
+            'jina_mtoto1': _jinaMtoto1Controller.text,
+            'tarehe_mtoto1': _tareheMtoto1Controller.text,
+            'uhusiano_mtoto1': _uhusianoMtoto1Controller.text,
+            'jina_mtoto2': _jinaMtoto2Controller.text,
+            'tarehe_mtoto2': _tareheMtoto2Controller.text,
+            'uhusiano_mtoto2': _uhusianoMtoto2Controller.text,
+            'jina_mtoto3': _jinaMtoto3Controller.text,
+            'tarehe_mtoto3': _tareheMtoto3Controller.text,
+            'uhusiano_mtoto3': _uhusianoMtoto3Controller.text,
+            'namba_ya_simu': _nambaSimuController.text,
+            'jengo': _jengoController.text,
+            'ahadi': _ahadiController.text,
+            'kazi': _kaziController.text,
+            'elimu': _elimuController.text,
+            'ujuzi': _ujuziController.text,
+            'mahali_pakazi': _mahaliPakaziController.text,
+            'jumuiya_ushiriki': _jumuiyaUshirikiController.text,
+            'jina_la_jumuiya': _jinaLaJumuiyaController.text,
+            'id_ya_jumuiya': _idYaJumuiyaController.text,
+            'katibu_jumuiya': _katibuJumuiyaController.text,
+            'kama_ushiriki': _kamaUshirikiController.text,
+            'katibu_status': _katibuStatusController.text,
+            'mzee_status': _mzeeStatusController.text,
+            'usharika_status': _usharikaStatusController.text,
+            'reg_year_id': _regYearIdController.text,
+            'tarehe': _tareheController.text,
+            'kanisa_id': _kanisaIdController.text,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          final jsonResponse = json.decode(response.body);
+
+          if (jsonResponse['status'] == 200) {
+            widget.onUpdateSuccess();
+            Navigator.pop(context);
+            _showSuccessMessage(
+                'Taarifa za msharika zimesasishwa kwa mafanikio');
+          } else {
+            _showErrorMessage('Imeshindikana kusahihisha taarifa za msharika');
+          }
+        } else {
+          _showErrorMessage('Imeshindikana kusahihisha taarifa za msharika');
+        }
+      } catch (e) {
+        _showErrorMessage(
+            'Kuna tatizo limetokea kwenye kusahihisha taarifa za msharika $e');
+      } finally {
+        setState(() => _isLoading = false);
       }
-    } catch (e) {
-      _showErrorMessage('Error occurred while updating msharika');
-    } finally {
-      setState(() => _isLoading = false);
     }
   }
 
   void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message, style: GoogleFonts.poppins())),
+      SnackBar(
+        content: Text(message, style: GoogleFonts.poppins()),
+        backgroundColor: Colors.green,
+      ),
     );
   }
 
