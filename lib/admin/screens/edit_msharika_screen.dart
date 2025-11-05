@@ -45,6 +45,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   // ignore: unused_field
   bool _isLoading = false;
   String idYaJumuiya = '';
+  String _jinsiaYako = '';
   int _currentStep = 0;
 
   // All form controllers
@@ -89,6 +90,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   String _ndoa = '';
   String _ushiriki = '';
   var jumuiyaList = <JumuiyaData>[];
+  bool isSaving = false;
   JumuiyaData? dropdownValue;
   String? _valProvince;
   List<Jumuiya>? _dataProvince;
@@ -110,6 +112,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
         "data: ${widget.msharika.idYaJumuiya} : ${widget.msharika.jinaLaJumuiya} : ${widget.msharika.katibuJumuiya}");
     idYaJumuiya = widget.msharika.idYaJumuiya;
     _valProvince = widget.msharika.idYaJumuiya;
+    _jinsiaYako = widget.msharika.jinsia;
   }
 
   Future<Kanisa?> getKanisaDetails(kanisaId) async {
@@ -351,8 +354,19 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           content: Column(
             children: [
               _buildTextField(_jinaController, 'Jina Kamili', Icons.person),
-              _buildTextField(
-                  _jinsiaController, 'Jinsia', Icons.person_outline),
+              // _buildTextField(
+              //     _jinsiaController, 'Jinsia', Icons.person_outline),
+              _buildRadioGroup(
+                title: 'Jinsia yako',
+                options: ['Me', 'Ke'],
+                groupValue: _jinsiaYako,
+                onChanged: (value) {
+                  setState(() {
+                    _jinsiaYako = value;
+                    _jinsiaController.text = value;
+                  });
+                },
+              ),
               _buildTextField(_umriController, 'Umri', Icons.calendar_today),
               _buildRadioGroup(
                 title: 'Hali ya ndoa',
@@ -514,15 +528,57 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           title: Text('Taarifa za Hadhi', style: GoogleFonts.poppins()),
           content: Column(
             children: [
-              _buildTextField(_katibuStatusController, 'Hadhi ya Ukatibu',
-                  Icons.assignment_ind,
-                  readOnly: true),
-              _buildTextField(
-                  _mzeeStatusController, 'Hadhi ya Uzee', Icons.person_outline,
-                  readOnly: true),
-              _buildTextField(_usharikaStatusController, 'Hadhi ya Ushirika',
-                  Icons.people_outline,
-                  readOnly: true),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.assignment_ind,
+                        color: MyColors.primaryLight),
+                    title: const Text('Hadhi ya Ukatibu'),
+                    subtitle: Text(
+                        _katibuStatusController.text.toLowerCase() == 'no'
+                            ? 'Ajapitishwa'
+                            : 'Amepitishwa',
+                        style: TextStyle(
+                            color: _katibuStatusController.text.toLowerCase() ==
+                                    'no'
+                                ? Colors.red
+                                : Colors.green,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person_outline,
+                        color: MyColors.primaryLight),
+                    title: const Text('Hadhi ya Uzee'),
+                    subtitle: Text(
+                        _mzeeStatusController.text.toLowerCase() == 'no'
+                            ? 'Ajapitishwa'
+                            : 'Amepitishwa',
+                        style: TextStyle(
+                            color:
+                                _mzeeStatusController.text.toLowerCase() == 'no'
+                                    ? Colors.red
+                                    : Colors.green,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.people_outline,
+                        color: MyColors.primaryLight),
+                    title: const Text('Hadhi ya Ushirika'),
+                    subtitle: Text(
+                        _usharikaStatusController.text.toLowerCase() == 'no'
+                            ? 'Ajapitishwa'
+                            : 'Amepitishwa',
+                        style: TextStyle(
+                            color:
+                                _usharikaStatusController.text.toLowerCase() ==
+                                        'no'
+                                    ? Colors.red
+                                    : Colors.green,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              )
             ],
           ),
           isActive: _currentStep >= 5,
@@ -718,6 +774,10 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   Future<void> _updateMsharika() async {
     if (!_formKey.currentState!.validate()) return;
 
+    setState(() {
+      isSaving = true;
+    });
+
     if (_jinaController.text == "" ||
         _nambaSimuController.text == "" ||
         _ahadiController.text == "" ||
@@ -726,11 +786,17 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
         _umriController.text == "") {
       Alerts.show(context, "Kuna shida",
           "Tafadhali jaza taarifa muhimu(Jina,namba ya simu,ahadi na jengo,jinsia,kanisa code,umri)");
+      setState(() {
+        isSaving = false;
+      });
     } else if (_nambaSimuController.text.length != 10 ||
         (!_nambaSimuController.text.startsWith("06") &&
             !_nambaSimuController.text.startsWith("07"))) {
       Alerts.show(context, "Kuna shida",
           "Tafadhali weka namba ya simu sahihi. Namba ya simu lazima ianze na 06 au 07 na lazima ziwe tarakimu kumi(10).");
+      setState(() {
+        isSaving = false;
+      });
     } else if (_jinaLaJumuiyaController.text != '' &&
         _jumuiyaUshirikiController.text == 'Ndio' &&
         (_jinaLaJumuiyaController.text.isEmpty ||
@@ -740,6 +806,9 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
         "Kuna shida",
         "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya) $_jumuiyaUshirikiController",
       );
+      setState(() {
+        isSaving = false;
+      });
     } else if ((_haliNdoa != '' && _haliNdoa == 'Nimeoa') &&
         (_jinaLaMwenziController.text.isEmpty)) {
       Alerts.show(
@@ -747,19 +816,26 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
         "Kuna shida",
         "Umechagua nimeo tafadhari weka jina la mwenzi wako",
       );
+      setState(() {
+        isSaving = false;
+      });
     } else if (_jinaController.text.length < 3) {
       Alerts.show(
         context,
         "Kuna shida",
         "Tafadhali Hakikisha umeweka majina matatu",
       );
+      setState(() {
+        isSaving = false;
+      });
     } else if ((_ushiriki != '' && _ushiriki == 'ndio') &&
         (_jinaLaJumuiyaController.text.isEmpty)) {
       Alerts.show(context, "Kuna shida",
           "Tafadhali jaza taarifa muhimu(Jina la jumuiya)");
+      setState(() {
+        isSaving = false;
+      });
     } else {
-      setState(() => _isLoading = true);
-
       try {
         final response = await http.post(
           Uri.parse(
@@ -815,14 +891,22 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
           } else {
             _showErrorMessage('Imeshindikana kusahihisha taarifa za msharika');
           }
+          setState(() {
+            isSaving = false;
+          });
         } else {
           _showErrorMessage('Imeshindikana kusahihisha taarifa za msharika');
+          setState(() {
+            isSaving = false;
+          });
         }
       } catch (e) {
         _showErrorMessage(
             'Kuna tatizo limetokea kwenye kusahihisha taarifa za msharika $e');
       } finally {
-        setState(() => _isLoading = false);
+        setState(() {
+          isSaving = false;
+        });
       }
     }
   }
@@ -887,10 +971,25 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
                         backgroundColor: MyColors.primaryLight,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: Text(
-                        _currentStep == formSteps.length - 1 ? 'Save' : 'Next',
-                        style: GoogleFonts.poppins(color: Colors.white),
-                      ),
+                      child: _currentStep == formSteps.length - 1
+                          ? isSaving
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'Hifadhi',
+                                  style:
+                                      GoogleFonts.poppins(color: Colors.white),
+                                )
+                          : Text(
+                              'Endelea',
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -901,7 +1000,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: Text(
-                        _currentStep == 0 ? 'Cancel' : 'Back',
+                        _currentStep == 0 ? 'Ghairi' : 'Rudi',
                         style: GoogleFonts.poppins(),
                       ),
                     ),

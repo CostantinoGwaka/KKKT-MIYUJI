@@ -529,7 +529,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                       ),
                                     ),
                                     onTap: () async {
-                                      Navigator.of(context).pop();
+                                      // Navigator.of(context).pop();
                                       await Navigator.push(
                                         context,
                                         MaterialPageRoute(
