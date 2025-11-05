@@ -515,6 +515,21 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.phone,
+                                          size: 16,
+                                          color: MyColors.primaryLight
+                                              .withOpacity(0.7)),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Jumuiya: ${msharika.nambaYaSimu}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                               trailing: PopupMenuButton(
@@ -524,7 +539,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                     child: ListTile(
                                       leading: const Icon(Icons.edit),
                                       title: Text(
-                                        'Edit',
+                                        'Hariri',
                                         style: GoogleFonts.poppins(),
                                       ),
                                     ),
@@ -549,7 +564,21 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                       leading: const Icon(Icons.delete,
                                           color: Colors.red),
                                       title: Text(
-                                        'Delete',
+                                        'Futa',
+                                        style: GoogleFonts.poppins(
+                                            color: Colors.red),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      // Implement delete functionality
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: ListTile(
+                                      leading: const Icon(Icons.call_rounded,
+                                          color: Colors.red),
+                                      title: Text(
+                                        'Piga Simu',
                                         style: GoogleFonts.poppins(
                                             color: Colors.red),
                                       ),
