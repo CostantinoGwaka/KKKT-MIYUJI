@@ -10,6 +10,7 @@ import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:lottie/lottie.dart';
 
 class WasharikaKanisaniViongoziScreen extends StatefulWidget {
+  // ignore: use_super_parameters
   const WasharikaKanisaniViongoziScreen({Key? key}) : super(key: key);
 
   @override
@@ -22,11 +23,23 @@ class _WasharikaKanisaniViongoziScreenState
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String? selectedStatus;
+  // ignore: prefer_typing_uninitialized_variables
   var currentUser;
   String? selectedJumuiya;
   List<String> jumuiyaList = [];
   bool isLoading = true;
   List<MsharikaData> washarikaData = [];
+  String searchQuery = '';
+  List<MsharikaData> get filteredWasharikaData {
+    if (searchQuery.isEmpty) return washarikaData;
+    final q = searchQuery.toLowerCase();
+    return washarikaData
+        .where((m) =>
+            m.jinaLaMsharika.toLowerCase().contains(q) ||
+            m.nambaYaSimu.toLowerCase().contains(q) ||
+            m.jinaLaJumuiya.toLowerCase().contains(q))
+        .toList();
+  }
 
   @override
   void initState() {
@@ -149,6 +162,29 @@ class _WasharikaKanisaniViongoziScreenState
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Tafuta jina, simu au jumuiya...',
+                prefixIcon: Icon(Icons.search, color: MyColors.primaryLight),
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: GoogleFonts.poppins(fontSize: 14),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+            ),
+          ),
           Expanded(
             child: isLoading
                 ? Center(
@@ -170,7 +206,7 @@ class _WasharikaKanisaniViongoziScreenState
                       ],
                     ),
                   )
-                : washarikaData.isEmpty
+                : filteredWasharikaData.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -192,10 +228,10 @@ class _WasharikaKanisaniViongoziScreenState
                         ),
                       )
                     : ListView.builder(
-                        itemCount: washarikaData.length,
+                        itemCount: filteredWasharikaData.length,
                         padding: const EdgeInsets.all(16),
                         itemBuilder: (context, index) {
-                          final msharika = washarikaData[index];
+                          final msharika = filteredWasharikaData[index];
                           return Card(
                               elevation: 4,
                               margin: const EdgeInsets.only(bottom: 18),
@@ -450,39 +486,6 @@ class _WasharikaKanisaniViongoziScreenState
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    if (value.isEmpty || value == 'N/A') return Container();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                color: Colors.black54,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildIconDetailRow(IconData icon, String label, String value) {
