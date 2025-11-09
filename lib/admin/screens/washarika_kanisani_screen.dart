@@ -135,6 +135,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
 
   Future<void> fetchWasharika() async {
     BaseUser? user = await UserManager.getCurrentUser();
+    // print(user);
     setState(() {
       currentUser = user;
     });

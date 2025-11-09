@@ -12,6 +12,7 @@ import 'package:kanisaapp/admin/screens/makatibu_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/viongozi_jumuiya_screen.dart';
 import 'package:kanisaapp/admin/screens/walimu_kanisani_screen.dart';
 import 'package:kanisaapp/admin/screens/washarika_kanisani_screen.dart';
+import 'package:kanisaapp/admin/screens/washarika_kanisani_viongozi_screen.dart';
 import 'package:kanisaapp/admin/screens/wazee_wa_jumuiya_screen.dart';
 import 'package:kanisaapp/akaunti/screens/index.dart';
 import 'package:kanisaapp/baraza/screens/index.dart';
@@ -603,6 +604,28 @@ class _HomePageState extends State<HomePage> {
             if (currentUser != null) ...[
               const SizedBox(height: 20),
               _buildMatoleoButton(),
+            ],
+            if (currentUser != null && currentUser!.userType == 'KATIBU') ...[
+              const SizedBox(height: 10),
+              GridView.count(
+                  padding: EdgeInsets.zero,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildAdminGridButton(
+                      icon: Icons.people_outline,
+                      title: 'Washarika',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const WasharikaKanisaniViongoziScreen(),
+                        ),
+                      ),
+                    ),
+                  ]),
             ],
             if (currentUser != null && currentUser!.userType == 'ADMIN') ...[
               const SizedBox(height: 10),
