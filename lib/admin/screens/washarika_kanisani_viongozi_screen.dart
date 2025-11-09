@@ -101,11 +101,15 @@ class _WasharikaKanisaniViongoziScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.primaryLight,
+        iconTheme: const IconThemeData(
+          color: Colors.white, // 👈 makes the back button white
+        ),
         title: Text(
           'Washarika wa Kanisa',
           style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
         ),
         bottom: TabBar(
@@ -187,23 +191,34 @@ class _WasharikaKanisaniViongoziScreenState
           ),
           Expanded(
             child: isLoading
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          'assets/animation/loading.json',
-                          height: 120,
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(90.0),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              child: Lottie.asset(
+                                'assets/animation/fetching.json',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Material(
+                              child: Text(
+                                "Inapanga taarifa",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.0,
+                                  color: MyColors.primaryLight,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Inapakia...',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   )
                 : filteredWasharikaData.isEmpty
@@ -470,6 +485,40 @@ class _WasharikaKanisaniViongoziScreenState
                                               msharika.tarehe),
                                         ],
                                       ),
+                                      if (msharika.katibuStatus == 'null' ||
+                                          msharika.katibuStatus.isEmpty)
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0, bottom: 8.0),
+                                          child: ElevatedButton.icon(
+                                            icon: const Icon(
+                                                Icons.verified_user,
+                                                color: Colors.white),
+                                            label: Text(
+                                              "Kubali/Kataa Washarika",
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  MyColors.primaryLight,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 18,
+                                                      vertical: 12),
+                                            ),
+                                            onPressed: () {
+                                              _showApproveSheet(
+                                                  context, msharika);
+                                            },
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ],
@@ -521,5 +570,132 @@ class _WasharikaKanisaniViongoziScreenState
         ],
       ),
     );
+  }
+
+  void _showApproveSheet(BuildContext context, MsharikaData msharika) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.verified_user, size: 40, color: MyColors.primaryLight),
+              const SizedBox(height: 12),
+              Text(
+                "Kubali au Kataa Washarika",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: MyColors.primaryLight,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                msharika.jinaLaMsharika,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: Icon(Icons.check, color: Colors.white),
+                      label: Text("Kubali",
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        await _updateKatibuStatus(msharika, 'yes');
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: Icon(Icons.close, color: Colors.white),
+                      label: Text("Kataa",
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        await _updateKatibuStatus(msharika, 'no');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateKatibuStatus(MsharikaData msharika, String status) async {
+    final url =
+        "${ApiUrl.BASEURL}api2/washarika_kanisa/update_katibu_status.php";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode({
+          "washarika_id": msharika.nambaYaAhadi,
+          "katibu_status": status,
+          "kanisa_id": msharika.kanisaId,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        // Optionally show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              status == 'yes'
+                  ? 'Washarika amekubaliwa!'
+                  : 'Washarika amekataliwa!',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: status == 'yes' ? Colors.green : Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        _loadWasharikaData();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Imeshindikana kuhifadhi mabadiliko.',
+                style: GoogleFonts.poppins()),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Imeshindikana kuhifadhi mabadiliko.',
+              style: GoogleFonts.poppins()),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    }
   }
 }
