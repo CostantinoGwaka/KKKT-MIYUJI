@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
-import 'dart:developer';
+// import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -23,8 +23,7 @@ class UserService {
         },
       );
 
-      final jsonResponse = json.decode(response.body);
-      log(jsonResponse.toString());
+      // log(response.body);
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -58,11 +57,21 @@ class UserService {
             message: "Server Error Please Try Again Later",
           );
         }
+      } else if (response.statusCode != 200) {
+        return LoginResponse(
+          status: 404,
+          message: "Taarifa zako hazijapatikana",
+        );
+      } else {
+        return LoginResponse(
+          status: response.statusCode,
+          message: "Taarifa zako hazijapatikana",
+        );
       }
 
       return LoginResponse(
         status: response.statusCode,
-        message: "Failed to connect to server",
+        message: "Taarifa zako hazijapatikana",
       );
     } catch (e) {
       return LoginResponse(

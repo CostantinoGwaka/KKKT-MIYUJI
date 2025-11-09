@@ -201,6 +201,10 @@ class _HomePageState extends State<HomePage> {
       return (currentUser as BaseUser).msharikaRecords.isNotEmpty
           ? (currentUser as BaseUser).msharikaRecords[0].jinaLaJumuiya
           : 'N/A';
+    } else if (currentUser is BaseUser && currentUser!.userType == 'ADMIN') {
+      return (currentUser as BaseUser).msharikaRecords.isNotEmpty
+          ? (currentUser as BaseUser).msharikaRecords[0].jinaLaJumuiya
+          : 'N/A';
     } else if (currentUser is BaseUser && currentUser!.userType == 'MZEE') {
       return (currentUser as BaseUser).jumuiya.isNotEmpty
           ? (currentUser as BaseUser).jumuiya
@@ -217,7 +221,7 @@ class _HomePageState extends State<HomePage> {
   String _getUserAhadi(NumberFormat money) {
     if (currentUser == null) return 'N/A';
 
-    if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+    if (currentUser is BaseUser) {
       String ahadi = (currentUser as BaseUser).msharikaRecords.isNotEmpty
           ? (currentUser as BaseUser).msharikaRecords[0].ahadi
           : '';
@@ -236,7 +240,7 @@ class _HomePageState extends State<HomePage> {
   String _getUserJengo(NumberFormat money) {
     if (currentUser == null) return 'N/A';
 
-    if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+    if (currentUser is BaseUser) {
       String jengo = (currentUser as BaseUser).msharikaRecords.isNotEmpty
           ? (currentUser as BaseUser).msharikaRecords[0].jengo
           : '0';

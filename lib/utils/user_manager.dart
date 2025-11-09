@@ -76,7 +76,6 @@ class UserManager {
   // Get user display name
   static String getUserDisplayName(BaseUser? user) {
     if (user == null) return 'Unknown User';
-
     if (user.userType == 'ADMIN') {
       return user.fullName;
     } else if (user.userType == 'MZEE') {
