@@ -310,6 +310,7 @@ class _WazeeWaJumuiyaScreenState extends State<WazeeWaJumuiyaScreen> {
           "status": mzeeStatus ?? '1',
           "member_no": _memberNoController.text,
           "kanisa_id": currentUser!.kanisaId,
+          "password": "123456789",
         }),
       );
 

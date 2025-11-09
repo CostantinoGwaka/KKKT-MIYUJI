@@ -331,6 +331,7 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
           "status": katibuStatus ?? '1',
           "member_no": _memberNoController.text,
           "kanisa_id": currentUser!.kanisaId,
+          "password": "123456789"
         }),
       );
 
@@ -395,7 +396,6 @@ class _MakatibunJumuiyaScreenState extends State<MakatibunJumuiyaScreen> {
       );
 
       final jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       if (jsonResponse['status'] == '200') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

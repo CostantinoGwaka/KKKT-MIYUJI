@@ -155,54 +155,60 @@ class _HomePageState extends State<HomePage> {
     });
 
     // Example: Get all users by role if current user is admin
-    if (user != null && UserManager.isAdmin(user)) {
-      _loadUsersByRole();
-    }
+    // if (user != null && UserManager.isAdmin(user)) {
+    //   _loadUsersByRole();
+    // }
   }
 
   // Example method to demonstrate how to get users by role
-  void _loadUsersByRole() async {
-    try {
-      // Get all users by different roles
-      List<AdminUser> admins = await UserManager.getAllAdmins();
-      List<MzeeUser> mazee = await UserManager.getAllMzee();
-      List<KatibuUser> makatibu = await UserManager.getAllKatibu();
-      List<MsharikaUser> washarika = await UserManager.getAllMsharika();
+  // void _loadUsersByRole() async {
+  //   try {
+  //     // Get all users by different roles
+  //     List<AdminUser> admins = await UserManager.getAllAdmins();
+  //     List<MzeeUser> mazee = await UserManager.getAllMzee();
+  //     List<KatibuUser> makatibu = await UserManager.getAllKatibu();
+  //     List<MsharikaUser> washarika = await UserManager.getAllMsharika();
 
-      // Get user statistics
-      Map<String, int> stats = await UserManager.getUserStatistics();
+  //     // Get user statistics
+  //     Map<String, int> stats = await UserManager.getUserStatistics();
 
-      // Get all users
-      List<BaseUser> allUsers = await UserManager.getAllUsers();
+  //     // Get all users
+  //     List<BaseUser> allUsers = await UserManager.getAllUsers();
 
-      if (kDebugMode) {
-        print("Admin users found: ${admins.length}");
-        print("Mzee users found: ${mazee.length}");
-        print("Katibu users found: ${makatibu.length}");
-        print("Msharika users found: ${washarika.length}");
-        print("Total users: ${allUsers.length}");
-        print("User statistics: $stats");
-      }
+  //     if (kDebugMode) {
+  //       print("Admin users found: ${admins.length}");
+  //       print("Mzee users found: ${mazee.length}");
+  //       print("Katibu users found: ${makatibu.length}");
+  //       print("Msharika users found: ${washarika.length}");
+  //       print("Total users: ${allUsers.length}");
+  //       print("User statistics: $stats");
+  //     }
 
-      // You can now use these lists to populate your UI
-      // For example, show user management options only to admins
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error loading users: $e");
-      }
-    }
-  }
+  //     // You can now use these lists to populate your UI
+  //     // For example, show user management options only to admins
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print("Error loading users: $e");
+  //     }
+  //   }
+  // }
 
   // Helper methods to get user specific data
   String _getUserJumuiya() {
     if (currentUser == null) return 'N/A';
 
-    if (currentUser is MsharikaUser) {
-      return (currentUser as MsharikaUser).jinaLaJumuiya;
-    } else if (currentUser is MzeeUser) {
-      return (currentUser as MzeeUser).jumuiya;
-    } else if (currentUser is KatibuUser) {
-      return (currentUser as KatibuUser).jumuiya;
+    if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+      return (currentUser as BaseUser).msharikaRecords.isNotEmpty
+          ? (currentUser as BaseUser).msharikaRecords[0].jinaLaJumuiya
+          : 'N/A';
+    } else if (currentUser is BaseUser && currentUser!.userType == 'MZEE') {
+      return (currentUser as BaseUser).jumuiya.isNotEmpty
+          ? (currentUser as BaseUser).jumuiya
+          : 'N/A';
+    } else if (currentUser is BaseUser && currentUser!.userType == 'KATIBU') {
+      return (currentUser as BaseUser).jumuiya.isNotEmpty
+          ? (currentUser as BaseUser).jumuiya
+          : 'N/A';
     }
 
     return 'N/A';
@@ -211,8 +217,10 @@ class _HomePageState extends State<HomePage> {
   String _getUserAhadi(NumberFormat money) {
     if (currentUser == null) return 'N/A';
 
-    if (currentUser is MsharikaUser) {
-      String ahadi = (currentUser as MsharikaUser).ahadi;
+    if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+      String ahadi = (currentUser as BaseUser).msharikaRecords.isNotEmpty
+          ? (currentUser as BaseUser).msharikaRecords[0].ahadi
+          : '';
       if (ahadi.isNotEmpty && ahadi != '0') {
         try {
           return "${money.format(int.parse(ahadi))} Tsh";
@@ -228,8 +236,10 @@ class _HomePageState extends State<HomePage> {
   String _getUserJengo(NumberFormat money) {
     if (currentUser == null) return 'N/A';
 
-    if (currentUser is MsharikaUser) {
-      String jengo = (currentUser as MsharikaUser).jengo;
+    if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+      String jengo = (currentUser as BaseUser).msharikaRecords.isNotEmpty
+          ? (currentUser as BaseUser).msharikaRecords[0].jengo
+          : '0';
       if (jengo.isNotEmpty && jengo != '0') {
         try {
           return "${money.format(int.parse(jengo))} Tsh";

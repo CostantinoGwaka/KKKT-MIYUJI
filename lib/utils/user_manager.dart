@@ -51,23 +51,23 @@ class UserManager {
 
     switch (userType) {
       case 'ADMIN':
-        return AdminUser.fromJson(json);
+        return BaseUser.fromJson(json);
       case 'MZEE':
-        return MzeeUser.fromJson(json);
+        return BaseUser.fromJson(json);
       case 'KATIBU':
-        return KatibuUser.fromJson(json);
+        return BaseUser.fromJson(json);
       case 'MSHARIKA':
-        return MsharikaUser.fromJson(json);
+        return BaseUser.fromJson(json);
       default:
         // Try to infer user type from available fields
         if (json.containsKey('level') && json.containsKey('email')) {
-          return AdminUser.fromJson({...json, 'user_type': 'ADMIN'});
+          return BaseUser.fromJson({...json, 'user_type': 'ADMIN'});
         } else if (json.containsKey('eneo')) {
-          return MzeeUser.fromJson({...json, 'user_type': 'MZEE'});
+          return BaseUser.fromJson({...json, 'user_type': 'MZEE'});
         } else if (json.containsKey('jina_la_msharika')) {
-          return MsharikaUser.fromJson({...json, 'user_type': 'MSHARIKA'});
+          return BaseUser.fromJson({...json, 'user_type': 'MSHARIKA'});
         } else if (json.containsKey('jina') && json.containsKey('jumuiya')) {
-          return KatibuUser.fromJson({...json, 'user_type': 'KATIBU'});
+          return BaseUser.fromJson({...json, 'user_type': 'KATIBU'});
         }
         return null;
     }
@@ -77,14 +77,14 @@ class UserManager {
   static String getUserDisplayName(BaseUser? user) {
     if (user == null) return 'Unknown User';
 
-    if (user is AdminUser) {
+    if (user.userType == 'ADMIN') {
       return user.fullName;
-    } else if (user is MzeeUser) {
+    } else if (user.userType == 'MZEE') {
       return user.jina;
-    } else if (user is KatibuUser) {
+    } else if (user.userType == 'KATIBU') {
       return user.jina;
-    } else if (user is MsharikaUser) {
-      return user.jinaLaMsharika;
+    } else if (user.userType == 'MSHARIKA') {
+      return user.jina;
     }
 
     return 'User';
@@ -94,13 +94,13 @@ class UserManager {
   static String getUserPhoneNumber(BaseUser? user) {
     if (user == null) return '';
 
-    if (user is AdminUser) {
+    if (user.userType == 'ADMIN') {
       return user.phonenumber;
-    } else if (user is MzeeUser) {
+    } else if (user.userType == 'MZEE') {
       return user.nambaYaSimu;
-    } else if (user is KatibuUser) {
+    } else if (user.userType == 'KATIBU') {
       return user.nambaYaSimu;
-    } else if (user is MsharikaUser) {
+    } else if (user.userType == 'MSHARIKA') {
       return user.nambaYaSimu;
     }
 
@@ -109,26 +109,27 @@ class UserManager {
 
   // Check if user has admin privileges
   static bool isAdmin(BaseUser? user) {
-    return user is AdminUser;
+    return user!.userType == 'ADMIN';
   }
 
   // Check if user is Mzee
   static bool isMzee(BaseUser? user) {
-    return user is MzeeUser;
+    return user!.userType == 'MZEE';
   }
 
   // Check if user is Katibu
   static bool isKatibu(BaseUser? user) {
-    return user is KatibuUser;
+    return user!.userType == 'KATIBU';
   }
 
-  // Check if user is Msharika
+  // // Check if user is Msharika
   static bool isMsharika(BaseUser? user) {
-    return user is MsharikaUser;
+    return user!.userType == 'MSHARIKA';
   }
 
   // Save mtumishi data
-  static Future<void> saveMtumishiData(Map<String, dynamic> mtumishiData) async {
+  static Future<void> saveMtumishiData(
+      Map<String, dynamic> mtumishiData) async {
     String mtumishiJson = jsonEncode(mtumishiData);
     await LocalStorage.setStringItem(_mtumishiKey, mtumishiJson);
   }
@@ -173,7 +174,9 @@ class UserManager {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse is List) {
+        if (jsonResponse != null &&
+            jsonResponse != 404 &&
+            jsonResponse is List) {
           List<BaseUser> users = [];
           for (var userData in jsonResponse) {
             BaseUser? user = _createUserFromJson(userData);
@@ -193,28 +196,28 @@ class UserManager {
   }
 
   // Fetch all admins
-  static Future<List<AdminUser>> getAllAdmins() async {
-    List<BaseUser> users = await getAllUsersByRole('ADMIN');
-    return users.whereType<AdminUser>().toList();
-  }
+  // static Future<List<AdminUser>> getAllAdmins() async {
+  //   List<BaseUser> users = await getAllUsersByRole('ADMIN');
+  //   return users.whereType<AdminUser>().toList();
+  // }
 
-  // Fetch all Mzee users
-  static Future<List<MzeeUser>> getAllMzee() async {
-    List<BaseUser> users = await getAllUsersByRole('MZEE');
-    return users.whereType<MzeeUser>().toList();
-  }
+  // // Fetch all Mzee users
+  // static Future<List<MzeeUser>> getAllMzee() async {
+  //   List<BaseUser> users = await getAllUsersByRole('MZEE');
+  //   return users.whereType<MzeeUser>().toList();
+  // }
 
-  // Fetch all Katibu users
-  static Future<List<KatibuUser>> getAllKatibu() async {
-    List<BaseUser> users = await getAllUsersByRole('KATIBU');
-    return users.whereType<KatibuUser>().toList();
-  }
+  // // Fetch all Katibu users
+  // static Future<List<KatibuUser>> getAllKatibu() async {
+  //   List<BaseUser> users = await getAllUsersByRole('KATIBU');
+  //   return users.whereType<KatibuUser>().toList();
+  // }
 
-  // Fetch all Msharika users
-  static Future<List<MsharikaUser>> getAllMsharika() async {
-    List<BaseUser> users = await getAllUsersByRole('MSHARIKA');
-    return users.whereType<MsharikaUser>().toList();
-  }
+  // // Fetch all Msharika users
+  // static Future<List<MsharikaUser>> getAllMsharika() async {
+  //   List<BaseUser> users = await getAllUsersByRole('MSHARIKA');
+  //   return users.whereType<MsharikaUser>().toList();
+  // }
 
   // Fetch all users (all roles combined)
   static Future<List<BaseUser>> getAllUsers() async {
@@ -230,7 +233,9 @@ class UserManager {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse is List) {
+        if (jsonResponse != null &&
+            jsonResponse != 404 &&
+            jsonResponse is List) {
           List<BaseUser> users = [];
           for (var userData in jsonResponse) {
             BaseUser? user = _createUserFromJson(userData);
@@ -266,7 +271,9 @@ class UserManager {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse is List) {
+        if (jsonResponse != null &&
+            jsonResponse != 404 &&
+            jsonResponse is List) {
           List<BaseUser> users = [];
           for (var userData in jsonResponse) {
             BaseUser? user = _createUserFromJson(userData);
@@ -302,7 +309,9 @@ class UserManager {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse is List) {
+        if (jsonResponse != null &&
+            jsonResponse != 404 &&
+            jsonResponse is List) {
           List<BaseUser> users = [];
           for (var userData in jsonResponse) {
             BaseUser? user = _createUserFromJson(userData);

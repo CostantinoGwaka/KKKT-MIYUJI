@@ -96,7 +96,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
       // doSomethingWith(itemPositionsListener.itemPositions.value);
       final positions = itemPositionsListener.itemPositions.value;
       final firstPosition = positions.first;
-      final elevated = firstPosition.index != 0 || firstPosition.itemLeadingEdge != 0;
+      final elevated =
+          firstPosition.index != 0 || firstPosition.itemLeadingEdge != 0;
       setDataToPointerProvider(elevated, context);
     });
   }
@@ -104,21 +105,22 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
   String _getUserDisplayName() {
     if (currentUser == null) return "Mtumiaji";
 
-    if (currentUser is AdminUser) {
-      return (currentUser as AdminUser).fullName;
-    } else if (currentUser is MzeeUser) {
-      return (currentUser as MzeeUser).jina;
-    } else if (currentUser is KatibuUser) {
-      return (currentUser as KatibuUser).jina;
-    } else if (currentUser is MsharikaUser) {
-      return (currentUser as MsharikaUser).jinaLaMsharika;
+    if (currentUser is BaseUser && currentUser!.userType == 'ADMIN') {
+      return (currentUser as BaseUser).fullName;
+    } else if (currentUser is BaseUser) {
+      return (currentUser as BaseUser).jina;
+    } else if (currentUser is BaseUser) {
+      return (currentUser as BaseUser).jina;
+    } else if (currentUser is BaseUser) {
+      return (currentUser as BaseUser).jina;
     }
     return "Mtumiaji";
   }
 
   Future<void> sendImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
 
     File image = File(pickedFile!.path);
     if (image.lengthSync() <= 8000000) {
@@ -197,7 +199,10 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
     Object? userId;
     final databaseRef = FirebaseDatabase.instance.ref();
 
-    databaseRef.child('RecentChat/${currentUser!.memberNo}/${widget.friendId}').once().then((DataSnapshot snapshot) {
+    databaseRef
+        .child('RecentChat/${currentUser!.memberNo}/${widget.friendId}')
+        .once()
+        .then((DataSnapshot snapshot) {
           if (snapshot.value != null) {
             userId = snapshot.child('userId').value;
           }
@@ -231,7 +236,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
 
             //update recent chat
             Cloud.add(
-              serverPath: "RecentChat/${currentUser!.memberNo}/${widget.friendId}",
+              serverPath:
+                  "RecentChat/${currentUser!.memberNo}/${widget.friendId}",
               value: RecentChat(
                 lastMessage: "Karibu KKKT miyuji",
                 fullName: widget.fullname,
@@ -310,7 +316,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                         stream: currentUser != null
                             ? FirebaseDatabase.instance
                                 .ref()
-                                .child("Messages/${currentUser!.memberNo}/${widget.friendId}")
+                                .child(
+                                    "Messages/${currentUser!.memberNo}/${widget.friendId}")
                                 .orderByChild('createdAt')
                                 .onValue
                             : const Stream.empty(),
@@ -319,10 +326,14 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                             var data = [];
 
                             if (snap.data!.snapshot.value != null) {
-                              Map<dynamic, dynamic> map = Map.from(snap.data!.snapshot.value as Map);
-                              data = map.values.toList()..sort((a, b) => b['sentAt'].compareTo(a['sentAt']));
+                              Map<dynamic, dynamic> map =
+                                  Map.from(snap.data!.snapshot.value as Map);
+                              data = map.values.toList()
+                                ..sort((a, b) =>
+                                    b['sentAt'].compareTo(a['sentAt']));
                             }
-                            return snap.data!.snapshot.value == null && data.isEmpty
+                            return snap.data!.snapshot.value == null &&
+                                    data.isEmpty
                                 ? const Center(
                                     child: Text("no chats"),
                                   )
@@ -331,7 +342,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                     reverse: true,
                                     itemCount: data.length,
                                     itemScrollController: _scrollController,
-                                    itemPositionsListener: itemPositionsListener,
+                                    itemPositionsListener:
+                                        itemPositionsListener,
                                     itemBuilder: (_, i) {
                                       var snap = data[i];
                                       // item.setItem(
@@ -342,19 +354,26 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                             message: snap,
                                             replymessageid: replymessageid,
                                             scrollTo: () {
-                                              int index = data.indexWhere((element) =>
-                                                  element["messageId"] == snap["repliedContent"]["messageId"]);
+                                              int index = data.indexWhere(
+                                                  (element) =>
+                                                      element["messageId"] ==
+                                                      snap["repliedContent"]
+                                                          ["messageId"]);
                                               if (index > 0) {
                                                 _scrollController.scrollTo(
                                                   index: index,
-                                                  duration: const Duration(milliseconds: 500),
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
                                                 );
 
                                                 //set replymessageId
                                                 setState(() {
-                                                  replymessageid = snap['repliedContent'] != null
-                                                      ? snap['repliedContent']['messageId']
-                                                      : null;
+                                                  replymessageid =
+                                                      snap['repliedContent'] !=
+                                                              null
+                                                          ? snap['repliedContent']
+                                                              ['messageId']
+                                                          : null;
                                                 });
 
                                                 //unset
@@ -371,26 +390,35 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                           ),
                                           //bottom of message bubble
                                           Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: (currentUser?.memberNo != snap['senderId'])
-                                                ? MainAxisAlignment.start
-                                                : MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                (currentUser?.memberNo !=
+                                                        snap['senderId'])
+                                                    ? MainAxisAlignment.start
+                                                    : MainAxisAlignment.end,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(top: 5.0, right: 10, left: 10),
+                                                padding: const EdgeInsets.only(
+                                                    top: 5.0,
+                                                    right: 10,
+                                                    left: 10),
                                                 child: Align(
-                                                  alignment: Alignment.bottomRight,
+                                                  alignment:
+                                                      Alignment.bottomRight,
                                                   child: RichText(
                                                     text: TextSpan(
                                                       text: DateFormat.jm()
                                                           .format(
-                                                            DateTime.parse(snap['sentAt']),
+                                                            DateTime.parse(
+                                                                snap['sentAt']),
                                                           )
                                                           .toString(),
                                                       style: const TextStyle(
                                                           color: Colors.grey,
                                                           fontSize: 10,
-                                                          fontWeight: FontWeight.bold),
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                 ),
@@ -416,7 +444,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                   elevation: 10,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(deviceHeight(context) / 30),
+                                      Radius.circular(
+                                          deviceHeight(context) / 30),
                                     ),
                                   ),
                                   child: CircleAvatar(
@@ -424,10 +453,13 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                                     backgroundColor: Colors.green[100],
                                     child: IconButton(
                                       onPressed: () {
-                                        Provider.of<AddPointerData>(context, listen: false).setItem(false);
+                                        Provider.of<AddPointerData>(context,
+                                                listen: false)
+                                            .setItem(false);
                                         _scrollController.scrollTo(
                                           index: 0,
-                                          duration: const Duration(milliseconds: 500),
+                                          duration:
+                                              const Duration(milliseconds: 500),
                                         );
                                       },
                                       icon: const Icon(Icons.arrow_circle_down),
@@ -464,7 +496,8 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                             index: 0,
                             duration: const Duration(milliseconds: 200),
                           );
-                          Provider.of<AddReplyData>(context, listen: false).unsetReply();
+                          Provider.of<AddReplyData>(context, listen: false)
+                              .unsetReply();
                           setState(() {
                             showSelectMedia = false;
                           });
@@ -480,13 +513,15 @@ class _ChatSectionScreenState extends State<ChatSectionScreen> {
                       FloatingActionButton(
                         backgroundColor: MyColors.primaryLight,
                         onPressed: () {
-                          MediaHandler.getDocument(context, widget, widget.token.toString(), replyData)
+                          MediaHandler.getDocument(context, widget,
+                                  widget.token.toString(), replyData)
                               .whenComplete(() {
                             _scrollController.scrollTo(
                               index: 0,
                               duration: const Duration(milliseconds: 200),
                             );
-                            Provider.of<AddReplyData>(context, listen: false).unsetReply();
+                            Provider.of<AddReplyData>(context, listen: false)
+                                .unsetReply();
                           });
                           setState(() {
                             showSelectMedia = false;

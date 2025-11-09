@@ -86,7 +86,7 @@ class _LoginState extends State<Login> {
       LoginResponse loginResponse =
           await UserService.login(memberNo, password, token);
 
-      if (loginResponse.status == 200 && loginResponse.user != null) {
+      if (loginResponse.status == 200 && loginResponse.data != null) {
         // Login successful
         setState(() {
           isregistered = false;
@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
           passwordController.text = "";
         });
 
-        BaseUser user = loginResponse.user!;
+        BaseUser user = loginResponse.data!;
 
         // Store user data using UserManager
         await UserManager.saveCurrentUser(user);
@@ -197,17 +197,17 @@ class _LoginState extends State<Login> {
       String? phoneNumber;
 
       // Extract user info based on user type
-      if (user is AdminUser) {
+      if (user.userType == 'ADMIN') {
         userName = user.fullName;
         phoneNumber = user.phonenumber;
-      } else if (user is MzeeUser) {
+      } else if (user.userType == 'MZEE') {
         userName = user.jina;
         phoneNumber = user.nambaYaSimu;
-      } else if (user is KatibuUser) {
+      } else if (user.userType == 'KATIBU') {
         userName = user.jina;
         phoneNumber = user.nambaYaSimu;
-      } else if (user is MsharikaUser) {
-        userName = user.jinaLaMsharika;
+      } else if (user.userType == 'MSHARIKA') {
+        userName = user.jina;
         phoneNumber = user.nambaYaSimu;
       }
 

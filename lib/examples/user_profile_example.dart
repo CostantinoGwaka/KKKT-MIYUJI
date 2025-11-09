@@ -35,7 +35,9 @@ class _UserProfileExampleState extends State<UserProfileExample> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: currentUser == null ? Center(child: Text('No user logged in')) : _buildUserProfile(),
+        child: currentUser == null
+            ? Center(child: Text('No user logged in'))
+            : _buildUserProfile(),
       ),
     );
   }
@@ -57,27 +59,29 @@ class _UserProfileExampleState extends State<UserProfileExample> {
 
         // User type specific information
         if (UserManager.isAdmin(currentUser))
-          _buildAdminInfo(currentUser as AdminUser)
+          _buildAdminInfo(currentUser as BaseUser)
         else if (UserManager.isMzee(currentUser))
-          _buildMzeeInfo(currentUser as MzeeUser)
+          _buildMzeeInfo(currentUser as BaseUser)
         else if (UserManager.isKatibu(currentUser))
-          _buildKatibuInfo(currentUser as KatibuUser)
+          _buildKatibuInfo(currentUser as BaseUser)
         else if (UserManager.isMsharika(currentUser))
-          _buildMsharikaInfo(currentUser as MsharikaUser),
+          _buildMsharikaInfo(currentUser as BaseUser),
       ],
     );
   }
 
-  Widget _buildAdminInfo(AdminUser admin) {
+  Widget _buildAdminInfo(BaseUser admin) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Admin Information', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Admin Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Text('Email: ${admin.email}'),
             Text('Level: ${admin.level}'),
+            // ignore: unrelated_type_equality_checks
             Text('Status: ${admin.status == 0 ? "Active" : "Inactive"}'),
           ],
         ),
@@ -85,14 +89,15 @@ class _UserProfileExampleState extends State<UserProfileExample> {
     );
   }
 
-  Widget _buildMzeeInfo(MzeeUser mzee) {
+  Widget _buildMzeeInfo(BaseUser mzee) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Mzee Information', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Mzee Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Text('Eneo: ${mzee.eneo}'),
             Text('Jumuiya: ${mzee.jumuiya}'),
             Text('Mwaka: ${mzee.mwaka}'),
@@ -103,14 +108,15 @@ class _UserProfileExampleState extends State<UserProfileExample> {
     );
   }
 
-  Widget _buildKatibuInfo(KatibuUser katibu) {
+  Widget _buildKatibuInfo(BaseUser katibu) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Katibu Information', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Katibu Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Text('Jumuiya: ${katibu.jumuiya}'),
             Text('Mwaka: ${katibu.mwaka}'),
             Text('Status: ${katibu.status}'),
@@ -120,20 +126,27 @@ class _UserProfileExampleState extends State<UserProfileExample> {
     );
   }
 
-  Widget _buildMsharikaInfo(MsharikaUser msharika) {
+  Widget _buildMsharikaInfo(BaseUser msharika) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Msharika Information', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Jinsia: ${msharika.jinsia}'),
-            Text('Umri: ${msharika.umri}'),
-            Text('Hali ya Ndoa: ${msharika.haliYaNdoa}'),
-            Text('Jumuiya: ${msharika.jinaLaJumuiya}'),
-            Text('Kazi: ${msharika.kazi}'),
-            Text('Ahadi: ${msharika.ahadi}'),
+            Text('Msharika Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+                'Jinsia: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].jinsia : ''}'),
+            Text(
+                'Umri: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].umri : ''}'),
+            Text(
+                'Hali ya Ndoa: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].haliYaNdoa : ''}'),
+            Text(
+                'Jumuiya: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].jinaLaJumuiya : ''}'),
+            Text(
+                'Kazi: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].kazi : ''}'),
+            Text(
+                'Ahadi: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].ahadi : ''}'),
           ],
         ),
       ),

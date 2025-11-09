@@ -55,14 +55,16 @@ class _MessageInputState extends State<MessageInput> {
   String _getUserDisplayName() {
     if (currentUser == null) return "Mtumiaji";
 
-    if (currentUser is AdminUser) {
-      return (currentUser as AdminUser).fullName;
-    } else if (currentUser is MzeeUser) {
-      return (currentUser as MzeeUser).jina;
-    } else if (currentUser is KatibuUser) {
-      return (currentUser as KatibuUser).jina;
-    } else if (currentUser is MsharikaUser) {
-      return (currentUser as MsharikaUser).jinaLaMsharika;
+    if (currentUser is BaseUser && currentUser!.userType == 'ADMIN') {
+      return (currentUser as BaseUser).fullName;
+    } else if (currentUser is BaseUser && currentUser!.userType == 'MZEE') {
+      return (currentUser as BaseUser).jina;
+    } else if (currentUser is BaseUser && currentUser!.userType == 'KATIBU') {
+      return (currentUser as BaseUser).jina;
+    } else if (currentUser is BaseUser && currentUser!.userType == 'MSHARIKA') {
+      return (currentUser as BaseUser).msharikaRecords.isNotEmpty
+          ? (currentUser as BaseUser).msharikaRecords[0].jinaLaMsharika
+          : "Mtumiaji";
     }
     return "Mtumiaji";
   }
@@ -73,7 +75,9 @@ class _MessageInputState extends State<MessageInput> {
     String textMessage = controller.text;
     String id = const Uuid().v4();
     print("size# ${textMessage.length} $textMessage");
-    if (controller.text.isEmpty || textMessage == "" || textMessage.isEmpty) return;
+    if (controller.text.isEmpty || textMessage == "" || textMessage.isEmpty) {
+      return;
+    }
     HandleMessageFunction.sendNormalText(
       message: Message(
         access: true,
@@ -167,7 +171,8 @@ class _MessageInputState extends State<MessageInput> {
                       enabledBorder: InputBorder.none,
                       errorBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
-                      contentPadding: EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                      contentPadding: EdgeInsets.only(
+                          left: 15, bottom: 11, top: 11, right: 15),
                       hintText: "andika ujumbe wako"),
                 ),
               ),
@@ -187,7 +192,8 @@ class _MessageInputState extends State<MessageInput> {
                   radius: 20,
                   backgroundColor: MyColors.primaryLight,
                   child: const Center(
-                    child: Icon(Icons.send_rounded, color: Colors.white, size: 25),
+                    child:
+                        Icon(Icons.send_rounded, color: Colors.white, size: 25),
                   ),
                 ),
               ),

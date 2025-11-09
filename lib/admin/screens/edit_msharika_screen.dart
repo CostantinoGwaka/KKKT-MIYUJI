@@ -43,7 +43,7 @@ class EditMsharikaScreen extends StatefulWidget {
 class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
   final _formKey = GlobalKey<FormState>();
   // ignore: unused_field
-  bool _isLoading = false;
+  bool isLoading = false;
   String idYaJumuiya = '';
   String _jinsiaYako = '';
   int _currentStep = 0;
@@ -108,8 +108,8 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
     _haliNdoa = widget.msharika.haliYaNdoa;
     _ndoa = widget.msharika.ainaNdoa;
     _ushiriki = widget.msharika.jumuiyaUshiriki;
-    print(
-        "data: ${widget.msharika.idYaJumuiya} : ${widget.msharika.jinaLaJumuiya} : ${widget.msharika.katibuJumuiya}");
+    // print(
+    //     "data: ${widget.msharika.idYaJumuiya} : ${widget.msharika.jinaLaJumuiya} : ${widget.msharika.katibuJumuiya}");
     idYaJumuiya = widget.msharika.idYaJumuiya;
     _valProvince = widget.msharika.idYaJumuiya;
     _jinsiaYako = widget.msharika.jinsia;
