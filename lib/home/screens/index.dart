@@ -621,7 +621,33 @@ class _HomePageState extends State<HomePage> {
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              const WasharikaKanisaniViongoziScreen(),
+                              const WasharikaKanisaniViongoziScreen(
+                            isWho: 'iskatibu',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+            ],
+            if (currentUser != null && currentUser!.userType == 'MZEE') ...[
+              const SizedBox(height: 10),
+              GridView.count(
+                  padding: EdgeInsets.zero,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildAdminGridButton(
+                      icon: Icons.people_outline,
+                      title: 'Washarika',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const WasharikaKanisaniViongoziScreen(
+                            isWho: 'ismzee',
+                          ),
                         ),
                       ),
                     ),
