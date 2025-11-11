@@ -233,7 +233,11 @@ class _WasharikaKanisaniViongoziScreenState
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Hakuna washarika waliokubaliwa',
+                              selectedStatus == 'yes'
+                                  ? 'Hakuna washarika waliokubaliwa'
+                                  : selectedStatus == 'no'
+                                      ? 'Hakuna washarika waliokataliwa'
+                                      : 'Hakuna washarika Wote',
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -260,7 +264,9 @@ class _WasharikaKanisaniViongoziScreenState
                                       gradient: LinearGradient(
                                         colors: [
                                           MyColors.primaryLight
+                                              // ignore: deprecated_member_use
                                               .withOpacity(0.9),
+                                          // ignore: deprecated_member_use
                                           Colors.blueAccent.withOpacity(0.7),
                                         ],
                                         begin: Alignment.topLeft,
@@ -301,7 +307,7 @@ class _WasharikaKanisaniViongoziScreenState
                                               const SizedBox(height: 4),
                                               Row(
                                                 children: [
-                                                  Icon(Icons.group,
+                                                  const Icon(Icons.group,
                                                       color: Colors.white70,
                                                       size: 16),
                                                   const SizedBox(width: 4),
@@ -316,7 +322,7 @@ class _WasharikaKanisaniViongoziScreenState
                                               ),
                                               Row(
                                                 children: [
-                                                  Icon(Icons.phone,
+                                                  const Icon(Icons.phone,
                                                       color: Colors.white70,
                                                       size: 16),
                                                   const SizedBox(width: 4),
