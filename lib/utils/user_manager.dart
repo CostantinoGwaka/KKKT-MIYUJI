@@ -15,6 +15,7 @@ class UserManager {
   // Save current user
   static Future<void> saveCurrentUser(BaseUser user) async {
     String userJson = jsonEncode(user.toJson());
+
     await LocalStorage.setStringItem(_userKey, userJson);
 
     // Also save in the old format for backward compatibility

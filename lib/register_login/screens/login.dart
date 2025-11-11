@@ -34,6 +34,7 @@ class _LoginState extends State<Login> {
 
   Future<void> checkMtumishi(String memberNo) async {
     // Check mtumishi permission using the service
+
     bool hasMtumishiPermission = await UserService.checkMtumishi(memberNo);
 
     if (hasMtumishiPermission) {
@@ -107,7 +108,11 @@ class _LoginState extends State<Login> {
         await _addUserToFirebase(user, token);
 
         // Check mtumishi permissions
-        await checkMtumishi(user.memberNo);
+        if (user.memberNo != 0 &&
+            user.memberNo != null &&
+            user.memberNo.toString().isNotEmpty) {
+          await checkMtumishi(user.memberNo.toString());
+        }
 
         // Navigate to home page
         // ignore: use_build_context_synchronously
@@ -192,7 +197,7 @@ class _LoginState extends State<Login> {
 
   Future<void> _addUserToFirebase(BaseUser user, String token) async {
     try {
-      String userId = user.memberNo;
+      String userId = user.memberNo.toString();
       String? userName;
       String? phoneNumber;
 
@@ -213,9 +218,9 @@ class _LoginState extends State<Login> {
 
       // Add user to Firebase
       await Cloud.add(
-        serverPath: "users/$userId",
+        serverPath: "users/${userId.toString()}",
         value: {
-          "id": userId,
+          "id": userId.toString(),
           "firstname": userName ?? '',
           "username": userName ?? '',
           "picture": 'picture',
@@ -227,7 +232,7 @@ class _LoginState extends State<Login> {
 
       // Update staff token
       await Cloud.updateStafToken(
-        serverPath: "staffs/$userId",
+        serverPath: "staffs/${userId.toString()}",
         value: {
           "token": token,
         },

@@ -1,5 +1,5 @@
 class LoginResponse {
-  final dynamic status;
+  final int status;
   final String message;
   final BaseUser? data;
 
@@ -117,7 +117,7 @@ class BaseUser {
 }
 
 class MsharikaRecord {
-  final int id;
+  final dynamic id;
   final String jinaLaMsharika;
   final String jinsia;
   final String umri;

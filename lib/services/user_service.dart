@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
-// import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -151,6 +150,8 @@ class UserService {
           "member_no": memberNo,
         },
       );
+
+      print(response.body);
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
