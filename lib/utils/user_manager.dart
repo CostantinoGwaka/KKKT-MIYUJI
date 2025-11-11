@@ -84,7 +84,9 @@ class UserManager {
     } else if (user.userType == 'KATIBU') {
       return user.jina;
     } else if (user.userType == 'MSHARIKA') {
-      return user.jina;
+      return user.msharikaRecords.isNotEmpty
+          ? user.msharikaRecords[0].jinaLaMsharika
+          : 'Msharika';
     }
 
     return 'User';
