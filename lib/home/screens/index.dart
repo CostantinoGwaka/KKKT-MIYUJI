@@ -855,7 +855,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(width: 6),
               Text(
-                "No. Ahadi: ${currentUser!.msharikaRecords.isNotEmpty ? currentUser!.msharikaRecords[0].nambaYaAhadi : '001'}",
+                "No. Ahadi: ${currentUser!.msharikaRecords.isNotEmpty ? currentUser!.msharikaRecords[0].nambaYaAhadi : '0000'}",
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
