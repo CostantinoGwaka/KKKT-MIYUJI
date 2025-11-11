@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
+import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
 import 'package:kanisaapp/models/msharika_model.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -404,103 +405,105 @@ class _WasharikaKanisaniViongoziScreenState
                                         Wrap(
                                           runSpacing: 8,
                                           children: [
-                                            _buildIconDetailRow(Icons.wc,
-                                                'Jinsia', msharika.jinsia),
-                                            _buildIconDetailRow(Icons.cake,
-                                                'Umri', msharika.umri),
-                                            _buildIconDetailRow(
-                                                Icons.favorite,
-                                                'Hali ya Ndoa',
-                                                msharika.haliYaNdoa),
-                                            _buildIconDetailRow(
-                                                Icons.person_outline,
-                                                'Jina la Mwenzi',
-                                                msharika.jinaLaMwenziWako),
-                                            _buildIconDetailRow(
-                                                Icons.confirmation_number,
-                                                'Namba ya Ahadi',
-                                                msharika.nambaYaAhadi),
-                                            _buildIconDetailRow(
-                                                Icons.family_restroom,
-                                                'Aina ya Ndoa',
-                                                msharika.ainaNdoa),
-                                            if (msharika
-                                                .jinaMtoto1.isNotEmpty) ...[
-                                              _buildIconDetailRow(
-                                                  Icons.child_care,
-                                                  'Mtoto 1',
-                                                  msharika.jinaMtoto1),
-                                              _buildIconDetailRow(
-                                                  Icons.calendar_today,
-                                                  'Tarehe (Mtoto 1)',
-                                                  msharika.tareheMtoto1),
-                                              _buildIconDetailRow(
-                                                  Icons.people,
-                                                  'Uhusiano (Mtoto 1)',
-                                                  msharika.uhusianoMtoto1),
-                                            ],
-                                            if (msharika
-                                                .jinaMtoto2.isNotEmpty) ...[
-                                              _buildIconDetailRow(
-                                                  Icons.child_care,
-                                                  'Mtoto 2',
-                                                  msharika.jinaMtoto2),
-                                              _buildIconDetailRow(
-                                                  Icons.calendar_today,
-                                                  'Tarehe (Mtoto 2)',
-                                                  msharika.tareheMtoto2),
-                                              _buildIconDetailRow(
-                                                  Icons.people,
-                                                  'Uhusiano (Mtoto 2)',
-                                                  msharika.uhusianoMtoto2),
-                                            ],
-                                            if (msharika
-                                                .jinaMtoto3.isNotEmpty) ...[
-                                              _buildIconDetailRow(
-                                                  Icons.child_care,
-                                                  'Mtoto 3',
-                                                  msharika.jinaMtoto3),
-                                              _buildIconDetailRow(
-                                                  Icons.calendar_today,
-                                                  'Tarehe (Mtoto 3)',
-                                                  msharika.tareheMtoto3),
-                                              _buildIconDetailRow(
-                                                  Icons.people,
-                                                  'Uhusiano (Mtoto 3)',
-                                                  msharika.uhusianoMtoto3),
-                                            ],
-                                            _buildIconDetailRow(Icons.home_work,
-                                                'Jengo', msharika.jengo),
-                                            _buildIconDetailRow(
-                                                Icons.monetization_on,
-                                                'Ahadi',
-                                                msharika.ahadi),
-                                            _buildIconDetailRow(Icons.work,
-                                                'Kazi', msharika.kazi),
-                                            _buildIconDetailRow(Icons.school,
-                                                'Elimu', msharika.elimu),
-                                            _buildIconDetailRow(Icons.star,
-                                                'Ujuzi', msharika.ujuzi),
-                                            _buildIconDetailRow(
-                                                Icons.location_city,
-                                                'Mahali pa Kazi',
-                                                msharika.mahaliPakazi),
-                                            _buildIconDetailRow(
-                                                Icons.groups,
-                                                'Jumuiya Ushiriki',
-                                                msharika.jumuiyaUshiriki),
-                                            _buildIconDetailRow(
-                                                Icons.person,
-                                                'Katibu Jumuiya',
-                                                msharika.katibuJumuiya),
-                                            _buildIconDetailRow(
-                                                Icons.check_circle,
-                                                'Kama Ushiriki',
-                                                msharika.kamaUshiriki),
-                                            _buildIconDetailRow(
-                                                Icons.date_range,
-                                                'Tarehe ya Usajili',
-                                                msharika.tarehe),
+                                            MsharikaInfoCard(
+                                                msharika: msharika),
+                                            // _buildIconDetailRow(Icons.wc,
+                                            //     'Jinsia', msharika.jinsia),
+                                            // _buildIconDetailRow(Icons.cake,
+                                            //     'Umri', msharika.umri),
+                                            // _buildIconDetailRow(
+                                            //     Icons.favorite,
+                                            //     'Hali ya Ndoa',
+                                            //     msharika.haliYaNdoa),
+                                            // _buildIconDetailRow(
+                                            //     Icons.person_outline,
+                                            //     'Jina la Mwenzi',
+                                            //     msharika.jinaLaMwenziWako),
+                                            // _buildIconDetailRow(
+                                            //     Icons.confirmation_number,
+                                            //     'Namba ya Ahadi',
+                                            //     msharika.nambaYaAhadi),
+                                            // _buildIconDetailRow(
+                                            //     Icons.family_restroom,
+                                            //     'Aina ya Ndoa',
+                                            //     msharika.ainaNdoa),
+                                            // if (msharika
+                                            //     .jinaMtoto1.isNotEmpty) ...[
+                                            //   _buildIconDetailRow(
+                                            //       Icons.child_care,
+                                            //       'Mtoto 1',
+                                            //       msharika.jinaMtoto1),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.calendar_today,
+                                            //       'Tarehe (Mtoto 1)',
+                                            //       msharika.tareheMtoto1),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.people,
+                                            //       'Uhusiano (Mtoto 1)',
+                                            //       msharika.uhusianoMtoto1),
+                                            // ],
+                                            // if (msharika
+                                            //     .jinaMtoto2.isNotEmpty) ...[
+                                            //   _buildIconDetailRow(
+                                            //       Icons.child_care,
+                                            //       'Mtoto 2',
+                                            //       msharika.jinaMtoto2),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.calendar_today,
+                                            //       'Tarehe (Mtoto 2)',
+                                            //       msharika.tareheMtoto2),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.people,
+                                            //       'Uhusiano (Mtoto 2)',
+                                            //       msharika.uhusianoMtoto2),
+                                            // ],
+                                            // if (msharika
+                                            //     .jinaMtoto3.isNotEmpty) ...[
+                                            //   _buildIconDetailRow(
+                                            //       Icons.child_care,
+                                            //       'Mtoto 3',
+                                            //       msharika.jinaMtoto3),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.calendar_today,
+                                            //       'Tarehe (Mtoto 3)',
+                                            //       msharika.tareheMtoto3),
+                                            //   _buildIconDetailRow(
+                                            //       Icons.people,
+                                            //       'Uhusiano (Mtoto 3)',
+                                            //       msharika.uhusianoMtoto3),
+                                            // ],
+                                            // _buildIconDetailRow(Icons.home_work,
+                                            //     'Jengo', msharika.jengo),
+                                            // _buildIconDetailRow(
+                                            //     Icons.monetization_on,
+                                            //     'Ahadi',
+                                            //     msharika.ahadi),
+                                            // _buildIconDetailRow(Icons.work,
+                                            //     'Kazi', msharika.kazi),
+                                            // _buildIconDetailRow(Icons.school,
+                                            //     'Elimu', msharika.elimu),
+                                            // _buildIconDetailRow(Icons.star,
+                                            //     'Ujuzi', msharika.ujuzi),
+                                            // _buildIconDetailRow(
+                                            //     Icons.location_city,
+                                            //     'Mahali pa Kazi',
+                                            //     msharika.mahaliPakazi),
+                                            // _buildIconDetailRow(
+                                            //     Icons.groups,
+                                            //     'Jumuiya Ushiriki',
+                                            //     msharika.jumuiyaUshiriki),
+                                            // _buildIconDetailRow(
+                                            //     Icons.person,
+                                            //     'Katibu Jumuiya',
+                                            //     msharika.katibuJumuiya),
+                                            // _buildIconDetailRow(
+                                            //     Icons.check_circle,
+                                            //     'Kama Ushiriki',
+                                            //     msharika.kamaUshiriki),
+                                            // _buildIconDetailRow(
+                                            //     Icons.date_range,
+                                            //     'Tarehe ya Usajili',
+                                            //     msharika.tarehe),
                                           ],
                                         ),
                                         if (msharika.katibuStatus == 'null' ||
@@ -556,41 +559,6 @@ class _WasharikaKanisaniViongoziScreenState
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  Widget _buildIconDetailRow(IconData icon, String label, String value) {
-    if (value.isEmpty || value == 'N/A') return Container();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 18, color: MyColors.primaryLight),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                color: Colors.black54,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void _showApproveSheet(BuildContext context, MsharikaData msharika) {

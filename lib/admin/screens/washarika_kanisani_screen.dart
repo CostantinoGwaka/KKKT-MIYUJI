@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
 import 'package:kanisaapp/models/msharika_model.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -20,69 +21,69 @@ class WasharikaKanisaniScreen extends StatefulWidget {
 }
 
 class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
-  Widget _buildDetailRow(String label, String value) {
-    if (value.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 12,
-                color: Colors.black54,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDetailRow(String label, String value) {
+  //   if (value.isEmpty) return const SizedBox.shrink();
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 4),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         SizedBox(
+  //           width: 120,
+  //           child: Text(
+  //             label,
+  //             style: GoogleFonts.poppins(
+  //               fontSize: 12,
+  //               fontWeight: FontWeight.w600,
+  //               color: Colors.black87,
+  //             ),
+  //           ),
+  //         ),
+  //         Expanded(
+  //           child: Text(
+  //             value,
+  //             style: GoogleFonts.poppins(
+  //               fontSize: 12,
+  //               color: Colors.black54,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildChildInfo(String name, String date, String relation) {
-    if (name.isEmpty) return const SizedBox.shrink();
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: GoogleFonts.poppins(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            if (date.isNotEmpty)
-              Text(
-                'Tarehe: $date',
-                style: GoogleFonts.poppins(fontSize: 12),
-              ),
-            if (relation.isNotEmpty)
-              Text(
-                'Uhusiano: $relation',
-                style: GoogleFonts.poppins(fontSize: 12),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildChildInfo(String name, String date, String relation) {
+  //   if (name.isEmpty) return const SizedBox.shrink();
+  //   return Card(
+  //     margin: const EdgeInsets.symmetric(vertical: 4),
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             name,
+  //             style: GoogleFonts.poppins(
+  //               fontSize: 13,
+  //               fontWeight: FontWeight.w600,
+  //             ),
+  //           ),
+  //           if (date.isNotEmpty)
+  //             Text(
+  //               'Tarehe: $date',
+  //               style: GoogleFonts.poppins(fontSize: 12),
+  //             ),
+  //           if (relation.isNotEmpty)
+  //             Text(
+  //               'Uhusiano: $relation',
+  //               style: GoogleFonts.poppins(fontSize: 12),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   List<MsharikaData> washarika = [];
   bool isLoading = true;
@@ -131,6 +132,136 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
   void initState() {
     super.initState();
     fetchWasharika();
+  }
+
+  void _showApproveSheet(BuildContext context, MsharikaData msharika) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.verified_user, size: 40, color: MyColors.primaryLight),
+              const SizedBox(height: 12),
+              Text(
+                "Kubali au Kataa Washarika",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: MyColors.primaryLight,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                msharika.jinaLaMsharika,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.check, color: Colors.white),
+                      label: Text("Kubali",
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        await _updateKatibuStatus(msharika, 'yes');
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      label: Text("Kataa",
+                          style:
+                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(ctx);
+                        await _updateKatibuStatus(msharika, 'no');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateKatibuStatus(
+    MsharikaData msharika,
+    String status,
+  ) async {
+    const url =
+        "${ApiUrl.BASEURL}api2/washarika_kanisa/kukubali_kukataa_msharika_viongozi.php";
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode({
+          "user_id": msharika.id,
+          "status": status,
+          "who": 'ismsharika',
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        // Optionally show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              status == 'yes'
+                  ? 'Msharika amekubaliwa!'
+                  : 'Msharika amekataliwa!',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: status == 'yes' ? Colors.green : Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        fetchWasharika();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Imeshindikana kuhifadhi mabadiliko.',
+                style: GoogleFonts.poppins()),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Imeshindikana kuhifadhi mabadiliko.',
+              style: GoogleFonts.poppins()),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    }
   }
 
   Future<void> fetchWasharika() async {
@@ -504,15 +635,61 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                   const SizedBox(height: 2),
                                   Row(
                                     children: [
-                                      Icon(Icons.group,
-                                          size: 16,
-                                          color: MyColors.primaryLight
-                                              .withOpacity(0.7)),
+                                      Icon(
+                                        Icons.group,
+                                        size: 16,
+                                        color: MyColors.primaryLight
+                                            .withOpacity(0.7),
+                                      ),
                                       const SizedBox(width: 4),
                                       Text(
                                         'Jumuiya: ${msharika.jinaLaJumuiya}',
                                         style:
                                             GoogleFonts.poppins(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.group,
+                                        size: 16,
+                                        color: MyColors.primaryLight
+                                            .withOpacity(0.7),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Hali: ',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 12),
+                                          ),
+                                          Text(
+                                            msharika.usharikaStatus == 'yes'
+                                                ? 'Amekubaliwa'
+                                                : (msharika.usharikaStatus ==
+                                                            'null' ||
+                                                        msharika.usharikaStatus
+                                                            .isEmpty)
+                                                    ? 'Anasubiri'
+                                                    : 'Haijakubaliwa',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: msharika.usharikaStatus ==
+                                                      'yes'
+                                                  ? Colors.green
+                                                  : (msharika.usharikaStatus ==
+                                                              'null' ||
+                                                          msharika
+                                                              .usharikaStatus
+                                                              .isEmpty)
+                                                      ? Colors.orange
+                                                      : Colors.red,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -591,129 +768,163 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                 ],
                               ),
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[50],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        _buildSectionTitle(
-                                            'Taarifa Binafsi', Icons.person),
-                                        _buildDetailRow(
-                                            'Jinsia', msharika.jinsia),
-                                        _buildDetailRow('Umri', msharika.umri),
-                                        _buildDetailRow('Hali ya Ndoa',
-                                            msharika.haliYaNdoa),
-                                        if (msharika
-                                            .jinaLaMwenziWako.isNotEmpty)
-                                          _buildDetailRow('Mwenzi',
-                                              msharika.jinaLaMwenziWako),
-                                        _buildDetailRow(
-                                            'Aina ya Ndoa', msharika.ainaNdoa),
-                                        _buildSectionTitle(
-                                            'Watoto', Icons.child_care),
-                                        if (msharika.jinaMtoto1.isNotEmpty)
-                                          _buildChildInfo(
-                                            msharika.jinaMtoto1,
-                                            msharika.tareheMtoto1,
-                                            msharika.uhusianoMtoto1,
+                                MsharikaInfoCard(msharika: msharika),
+                                if (msharika.usharikaStatus == 'null' ||
+                                    msharika.usharikaStatus.isEmpty)
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 12.0, bottom: 8.0),
+                                      child: ElevatedButton.icon(
+                                        icon: const Icon(Icons.verified_user,
+                                            color: Colors.white),
+                                        label: Text(
+                                          "Kubali/Kataa Washarika",
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
                                           ),
-                                        if (msharika.jinaMtoto2.isNotEmpty)
-                                          _buildChildInfo(
-                                            msharika.jinaMtoto2,
-                                            msharika.tareheMtoto2,
-                                            msharika.uhusianoMtoto2,
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              MyColors.primaryLight,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                        if (msharika.jinaMtoto3.isNotEmpty)
-                                          _buildChildInfo(
-                                            msharika.jinaMtoto3,
-                                            msharika.tareheMtoto3,
-                                            msharika.uhusianoMtoto3,
-                                          ),
-                                        _buildSectionTitle(
-                                            'Mawasiliano na Kazi', Icons.work),
-                                        _buildDetailRow('Namba ya Simu',
-                                            msharika.nambaYaSimu),
-                                        _buildDetailRow('Kazi', msharika.kazi),
-                                        _buildDetailRow(
-                                            'Elimu', msharika.elimu),
-                                        _buildDetailRow(
-                                            'Ujuzi', msharika.ujuzi),
-                                        _buildDetailRow('Mahali pa Kazi',
-                                            msharika.mahaliPakazi),
-                                        _buildSectionTitle(
-                                            'Taarifa za Kanisa', Icons.church),
-                                        _buildDetailRow(
-                                            'Jengo', msharika.jengo),
-                                        _buildDetailRow(
-                                            'Ahadi', msharika.ahadi),
-                                        _buildDetailRow('Jumuiya Ushiriki',
-                                            msharika.jumuiyaUshiriki),
-                                        _buildDetailRow(
-                                            'Katibu Status',
-                                            msharika.katibuStatus == 'yes'
-                                                ? 'Amekubaliwa'
-                                                : msharika.katibuStatus ==
-                                                        'null'
-                                                    ? 'Anasubiri'
-                                                    : 'Haijakubaliwa'),
-                                        _buildDetailRow(
-                                            'Mzee Status',
-                                            msharika.mzeeStatus == 'yes'
-                                                ? 'Amekubaliwa'
-                                                : msharika.mzeeStatus == 'null'
-                                                    ? 'Anasubiri'
-                                                    : 'Haijakubaliwa'),
-                                        _buildDetailRow('Usharika Status',
-                                            msharika.usharikaStatus),
-                                        _buildDetailRow('Tarehe ya Usajili',
-                                            msharika.tarehe),
-                                        if (msharika.usharikaStatus == 'null' ||
-                                            msharika.usharikaStatus.isEmpty)
-                                          Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 12.0, bottom: 8.0),
-                                              child: ElevatedButton.icon(
-                                                icon: const Icon(
-                                                    Icons.verified_user,
-                                                    color: Colors.white),
-                                                label: Text(
-                                                  "Kubali/Kataa Washarika",
-                                                  style: GoogleFonts.poppins(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      MyColors.primaryLight,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 18,
-                                                      vertical: 12),
-                                                ),
-                                                onPressed: () {
-                                                  // _showApproveSheet(
-                                                  //     context, msharika);
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                      ],
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18, vertical: 12),
+                                        ),
+                                        onPressed: () {
+                                          _showApproveSheet(context, msharika);
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
+
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     color: Colors.grey[50],
+                                //     borderRadius: BorderRadius.circular(10),
+                                //   ),
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.all(8.0),
+                                //     child: Column(
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       children: [
+                                //         _buildSectionTitle(
+                                //             'Taarifa Binafsi', Icons.person),
+                                //         _buildDetailRow(
+                                //             'Jinsia', msharika.jinsia),
+                                //         _buildDetailRow('Umri', msharika.umri),
+                                //         _buildDetailRow('Hali ya Ndoa',
+                                //             msharika.haliYaNdoa),
+                                //         if (msharika
+                                //             .jinaLaMwenziWako.isNotEmpty)
+                                //           _buildDetailRow('Mwenzi',
+                                //               msharika.jinaLaMwenziWako),
+                                //         _buildDetailRow(
+                                //             'Aina ya Ndoa', msharika.ainaNdoa),
+                                //         _buildSectionTitle(
+                                //             'Watoto', Icons.child_care),
+                                //         if (msharika.jinaMtoto1.isNotEmpty)
+                                //           _buildChildInfo(
+                                //             msharika.jinaMtoto1,
+                                //             msharika.tareheMtoto1,
+                                //             msharika.uhusianoMtoto1,
+                                //           ),
+                                //         if (msharika.jinaMtoto2.isNotEmpty)
+                                //           _buildChildInfo(
+                                //             msharika.jinaMtoto2,
+                                //             msharika.tareheMtoto2,
+                                //             msharika.uhusianoMtoto2,
+                                //           ),
+                                //         if (msharika.jinaMtoto3.isNotEmpty)
+                                //           _buildChildInfo(
+                                //             msharika.jinaMtoto3,
+                                //             msharika.tareheMtoto3,
+                                //             msharika.uhusianoMtoto3,
+                                //           ),
+                                //         _buildSectionTitle(
+                                //             'Mawasiliano na Kazi', Icons.work),
+                                //         _buildDetailRow('Namba ya Simu',
+                                //             msharika.nambaYaSimu),
+                                //         _buildDetailRow('Kazi', msharika.kazi),
+                                //         _buildDetailRow(
+                                //             'Elimu', msharika.elimu),
+                                //         _buildDetailRow(
+                                //             'Ujuzi', msharika.ujuzi),
+                                //         _buildDetailRow('Mahali pa Kazi',
+                                //             msharika.mahaliPakazi),
+                                //         _buildSectionTitle(
+                                //             'Taarifa za Kanisa', Icons.church),
+                                //         _buildDetailRow(
+                                //             'Jengo', msharika.jengo),
+                                //         _buildDetailRow(
+                                //             'Ahadi', msharika.ahadi),
+                                //         _buildDetailRow('Jumuiya Ushiriki',
+                                //             msharika.jumuiyaUshiriki),
+                                //         _buildDetailRow(
+                                //             'Katibu Status',
+                                //             msharika.katibuStatus == 'yes'
+                                //                 ? 'Amekubaliwa'
+                                //                 : msharika.katibuStatus ==
+                                //                         'null'
+                                //                     ? 'Anasubiri'
+                                //                     : 'Haijakubaliwa'),
+                                //         _buildDetailRow(
+                                //             'Mzee Status',
+                                //             msharika.mzeeStatus == 'yes'
+                                //                 ? 'Amekubaliwa'
+                                //                 : msharika.mzeeStatus == 'null'
+                                //                     ? 'Anasubiri'
+                                //                     : 'Haijakubaliwa'),
+                                //         _buildDetailRow('Usharika Status',
+                                //             msharika.usharikaStatus),
+                                //         _buildDetailRow('Tarehe ya Usajili',
+                                //             msharika.tarehe),
+                                //         if (msharika.usharikaStatus == 'null' ||
+                                //             msharika.usharikaStatus.isEmpty)
+                                //           Center(
+                                //             child: Padding(
+                                //               padding: const EdgeInsets.only(
+                                //                   top: 12.0, bottom: 8.0),
+                                //               child: ElevatedButton.icon(
+                                //                 icon: const Icon(
+                                //                     Icons.verified_user,
+                                //                     color: Colors.white),
+                                //                 label: Text(
+                                //                   "Kubali/Kataa Washarika",
+                                //                   style: GoogleFonts.poppins(
+                                //                     fontWeight: FontWeight.w600,
+                                //                     color: Colors.white,
+                                //                   ),
+                                //                 ),
+                                //                 style: ElevatedButton.styleFrom(
+                                //                   backgroundColor:
+                                //                       MyColors.primaryLight,
+                                //                   shape: RoundedRectangleBorder(
+                                //                     borderRadius:
+                                //                         BorderRadius.circular(
+                                //                             10),
+                                //                   ),
+                                //                   padding: const EdgeInsets
+                                //                       .symmetric(
+                                //                       horizontal: 18,
+                                //                       vertical: 12),
+                                //                 ),
+                                //                 onPressed: () {
+                                //                   _showApproveSheet(
+                                //                       context, msharika);
+                                //                 },
+                                //               ),
+                                //             ),
+                                //           ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           );
@@ -774,23 +985,23 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
     super.dispose();
   }
 
-  Widget _buildSectionTitle(String title, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Icon(icon, color: MyColors.primaryLight, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: MyColors.primaryLight,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildSectionTitle(String title, IconData icon) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 12),
+  //     child: Row(
+  //       children: [
+  //         Icon(icon, color: MyColors.primaryLight, size: 20),
+  //         const SizedBox(width: 8),
+  //         Text(
+  //           title,
+  //           style: GoogleFonts.poppins(
+  //             fontWeight: FontWeight.bold,
+  //             fontSize: 14,
+  //             color: MyColors.primaryLight,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
