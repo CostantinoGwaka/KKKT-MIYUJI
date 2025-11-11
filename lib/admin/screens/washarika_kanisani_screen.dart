@@ -654,14 +654,62 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                             'Ahadi', msharika.ahadi),
                                         _buildDetailRow('Jumuiya Ushiriki',
                                             msharika.jumuiyaUshiriki),
-                                        _buildDetailRow('Katibu Status',
-                                            msharika.katibuStatus),
                                         _buildDetailRow(
-                                            'Mzee Status', msharika.mzeeStatus),
+                                            'Katibu Status',
+                                            msharika.katibuStatus == 'yes'
+                                                ? 'Amekubaliwa'
+                                                : msharika.katibuStatus ==
+                                                        'null'
+                                                    ? 'Anasubiri'
+                                                    : 'Haijakubaliwa'),
+                                        _buildDetailRow(
+                                            'Mzee Status',
+                                            msharika.mzeeStatus == 'yes'
+                                                ? 'Amekubaliwa'
+                                                : msharika.mzeeStatus == 'null'
+                                                    ? 'Anasubiri'
+                                                    : 'Haijakubaliwa'),
                                         _buildDetailRow('Usharika Status',
                                             msharika.usharikaStatus),
                                         _buildDetailRow('Tarehe ya Usajili',
                                             msharika.tarehe),
+                                        if (msharika.usharikaStatus == 'null' ||
+                                            msharika.usharikaStatus.isEmpty)
+                                          Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12.0, bottom: 8.0),
+                                              child: ElevatedButton.icon(
+                                                icon: const Icon(
+                                                    Icons.verified_user,
+                                                    color: Colors.white),
+                                                label: Text(
+                                                  "Kubali/Kataa Washarika",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      MyColors.primaryLight,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 18,
+                                                      vertical: 12),
+                                                ),
+                                                onPressed: () {
+                                                  // _showApproveSheet(
+                                                  //     context, msharika);
+                                                },
+                                              ),
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
