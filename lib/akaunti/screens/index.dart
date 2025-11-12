@@ -304,56 +304,65 @@ class MapScreenState extends State<ProfilePage>
   }
 
   Widget _buildAdminInfo(BaseUser admin) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Admin Information',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Email: ${admin.email}'),
-            Text('Level: ${admin.level}'),
-            // ignore: unrelated_type_equality_checks
-            Text('Status: ${admin.status == 0 ? "Active" : "Inactive"}'),
-          ],
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Taarifa za Admin',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Barua Pepe: ${admin.email}'),
+              Text('Level: ${admin.level}'),
+              // ignore: unrelated_type_equality_checks
+              Text('Hali: ${admin.status == 1 ? "Active" : "Inactive"}'),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMzeeInfo(BaseUser mzee) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Mzee Information',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Eneo: ${mzee.eneo}'),
-            Text('Jumuiya: ${mzee.jumuiya}'),
-            Text('Mwaka: ${mzee.mwaka}'),
-            Text('Status: ${mzee.status}'),
-          ],
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Taarifa za Mzee',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Eneo: ${mzee.eneo}'),
+              Text('Jumuiya: ${mzee.jumuiya}'),
+              Text('Mwaka: ${mzee.mwaka}'),
+              Text('Hali: ${mzee.status == 1 ? "Active" : "Inactive"}'),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildKatibuInfo(BaseUser katibu) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Katibu Information',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('Jumuiya: ${katibu.jumuiya}'),
-            Text('Mwaka: ${katibu.mwaka}'),
-            Text('Status: ${katibu.status}'),
-          ],
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Taarifa za Katibu',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Jumuiya: ${katibu.jumuiya}'),
+              Text('Mwaka: ${katibu.mwaka}'),
+              Text('Hali: ${katibu.status == 1 ? "Active" : "Inactive"}'),
+            ],
+          ),
         ),
       ),
     );
@@ -670,6 +679,15 @@ class MapScreenState extends State<ProfilePage>
             MsharikaInfoCard(
               msharika: currentUser!.msharikaRecords[0],
             ),
+            SizedBox(height: 16),
+
+            // User type specific information
+            if (UserManager.isAdmin(currentUser))
+              _buildAdminInfo(currentUser as BaseUser)
+            else if (UserManager.isMzee(currentUser))
+              _buildMzeeInfo(currentUser as BaseUser)
+            else if (UserManager.isKatibu(currentUser))
+              _buildKatibuInfo(currentUser as BaseUser)
           ] else ...[
             Container(
               padding: const EdgeInsets.all(20),
