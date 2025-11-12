@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
-import 'package:kanisaapp/models/msharika_model.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
@@ -32,9 +31,9 @@ class _WasharikaKanisaniViongoziScreenState
   String? selectedJumuiya;
   List<String> jumuiyaList = [];
   bool isLoading = true;
-  List<MsharikaData> washarikaData = [];
+  List<MsharikaRecord> washarikaData = [];
   String searchQuery = '';
-  List<MsharikaData> get filteredWasharikaData {
+  List<MsharikaRecord> get filteredWasharikaData {
     if (searchQuery.isEmpty) return washarikaData;
     final q = searchQuery.toLowerCase();
     return washarikaData
@@ -84,7 +83,7 @@ class _WasharikaKanisaniViongoziScreenState
         final data = json.decode(response.body);
         setState(() {
           washarikaData = (data['data'] as List? ?? [])
-              .map((item) => MsharikaData.fromJson(item))
+              .map((item) => MsharikaRecord.fromJson(item))
               .toList();
           isLoading = false;
         });
@@ -561,7 +560,7 @@ class _WasharikaKanisaniViongoziScreenState
     super.dispose();
   }
 
-  void _showApproveSheet(BuildContext context, MsharikaData msharika) {
+  void _showApproveSheet(BuildContext context, MsharikaRecord msharika) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -641,7 +640,7 @@ class _WasharikaKanisaniViongoziScreenState
   }
 
   Future<void> _updateKatibuStatus(
-    MsharikaData msharika,
+    MsharikaRecord msharika,
     String status,
   ) async {
     const url =

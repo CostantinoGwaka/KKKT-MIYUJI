@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kanisaapp/models/msharika_model.dart';
+// import 'package:kanisaapp/models/msharika_model.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 
 class MsharikaInfoCard extends StatelessWidget {
-  final MsharikaData msharika;
+  final MsharikaRecord msharika;
   const MsharikaInfoCard({super.key, required this.msharika});
 
   Widget _buildDetailRow(String label, String value) {
@@ -109,7 +110,7 @@ class MsharikaInfoCard extends StatelessWidget {
             _buildDetailRow('Hali ya Ndoa', msharika.haliYaNdoa),
             if (msharika.jinaLaMwenziWako.isNotEmpty)
               _buildDetailRow('Mwenzi', msharika.jinaLaMwenziWako),
-            _buildDetailRow('Aina ya Ndoa', msharika.ainaNdoa),
+            _buildDetailRow('Aina ya Ndoa', msharika.ainaYaNdoa),
             _buildSectionTitle('Watoto', Icons.child_care),
             if (msharika.jinaMtoto1.isNotEmpty)
               _buildChildInfo(

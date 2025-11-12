@@ -9,8 +9,8 @@ import 'package:kanisaapp/models/jumuiya_data.dart';
 import 'package:kanisaapp/models/jumuiya_model.dart';
 import 'package:kanisaapp/models/kanisa_model.dart';
 import 'package:kanisaapp/models/makatibu.dart';
-import 'package:kanisaapp/models/msharika_model.dart';
 import 'package:kanisaapp/models/mwaka_wa_kanisa.dart';
+import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/usajili/screens/index.dart';
 import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
@@ -27,7 +27,7 @@ enum MsharikaFormStep {
 }
 
 class EditMsharikaScreen extends StatefulWidget {
-  final MsharikaData msharika;
+  final MsharikaRecord msharika;
   final Function() onUpdateSuccess;
 
   const EditMsharikaScreen({
@@ -106,7 +106,7 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
 
     getKanisaDetails(widget.msharika.kanisaId);
     _haliNdoa = widget.msharika.haliYaNdoa;
-    _ndoa = widget.msharika.ainaNdoa;
+    _ndoa = widget.msharika.ainaYaNdoa;
     _ushiriki = widget.msharika.jumuiyaUshiriki;
     // print(
     //     "data: ${widget.msharika.idYaJumuiya} : ${widget.msharika.jinaLaJumuiya} : ${widget.msharika.katibuJumuiya}");
@@ -224,7 +224,8 @@ class _EditMsharikaScreenState extends State<EditMsharikaScreen> {
         TextEditingController(text: widget.msharika.jinaLaMwenziWako);
     _nambaYaAhadiController =
         TextEditingController(text: widget.msharika.nambaYaAhadi);
-    _ainaNdoaController = TextEditingController(text: widget.msharika.ainaNdoa);
+    _ainaNdoaController =
+        TextEditingController(text: widget.msharika.ainaYaNdoa);
     _jinaMtoto1Controller =
         TextEditingController(text: widget.msharika.jinaMtoto1);
     _tareheMtoto1Controller =

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
-import 'package:kanisaapp/models/msharika_model.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
@@ -21,7 +20,7 @@ class WasharikaKanisaniScreen extends StatefulWidget {
 }
 
 class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
-  List<MsharikaData> washarika = [];
+  List<MsharikaRecord> washarika = [];
   bool isLoading = true;
   final _formKey = GlobalKey<FormState>();
   BaseUser? currentUser;
@@ -70,7 +69,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
     fetchWasharika();
   }
 
-  void _showApproveSheet(BuildContext context, MsharikaData msharika) {
+  void _showApproveSheet(BuildContext context, MsharikaRecord msharika) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -150,7 +149,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
   }
 
   Future<void> _updateKatibuStatus(
-    MsharikaData msharika,
+    MsharikaRecord msharika,
     String status,
   ) async {
     const url =
@@ -218,7 +217,8 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['data'];
         setState(() {
-          washarika = data.map((json) => MsharikaData.fromJson(json)).toList();
+          washarika =
+              data.map((json) => MsharikaRecord.fromJson(json)).toList();
           isLoading = false;
         });
       }
@@ -607,7 +607,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                                 ? 'Amekubaliwa'
                                                 : (msharika.usharikaStatus ==
                                                             'null' ||
-                                                        msharika.usharikaStatus
+                                                        msharika.usharikaStatus!
                                                             .isEmpty)
                                                     ? 'Anasubiri'
                                                     : 'Haijakubaliwa',
@@ -619,7 +619,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                                   : (msharika.usharikaStatus ==
                                                               'null' ||
                                                           msharika
-                                                              .usharikaStatus
+                                                              .usharikaStatus!
                                                               .isEmpty)
                                                       ? Colors.orange
                                                       : Colors.red,
@@ -706,7 +706,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                               children: [
                                 MsharikaInfoCard(msharika: msharika),
                                 if (msharika.usharikaStatus == 'null' ||
-                                    msharika.usharikaStatus.isEmpty)
+                                    msharika.usharikaStatus!.isEmpty)
                                   Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
 import 'package:kanisaapp/akaunti/screens/change_password.dart';
 import 'package:kanisaapp/akaunti/screens/constant.dart';
 import 'package:kanisaapp/akaunti/screens/mapendekezo_screen.dart';
@@ -66,73 +67,221 @@ class MapScreenState extends State<ProfilePage>
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            expandedHeight: 200.0,
+            expandedHeight:
+                (MediaQuery.of(context).size.height * 0.25).clamp(150.0, 280.0),
             floating: false,
             pinned: true,
             elevation: 0,
             backgroundColor: MyColors.primaryLight,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      MyColors.primaryLight,
-                      MyColors.primaryLight.withOpacity(0.8),
-                    ],
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                // scroll offset height
+                var top = constraints.biggest.height;
+                bool showTitle = top <= kToolbarHeight + 20;
+
+                return FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: showTitle ? 1.0 : 0.0,
+                    child: Text(
+                      UserManager.getUserDisplayName(currentUser),
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: MyColors.white,
+                      ),
+                    ),
                   ),
-                ),
-                child: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  background: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      const SizedBox(height: 20),
-                      Hero(
-                        tag: 'profile_avatar',
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 4),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
+                      SafeArea(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: (MediaQuery.of(context).size.width *
+                                              0.08)
+                                          .clamp(16.0, 40.0)
+                                          .toDouble(),
+                                      top: (MediaQuery.of(context).size.height *
+                                              0.01)
+                                          .clamp(4.0, 20.0)
+                                          .toDouble(),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Hero(
+                                          tag: 'profile_avatar',
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 4),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.25),
+                                                  blurRadius: 20,
+                                                  offset: const Offset(0, 10),
+                                                ),
+                                              ],
+                                            ),
+                                            child: CircleAvatar(
+                                              radius: 5.0,
+                                              backgroundImage: NetworkImage(
+                                                "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png",
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 12),
+                                        Text(
+                                          UserManager.getUserDisplayName(
+                                              currentUser),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: MyColors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 30),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.08),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.badge,
+                                                color: Colors.white70,
+                                                size: 18),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                'Mtumiaji: ${currentUser!.userType}',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.person,
+                                                color: Colors.white70,
+                                                size: 18),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                'Jina: ${UserManager.getUserDisplayName(currentUser)}',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.phone_android,
+                                                color: Colors.white70,
+                                                size: 18),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                'Simu: ${UserManager.getUserPhoneNumber(currentUser)}',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.confirmation_number,
+                                                color: Colors.white70,
+                                                size: 18),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                'No. Ahadi: ${currentUser!.msharikaRecords.isEmpty ? currentUser!.memberNo : currentUser!.msharikaRecords[0].nambaYaAhadi}',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.location_on,
+                                                color: Colors.white70,
+                                                size: 18),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                'Kanisa: ${currentUser!.kanisaName}',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: const CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: NetworkImage(
-                                "https://user-images.githubusercontent.com/30195/34457818-8f7d8c76-ed82-11e7-8474-3825118a776d.png"),
-                            backgroundColor: Colors.transparent,
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        currentUser != null
-                            ? UserManager.getUserDisplayName(currentUser)
-                            : "Guest User",
-                        style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      if (currentUser != null)
-                        Text(
-                          "No. Ahadi: ${(userData == null || userData!['namba_ya_ahadi'] == null) ? currentUser!.memberNo : userData!['namba_ya_ahadi']}",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                        ),
+                      )
                     ],
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
           SliverToBoxAdapter(
@@ -141,6 +290,8 @@ class MapScreenState extends State<ProfilePage>
               child: Column(
                 children: [
                   _buildStatsCard(),
+                  const SizedBox(height: 10),
+                  _buildInfoCard(),
                   const SizedBox(height: 20),
                   const ProfileListItems(),
                 ],
@@ -148,6 +299,89 @@ class MapScreenState extends State<ProfilePage>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAdminInfo(BaseUser admin) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Admin Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Email: ${admin.email}'),
+            Text('Level: ${admin.level}'),
+            // ignore: unrelated_type_equality_checks
+            Text('Status: ${admin.status == 0 ? "Active" : "Inactive"}'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMzeeInfo(BaseUser mzee) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Mzee Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Eneo: ${mzee.eneo}'),
+            Text('Jumuiya: ${mzee.jumuiya}'),
+            Text('Mwaka: ${mzee.mwaka}'),
+            Text('Status: ${mzee.status}'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildKatibuInfo(BaseUser katibu) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Katibu Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Jumuiya: ${katibu.jumuiya}'),
+            Text('Mwaka: ${katibu.mwaka}'),
+            Text('Status: ${katibu.status}'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMsharikaInfo(BaseUser msharika) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Msharika Information',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+                'Jinsia: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].jinsia : ''}'),
+            Text(
+                'Umri: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].umri : ''}'),
+            Text(
+                'Hali ya Ndoa: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].haliYaNdoa : ''}'),
+            Text(
+                'Jumuiya: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].jinaLaJumuiya : ''}'),
+            Text(
+                'Kazi: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].kazi : ''}'),
+            Text(
+                'Ahadi: ${msharika.msharikaRecords.isNotEmpty ? msharika.msharikaRecords[0].ahadi : ''}'),
+          ],
+        ),
       ),
     );
   }
@@ -252,13 +486,15 @@ class MapScreenState extends State<ProfilePage>
             ),
           ),
           const SizedBox(height: 20),
-          if (userData != null) ...[
+          if (currentUser != null) ...[
             Row(
               children: [
                 Expanded(
                   child: _buildStatItem(
                     "Mtaa",
-                    userData!['jina_la_jumuiya'] ?? "N/A",
+                    currentUser!.msharikaRecords.isNotEmpty
+                        ? currentUser!.msharikaRecords[0].jinaLaJumuiya
+                        : "N/A",
                     Icons.location_on,
                     MyColors.primaryLight,
                   ),
@@ -267,8 +503,8 @@ class MapScreenState extends State<ProfilePage>
                 Expanded(
                   child: _buildStatItem(
                     "Ahadi",
-                    userData!['ahadi'] != null
-                        ? "${money.format(int.parse(userData!['ahadi']))} Tsh"
+                    currentUser!.msharikaRecords.isNotEmpty
+                        ? "${money.format(int.parse(currentUser!.msharikaRecords[0].ahadi))} Tsh"
                         : "N/A",
                     Icons.volunteer_activism,
                     Colors.green,
@@ -279,11 +515,160 @@ class MapScreenState extends State<ProfilePage>
             const SizedBox(height: 15),
             _buildStatItem(
               "Jengo",
-              userData!['jengo'] != null
-                  ? "${money.format(int.parse(userData!['jengo']))} Tsh"
+              currentUser!.msharikaRecords.isNotEmpty
+                  ? "${money.format(int.parse(currentUser!.msharikaRecords[0].jengo))} Tsh"
                   : "N/A",
               Icons.business,
               Colors.orange,
+            ),
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey[200]!),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: MyColors.primaryLight,
+                    size: 30,
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Taarifa za Ahadi",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: MyColors.primaryLight,
+                          ),
+                        ),
+                        Text(
+                          "Zitaonekana hapa baada ya usajili",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard() {
+    if (currentUser == null) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Icon(
+              Icons.person_outline,
+              size: 60,
+              color: MyColors.primaryLight.withOpacity(0.5),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              "Karibu kwenye KKKT Miyuji",
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: MyColors.primaryLight,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Mahala ambapo neno la Mungu linawafikia wengi mahala popote wakati wowote.",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Login()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.primaryLight,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                child: Text(
+                  'Ingia Akaunti',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Taarifa za Msharika",
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: MyColors.primaryLight,
+            ),
+          ),
+          const SizedBox(height: 5),
+          if (currentUser != null) ...[
+            MsharikaInfoCard(
+              msharika: currentUser!.msharikaRecords[0],
             ),
           ] else ...[
             Container(

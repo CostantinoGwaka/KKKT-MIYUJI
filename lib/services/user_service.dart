@@ -151,8 +151,6 @@ class UserService {
         },
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         if (jsonResponse != null &&
