@@ -60,7 +60,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
+                icon: const Icon(Icons.arrow_back_ios_rounded,
+                    color: Colors.white),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
@@ -230,7 +231,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             controller: oldp,
             label: "Neno la Siri la Zamani",
             icon: Icons.lock_outline_rounded,
-            isObscure: true,
+            isObscure: _isObscure,
+            showVisibilityToggle: true,
           ),
           const SizedBox(height: 20),
           _buildModernPasswordField(
@@ -300,7 +302,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               suffixIcon: showVisibilityToggle
                   ? IconButton(
                       icon: Icon(
-                        isObscure ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                        isObscure
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
                         color: Colors.grey[600],
                       ),
                       onPressed: () {
@@ -329,7 +333,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(color: MyColors.primaryLight, width: 2),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             ),
           ),
         ),
@@ -424,7 +429,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     }
 
     if (currentUser != null) {
-      await updatePassword(currentUser!.memberNo, oldp.text, newp.text);
+      await updatePassword(
+          currentUser!.msharikaRecords[0].nambaYaAhadi, oldp.text, newp.text);
     } else {
       _showErrorSnackBar("Tafadhari ingia kwenye akaunti yako kwanza");
     }
@@ -475,20 +481,30 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         headers: {
           'Accept': 'application/json',
         },
-        body: {
+        body: jsonEncode({
           "member_no": memberNo,
           "oldpassword": oldpassword,
           "newpassword": newpassword,
-        },
+          "userType": currentUser!.userType,
+        }),
       );
 
       setState(() {
         status = false;
       });
+      // print(response.body);
+      // print({
+      //   "member_no": memberNo,
+      //   "oldpassword": oldpassword,
+      //   "newpassword": newpassword,
+      //   "userType": currentUser!.userType,
+      // });
 
       if (response.statusCode == 200) {
         dynamic jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+        // print(jsonResponse);
+
+        if (jsonResponse != null && jsonResponse['status'] == 200) {
           var json = jsonDecode(response.body);
           String mydata = jsonEncode(json[0]);
           await LocalStorage.setStringItem("mydata", mydata);
@@ -515,7 +531,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             textColor: Colors.white,
           );
         } else {
-          _showErrorSnackBar("Neno lako la siri la zamani limekosewa");
+          // _showErrorSnackBar("Neno lako la siri la zamani limekosewa");
           return Fluttertoast.showToast(
             msg: "Neno lako la siri la zamani limekosewa",
             toastLength: Toast.LENGTH_LONG,
@@ -525,7 +541,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           );
         }
       } else {
-        _showErrorSnackBar("Hitilafu imetokea, jaribu tena");
+        // _showErrorSnackBar("Hitilafu imetokea, jaribu tena");
         return Fluttertoast.showToast(
           msg: "Neno lako la siri la zamani limekosewa",
           toastLength: Toast.LENGTH_LONG,
