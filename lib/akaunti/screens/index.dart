@@ -67,6 +67,7 @@ class MapScreenState extends State<ProfilePage>
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             expandedHeight:
                 (MediaQuery.of(context).size.height * 0.25).clamp(150.0, 280.0),
             floating: false,

@@ -150,6 +150,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           elevation: 0,
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           flexibleSpace: Container(
             decoration: BoxDecoration(
