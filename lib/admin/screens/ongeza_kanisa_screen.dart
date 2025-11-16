@@ -18,15 +18,15 @@ import 'package:kanisaapp/utils/TextStyles.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:kanisaapp/home/screens/index.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
-  static const routeName = "/registrationscreen";
+class OngezaKanisaMsharika extends StatefulWidget {
+  const OngezaKanisaMsharika({super.key});
+  static const routeName = "/OngezaKanisaMsharika";
 
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _OngezaKanisaMsharikaState createState() => _OngezaKanisaMsharikaState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen>
+class _OngezaKanisaMsharikaState extends State<OngezaKanisaMsharika>
     with TickerProviderStateMixin {
   final PageController _pageController = PageController();
   late AnimationController _animationController;

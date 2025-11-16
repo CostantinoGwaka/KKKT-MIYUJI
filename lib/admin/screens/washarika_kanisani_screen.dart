@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:kanisaapp/admin/screens/msharika_info_card.dart';
+import 'package:kanisaapp/admin/screens/ongeza_kanisa_screen.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
@@ -286,123 +287,6 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
     }
   }
 
-  void _showAddMsharikaDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Add New Msharika',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: MyColors.primaryLight,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildTextField(_jinaController, 'Full Name', Icons.person),
-                  _buildTextField(
-                      _jinsiaController, 'Gender', Icons.person_outline),
-                  _buildTextField(_umriController, 'Age', Icons.calendar_today),
-                  _buildTextField(
-                      _haliYaNdoaController, 'Marital Status', Icons.favorite),
-                  _buildTextField(
-                      _jinaLaMwenziController, 'Spouse Name', Icons.people),
-                  _buildTextField(_nambaYaAhadiController, 'Promise Number',
-                      Icons.confirmation_number),
-                  _buildTextField(_ainaNdoaController, 'Marriage Type',
-                      Icons.family_restroom),
-                  _buildTextField(
-                      _nambaSimuController, 'Phone Number', Icons.phone),
-                  _buildTextField(_jengoController, 'Building', Icons.home),
-                  _buildTextField(
-                      _ahadiController, 'Promise', Icons.description),
-                  _buildTextField(_kaziController, 'Occupation', Icons.work),
-                  _buildTextField(_elimuController, 'Education', Icons.school),
-                  _buildTextField(_ujuziController, 'Skills', Icons.psychology),
-                  _buildTextField(_mahaliPakaziController, 'Work Location',
-                      Icons.location_on),
-                  _buildTextField(
-                      _jumuiyaController, 'Community Name', Icons.groups),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(
-                          'Cancel',
-                          style: GoogleFonts.poppins(color: Colors.grey),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: addMsharika,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColors.primaryLight,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Save',
-                          style: GoogleFonts.poppins(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    TextEditingController controller,
-    String label,
-    IconData icon,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: Icon(icon, color: MyColors.primaryLight),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: MyColors.primaryLight),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide:
-                BorderSide(color: MyColors.primaryLight.withOpacity(0.5)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: MyColors.primaryLight),
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter $label';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
   void _showSuccessSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -607,7 +491,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                                 ? 'Amekubaliwa'
                                                 : (msharika.usharikaStatus ==
                                                             'null' ||
-                                                        msharika.usharikaStatus!
+                                                        msharika.usharikaStatus
                                                             .isEmpty)
                                                     ? 'Anasubiri'
                                                     : 'Haijakubaliwa',
@@ -619,7 +503,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                                                   : (msharika.usharikaStatus ==
                                                               'null' ||
                                                           msharika
-                                                              .usharikaStatus!
+                                                              .usharikaStatus
                                                               .isEmpty)
                                                       ? Colors.orange
                                                       : Colors.red,
@@ -706,7 +590,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
                               children: [
                                 MsharikaInfoCard(msharika: msharika),
                                 if (msharika.usharikaStatus == 'null' ||
-                                    msharika.usharikaStatus!.isEmpty)
+                                    msharika.usharikaStatus.isEmpty)
                                   Center(
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -747,7 +631,15 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: MyColors.primaryLight,
-        onPressed: _showAddMsharikaDialog,
+        onPressed: () {
+          //
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OngezaKanisaMsharika(),
+            ),
+          );
+        }, //_showAddMsharikaDialog,
         child: const Icon(
           Icons.add,
           color: Colors.white,

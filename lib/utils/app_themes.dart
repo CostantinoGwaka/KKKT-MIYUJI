@@ -65,7 +65,7 @@ final appThemeData = {
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: MyColors.grey_95,
     ),
-    bottomAppBarTheme: const BottomAppBarTheme(color: MyColors.grey_95),
+    bottomAppBarTheme: const BottomAppBarThemeData(color: MyColors.grey_95),
     appBarTheme: AppBarTheme(
       color: MyColors.primary,
       iconTheme: const IconThemeData(

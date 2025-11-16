@@ -148,7 +148,7 @@ class MsharikaRecord {
   final String kamaUshiriki;
   final String katibuStatus;
   final String mzeeStatus;
-  final String? usharikaStatus;
+  final String usharikaStatus;
   final String regYearId;
   final String tarehe;
   final String kanisaId;
@@ -186,7 +186,7 @@ class MsharikaRecord {
     required this.kamaUshiriki,
     required this.katibuStatus,
     required this.mzeeStatus,
-    this.usharikaStatus,
+    required this.usharikaStatus,
     required this.regYearId,
     required this.tarehe,
     required this.kanisaId,
