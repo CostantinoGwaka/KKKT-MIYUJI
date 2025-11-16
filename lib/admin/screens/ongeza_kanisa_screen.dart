@@ -446,7 +446,7 @@ class _OngezaKanisaMsharikaState extends State<OngezaKanisaMsharika>
         "Kuna shida",
         "Umechagua unashiriki jumuiya lakin kuna taarifa ujaziweka kama (jina la jumiya na jina la katibu wa jumiya) $jumuiyaUshirikia",
       );
-    } else if ((_halindoa != '' && _halindoa == 'Nimeoa') &&
+    } else if ((_halindoa != '' && _halindoa == 'Nimeoa/Nimeolewa') &&
         (jinaLaMwenziWako.text.isEmpty)) {
       Alerts.show(
         context,
@@ -1214,7 +1214,13 @@ class _OngezaKanisaMsharikaState extends State<OngezaKanisaMsharika>
             ),
             _buildRadioGroup(
               title: '4. Hali ya ndoa',
-              options: ['Nimeoa', 'Sijaoa', 'mgane', 'talakiwa'],
+              options: [
+                'Nimeoa/Nimeolewa',
+                'Sijaoa/Sijaoolewa',
+                'Mjane',
+                'Mgeni',
+                'Talakiwa'
+              ],
               groupValue: _halindoa,
               onChanged: (value) {
                 setState(() {
@@ -1234,7 +1240,7 @@ class _OngezaKanisaMsharikaState extends State<OngezaKanisaMsharika>
                 });
               },
             ),
-            if (_halindoa == 'Nimeoa')
+            if (_halindoa == 'Nimeoa/Nimeolewa')
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1275,7 +1281,7 @@ class _OngezaKanisaMsharikaState extends State<OngezaKanisaMsharika>
                 ),
               ],
             ),
-            if (_halindoa == 'Nimeoa')
+            if (_halindoa == 'Nimeoa/Nimeolewa')
               _buildRadioGroup(
                 title: '7. Aina ya ndoa',
                 options: ['Ndoa ya Kikristo', 'Ndoa isiyo ya Kikristo'],
