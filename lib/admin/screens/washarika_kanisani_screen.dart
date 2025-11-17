@@ -205,6 +205,7 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
     // print(user);
     setState(() {
       currentUser = user;
+      isLoading = true;
     });
     try {
       final response = await http.post(
