@@ -381,253 +381,332 @@ class _WasharikaKanisaniScreenState extends State<WasharikaKanisaniScreen> {
             ),
           ),
           Expanded(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.black,
-                      ),
-                    ),
-                  )
-                : washarika.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No washarika found',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
+              child: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.black,
                         ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: washarika.length,
-                        itemBuilder: (context, index) {
-                          final msharika = washarika[index];
-                          return Card(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 4),
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                      ),
+                    )
+                  : washarika.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No washarika found',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: Colors.grey,
                             ),
-                            child: ExpansionTile(
-                              tilePadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              childrenPadding: const EdgeInsets.all(20),
-                              leading: CircleAvatar(
-                                backgroundColor: MyColors.primaryLight,
-                                radius: 25,
-                                child: Text(
-                                  msharika.jinaLaMsharika[0].toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : Column(
+                          children: [
+                            // Stats Card
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    MyColors.primaryLight,
+                                    MyColors.primaryLight.withOpacity(0.8),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color:
+                                        MyColors.primaryLight.withOpacity(0.3),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
                                   ),
-                                ),
+                                ],
                               ),
-                              title: Text(
-                                msharika.jinaLaMsharika,
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  const SizedBox(height: 4),
-                                  Row(
+                                  Column(
                                     children: [
-                                      Icon(Icons.confirmation_number,
-                                          size: 16,
-                                          color: MyColors.primaryLight
-                                              .withOpacity(0.7)),
-                                      const SizedBox(width: 4),
                                       Text(
-                                        'Namba ya Ahadi: ${msharika.nambaYaAhadi}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
+                                        '${washarika.length}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Jumla ya Washarika',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 11,
+                                          color: Colors.white.withOpacity(0.9),
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.group,
-                                        size: 16,
-                                        color: MyColors.primaryLight
-                                            .withOpacity(0.7),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Jumuiya: ${msharika.jinaLaJumuiya}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
-                                      ),
-                                    ],
+                                  Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.people,
+                                      size: 28,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  const SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.group,
-                                        size: 16,
-                                        color: MyColors.primaryLight
-                                            .withOpacity(0.7),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Hali: ',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 12),
+                                ],
+                              ),
+                            ),
+                            // List
+                            Expanded(
+                              child: ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                itemCount: washarika.length,
+                                itemBuilder: (context, index) {
+                                  final msharika = washarika[index];
+                                  return Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 4),
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 12),
+                                      childrenPadding: const EdgeInsets.all(20),
+                                      leading: CircleAvatar(
+                                        backgroundColor: MyColors.primaryLight,
+                                        radius: 25,
+                                        child: Text(
+                                          msharika.jinaLaMsharika[0]
+                                              .toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
-                                          Text(
-                                            msharika.usharikaStatus == 'yes'
-                                                ? 'Amekubaliwa'
-                                                : (msharika.usharikaStatus ==
-                                                            'null' ||
-                                                        msharika.usharikaStatus
-                                                            .isEmpty)
-                                                    ? 'Anasubiri'
-                                                    : 'Haijakubaliwa',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                              color: msharika.usharikaStatus ==
-                                                      'yes'
-                                                  ? Colors.green
-                                                  : (msharika.usharikaStatus ==
-                                                              'null' ||
-                                                          msharika
-                                                              .usharikaStatus
-                                                              .isEmpty)
-                                                      ? Colors.orange
-                                                      : Colors.red,
-                                            ),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        msharika.jinaLaMsharika,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.confirmation_number,
+                                                  size: 16,
+                                                  color: MyColors.primaryLight
+                                                      .withOpacity(0.7)),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'Namba ya Ahadi: ${msharika.nambaYaAhadi}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.group,
+                                                size: 16,
+                                                color: MyColors.primaryLight
+                                                    .withOpacity(0.7),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'Jumuiya: ${msharika.jinaLaJumuiya}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.group,
+                                                size: 16,
+                                                color: MyColors.primaryLight
+                                                    .withOpacity(0.7),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Hali: ',
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 12),
+                                                  ),
+                                                  Text(
+                                                    msharika.usharikaStatus ==
+                                                            'yes'
+                                                        ? 'Amekubaliwa'
+                                                        : (msharika.usharikaStatus ==
+                                                                    'null' ||
+                                                                msharika
+                                                                    .usharikaStatus
+                                                                    .isEmpty)
+                                                            ? 'Anasubiri'
+                                                            : 'Haijakubaliwa',
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 12,
+                                                      color: msharika
+                                                                  .usharikaStatus ==
+                                                              'yes'
+                                                          ? Colors.green
+                                                          : (msharika.usharikaStatus ==
+                                                                      'null' ||
+                                                                  msharika
+                                                                      .usharikaStatus
+                                                                      .isEmpty)
+                                                              ? Colors.orange
+                                                              : Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.phone,
+                                                  size: 16,
+                                                  color: MyColors.primaryLight
+                                                      .withOpacity(0.7)),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'Jumuiya: ${msharika.nambaYaSimu}',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.phone,
-                                          size: 16,
-                                          color: MyColors.primaryLight
-                                              .withOpacity(0.7)),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Jumuiya: ${msharika.nambaYaSimu}',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              trailing: PopupMenuButton(
-                                icon: const Icon(Icons.more_vert),
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.edit),
-                                      title: Text(
-                                        'Hariri',
-                                        style: GoogleFonts.poppins(),
-                                      ),
-                                    ),
-                                    onTap: () async {
-                                      // Navigator.of(context).pop();
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditMsharikaScreen(
-                                            msharika: msharika,
-                                            onUpdateSuccess: () {
-                                              fetchWasharika();
+                                      trailing: PopupMenuButton(
+                                        icon: const Icon(Icons.more_vert),
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            child: ListTile(
+                                              leading: const Icon(Icons.edit),
+                                              title: Text(
+                                                'Hariri',
+                                                style: GoogleFonts.poppins(),
+                                              ),
+                                            ),
+                                            onTap: () async {
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditMsharikaScreen(
+                                                    msharika: msharika,
+                                                    onUpdateSuccess: () {
+                                                      fetchWasharika();
+                                                    },
+                                                  ),
+                                                ),
+                                              );
                                             },
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.delete,
-                                          color: Colors.red),
-                                      title: Text(
-                                        'Futa',
-                                        style: GoogleFonts.poppins(
-                                            color: Colors.red),
+                                          PopupMenuItem(
+                                            child: ListTile(
+                                              leading: const Icon(Icons.delete,
+                                                  color: Colors.red),
+                                              title: Text(
+                                                'Futa',
+                                                style: GoogleFonts.poppins(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              // Implement delete functionality
+                                            },
+                                          ),
+                                          PopupMenuItem(
+                                            child: ListTile(
+                                              leading: const Icon(
+                                                  Icons.call_rounded,
+                                                  color: Colors.red),
+                                              title: Text(
+                                                'Piga Simu',
+                                                style: GoogleFonts.poppins(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              // Implement delete functionality
+                                            },
+                                          ),
+                                        ],
                                       ),
+                                      children: [
+                                        MsharikaInfoCard(msharika: msharika),
+                                        if (msharika.usharikaStatus == 'null' ||
+                                            msharika.usharikaStatus.isEmpty)
+                                          Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12.0, bottom: 8.0),
+                                              child: ElevatedButton.icon(
+                                                icon: const Icon(
+                                                    Icons.verified_user,
+                                                    color: Colors.white),
+                                                label: Text(
+                                                  "Kubali/Kataa Washarika",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      MyColors.primaryLight,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 18,
+                                                      vertical: 12),
+                                                ),
+                                                onPressed: () {
+                                                  _showApproveSheet(
+                                                      context, msharika);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
-                                    onTap: () {
-                                      // Implement delete functionality
-                                    },
-                                  ),
-                                  PopupMenuItem(
-                                    child: ListTile(
-                                      leading: const Icon(Icons.call_rounded,
-                                          color: Colors.red),
-                                      title: Text(
-                                        'Piga Simu',
-                                        style: GoogleFonts.poppins(
-                                            color: Colors.red),
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      // Implement delete functionality
-                                    },
-                                  ),
-                                ],
+                                  );
+                                },
                               ),
-                              children: [
-                                MsharikaInfoCard(msharika: msharika),
-                                if (msharika.usharikaStatus == 'null' ||
-                                    msharika.usharikaStatus.isEmpty)
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 12.0, bottom: 8.0),
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(Icons.verified_user,
-                                            color: Colors.white),
-                                        label: Text(
-                                          "Kubali/Kataa Washarika",
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              MyColors.primaryLight,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 18, vertical: 12),
-                                        ),
-                                        onPressed: () {
-                                          _showApproveSheet(context, msharika);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                              ],
                             ),
-                          );
-                        },
-                      ),
-          ),
+                          ],
+                        )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
