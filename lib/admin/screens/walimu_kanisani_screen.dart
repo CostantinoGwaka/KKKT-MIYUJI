@@ -482,7 +482,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: selectedWadhifa,
+                  initialValue: selectedWadhifa,
                   decoration: InputDecoration(
                     labelText: 'Wadhifa',
                     border: OutlineInputBorder(
@@ -593,7 +593,7 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value:
+                  initialValue:
                       wadhifaList.any((w) => w['jina_wadhifa'] == editWadhifa)
                           ? editWadhifa
                           : null,
@@ -832,7 +832,8 @@ class _WalimuKanisaniScreenState extends State<WalimuKanisaniScreen> {
                                               value ? 'active' : 'inactive',
                                             );
                                           },
-                                          activeColor: MyColors.primaryLight,
+                                          activeThumbColor:
+                                              MyColors.primaryLight,
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.edit),

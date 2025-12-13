@@ -1109,7 +1109,8 @@ class _ViongoziJumuiyaScreenState extends State<ViongoziJumuiyaScreen> {
                                                 value ? 'active' : 'not-active',
                                               );
                                             },
-                                            activeColor: MyColors.primaryLight,
+                                            activeThumbColor:
+                                                MyColors.primaryLight,
                                           ),
                                         ],
                                       ),

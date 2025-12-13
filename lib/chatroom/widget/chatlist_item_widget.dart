@@ -21,7 +21,7 @@ class ChatListItem extends StatefulWidget {
 
   const ChatListItem(
       {super.key,
-      @required this.name,
+      required this.name,
       this.friendId,
       this.detpId,
       this.uid,
@@ -48,7 +48,10 @@ class _ChatListItemState extends State<ChatListItem> {
   @override
   void initState() {
     final databaseRef = FirebaseDatabase.instance.ref();
-    databaseRef.child("users/${widget.friendId}/token").once().then((DatabaseEvent snap) {
+    databaseRef
+        .child("users/${widget.friendId}/token")
+        .once()
+        .then((DatabaseEvent snap) {
       setState(() {
         token = snap.snapshot.value.toString();
       });
@@ -80,7 +83,8 @@ class _ChatListItemState extends State<ChatListItem> {
       ),
       title: Text(
         widget.name.toString(),
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: deviceWidth(context) / 25),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: deviceWidth(context) / 25),
       ),
       subtitle: _renderSubtitle(context),
       trailing: _renderTailing(context),

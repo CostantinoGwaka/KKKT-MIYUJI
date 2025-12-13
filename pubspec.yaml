@@ -18,7 +18,7 @@ dependencies:
   expansion_tile_card:
   youtube_player_flutter:
   shared_preferences:
-  google_fonts:
+  google_fonts: ^6.3.3
   lottie:
   # data_connection_checker:
   line_awesome_flutter:
@@ -28,13 +28,13 @@ dependencies:
   firebase_messaging:
   flutter_local_notifications:
   image_picker:
-  file_picker:
+  file_picker: ^10.3.7
   provider:
   url_launcher:
   focused_menu:
   scrollable_positioned_list:
   device_preview:
-  ffi: ^1.0.0
+  ffi: ^2.1.4
   fluttertoast:
   local_auth:
   firebase_core:

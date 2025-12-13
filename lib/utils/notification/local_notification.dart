@@ -12,16 +12,18 @@ import 'package:rxdart/subjects.dart';
 final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
     BehaviorSubject<ReceivedNotification>();
 
-final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
+final BehaviorSubject<String> selectNotificationSubject =
+    BehaviorSubject<String>();
 
-const MethodChannel platform = MethodChannel('dexterx.dev/flutter_local_notifications_example');
+const MethodChannel platform =
+    MethodChannel('dexterx.dev/flutter_local_notifications_example');
 
 class ReceivedNotification {
   ReceivedNotification({
-    @required this.id,
-    @required this.title,
-    @required this.body,
-    @required this.payload,
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
   });
 
   final int? id;
@@ -44,13 +46,19 @@ class LocalNotification {
     //     );
   }
 
-  static void configureDidReceiveLocalNotificationSubject({required BuildContext context}) {
-    didReceiveLocalNotificationSubject.stream.listen((ReceivedNotification receivedNotification) async {
+  static void configureDidReceiveLocalNotificationSubject(
+      {required BuildContext context}) {
+    didReceiveLocalNotificationSubject.stream
+        .listen((ReceivedNotification receivedNotification) async {
       await showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null ? Text(receivedNotification.title ?? '') : null,
-          content: receivedNotification.body != null ? Text(receivedNotification.body ?? '') : null,
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title ?? '')
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body ?? '')
+              : null,
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
@@ -78,7 +86,8 @@ class LocalNotification {
     });
   }
 
-  static Future onDidReceiveLocalNotification(int id, String title, String body, String payload,
+  static Future onDidReceiveLocalNotification(
+      int id, String title, String body, String payload,
       {BuildContext? context}) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
@@ -106,7 +115,8 @@ class LocalNotification {
     );
   }
 
-  static Future selectNotification(String payload, {BuildContext? context}) async {
+  static Future selectNotification(String payload,
+      {BuildContext? context}) async {
     debugPrint('notification payload: $payload');
     // await Navigator.push(
     //   context,
@@ -127,7 +137,8 @@ class LocalNotification {
     // await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
 
-  static Future<void> showNotification({String? title, String? description}) async {
+  static Future<void> showNotification(
+      {String? title, String? description}) async {
     // FlutterLocalNotificationsPlugin localNotifPlugin = FlutterLocalNotificationsPlugin();
     // const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
     //   'channel_id',

@@ -22,7 +22,7 @@ final appThemeData = {
     //primarySwatch: MyColors.primary,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
-      color: MyColors.primary,
+      backgroundColor: MyColors.primary,
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
@@ -67,7 +67,7 @@ final appThemeData = {
     ),
     bottomAppBarTheme: const BottomAppBarThemeData(color: MyColors.grey_95),
     appBarTheme: AppBarTheme(
-      color: MyColors.primary,
+      backgroundColor: MyColors.primary,
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
