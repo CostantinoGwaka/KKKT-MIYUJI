@@ -927,33 +927,53 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildUserDetails(NumberFormat money) {
     return currentUser != null
-        ? Row(
-            children: [
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
+        ? Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  MyColors.primaryLight.withOpacity(0.08),
+                  MyColors.primaryLight.withOpacity(0.03),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: MyColors.primaryLight.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    _buildInfoCard(
-                      "Jumuiya",
-                      _getUserJumuiya(),
-                      Icons.group,
+                    Icon(
+                      Icons.info_outline,
+                      size: 18,
+                      color: MyColors.primaryLight,
                     ),
-                    const SizedBox(height: 6),
-                    _buildInfoCard(
-                      "Ahadi",
-                      _getUserAhadi(money),
-                      Icons.monetization_on,
-                    ),
-                    const SizedBox(height: 6),
-                    _buildInfoCard(
-                      "Jengo",
-                      _getUserJengo(money),
-                      Icons.home_work,
+                    const SizedBox(width: 8),
+                    Text(
+                      "Taarifa za Msharika",
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: MyColors.primaryLight,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                _buildInfoRow("Jumuiya", _getUserJumuiya(), Icons.group),
+                const SizedBox(height: 8),
+                _buildInfoRow(
+                    "Ahadi", _getUserAhadi(money), Icons.monetization_on),
+                const SizedBox(height: 8),
+                _buildInfoRow("Jengo", _getUserJengo(money), Icons.home_work),
+              ],
+            ),
           )
         : Container(
             padding: const EdgeInsets.all(12),
@@ -987,49 +1007,34 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  Widget _buildInfoCard(String title, String value, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: MyColors.primaryLight.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: MyColors.primaryLight.withOpacity(0.2),
-          width: 0.8,
+  Widget _buildInfoRow(String label, String value, IconData icon) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: MyColors.primaryLight,
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                size: 16,
-                color: MyColors.primaryLight,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                  color: MyColors.primaryLight,
-                ),
-              ),
-            ],
+        const SizedBox(width: 8),
+        Text(
+          "$label: ",
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.black54,
           ),
-          const SizedBox(height: 4),
-          Text(
+        ),
+        Expanded(
+          child: Text(
             value,
             style: GoogleFonts.poppins(
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
