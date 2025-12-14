@@ -123,6 +123,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<NenoLaSikuData>> getNenoLaSiku() async {
     String myApi = "${ApiUrl.BASEURL}get_nenolasiku.php";
+
     final response = await http.post(
       Uri.parse(myApi),
       headers: {
@@ -1343,29 +1344,32 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const NenoLaSiku()),
-                  );
-                },
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: MyColors.primaryLight,
-                ),
-                label: Text(
-                  'Tazama yote',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: MyColors.primaryLight,
-                  ),
-                ),
-              ),
-            ),
+            currentUser != null
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const NenoLaSiku()),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
+                        color: MyColors.primaryLight,
+                      ),
+                      label: Text(
+                        'Tazama yote',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: MyColors.primaryLight,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -1443,32 +1447,34 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const Spacer(),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const MahubiriScreen()),
-                      );
-                    },
-                    icon: const Icon(Icons.play_arrow, size: 18),
-                    label: Text(
-                      'Tazama zote',
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: MyColors.primaryLight,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      elevation: 0,
-                    ),
-                  ),
+                  currentUser != null
+                      ? ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const MahubiriScreen()),
+                            );
+                          },
+                          icon: const Icon(Icons.play_arrow, size: 18),
+                          label: Text(
+                            'Tazama zote',
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: MyColors.primaryLight,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            elevation: 0,
+                          ),
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),

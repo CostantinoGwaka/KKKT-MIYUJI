@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, deprecated_member_use, depend_on_referenced_packages
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,36 +47,42 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
   Future<List<Mahubiri>> _fetchMahubiri() async {
     currentUser = await UserManager.getCurrentUser();
     try {
-      final response = await http.post(
-        Uri.parse('${ApiUrl.BASEURL}get_mahubiri_kanisa.php'),
-        headers: {'Accept': 'application/json'},
-        body: jsonEncode({
-          "kanisa_id": currentUser?.kanisaId ?? '',
-        }),
-      );
+      if (currentUser?.kanisaId) {
+        final response = await http.post(
+          Uri.parse('${ApiUrl.BASEURL}get_mahubiri_kanisa.php'),
+          headers: {'Accept': 'application/json'},
+          body: jsonEncode({
+            "kanisa_id": currentUser?.kanisaId ?? '',
+          }),
+        );
 
-      if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        _mahubiriList = (jsonResponse['data'] as List)
-            .map((item) => Mahubiri.fromJson(item))
-            .toList();
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(response.body);
+          _mahubiriList = (jsonResponse['data'] as List)
+              .map((item) => Mahubiri.fromJson(item))
+              .toList();
 
-        _controllers = _mahubiriList
-            .map((mahubiri) => YoutubePlayerController(
-                  initialVideoId: mahubiri.videoId,
-                  flags: const YoutubePlayerFlags(
-                    autoPlay: false,
-                  ),
-                ))
-            .toList();
+          _controllers = _mahubiriList
+              .map((mahubiri) => YoutubePlayerController(
+                    initialVideoId: mahubiri.videoId,
+                    flags: const YoutubePlayerFlags(
+                      autoPlay: false,
+                    ),
+                  ))
+              .toList();
 
-        filteredMahubiri = _mahubiriList;
-        return _mahubiriList;
+          filteredMahubiri = _mahubiriList;
+          return _mahubiriList;
+        } else {
+          return [];
+        }
       } else {
         throw Exception('Failed to load mahubiri');
       }
     } catch (e) {
-      _showError('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
       return [];
     }
   }
@@ -103,6 +110,7 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
     });
   }
 
+  // ignore: unused_element
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: Colors.red),
@@ -257,10 +265,12 @@ class _MahubiriScreenState extends State<MahubiriScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 );
-              } else if (snapshot.hasError || !snapshot.hasData) {
+              } else if (snapshot.hasError ||
+                  !snapshot.hasData ||
+                  snapshot.data!.isEmpty) {
                 return const SliverFillRemaining(
                   child: Center(
-                    child: Text('No mahubiri available'),
+                    child: Text('Hakuna mahubiri zilizopatikana.'),
                   ),
                 );
               }
