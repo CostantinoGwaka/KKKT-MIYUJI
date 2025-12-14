@@ -384,7 +384,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      "Tsh ${currency.format(_getUserJengo() is num ? _getUserJengo() : 0)}",
+                                      "Tsh ${currency.format(_getUserJengo())}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .displayMedium!

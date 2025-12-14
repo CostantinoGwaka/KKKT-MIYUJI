@@ -52,19 +52,20 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            expandedHeight: 250.0,
+            expandedHeight: 180.0,
             floating: false,
             pinned: true,
             elevation: 0,
             backgroundColor: MyColors.primaryLight,
             leading: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
+                icon: const Icon(Icons.arrow_back_ios_rounded,
+                    color: Colors.white, size: 18),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
@@ -85,45 +86,45 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       Hero(
                         tag: 'feedback_icon',
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(18),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.1),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
+                                blurRadius: 15,
+                                offset: const Offset(0, 8),
                               ),
                             ],
                           ),
                           child: const Icon(
                             Icons.feedback_outlined,
-                            size: 50,
+                            size: 36,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       Text(
                         "Maoni & Mapendekezo",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
                           "Tupe maoni yako ili tuendelee kuboresha huduma zetu",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: 12,
                             color: Colors.white.withOpacity(0.9),
                           ),
                           textAlign: TextAlign.center,
@@ -145,15 +146,15 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
 
   Widget _buildFeedbackForm(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(14),
       child: Column(
         children: [
           _buildWelcomeCard(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           _buildFeedbackCard(),
-          const SizedBox(height: 25),
+          const SizedBox(height: 18),
           _buildSubmitButton(context),
-          const SizedBox(height: 40),
+          const SizedBox(height: 30),
         ],
       ),
     );
@@ -161,15 +162,15 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
 
   Widget _buildWelcomeCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -178,18 +179,18 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.orange.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   Icons.lightbulb_outline_rounded,
                   color: Colors.orange[600],
-                  size: 28,
+                  size: 22,
                 ),
               ),
-              const SizedBox(width: 15),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +198,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                     Text(
                       "Tunakusikiliza!",
                       style: GoogleFonts.poppins(
-                        fontSize: 18,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[800],
                       ),
@@ -205,7 +206,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                     Text(
                       "Maoni yako ni muhimu kwetu",
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: 11,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -214,13 +215,13 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           Text(
-            "Mapendekezo yako au maoni yako kuhusu mfumo wetu huu yanaweza kusaida wengi sana na kusaidia kuboresha huduma zetu. Tuandikie chochote kuhusu mfumo ama changamoto yeyote unayokutana nayo.",
+            "Mapendekezo yako au maoni yako kuhusu mfumo wetu huu yanaweza kusaidi wengi sana na kusaidia kuboresha huduma zetu. Tuandikie chochote kuhusu mfumo ama changamoto yeyote unayokutana nayo.",
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: 12,
               color: Colors.grey[700],
-              height: 1.5,
+              height: 1.4,
             ),
             textAlign: TextAlign.center,
           ),
@@ -231,15 +232,15 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
 
   Widget _buildFeedbackCard() {
     return Container(
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -251,28 +252,28 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
               Icon(
                 Icons.edit_note_rounded,
                 color: MyColors.primaryLight,
-                size: 24,
+                size: 20,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Text(
                 "Andika Maoni Yako",
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[800],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 3),
+                  color: Colors.grey.withOpacity(0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -280,52 +281,54 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
               controller: xsuggestion,
               keyboardType: TextInputType.multiline,
               textInputAction: TextInputAction.newline,
-              minLines: 6,
-              maxLines: 10,
+              minLines: 5,
+              maxLines: 8,
               style: GoogleFonts.poppins(
-                fontSize: 15,
+                fontSize: 13,
                 color: Colors.grey[800],
-                height: 1.5,
+                height: 1.4,
               ),
               decoration: InputDecoration(
-                hintText: "Mfano: Ningedandia kuongeza kipengele cha...\n\nau\n\nNimekutana na tatizo la...",
+                hintText:
+                    "Mfano: Ningedandia kuongeza kipengele cha...\n\nau\n\nNimekutana na tatizo la...",
                 hintStyle: GoogleFonts.poppins(
                   color: Colors.grey[400],
-                  fontSize: 14,
-                  height: 1.5,
+                  fontSize: 12,
+                  height: 1.4,
                 ),
                 fillColor: Colors.grey[50],
                 filled: true,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(color: Colors.grey[200]!, width: 1),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: MyColors.primaryLight, width: 2),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide:
+                      BorderSide(color: MyColors.primaryLight, width: 2),
                 ),
-                contentPadding: const EdgeInsets.all(20),
+                contentPadding: const EdgeInsets.all(14),
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           Row(
             children: [
               Icon(
                 Icons.info_outline_rounded,
                 color: Colors.blue[600],
-                size: 16,
+                size: 14,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   "Maoni yako yatatumiwa kuboresha huduma zetu zaidi",
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: Colors.blue[600],
                   ),
                 ),
@@ -340,9 +343,9 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
   Widget _buildSubmitButton(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 56,
+      height: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         gradient: LinearGradient(
           colors: [
             MyColors.primaryLight,
@@ -352,8 +355,8 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
         boxShadow: [
           BoxShadow(
             color: MyColors.primaryLight.withOpacity(0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -363,7 +366,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
         child: isLoading
@@ -371,18 +374,18 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 20,
-                    height: 20,
+                    width: 18,
+                    height: 18,
                     child: CircularProgressIndicator(
                       color: Colors.white,
                       strokeWidth: 2,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Text(
                     "Inatuma...",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -395,13 +398,13 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
                   Icon(
                     Icons.send_rounded,
                     color: Colors.white,
-                    size: 20,
+                    size: 18,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     "Tuma Maoni",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),
@@ -413,6 +416,7 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
   }
 
   Future<void> _handleSubmitFeedback() async {
+    currentUser = await UserManager.getCurrentUser();
     if (xsuggestion.text.trim().isEmpty) {
       _showErrorSnackBar("Tafadhari weka maoni au mapendekezo yako");
       return;
@@ -424,7 +428,11 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     }
 
     if (currentUser != null) {
-      await sendsuggestion(currentUser!.memberNo, xsuggestion.text.trim());
+      await sendsuggestion(
+          currentUser!.msharikaRecords.isEmpty
+              ? currentUser!.memberNo.toString()
+              : currentUser!.msharikaRecords[0].nambaYaAhadi.toString(),
+          xsuggestion.text.trim());
     } else {
       _showErrorSnackBar("Tatizo la mtumiaji, tafadhari jaribu tena");
     }
@@ -495,17 +503,18 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
     });
 
     try {
-      String mydataApi = "${ApiUrl.BASEURL}mapendekezo.php";
+      String mydataApi = "${ApiUrl.BASEURL}api2/maoni/ongeza_maoni.php";
 
       final response = await http.post(
         Uri.parse(mydataApi),
         headers: {
           'Accept': 'application/json',
         },
-        body: {
-          "member_no": memberNo,
+        body: jsonEncode({
+          "memberno": memberNo,
+          "kanisaId": currentUser!.kanisaId,
           "maoni": suggestion,
-        },
+        }),
       );
 
       setState(() {
@@ -514,12 +523,10 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
 
       if (response.statusCode == 200) {
         dynamic jsonResponse = json.decode(response.body);
-        if (jsonResponse != null && jsonResponse != 404 && jsonResponse != 500) {
+        if (jsonResponse != null && jsonResponse['status'] == 200) {
           setState(() {
             xsuggestion.clear();
           });
-
-          _showSuccessSnackBar("Maoni yako yamepokelewa, Asante sana!");
 
           // Navigate back after a short delay
           Future.delayed(const Duration(seconds: 2), () {
@@ -528,15 +535,9 @@ class _MapendekezoScreenState extends State<MapendekezoScreen> {
             }
           });
 
-          Fluttertoast.showToast(
-            msg: "Maoni yako yamepokelewa, Ahsante",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: MyColors.primaryLight,
-            textColor: Colors.white,
-          );
+          _showSuccessSnackBar("Maoni yako yamepokelewa, Asante sana!");
         } else {
-          _showErrorSnackBar("Kuna tatizo la kimtandao, jaribu tena");
+          // _showErrorSnackBar("Kuna tatizo la kimtandao, jaribu tena");
           Fluttertoast.showToast(
             msg: "Kuna makosa kwenye kutuma maoni...",
             toastLength: Toast.LENGTH_LONG,
