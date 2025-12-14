@@ -162,13 +162,13 @@ class _ChatScreenState extends State<MatoleoScreen> {
           border: const Border(),
           leading: GestureDetector(
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: MyColors.primaryLight.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Icon(Icons.arrow_back_ios,
-                  color: MyColors.primaryLight, size: 20),
+                  color: MyColors.primaryLight, size: 16),
             ),
             onTap: () {
               Navigator.pop(context);
@@ -177,7 +177,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
           middle: Text(
             "Matoleo Yako",
             style: TextStyles.headline(context).copyWith(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: MyColors.primaryLight,
             ),
@@ -189,12 +189,12 @@ class _ChatScreenState extends State<MatoleoScreen> {
             physics: const BouncingScrollPhysics(),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Column(
                 children: [
                   // Summary Cards Section
                   Container(
-                    margin: const EdgeInsets.only(bottom: 24),
+                    margin: const EdgeInsets.only(bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -204,18 +204,18 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               .textTheme
                               .displayLarge!
                               .copyWith(
-                                fontSize: 22,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: MyColors.primaryLight,
                               ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
                         Row(
                           children: [
                             // Ahadi Card
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(14),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
@@ -225,13 +225,13 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
                                       color: MyColors.primaryLight
                                           .withOpacity(0.3),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 4),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -241,17 +241,17 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     Row(
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(6),
                                           decoration: BoxDecoration(
                                             color:
                                                 Colors.white.withOpacity(0.2),
                                             borderRadius:
-                                                BorderRadius.circular(8),
+                                                BorderRadius.circular(6),
                                           ),
                                           child: const Icon(Icons.handshake,
-                                              color: Colors.white, size: 20),
+                                              color: Colors.white, size: 16),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: 6),
                                         Expanded(
                                           child: Text(
                                             "Ahadi",
@@ -259,7 +259,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 .textTheme
                                                 .titleMedium!
                                                 .copyWith(
-                                                  fontSize: 14,
+                                                  fontSize: 12,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -267,19 +267,19 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 12),
+                                    const SizedBox(height: 10),
                                     Text(
                                       "Tsh ${currency.format(_getUserAhadi())}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .displayMedium!
                                           .copyWith(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     FutureBuilder(
                                       future: getJumlaAhadi(),
                                       builder:
@@ -287,24 +287,23 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           return Container(
-                                            height: 20,
-                                            width: 60,
+                                            height: 16,
+                                            width: 50,
                                             decoration: BoxDecoration(
                                               color:
                                                   Colors.white.withOpacity(0.3),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(8),
                                             ),
                                           );
                                         } else if (snapshot.hasData) {
                                           return Text(
-                                            // "Jumla: Tsh ${currency.format(snapshot.data is Map && snapshot.data['jumla'] != null ? int.tryParse(snapshot.data['jumla'].toString()) ?? 0 : snapshot.data)}/=",
                                             "0",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  fontSize: 12,
+                                                  fontSize: 10,
                                                   color: Colors.white
                                                       .withOpacity(0.9),
                                                 ),
@@ -316,7 +315,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  fontSize: 12,
+                                                  fontSize: 10,
                                                   color: Colors.white
                                                       .withOpacity(0.7),
                                                 ),
@@ -328,11 +327,11 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: 12),
                             // Jengo Card
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(14),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
@@ -342,12 +341,12 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.orange.withOpacity(0.3),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 4),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -357,17 +356,17 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                     Row(
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(6),
                                           decoration: BoxDecoration(
                                             color:
                                                 Colors.white.withOpacity(0.2),
                                             borderRadius:
-                                                BorderRadius.circular(8),
+                                                BorderRadius.circular(6),
                                           ),
                                           child: const Icon(Icons.home_work,
-                                              color: Colors.white, size: 20),
+                                              color: Colors.white, size: 16),
                                         ),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: 6),
                                         Expanded(
                                           child: Text(
                                             "Jengo",
@@ -375,7 +374,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 .textTheme
                                                 .titleMedium!
                                                 .copyWith(
-                                                  fontSize: 14,
+                                                  fontSize: 12,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -383,20 +382,19 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 12),
+                                    const SizedBox(height: 10),
                                     Text(
-                                      // ignore: unnecessary_type_check
                                       "Tsh ${currency.format(_getUserJengo() is num ? _getUserJengo() : 0)}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .displayMedium!
                                           .copyWith(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     FutureBuilder(
                                       future: getJumlaJengo(),
                                       builder:
@@ -404,25 +402,23 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           return Container(
-                                            height: 20,
-                                            width: 60,
+                                            height: 16,
+                                            width: 50,
                                             decoration: BoxDecoration(
                                               color:
                                                   Colors.white.withOpacity(0.3),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(8),
                                             ),
                                           );
                                         } else if (snapshot.hasData) {
                                           return Text(
-                                            // "Jumla: Tsh ${currency.format(snapshot.data is Map && snapshot.data['jumla'] != null ? int.tryParse(snapshot.data['jumla'].toString()) ?? 0 : snapshot.data)}/=",
-
                                             "0",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  fontSize: 12,
+                                                  fontSize: 10,
                                                   color: Colors.white
                                                       .withOpacity(0.9),
                                                 ),
@@ -434,7 +430,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  fontSize: 12,
+                                                  fontSize: 10,
                                                   color: Colors.white
                                                       .withOpacity(0.7),
                                                 ),
@@ -455,27 +451,27 @@ class _ChatScreenState extends State<MatoleoScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: MyColors.primaryLight.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Icon(Icons.list_alt,
-                            color: MyColors.primaryLight, size: 20),
+                            color: MyColors.primaryLight, size: 16),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 8),
                       Text(
                         "Historia ya Matoleo",
                         style:
                             Theme.of(context).textTheme.displayLarge!.copyWith(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: MyColors.primaryLight,
                                 ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   // Matoleo List
                   Container(
                     constraints: BoxConstraints(
@@ -487,23 +483,23 @@ class _ChatScreenState extends State<MatoleoScreen> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Container(
-                              height: 300,
-                              padding: const EdgeInsets.all(40),
+                              height: 250,
+                              padding: const EdgeInsets.all(30),
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Lottie.asset(
                                       'assets/animation/fetching.json',
-                                      height: 120,
+                                      height: 100,
                                     ),
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: 12),
                                     Material(
                                       child: Text(
                                         "Inapanga taarifa...",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
+                                          fontSize: 12.0,
                                           color: MyColors.primaryLight,
                                         ),
                                       ),
@@ -514,21 +510,21 @@ class _ChatScreenState extends State<MatoleoScreen> {
                             );
                           } else if (snapshot.hasError || !snapshot.hasData) {
                             return Container(
-                              height: 300,
-                              padding: const EdgeInsets.all(40),
+                              height: 250,
+                              padding: const EdgeInsets.all(30),
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Lottie.asset('assets/animation/nodata.json',
-                                        height: 120),
-                                    const SizedBox(height: 16),
+                                        height: 100),
+                                    const SizedBox(height: 12),
                                     Material(
                                       child: Text(
                                         "Hakuna taarifa zilizopatikana",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 14.0,
+                                          fontSize: 12.0,
                                           color: MyColors.primaryLight,
                                         ),
                                       ),
@@ -544,20 +540,20 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (_, index) {
                                   return Container(
-                                    margin: const EdgeInsets.only(bottom: 16),
+                                    margin: const EdgeInsets.only(bottom: 12),
                                     child: Card(
                                       elevation: 2,
                                       shadowColor:
                                           Colors.black.withOpacity(0.1),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(16)),
+                                              BorderRadius.circular(12)),
                                       color: Colors.white,
                                       child: Container(
-                                        padding: const EdgeInsets.all(20),
+                                        padding: const EdgeInsets.all(14),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(16),
+                                              BorderRadius.circular(12),
                                           border: Border.all(
                                               color: Colors.grey.shade100),
                                         ),
@@ -572,14 +568,14 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 Container(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 6),
+                                                      horizontal: 10,
+                                                      vertical: 5),
                                                   decoration: BoxDecoration(
                                                     color: MyColors.primaryLight
                                                         .withOpacity(0.1),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20),
+                                                            16),
                                                   ),
                                                   child: Text(
                                                     "Matoleo #${index + 1}",
@@ -587,7 +583,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                         .textTheme
                                                         .titleSmall!
                                                         .copyWith(
-                                                          fontSize: 12,
+                                                          fontSize: 11,
                                                           color: MyColors
                                                               .primaryLight,
                                                           fontWeight:
@@ -598,28 +594,28 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 Container(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 4),
+                                                      horizontal: 6,
+                                                      vertical: 3),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade100,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            8),
+                                                            6),
                                                   ),
                                                   child: Row(
                                                     children: [
                                                       Icon(Icons.calendar_today,
-                                                          size: 12,
+                                                          size: 10,
                                                           color: Colors
                                                               .grey.shade600),
-                                                      const SizedBox(width: 4),
+                                                      const SizedBox(width: 3),
                                                       Text(
                                                         "2022-03-13",
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .bodySmall!
                                                             .copyWith(
-                                                              fontSize: 11,
+                                                              fontSize: 10,
                                                               color: Colors.grey
                                                                   .shade600,
                                                               fontWeight:
@@ -632,14 +628,14 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(height: 20),
+                                            const SizedBox(height: 14),
                                             // Ahadi Section
                                             Container(
-                                              padding: const EdgeInsets.all(16),
+                                              padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(
                                                 color: Colors.blue.shade50,
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(10),
                                                 border: Border.all(
                                                     color:
                                                         Colors.blue.shade100),
@@ -654,29 +650,29 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8),
+                                                                .all(6),
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Colors
                                                               .blue.shade100,
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(8),
+                                                                  .circular(6),
                                                         ),
                                                         child: Icon(
                                                             Icons.handshake,
                                                             color: Colors
                                                                 .blue.shade700,
-                                                            size: 16),
+                                                            size: 14),
                                                       ),
-                                                      const SizedBox(width: 12),
+                                                      const SizedBox(width: 8),
                                                       Text(
                                                         "Ahadi",
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .titleMedium!
                                                             .copyWith(
-                                                              fontSize: 15,
+                                                              fontSize: 13,
                                                               color: Colors.blue
                                                                   .shade700,
                                                               fontWeight:
@@ -696,7 +692,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             .textTheme
                                                             .bodySmall!
                                                             .copyWith(
-                                                              fontSize: 10,
+                                                              fontSize: 9,
                                                               color: Colors.blue
                                                                   .shade600,
                                                             ),
@@ -715,7 +711,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             .textTheme
                                                             .titleLarge!
                                                             .copyWith(
-                                                              fontSize: 18,
+                                                              fontSize: 16,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -728,14 +724,14 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(height: 12),
+                                            const SizedBox(height: 10),
                                             // Jengo Section
                                             Container(
-                                              padding: const EdgeInsets.all(16),
+                                              padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(
                                                 color: Colors.orange.shade50,
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(10),
                                                 border: Border.all(
                                                     color:
                                                         Colors.orange.shade100),
@@ -750,29 +746,29 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8),
+                                                                .all(6),
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Colors
                                                               .orange.shade100,
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(8),
+                                                                  .circular(6),
                                                         ),
                                                         child: Icon(
                                                             Icons.home_work,
                                                             color: Colors.orange
                                                                 .shade700,
-                                                            size: 16),
+                                                            size: 14),
                                                       ),
-                                                      const SizedBox(width: 12),
+                                                      const SizedBox(width: 8),
                                                       Text(
                                                         "Jengo",
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .titleMedium!
                                                             .copyWith(
-                                                              fontSize: 15,
+                                                              fontSize: 13,
                                                               color: Colors
                                                                   .orange
                                                                   .shade700,
@@ -793,7 +789,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             .textTheme
                                                             .bodySmall!
                                                             .copyWith(
-                                                              fontSize: 10,
+                                                              fontSize: 9,
                                                               color: Colors
                                                                   .orange
                                                                   .shade600,
@@ -809,7 +805,7 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                             .textTheme
                                                             .titleLarge!
                                                             .copyWith(
-                                                              fontSize: 18,
+                                                              fontSize: 16,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -831,13 +827,13 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                 });
                           } else {
                             return SizedBox(
-                              height: 200,
+                              height: 180,
                               child: Center(
                                 child: Text(
                                   "Hakuna data",
                                   style: TextStyle(
                                     color: Colors.grey.shade600,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),

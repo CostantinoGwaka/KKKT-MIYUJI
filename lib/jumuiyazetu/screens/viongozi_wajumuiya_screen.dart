@@ -75,7 +75,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
         middle: Text(
           "Watumishi wa jumuiya",
           style: TextStyles.headline(context).copyWith(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: MyColors.primaryLight,
           ),
@@ -93,7 +93,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(90.0),
+                    padding: const EdgeInsets.all(60.0),
                     child: Column(
                       children: [
                         SizedBox(
@@ -102,14 +102,14 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 15,
                         ),
                         Material(
                           child: Text(
                             "Inapanga taarifa",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 12.0,
+                              fontSize: 11.0,
                               color: MyColors.primaryLight,
                             ),
                           ),
@@ -129,7 +129,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                     padding: const EdgeInsets.only(top: 50.0),
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(50.0),
+                        padding: const EdgeInsets.all(40.0),
                         child: Column(
                           children: [
                             SizedBox(
@@ -138,14 +138,14 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10.0,
+                              height: 8.0,
                             ),
                             Material(
                               child: Text(
                                 "Hakuna taarifa zilizopatikana",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 12.0,
+                                  fontSize: 11.0,
                                   color: MyColors.primaryLight,
                                 ),
                               ),
@@ -164,12 +164,12 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                 itemBuilder: (_, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 6.0),
+                        horizontal: 10.0, vertical: 4.0),
                     child: Card(
-                      elevation: 3,
+                      elevation: 2,
                       shadowColor: MyColors.primaryLight.withOpacity(0.2),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: ExpansionTileCard(
                         baseColor: MyColors.white,
@@ -183,52 +183,51 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                           ),
                           child: CircleAvatar(
                             backgroundColor: MyColors.white,
-                            radius: 25,
+                            radius: 20,
                             child: Image.asset("assets/images/profile.png"),
                           ),
                         ),
                         title: Text(
                           snapshot.data![index].fname!,
                           style: TextStyles.headline(context).copyWith(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         subtitle: Text(
                           snapshot.data![index].wadhifa!,
                           style: TextStyles.caption(context).copyWith(
+                            fontSize: 11,
                             color: MyColors.primaryLight.withOpacity(0.7),
                           ),
                         ),
                         children: <Widget>[
                           const Divider(thickness: 1.0, height: 1.0),
                           Container(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(12.0),
                             child: Column(
                               children: [
                                 _buildInfoRow(
                                   context,
                                   leading: Row(
                                     children: [
-                                      // Text(
-                                      //   "${snapshot.data![index].wadhifa} : ",
-                                      //   style: TextStyles.caption(context).copyWith(
-                                      //     fontSize: 15,
-                                      //     fontWeight: FontWeight.w600,
-                                      //     color: MyColors.primaryLight,
-                                      //   ),
-                                      // ),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             snapshot.data![index].fname!,
-                                            style: TextStyles.body2(context),
+                                            style: TextStyles.body2(context)
+                                                .copyWith(
+                                              fontSize: 12,
+                                            ),
                                           ),
                                           Text(
                                             snapshot.data![index].phoneNo!,
-                                            style: TextStyles.body2(context),
+                                            style: TextStyles.body2(context)
+                                                .copyWith(
+                                              fontSize: 12,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -238,7 +237,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                     onTap: () => launch(
                                         "tel://${snapshot.data![index].phoneNo}"),
                                     child: Container(
-                                      padding: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(6),
                                       decoration: BoxDecoration(
                                         color: MyColors.primaryLight,
                                         shape: BoxShape.circle,
@@ -246,23 +245,23 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                                           BoxShadow(
                                             color: MyColors.primaryLight
                                                 .withOpacity(0.3),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 3),
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 2),
                                           ),
                                         ],
                                       ),
                                       child: const Icon(Icons.call,
-                                          color: MyColors.white, size: 20),
+                                          color: MyColors.white, size: 16),
                                     ),
                                   ),
                                 ),
-                                const Divider(height: 24),
+                                const Divider(height: 18),
                                 _buildInfoRow(
                                   context,
                                   label: "Jina La Jumuiya",
                                   value: snapshot.data![index].jumuiya!,
                                 ),
-                                const Divider(height: 24),
+                                const Divider(height: 18),
                                 _buildInfoRow(
                                   context,
                                   label: "Tarehe ya kuadiwa",
@@ -307,6 +306,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                   Text(
                     label,
                     style: TextStyles.caption(context).copyWith(
+                      fontSize: 10,
                       color: Colors.grey,
                     ),
                   ),
@@ -314,6 +314,7 @@ class _ViongoziJumuiyaState extends State<ViongoziJumuiya> {
                   Text(
                     value,
                     style: TextStyles.body2(context).copyWith(
+                      fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

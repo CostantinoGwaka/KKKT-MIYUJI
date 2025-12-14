@@ -121,34 +121,35 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            expandedHeight: 200.0,
+            expandedHeight: 150.0,
             floating: false,
             pinned: true,
             elevation: 0,
             backgroundColor: MyColors.primaryLight,
             leading: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_rounded,
-                    color: Colors.white),
+                    color: Colors.white, size: 18),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
             actions: [
               Container(
-                margin: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: IconButton(
                   icon: Icon(
                     isSearching ? Icons.close_rounded : Icons.search_rounded,
                     color: Colors.white,
+                    size: 18,
                   ),
                   onPressed: () {
                     setState(() {
@@ -178,34 +179,34 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       Hero(
                         tag: 'announcements_icon',
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(18),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.1),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
+                                blurRadius: 15,
+                                offset: const Offset(0, 8),
                               ),
                             ],
                           ),
                           child: const Icon(
                             Icons.campaign_rounded,
-                            size: 50,
+                            size: 32,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       Text(
                         "Matangazo",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -213,7 +214,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                       Text(
                         "Taarifa na matangazo muhimu",
                         style: GoogleFonts.poppins(
-                          fontSize: 14,
+                          fontSize: 11,
                           color: Colors.white.withOpacity(0.9),
                         ),
                       ),
@@ -240,15 +241,15 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
 
   Widget _buildSearchBar() {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -258,17 +259,19 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
           hintText: 'Tafuta matangazo kwa jina au maudhui...',
           hintStyle: GoogleFonts.poppins(
             color: Colors.grey[500],
-            fontSize: 14,
+            fontSize: 12,
           ),
           prefixIcon: Icon(
             Icons.search_rounded,
             color: MyColors.primaryLight,
+            size: 20,
           ),
           suffixIcon: searchController.text.isNotEmpty
               ? IconButton(
                   icon: Icon(
                     Icons.clear_rounded,
                     color: Colors.grey[500],
+                    size: 18,
                   ),
                   onPressed: () {
                     searchController.clear();
@@ -276,18 +279,18 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 )
               : null,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16,
+            horizontal: 12,
+            vertical: 12,
           ),
         ),
         style: GoogleFonts.poppins(
-          fontSize: 14,
+          fontSize: 12,
           color: Colors.grey[800],
         ),
       ),
@@ -302,48 +305,50 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
           children: [
             Icon(
               Icons.announcement_rounded,
-              size: 80,
+              size: 60,
               color: Colors.grey[300],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Text(
               "Karibu kwenye Matangazo",
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: MyColors.primaryLight,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Text(
               "Bonyeza kitufe hapo chini kuona matangazo yote",
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: 12,
                 color: Colors.grey[600],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
                 setState(() {
                   _matangazoFuture = getMatangazoNew();
                 });
               },
-              icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+              icon: const Icon(Icons.refresh_rounded,
+                  color: Colors.white, size: 18),
               label: Text(
                 "Onyesha Matangazo",
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
+                  fontSize: 12,
                 ),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
@@ -375,28 +380,28 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     return Center(
       child: Container(
         height: MediaQuery.of(context).size.height * 0.6,
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 150,
+              height: 120,
               child: Lottie.asset('assets/animation/fetching.json'),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Text(
               "Inapanga matangazo...",
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 14,
                 color: MyColors.primaryLight,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               "Tafadhari subiri kidogo",
               style: GoogleFonts.poppins(
-                fontSize: 12,
+                fontSize: 11,
                 color: Colors.grey[600],
               ),
             ),
@@ -410,50 +415,52 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     return Center(
       child: Container(
         height: MediaQuery.of(context).size.height * 0.6,
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 150,
+              height: 120,
               child: Lottie.asset('assets/animation/nodata.json'),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Text(
               "Hakuna Matangazo",
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 15,
                 color: MyColors.primaryLight,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               "Matangazo mapya yataonekana hapa",
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: 12,
                 color: Colors.grey[600],
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             ElevatedButton.icon(
               onPressed: _pullRefresh,
-              icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+              icon: const Icon(Icons.refresh_rounded,
+                  color: Colors.white, size: 18),
               label: Text(
                 "Jaribu Tena",
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
+                  fontSize: 12,
                 ),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: MyColors.primaryLight,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
             ),
           ],
@@ -465,34 +472,34 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
   Widget _buildNoSearchResults() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.5,
-      padding: const EdgeInsets.all(40),
+      padding: const EdgeInsets.all(30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.search_off_rounded,
-            size: 80,
+            size: 60,
             color: Colors.grey[400],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           Text(
             "Hakuna matokeo",
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              fontSize: 15,
               color: MyColors.primaryLight,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             "Hakuna matangazo yoyote yanayolingana na utafutaji wako",
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: 12,
               color: Colors.grey[600],
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -500,24 +507,26 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 onPressed: () {
                   searchController.clear();
                 },
-                icon: const Icon(Icons.clear_rounded, color: Colors.white),
+                icon: const Icon(Icons.clear_rounded,
+                    color: Colors.white, size: 16),
                 label: Text(
                   "Futa utafutaji",
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
+                    fontSize: 11,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyColors.primaryLight,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(18),
                   ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 ),
               ),
-              const SizedBox(width: 15),
+              const SizedBox(width: 10),
               OutlinedButton.icon(
                 onPressed: () {
                   setState(() {
@@ -525,21 +534,23 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                     searchController.clear();
                   });
                 },
-                icon: Icon(Icons.close_rounded, color: MyColors.primaryLight),
+                icon: Icon(Icons.close_rounded,
+                    color: MyColors.primaryLight, size: 16),
                 label: Text(
                   "Funga",
                   style: GoogleFonts.poppins(
                     color: MyColors.primaryLight,
                     fontWeight: FontWeight.w600,
+                    fontSize: 11,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: MyColors.primaryLight),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(18),
                   ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 ),
               ),
             ],
@@ -555,7 +566,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -566,15 +577,15 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                     ? Icons.search_rounded
                     : Icons.notifications_active_rounded,
                 color: MyColors.primaryLight,
-                size: 24,
+                size: 18,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Text(
                 searchController.text.isNotEmpty
                     ? "Matokeo ya utafutaji (${announcements.length})"
                     : "Matangazo (${announcements.length})",
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[800],
                 ),
@@ -582,24 +593,24 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
             ],
           ),
           if (searchController.text.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: MyColors.primaryLight.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Text(
                 'Unatafuta: "${searchController.text}"',
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: 10,
                   color: MyColors.primaryLight,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ],
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
@@ -616,15 +627,15 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
 
   Widget _buildAnnouncementCard(Matangazo announcement, int index) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -639,7 +650,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -656,25 +667,25 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
     return Hero(
       tag: 'announcement_${announcement.id}',
       child: Container(
-        height: 200,
+        height: 160,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
           ),
           child: Stack(
             children: [
@@ -683,7 +694,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                     'https://kkktmiyuji.nitusue.com/admin/matangazo/${announcement.image}',
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: 200,
+                height: 160,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -698,18 +709,18 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 ),
               ),
               Positioned(
-                top: 15,
-                right: 15,
+                top: 10,
+                right: 10,
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: MyColors.primaryLight,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
-                        blurRadius: 8,
+                        blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),
                     ],
@@ -720,14 +731,14 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                       const Icon(
                         Icons.calendar_today_rounded,
                         color: Colors.white,
-                        size: 12,
+                        size: 10,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 3),
                       Text(
                         DateFormat('dd MMM').format(announcement.tarehe!),
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 9,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -744,25 +755,25 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
 
   Widget _buildAnnouncementContent(Matangazo announcement) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: MyColors.primaryLight.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Image.asset(
                   "assets/images/logo.png",
-                  width: 24,
-                  height: 24,
+                  width: 18,
+                  height: 18,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -773,7 +784,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                           ? currentUser!.kanisaName
                           : "KANISANI",
                       style: GoogleFonts.poppins(
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w600,
                         color: MyColors.primaryLight,
                       ),
@@ -782,7 +793,7 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                       DateFormat('dd MMMM yyyy, HH:mm')
                           .format(announcement.tarehe!),
                       style: GoogleFonts.poppins(
-                        fontSize: 10,
+                        fontSize: 9,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -790,44 +801,44 @@ class _MatangazoScreenState extends State<MatangazoScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Icon(
                   Icons.arrow_forward_ios_rounded,
-                  size: 12,
+                  size: 10,
                   color: Colors.green[600],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           _buildHighlightedText(
             announcement.title.toString(),
             searchController.text,
             GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Colors.grey[800],
               height: 1.3,
             ),
             maxLines: 2,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Row(
             children: [
               Icon(
                 Icons.info_outline_rounded,
-                size: 14,
+                size: 12,
                 color: Colors.grey[500],
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 4),
               Text(
                 "Bonyeza kusoma zaidi",
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: 10,
                   color: Colors.grey[500],
                 ),
               ),

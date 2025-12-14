@@ -51,10 +51,10 @@ class _KwayaZetuState extends State<KwayaZetu>
         verticalOffset: 50.0,
         child: FadeInAnimation(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Material(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -65,7 +65,7 @@ class _KwayaZetuState extends State<KwayaZetu>
                     );
                   },
                   child: Container(
-                    height: 80,
+                    height: 60,
                     decoration: BoxDecoration(
                       gradient: isPrimary
                           ? LinearGradient(
@@ -78,19 +78,19 @@ class _KwayaZetuState extends State<KwayaZetu>
                             )
                           : null,
                       color: isPrimary ? null : Colors.white,
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
                         ),
                       ],
                       border: Border.all(
                         color: isPrimary
                             ? Colors.transparent
                             : MyColors.primaryLight,
-                        width: 2,
+                        width: 1.5,
                       ),
                     ),
                     child: Center(
@@ -100,7 +100,7 @@ class _KwayaZetuState extends State<KwayaZetu>
                         style: TextStyle(
                           color:
                               isPrimary ? Colors.white : MyColors.primaryLight,
-                          fontSize: deviceHeight(context) / 30,
+                          fontSize: deviceHeight(context) / 45,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -120,7 +120,7 @@ class _KwayaZetuState extends State<KwayaZetu>
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: GestureDetector(
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios, size: 18),
           onTap: () {
             Navigator.pop(context);
           },
@@ -128,7 +128,7 @@ class _KwayaZetuState extends State<KwayaZetu>
         middle: Text(
           "Kwaya Zetu",
           style: TextStyles.headline(context).copyWith(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: MyColors.primaryLight,
           ),
@@ -169,6 +169,7 @@ class _KwayaZetuState extends State<KwayaZetu>
                     "Karibu Kwaya Zetu",
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -178,9 +179,9 @@ class _KwayaZetuState extends State<KwayaZetu>
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    SizedBox(height: deviceHeight(context) / 40),
+                    SizedBox(height: deviceHeight(context) / 50),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: AnimationLimiter(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +211,7 @@ class _KwayaZetuState extends State<KwayaZetu>
                               kwayaId: 5,
                               isPrimary: false,
                             ),
-                            SizedBox(height: deviceHeight(context) / 20),
+                            SizedBox(height: deviceHeight(context) / 30),
                           ],
                         ),
                       ),
