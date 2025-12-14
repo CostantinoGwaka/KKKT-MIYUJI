@@ -112,7 +112,7 @@ class _WasharikaKanisaniViongoziScreenState
         title: Text(
           'Washarika wa Kanisa',
           style: GoogleFonts.poppins(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
@@ -126,7 +126,7 @@ class _WasharikaKanisaniViongoziScreenState
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  fontSize: MediaQuery.of(context).size.width * 0.028,
                 ),
               ),
             ),
@@ -136,7 +136,7 @@ class _WasharikaKanisaniViongoziScreenState
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  fontSize: MediaQuery.of(context).size.width * 0.028,
                 ),
               ),
             ),
@@ -146,7 +146,7 @@ class _WasharikaKanisaniViongoziScreenState
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  fontSize: MediaQuery.of(context).size.width * 0.028,
                 ),
               ),
             ),
@@ -174,21 +174,22 @@ class _WasharikaKanisaniViongoziScreenState
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Tafuta jina, simu au jumuiya...',
-                  prefixIcon: Icon(Icons.search, color: MyColors.primaryLight),
+                  prefixIcon: Icon(Icons.search,
+                      color: MyColors.primaryLight, size: 20),
                   filled: true,
                   fillColor: Colors.grey.shade100,
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: GoogleFonts.poppins(fontSize: 14),
+                style: GoogleFonts.poppins(fontSize: 13),
                 onChanged: (value) {
                   setState(() {
                     searchQuery = value;
@@ -199,10 +200,10 @@ class _WasharikaKanisaniViongoziScreenState
             Expanded(
               child: isLoading
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
+                      padding: const EdgeInsets.only(top: 40.0),
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(90.0),
+                          padding: const EdgeInsets.all(70.0),
                           child: Column(
                             children: [
                               SizedBox(
@@ -211,14 +212,14 @@ class _WasharikaKanisaniViongoziScreenState
                                 ),
                               ),
                               const SizedBox(
-                                height: 20,
+                                height: 16,
                               ),
                               Material(
                                 child: Text(
                                   "Inapanga taarifa",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12.0,
+                                    fontSize: 11.0,
                                     color: MyColors.primaryLight,
                                   ),
                                 ),
@@ -235,10 +236,10 @@ class _WasharikaKanisaniViongoziScreenState
                             children: [
                               Icon(
                                 Icons.warning_amber_rounded,
-                                size: 64,
+                                size: 56,
                                 color: Colors.orange.shade300,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 12),
                               Text(
                                 selectedStatus == 'yes'
                                     ? 'Hakuna washarika waliokubaliwa'
@@ -246,7 +247,7 @@ class _WasharikaKanisaniViongoziScreenState
                                         ? 'Hakuna washarika waliokataliwa'
                                         : 'Hakuna washarika Wote',
                                 style: GoogleFonts.poppins(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Colors.grey,
                                 ),
                               ),
@@ -255,14 +256,14 @@ class _WasharikaKanisaniViongoziScreenState
                         )
                       : ListView.builder(
                           itemCount: filteredWasharikaData.length,
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(12),
                           itemBuilder: (context, index) {
                             final msharika = filteredWasharikaData[index];
                             return Card(
-                                elevation: 4,
-                                margin: const EdgeInsets.only(bottom: 18),
+                                elevation: 3,
+                                margin: const EdgeInsets.only(bottom: 12),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
+                                  borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Column(
                                   children: [
@@ -280,24 +281,24 @@ class _WasharikaKanisaniViongoziScreenState
                                           end: Alignment.bottomRight,
                                         ),
                                         borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(18),
-                                          topRight: Radius.circular(18),
+                                          topLeft: Radius.circular(14),
+                                          topRight: Radius.circular(14),
                                         ),
                                       ),
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 18, horizontal: 18),
+                                          vertical: 12, horizontal: 12),
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            radius: 28,
+                                            radius: 22,
                                             backgroundColor: Colors.white,
                                             child: Icon(
                                               Icons.person,
                                               color: MyColors.primaryLight,
-                                              size: 32,
+                                              size: 26,
                                             ),
                                           ),
-                                          const SizedBox(width: 16),
+                                          const SizedBox(width: 12),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -307,22 +308,22 @@ class _WasharikaKanisaniViongoziScreenState
                                                   msharika.jinaLaMsharika,
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
+                                                    fontSize: 15,
                                                     color: Colors.white,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 4),
+                                                const SizedBox(height: 3),
                                                 Row(
                                                   children: [
                                                     const Icon(Icons.group,
                                                         color: Colors.white70,
-                                                        size: 16),
-                                                    const SizedBox(width: 4),
+                                                        size: 14),
+                                                    const SizedBox(width: 3),
                                                     Text(
                                                       msharika.jinaLaJumuiya,
                                                       style:
                                                           GoogleFonts.poppins(
-                                                        fontSize: 13,
+                                                        fontSize: 12,
                                                         color: Colors.white70,
                                                       ),
                                                     ),
@@ -332,13 +333,13 @@ class _WasharikaKanisaniViongoziScreenState
                                                   children: [
                                                     const Icon(Icons.phone,
                                                         color: Colors.white70,
-                                                        size: 16),
-                                                    const SizedBox(width: 4),
+                                                        size: 14),
+                                                    const SizedBox(width: 3),
                                                     Text(
                                                       msharika.nambaYaSimu,
                                                       style:
                                                           GoogleFonts.poppins(
-                                                        fontSize: 13,
+                                                        fontSize: 12,
                                                         color: Colors.white70,
                                                       ),
                                                     ),
@@ -349,7 +350,7 @@ class _WasharikaKanisaniViongoziScreenState
                                           ),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 6),
+                                                horizontal: 8, vertical: 4),
                                             decoration: BoxDecoration(
                                               color: msharika.katibuStatus ==
                                                       'yes'
@@ -359,7 +360,7 @@ class _WasharikaKanisaniViongoziScreenState
                                                       ? Colors.red.shade600
                                                       : Colors.orange.shade600,
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(8),
                                             ),
                                             child: Text(
                                               msharika.katibuStatus == 'yes'
@@ -369,7 +370,7 @@ class _WasharikaKanisaniViongoziScreenState
                                                       ? 'Amekataliwa'
                                                       : 'Haijashughulikiwa',
                                               style: GoogleFonts.poppins(
-                                                fontSize: 12,
+                                                fontSize: 10,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -380,21 +381,21 @@ class _WasharikaKanisaniViongoziScreenState
                                     ),
                                     ExpansionTile(
                                       tilePadding: const EdgeInsets.symmetric(
-                                          horizontal: 18),
+                                          horizontal: 12),
                                       childrenPadding:
                                           const EdgeInsets.symmetric(
-                                              horizontal: 18, vertical: 8),
+                                              horizontal: 12, vertical: 6),
                                       title: Row(
                                         children: [
                                           Icon(Icons.info_outline,
                                               color: MyColors.primaryLight,
-                                              size: 20),
-                                          const SizedBox(width: 8),
+                                              size: 18),
+                                          const SizedBox(width: 6),
                                           Text(
                                             "Taarifa za Washarika",
                                             style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 15,
+                                              fontSize: 13,
                                               color: MyColors.primaryLight,
                                             ),
                                           ),
@@ -402,107 +403,10 @@ class _WasharikaKanisaniViongoziScreenState
                                       ),
                                       children: [
                                         Wrap(
-                                          runSpacing: 8,
+                                          runSpacing: 6,
                                           children: [
                                             MsharikaInfoCard(
                                                 msharika: msharika),
-                                            // _buildIconDetailRow(Icons.wc,
-                                            //     'Jinsia', msharika.jinsia),
-                                            // _buildIconDetailRow(Icons.cake,
-                                            //     'Umri', msharika.umri),
-                                            // _buildIconDetailRow(
-                                            //     Icons.favorite,
-                                            //     'Hali ya Ndoa',
-                                            //     msharika.haliYaNdoa),
-                                            // _buildIconDetailRow(
-                                            //     Icons.person_outline,
-                                            //     'Jina la Mwenzi',
-                                            //     msharika.jinaLaMwenziWako),
-                                            // _buildIconDetailRow(
-                                            //     Icons.confirmation_number,
-                                            //     'Namba ya Ahadi',
-                                            //     msharika.nambaYaAhadi),
-                                            // _buildIconDetailRow(
-                                            //     Icons.family_restroom,
-                                            //     'Aina ya Ndoa',
-                                            //     msharika.ainaNdoa),
-                                            // if (msharika
-                                            //     .jinaMtoto1.isNotEmpty) ...[
-                                            //   _buildIconDetailRow(
-                                            //       Icons.child_care,
-                                            //       'Mtoto 1',
-                                            //       msharika.jinaMtoto1),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.calendar_today,
-                                            //       'Tarehe (Mtoto 1)',
-                                            //       msharika.tareheMtoto1),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.people,
-                                            //       'Uhusiano (Mtoto 1)',
-                                            //       msharika.uhusianoMtoto1),
-                                            // ],
-                                            // if (msharika
-                                            //     .jinaMtoto2.isNotEmpty) ...[
-                                            //   _buildIconDetailRow(
-                                            //       Icons.child_care,
-                                            //       'Mtoto 2',
-                                            //       msharika.jinaMtoto2),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.calendar_today,
-                                            //       'Tarehe (Mtoto 2)',
-                                            //       msharika.tareheMtoto2),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.people,
-                                            //       'Uhusiano (Mtoto 2)',
-                                            //       msharika.uhusianoMtoto2),
-                                            // ],
-                                            // if (msharika
-                                            //     .jinaMtoto3.isNotEmpty) ...[
-                                            //   _buildIconDetailRow(
-                                            //       Icons.child_care,
-                                            //       'Mtoto 3',
-                                            //       msharika.jinaMtoto3),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.calendar_today,
-                                            //       'Tarehe (Mtoto 3)',
-                                            //       msharika.tareheMtoto3),
-                                            //   _buildIconDetailRow(
-                                            //       Icons.people,
-                                            //       'Uhusiano (Mtoto 3)',
-                                            //       msharika.uhusianoMtoto3),
-                                            // ],
-                                            // _buildIconDetailRow(Icons.home_work,
-                                            //     'Jengo', msharika.jengo),
-                                            // _buildIconDetailRow(
-                                            //     Icons.monetization_on,
-                                            //     'Ahadi',
-                                            //     msharika.ahadi),
-                                            // _buildIconDetailRow(Icons.work,
-                                            //     'Kazi', msharika.kazi),
-                                            // _buildIconDetailRow(Icons.school,
-                                            //     'Elimu', msharika.elimu),
-                                            // _buildIconDetailRow(Icons.star,
-                                            //     'Ujuzi', msharika.ujuzi),
-                                            // _buildIconDetailRow(
-                                            //     Icons.location_city,
-                                            //     'Mahali pa Kazi',
-                                            //     msharika.mahaliPakazi),
-                                            // _buildIconDetailRow(
-                                            //     Icons.groups,
-                                            //     'Jumuiya Ushiriki',
-                                            //     msharika.jumuiyaUshiriki),
-                                            // _buildIconDetailRow(
-                                            //     Icons.person,
-                                            //     'Katibu Jumuiya',
-                                            //     msharika.katibuJumuiya),
-                                            // _buildIconDetailRow(
-                                            //     Icons.check_circle,
-                                            //     'Kama Ushiriki',
-                                            //     msharika.kamaUshiriki),
-                                            // _buildIconDetailRow(
-                                            //     Icons.date_range,
-                                            //     'Tarehe ya Usajili',
-                                            //     msharika.tarehe),
                                           ],
                                         ),
                                         if (msharika.katibuStatus == 'null' ||
@@ -511,15 +415,17 @@ class _WasharikaKanisaniViongoziScreenState
                                             msharika.mzeeStatus.isEmpty)
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 12.0, bottom: 8.0),
+                                                top: 8.0, bottom: 6.0),
                                             child: ElevatedButton.icon(
                                               icon: const Icon(
                                                   Icons.verified_user,
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  size: 18),
                                               label: Text(
                                                 "Kubali/Kataa Washarika",
                                                 style: GoogleFonts.poppins(
                                                   fontWeight: FontWeight.w600,
+                                                  fontSize: 13,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -528,12 +434,12 @@ class _WasharikaKanisaniViongoziScreenState
                                                     MyColors.primaryLight,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(8),
                                                 ),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 18,
-                                                        vertical: 12),
+                                                        horizontal: 14,
+                                                        vertical: 10),
                                               ),
                                               onPressed: () {
                                                 _showApproveSheet(
@@ -564,46 +470,47 @@ class _WasharikaKanisaniViongoziScreenState
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (ctx) {
         return Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(18.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.verified_user, size: 40, color: MyColors.primaryLight),
-              const SizedBox(height: 12),
+              Icon(Icons.verified_user, size: 36, color: MyColors.primaryLight),
+              const SizedBox(height: 10),
               Text(
                 "Kubali au Kataa Washarika",
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: MyColors.primaryLight,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 msharika.jinaLaMsharika,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 18),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      icon: const Icon(Icons.check, color: Colors.white),
+                      icon: const Icon(Icons.check,
+                          color: Colors.white, size: 18),
                       label: Text("Kubali",
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600, fontSize: 13)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                            borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       onPressed: () async {
                         Navigator.pop(ctx);
@@ -611,18 +518,19 @@ class _WasharikaKanisaniViongoziScreenState
                       },
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton.icon(
-                      icon: const Icon(Icons.close, color: Colors.white),
+                      icon: const Icon(Icons.close,
+                          color: Colors.white, size: 18),
                       label: Text("Kataa",
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600, fontSize: 13)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                            borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       onPressed: () async {
                         Navigator.pop(ctx);
