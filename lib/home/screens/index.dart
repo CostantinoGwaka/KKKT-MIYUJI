@@ -332,14 +332,15 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildMenu(BuildContext context) {
     return GridView.builder(
-      padding: const EdgeInsets.all(0),
+      padding: EdgeInsets.zero,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1.0,
+        crossAxisCount: 4,
+        childAspectRatio: 0.85,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),
       itemCount: menuList.length,
+      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         final menuItem = menuList[index];
@@ -363,11 +364,11 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
-            blurRadius: 8,
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
@@ -379,43 +380,43 @@ class _HomePageState extends State<HomePage> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           onTap: () {
             Alerts.showCupertinoAlert(
               context,
               "${menuItem['name']}(Guest)",
-              "Tafadahari ingia kwenye akaunti yako ili kuweza kupata huduma hii. Mtu ambaye hauna akaunti ya msharika tafadhari jisajili. Ahsante.",
+              "Tafadahari ingia kwenye akaunti yako ili kuweza kupata huduma hii. Mtu ambaye hauna akaunti ya msharika tafadahari jisajili. Ahsante.",
             );
           },
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: SizedBox(
-                    height: 32,
-                    width: 32,
+                    height: 24,
+                    width: 24,
                     child: Lottie.asset(
                       'assets/animation/access_denided.json',
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   "${menuItem['name']}\n(Guest)",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 9,
+                    fontSize: 8,
                     fontWeight: FontWeight.w600,
                     color: Colors.red.shade400,
-                    height: 1.2,
+                    height: 1.1,
                   ),
                 ),
               ],
@@ -430,12 +431,12 @@ class _HomePageState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: Colors.grey.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
         border: Border.all(
@@ -446,15 +447,15 @@ class _HomePageState extends State<HomePage> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(14),
           onTap: () => _handleMenuNavigation(menuItem['pushTo']),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
@@ -464,32 +465,32 @@ class _HomePageState extends State<HomePage> {
                         MyColors.primaryLight.withOpacity(0.05),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: MyColors.primaryLight.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
+                        color: MyColors.primaryLight.withOpacity(0.08),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
                   child: Image.asset(
                     menuItem['image'],
-                    height: 28,
-                    width: 28,
+                    height: 22,
+                    width: 22,
                     color: MyColors.primaryLight,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Text(
                   menuItem['name'],
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 11,
+                    fontSize: 9,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
-                    height: 1.2,
-                    letterSpacing: 0.3,
+                    height: 1.1,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ],
@@ -608,34 +609,37 @@ class _HomePageState extends State<HomePage> {
             if (currentUser != null && currentUser!.userType == 'KATIBU') ...[
               const SizedBox(height: 10),
               GridView.count(
-                  padding: EdgeInsets.zero,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildAdminGridButton(
-                      icon: Icons.people_outline,
-                      title: 'Washarika',
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const WasharikaKanisaniViongoziScreen(
-                            isWho: 'iskatibu',
-                          ),
+                padding: EdgeInsets.zero,
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 0.85,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildAdminGridButton(
+                    icon: Icons.people_outline,
+                    title: 'Washarika',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const WasharikaKanisaniViongoziScreen(
+                          isWho: 'iskatibu',
                         ),
                       ),
                     ),
-                  ]),
+                  ),
+                ],
+              ),
             ],
             if (currentUser != null && currentUser!.userType == 'MZEE') ...[
               const SizedBox(height: 10),
               GridView.count(
                   padding: EdgeInsets.zero,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 2,
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.85,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
@@ -657,9 +661,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
               GridView.count(
                 padding: EdgeInsets.zero,
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 2,
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                childAspectRatio: 0.85,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
@@ -1133,9 +1138,10 @@ class _HomePageState extends State<HomePage> {
     required VoidCallback onTap,
   }) {
     return Container(
+      height: 80,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           colors: [
             MyColors.primaryLight,
@@ -1146,36 +1152,36 @@ class _HomePageState extends State<HomePage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: MyColors.primaryLight.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: MyColors.primaryLight.withOpacity(0.15),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(6.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   icon,
-                  size: 32,
+                  size: 20,
                   color: Colors.white,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Text(
                   title,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 12,
+                    fontSize: 8,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    height: 1.2,
+                    height: 1.1,
                   ),
                 ),
               ],

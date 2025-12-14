@@ -99,7 +99,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 2, 17, 25),
+                padding: const EdgeInsets.fromLTRB(16, 2, 16, 16),
                 child: Column(
                   children: [
                     Row(
@@ -111,32 +111,32 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                             Text(
                               "Viongozi Wa Kanisa",
                               style: GoogleFonts.montserrat(
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: MyColors.primaryLight,
                                 height: 1.2,
                               ),
                             ),
-                            const SizedBox(height: 5),
+                            const SizedBox(height: 4),
                             Text(
                               "Orodha ya viongozi wote",
                               style: GoogleFonts.montserrat(
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.grey[600],
                               ),
                             ),
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: MyColors.primaryLight.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
                             Icons.group,
                             color: MyColors.primaryLight,
-                            size: 24,
+                            size: 20,
                           ),
                         ),
                       ],
@@ -157,13 +157,13 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                             children: [
                               Lottie.asset(
                                 'assets/animation/fetching.json',
-                                height: 120,
+                                height: 100,
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 16),
                               Text(
                                 "Inapanga taarifa...",
                                 style: GoogleFonts.montserrat(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: MyColors.primaryLight,
                                 ),
@@ -178,13 +178,13 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                             children: [
                               Lottie.asset(
                                 'assets/animation/nodata.json',
-                                height: 120,
+                                height: 100,
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 16),
                               Text(
                                 "Hakuna taarifa zilizopatikana",
                                 style: GoogleFonts.montserrat(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: MyColors.primaryLight,
                                 ),
@@ -194,17 +194,17 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                         );
                       } else if (snapshot.hasData) {
                         return ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (_, index) {
                             return Container(
                               margin: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 8),
+                                  horizontal: 12, vertical: 6),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.1),
@@ -215,11 +215,11 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                   ],
                                 ),
                                 child: Container(
-                                  padding: const EdgeInsets.all(15),
+                                  padding: const EdgeInsets.all(12),
                                   child: Row(
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.all(3),
+                                        padding: const EdgeInsets.all(2),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           gradient: LinearGradient(
@@ -234,16 +234,16 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                           ),
                                         ),
                                         child: CircleAvatar(
-                                          radius: 30,
+                                          radius: 24,
                                           backgroundColor: MyColors.primaryLight
                                               .withOpacity(0.1),
                                           child: Image.asset(
                                             "assets/images/useravatar.png",
-                                            height: 40,
+                                            height: 32,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(width: 15),
+                                      const SizedBox(width: 12),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
@@ -252,7 +252,7 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                             Text(
                                               snapshot.data![index].fname!,
                                               style: GoogleFonts.montserrat(
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.black87,
                                                 height: 1.2,
@@ -260,12 +260,12 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                            const SizedBox(height: 6),
+                                            const SizedBox(height: 5),
                                             Container(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 6,
+                                                horizontal: 10,
+                                                vertical: 4,
                                               ),
                                               decoration: BoxDecoration(
                                                 gradient: LinearGradient(
@@ -277,24 +277,24 @@ class _ViongoziWaKanisaState extends State<ViongoziWaKanisa> {
                                                   ],
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(20),
+                                                    BorderRadius.circular(16),
                                               ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Icon(
                                                     Icons.star,
-                                                    size: 14,
+                                                    size: 12,
                                                     color: MyColors.primaryLight
                                                         .withOpacity(0.7),
                                                   ),
-                                                  const SizedBox(width: 4),
+                                                  const SizedBox(width: 3),
                                                   Text(
                                                     snapshot
                                                         .data![index].wadhifa!,
                                                     style:
                                                         GoogleFonts.montserrat(
-                                                      fontSize: 13,
+                                                      fontSize: 11,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       color:

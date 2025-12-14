@@ -111,11 +111,12 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/animation/fetching.json', height: 120),
-          const SizedBox(height: 20),
+          Lottie.asset('assets/animation/fetching.json', height: 100),
+          const SizedBox(height: 16),
           Text(
             "Inapanga taarifa...",
             style: GoogleFonts.poppins(
+              fontSize: 13,
               color: MyColors.primaryLight,
             ),
           ),
@@ -129,10 +130,11 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset('assets/animation/nodata.json', height: 120),
+          Lottie.asset('assets/animation/nodata.json', height: 100),
           Text(
             "Hakuna taarifa zilizopatikana",
             style: GoogleFonts.poppins(
+              fontSize: 13,
               color: MyColors.primaryLight,
             ),
           ),
@@ -175,32 +177,32 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                       Text(
                         "Ratiba na Akaunti",
                         style: GoogleFonts.montserrat(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: MyColors.primaryLight,
                           height: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 4),
                       Text(
                         "Orodha ratiba za ibada na akaunti za kanisa",
                         style: GoogleFonts.montserrat(
-                          fontSize: 12,
+                          fontSize: 11,
                           color: Colors.grey[600],
                         ),
                       ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: MyColors.primaryLight.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
                       Icons.group,
                       color: MyColors.primaryLight,
-                      size: 24,
+                      size: 20,
                     ),
                   ),
                 ],
@@ -208,14 +210,14 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
             ],
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(65),
+            preferredSize: const Size.fromHeight(55),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: TabBar(
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(4),
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16),
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -230,16 +232,16 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                 tabs: [
                   Tab(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.event_note, size: 20),
-                          const SizedBox(width: 8),
+                          const Icon(Icons.event_note, size: 16),
+                          const SizedBox(width: 6),
                           Text(
                             "Ratiba",
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -249,16 +251,16 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                   ),
                   Tab(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.account_balance_wallet, size: 20),
-                          const SizedBox(width: 8),
+                          const Icon(Icons.account_balance_wallet, size: 16),
+                          const SizedBox(width: 6),
                           Text(
                             "Akaunti",
                             style: GoogleFonts.poppins(
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -308,47 +310,47 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                 final item = snapshot.data![index];
                                 return Container(
                                   margin: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
+                                      horizontal: 16, vertical: 6),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.05),
                                         spreadRadius: 0,
-                                        blurRadius: 15,
+                                        blurRadius: 12,
                                         offset: const Offset(0, 2),
                                       ),
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(12),
                                     child: Row(
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.all(12),
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             color: MyColors.primaryLight
                                                 .withOpacity(0.1),
                                             borderRadius:
-                                                BorderRadius.circular(15),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 color: MyColors.primaryLight
                                                     .withOpacity(0.05),
                                                 spreadRadius: 0,
-                                                blurRadius: 10,
+                                                blurRadius: 8,
                                                 offset: const Offset(0, 2),
                                               ),
                                             ],
                                           ),
                                           child: Image.asset(
                                             "assets/images/kanisa.png",
-                                            height: 30,
-                                            width: 30,
+                                            height: 24,
+                                            width: 24,
                                           ),
                                         ),
-                                        const SizedBox(width: 16),
+                                        const SizedBox(width: 12),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -357,17 +359,17 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                               Text(
                                                 item.jina ?? '',
                                                 style: GoogleFonts.poppins(
-                                                  fontSize: 16,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.bold,
                                                   color: MyColors.primaryLight,
                                                 ),
                                               ),
-                                              const SizedBox(height: 4),
+                                              const SizedBox(height: 3),
                                               Row(
                                                 children: [
                                                   Icon(
                                                     Icons.access_time,
-                                                    size: 16,
+                                                    size: 14,
                                                     color: Colors.grey[600],
                                                   ),
                                                   const SizedBox(width: 4),
@@ -376,7 +378,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                       item.muda ?? '',
                                                       style:
                                                           GoogleFonts.poppins(
-                                                        fontSize: 14,
+                                                        fontSize: 12,
                                                         color: Colors.grey[600],
                                                       ),
                                                       overflow:
@@ -390,7 +392,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         ),
                                         Icon(
                                           Icons.arrow_forward_ios,
-                                          size: 16,
+                                          size: 14,
                                           color: Colors.grey[400],
                                         ),
                                       ],
@@ -436,11 +438,12 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                         content: Row(
                                           children: [
                                             const Icon(Icons.check_circle,
-                                                color: Colors.white),
+                                                color: Colors.white, size: 18),
                                             const SizedBox(width: 8),
                                             Text(
                                               'Namba ya akaunti imenakiliwa',
-                                              style: GoogleFonts.poppins(),
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 13),
                                             ),
                                           ],
                                         ),
@@ -456,38 +459,38 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
+                                        horizontal: 16, vertical: 6),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(16),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.1),
                                           spreadRadius: 1,
-                                          blurRadius: 10,
+                                          blurRadius: 8,
                                           offset: const Offset(0, 1),
                                         ),
                                       ],
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(16),
+                                      padding: const EdgeInsets.all(12),
                                       child: Row(
                                         children: [
                                           Container(
-                                            padding: const EdgeInsets.all(12),
+                                            padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                               color: MyColors.primaryLight
                                                   .withOpacity(0.1),
                                               borderRadius:
-                                                  BorderRadius.circular(15),
+                                                  BorderRadius.circular(12),
                                             ),
                                             child: Icon(
                                               Icons.account_balance,
                                               color: MyColors.primaryLight,
-                                              size: 24,
+                                              size: 20,
                                             ),
                                           ),
-                                          const SizedBox(width: 16),
+                                          const SizedBox(width: 12),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -496,18 +499,18 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                 Text(
                                                   item.jina ?? '',
                                                   style: GoogleFonts.poppins(
-                                                    fontSize: 16,
+                                                    fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                     color:
                                                         MyColors.primaryLight,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 4),
+                                                const SizedBox(height: 3),
                                                 Row(
                                                   children: [
                                                     Icon(
                                                       Icons.numbers,
-                                                      size: 16,
+                                                      size: 14,
                                                       color: Colors.grey[600],
                                                     ),
                                                     const SizedBox(width: 4),
@@ -515,7 +518,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                                       item.namba ?? '',
                                                       style:
                                                           GoogleFonts.poppins(
-                                                        fontSize: 14,
+                                                        fontSize: 12,
                                                         color: Colors.grey[600],
                                                       ),
                                                     ),
@@ -525,7 +528,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             ),
                                           ),
                                           Container(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(6),
                                             decoration: BoxDecoration(
                                               color: MyColors.primaryLight
                                                   .withOpacity(0.1),
@@ -534,7 +537,7 @@ class _RatibaZaIbadaState extends State<RatibaZaIbada> {
                                             ),
                                             child: Icon(
                                               Icons.copy,
-                                              size: 16,
+                                              size: 14,
                                               color: MyColors.primaryLight,
                                             ),
                                           ),
