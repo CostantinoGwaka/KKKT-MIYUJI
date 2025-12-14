@@ -34,28 +34,27 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
         headers: {
           'Accept': 'application/json',
         },
-         body: jsonEncode({
-        "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
-      }),
+        body: jsonEncode({
+          "kanisa_id": currentUser != null ? currentUser!.kanisaId : '',
+        }),
       );
-
 
       var baraza = <Manenosiku>[];
 
       if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
-        var json = jsonDecode(response.body);
-        if (json is Map &&
-            json.containsKey('data') &&
-            json['data'] != null &&
-            json['data'] is List) {
-          baraza = (json['data'] as List)
-              .map((item) => Manenosiku.fromJson(item))
-              .toList();
+        var jsonResponse = json.decode(response.body);
+        if (jsonResponse != null && jsonResponse != 404) {
+          var json = jsonDecode(response.body);
+          if (json is Map &&
+              json.containsKey('data') &&
+              json['data'] != null &&
+              json['data'] is List) {
+            baraza = (json['data'] as List)
+                .map((item) => Manenosiku.fromJson(item))
+                .toList();
+          }
         }
       }
-    }
       return baraza;
     } catch (e) {
       return [];
@@ -71,13 +70,13 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
     });
   }
 
-   @override
+  @override
   void initState() {
     checkLogin();
     super.initState();
   }
 
-   void checkLogin() async {
+  void checkLogin() async {
     // Get current user using UserManager
     BaseUser? user = await UserManager.getCurrentUser();
     setState(() {
@@ -144,7 +143,9 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                   ),
                 ),
               );
-            } else if (snapshot.hasError || !snapshot.hasData) {
+            } else if (snapshot.hasError ||
+                !snapshot.hasData ||
+                snapshot.data!.isEmpty) {
               return RefreshIndicator(
                 onRefresh: _pullRefresh,
                 child: Padding(
@@ -184,7 +185,8 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (cintext, index) {
                   return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -226,13 +228,15 @@ class _NenoLaSikuState extends State<NenoLaSiku> {
                               ),
                               manualStepper(step: 12),
                               Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[50],
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Row(
                                       children: [
