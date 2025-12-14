@@ -514,16 +514,20 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Column(
         children: [
-          Text(
-            (currentUser != null && currentUser!.kanisaName.isNotEmpty)
-                ? currentUser!.kanisaName
-                : "KANISANI",
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
+          Column(
+            children: [
+              Text(
+                (currentUser != null && currentUser!.kanisaName.isNotEmpty)
+                    ? currentUser!.kanisaName
+                    : "KANISANI",
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 4),
           Container(
@@ -802,13 +806,26 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Karibu,",
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: MyColors.primaryLight,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Karibu,",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: MyColors.primaryLight,
+              ),
+            ),
+            Text(
+              DateFormat('EEE, MMM d').format(DateTime.now()),
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.black54,
+              ),
+              maxLines: 1,
+            )
+          ],
         ),
         const SizedBox(height: 2),
         Row(
