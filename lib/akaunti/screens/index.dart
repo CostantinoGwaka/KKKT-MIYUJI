@@ -16,7 +16,7 @@ import 'package:kanisaapp/utils/Alerts.dart';
 import 'package:kanisaapp/utils/my_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:kanisaapp/utils/user_manager.dart';
 import 'package:kanisaapp/models/user_models.dart';
