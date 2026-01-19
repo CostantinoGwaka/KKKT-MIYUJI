@@ -100,10 +100,6 @@ class _LoginState extends State<Login> {
         // Store user data using UserManager
         await UserManager.saveCurrentUser(user);
 
-        // Remove loader
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pop();
-
         // Add user to Firebase database based on user type
         await _addUserToFirebase(user, token);
 
@@ -113,6 +109,10 @@ class _LoginState extends State<Login> {
             user.memberNo.toString().isNotEmpty) {
           await checkMtumishi(user.memberNo.toString());
         }
+
+        // Remove loader
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop();
 
         // Navigate to home page
         // ignore: use_build_context_synchronously

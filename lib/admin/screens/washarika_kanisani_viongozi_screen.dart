@@ -392,7 +392,7 @@ class _WasharikaKanisaniViongoziScreenState
                                               size: 18),
                                           const SizedBox(width: 6),
                                           Text(
-                                            "Taarifa za Washarika",
+                                            "Taarifa za Msharika",
                                             style: GoogleFonts.poppins(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 13,
