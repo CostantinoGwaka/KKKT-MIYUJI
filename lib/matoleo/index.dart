@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:kanisaapp/models/user_models.dart';
 import 'package:kanisaapp/utils/ApiUrl.dart';
@@ -21,6 +22,9 @@ class MatoleoScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<MatoleoScreen> {
   BaseUser? currentUser;
+  String searchQuery = '';
+  DateTime? startDate;
+  DateTime? endDate;
 
   @override
   void initState() {
@@ -38,25 +42,23 @@ class _ChatScreenState extends State<MatoleoScreen> {
   Future<dynamic> getSadakaZako() async {
     if (currentUser == null) return null;
 
-    String myApi = "${ApiUrl.BASEURL}get_sadaka.php";
     final response = await http.post(
-      Uri.parse(myApi),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "member_no": currentUser!.memberNo,
-      },
+      Uri.parse("${ApiUrl.BASEURL}api2/sadaka/get_sadaka_kwa_user.php"),
+      body: jsonEncode({"user_id": currentUser!.id}),
+      headers: {'Content-Type': 'application/json'},
     );
-
     var baraza;
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
-      if (jsonResponse != null && jsonResponse != 404) {
+      if (jsonResponse != null && jsonResponse['status'] != 404) {
         var json = jsonDecode(response.body);
-        baraza = json;
+        baraza = json['data'];
+      } else {
+        baraza = [];
       }
-    } else {}
+    } else {
+      baraza = [];
+    }
 
     return baraza;
   }
@@ -64,15 +66,10 @@ class _ChatScreenState extends State<MatoleoScreen> {
   Future<dynamic> getJumlaAhadi() async {
     if (currentUser == null) return 0;
 
-    String myApi = "${ApiUrl.BASEURL}get_jumla_ahadi_sadaka.php";
     final response = await http.post(
-      Uri.parse(myApi),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: {
-        "member_no": currentUser!.memberNo,
-      },
+      Uri.parse("${ApiUrl.BASEURL}api2/sadaka/get_sadaka_kwa_user.php"),
+      body: jsonEncode({"user_id": currentUser!.id}),
+      headers: {'Content-Type': 'application/json'},
     );
 
     var baraza;
@@ -472,6 +469,169 @@ class _ChatScreenState extends State<MatoleoScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
+                  // Search Field
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Tafuta kwa namba, ahadi, jengo au tarehe...',
+                      hintStyle: GoogleFonts.poppins(fontSize: 12),
+                      prefixIcon: Icon(Icons.search,
+                          color: MyColors.primaryLight, size: 20),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    style: GoogleFonts.poppins(fontSize: 13),
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  // Date Range Filter
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: startDate ?? DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime.now(),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                startDate = picked;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: startDate != null
+                                    ? MyColors.primaryLight
+                                    : Colors.grey.shade300,
+                                width: startDate != null ? 1.5 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.calendar_today,
+                                  size: 16,
+                                  color: startDate != null
+                                      ? MyColors.primaryLight
+                                      : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  startDate != null
+                                      ? DateFormat('dd/MM/yyyy')
+                                          .format(startDate!)
+                                      : 'Kuanzia',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: startDate != null
+                                        ? MyColors.primaryLight
+                                        : Colors.grey.shade600,
+                                    fontWeight: startDate != null
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: endDate ?? DateTime.now(),
+                              firstDate: startDate ?? DateTime(2020),
+                              lastDate: DateTime.now(),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                endDate = picked;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: endDate != null
+                                    ? MyColors.primaryLight
+                                    : Colors.grey.shade300,
+                                width: endDate != null ? 1.5 : 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.calendar_today,
+                                  size: 16,
+                                  color: endDate != null
+                                      ? MyColors.primaryLight
+                                      : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  endDate != null
+                                      ? DateFormat('dd/MM/yyyy')
+                                          .format(endDate!)
+                                      : 'Hadi',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: endDate != null
+                                        ? MyColors.primaryLight
+                                        : Colors.grey.shade600,
+                                    fontWeight: endDate != null
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (startDate != null || endDate != null)
+                        IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.red.shade400,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              startDate = null;
+                              endDate = null;
+                            });
+                          },
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   // Matoleo List
                   Container(
                     constraints: BoxConstraints(
@@ -534,111 +694,138 @@ class _ChatScreenState extends State<MatoleoScreen> {
                               ),
                             );
                           } else if (snapshot.hasData) {
+                            // Filter logic
+                            List filteredData = snapshot.data!.where((sadaka) {
+                              final ahadi = sadaka['ahadi']?.toString() ?? '';
+                              final jengo = sadaka['jengo']?.toString() ?? '';
+                              final namba = sadaka['namba']?.toString() ?? '';
+                              final tarehe = sadaka['tarehe']?.toString() ?? '';
+
+                              // Search filter
+                              final matchesSearch = searchQuery.isEmpty ||
+                                  namba
+                                      .toLowerCase()
+                                      .contains(searchQuery.toLowerCase()) ||
+                                  ahadi.contains(searchQuery) ||
+                                  jengo.contains(searchQuery) ||
+                                  tarehe.contains(searchQuery);
+
+                              // Date range filter
+                              bool matchesDateRange = true;
+                              if (startDate != null || endDate != null) {
+                                try {
+                                  final sadakaDate =
+                                      DateFormat('yyyy-MM-dd').parse(tarehe);
+                                  if (startDate != null && endDate != null) {
+                                    matchesDateRange = sadakaDate.isAfter(
+                                            startDate!.subtract(
+                                                const Duration(days: 1))) &&
+                                        sadakaDate.isBefore(endDate!
+                                            .add(const Duration(days: 1)));
+                                  } else if (startDate != null) {
+                                    matchesDateRange = sadakaDate.isAfter(
+                                        startDate!
+                                            .subtract(const Duration(days: 1)));
+                                  } else if (endDate != null) {
+                                    matchesDateRange = sadakaDate.isBefore(
+                                        endDate!.add(const Duration(days: 1)));
+                                  }
+                                } catch (e) {
+                                  matchesDateRange = true;
+                                }
+                              }
+
+                              return matchesSearch && matchesDateRange;
+                            }).toList();
+
+                            if (filteredData.isEmpty) {
+                              return Container(
+                                height: 250,
+                                padding: const EdgeInsets.all(30),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.search_off_rounded,
+                                        size: 56,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Material(
+                                        child: Text(
+                                          "Hakuna matokeo yaliyopatikana",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12.0,
+                                            color: MyColors.primaryLight,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+
                             return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: snapshot.data!.length,
+                                itemCount: filteredData.length,
                                 itemBuilder: (_, index) {
+                                  final sadaka = filteredData[index];
+                                  final ahadi = int.tryParse(
+                                          sadaka['ahadi']?.toString() ?? '0') ??
+                                      0;
+                                  final jengo = int.tryParse(
+                                          sadaka['jengo']?.toString() ?? '0') ??
+                                      0;
+                                  final tarehe =
+                                      sadaka['tarehe']?.toString() ?? 'N/A';
+                                  final namba =
+                                      sadaka['namba']?.toString() ?? 'N/A';
+
                                   return Container(
-                                    margin: const EdgeInsets.only(bottom: 12),
+                                    margin: const EdgeInsets.only(bottom: 16),
                                     child: Card(
-                                      elevation: 2,
+                                      elevation: 4,
                                       shadowColor:
-                                          Colors.black.withOpacity(0.1),
+                                          Colors.black.withOpacity(0.08),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(12)),
+                                              BorderRadius.circular(16)),
                                       color: Colors.white,
                                       child: Container(
-                                        padding: const EdgeInsets.all(14),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                              color: Colors.grey.shade100),
+                                              BorderRadius.circular(16),
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Colors.white,
+                                              Colors.grey.shade50,
+                                            ],
+                                          ),
                                         ),
                                         child: Column(
                                           children: [
-                                            // Header with date
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 5),
-                                                  decoration: BoxDecoration(
-                                                    color: MyColors.primaryLight
-                                                        .withOpacity(0.1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16),
-                                                  ),
-                                                  child: Text(
-                                                    "Matoleo #${index + 1}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleSmall!
-                                                        .copyWith(
-                                                          fontSize: 11,
-                                                          color: MyColors
-                                                              .primaryLight,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 6,
-                                                      vertical: 3),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey.shade100,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6),
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(Icons.calendar_today,
-                                                          size: 10,
-                                                          color: Colors
-                                                              .grey.shade600),
-                                                      const SizedBox(width: 3),
-                                                      Text(
-                                                        "2022-03-13",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodySmall!
-                                                            .copyWith(
-                                                              fontSize: 10,
-                                                              color: Colors.grey
-                                                                  .shade600,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 14),
-                                            // Ahadi Section
+                                            // Header with gradient
                                             Container(
-                                              padding: const EdgeInsets.all(12),
+                                              padding: const EdgeInsets.all(14),
                                               decoration: BoxDecoration(
-                                                color: Colors.blue.shade50,
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    MyColors.primaryLight,
+                                                    MyColors.primaryLight
+                                                        .withOpacity(0.8),
+                                                  ],
+                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color:
-                                                        Colors.blue.shade100),
+                                                    const BorderRadius.only(
+                                                  topLeft: Radius.circular(16),
+                                                  topRight: Radius.circular(16),
+                                                ),
                                               ),
                                               child: Row(
                                                 mainAxisAlignment:
@@ -650,171 +837,331 @@ class _ChatScreenState extends State<MatoleoScreen> {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(6),
+                                                                .all(8),
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: Colors
-                                                              .blue.shade100,
+                                                          color: Colors.white
+                                                              .withOpacity(0.3),
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(6),
+                                                                  .circular(8),
                                                         ),
-                                                        child: Icon(
-                                                            Icons.handshake,
-                                                            color: Colors
-                                                                .blue.shade700,
-                                                            size: 14),
+                                                        child: const Icon(
+                                                          Icons
+                                                              .receipt_long_rounded,
+                                                          color: Colors.white,
+                                                          size: 18,
+                                                        ),
                                                       ),
-                                                      const SizedBox(width: 8),
-                                                      Text(
-                                                        "Ahadi",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium!
-                                                            .copyWith(
-                                                              fontSize: 13,
-                                                              color: Colors.blue
-                                                                  .shade700,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
+                                                      const SizedBox(width: 10),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            namba,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium!
+                                                                .copyWith(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  letterSpacing:
+                                                                      0.5,
+                                                                ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 2),
+                                                          Text(
+                                                            "Namba ya Sadaka",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodySmall!
+                                                                .copyWith(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.9),
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        "TZS",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodySmall!
-                                                            .copyWith(
-                                                              fontSize: 9,
-                                                              color: Colors.blue
-                                                                  .shade600,
-                                                            ),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 6),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white
+                                                          .withOpacity(0.25),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      border: Border.all(
+                                                        color: Colors.white
+                                                            .withOpacity(0.4),
+                                                        width: 1,
                                                       ),
-                                                      Text(
-                                                        currency.format(
-                                                            int.tryParse(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                            [
-                                                                            'ahadi']
-                                                                        ?.toString() ??
-                                                                    '0') ??
-                                                                0),
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleLarge!
-                                                            .copyWith(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Colors.blue
-                                                                  .shade700,
-                                                            ),
-                                                      ),
-                                                    ],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons
+                                                              .calendar_today_rounded,
+                                                          size: 11,
+                                                          color: Colors.white,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        Text(
+                                                          tarehe,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodySmall!
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        11,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(height: 10),
-                                            // Jengo Section
-                                            Container(
-                                              padding: const EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                color: Colors.orange.shade50,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color:
-                                                        Colors.orange.shade100),
-                                              ),
+                                            // Content Section
+                                            Padding(
+                                              padding: const EdgeInsets.all(16),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
                                                 children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(6),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors
-                                                              .orange.shade100,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(6),
+                                                  // Ahadi Section
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              14),
+                                                      decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                          colors: [
+                                                            Colors
+                                                                .green.shade50,
+                                                            Colors
+                                                                .green.shade100
+                                                                .withOpacity(
+                                                                    0.5),
+                                                          ],
                                                         ),
-                                                        child: Icon(
-                                                            Icons.home_work,
-                                                            color: Colors.orange
-                                                                .shade700,
-                                                            size: 14),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        border: Border.all(
+                                                          color: Colors
+                                                              .green.shade200,
+                                                          width: 1.5,
+                                                        ),
                                                       ),
-                                                      const SizedBox(width: 8),
-                                                      Text(
-                                                        "Jengo",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium!
-                                                            .copyWith(
-                                                              fontSize: 13,
-                                                              color: Colors
-                                                                  .orange
-                                                                  .shade700,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(6),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .green
+                                                                      .shade600,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .handshake_rounded,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 14,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 8),
+                                                              Text(
+                                                                "Ahadi",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium!
+                                                                    .copyWith(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .green
+                                                                          .shade700,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Text(
+                                                            "TZS ${currency.format(ahadi)}",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleLarge!
+                                                                .copyWith(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .green
+                                                                      .shade800,
+                                                                  letterSpacing:
+                                                                      0.5,
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        "TZS",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodySmall!
-                                                            .copyWith(
-                                                              fontSize: 9,
-                                                              color: Colors
-                                                                  .orange
-                                                                  .shade600,
-                                                            ),
+                                                  const SizedBox(width: 12),
+                                                  // Jengo Section
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              14),
+                                                      decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end: Alignment
+                                                              .bottomRight,
+                                                          colors: [
+                                                            Colors.blue.shade50,
+                                                            Colors.blue.shade100
+                                                                .withOpacity(
+                                                                    0.5),
+                                                          ],
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        border: Border.all(
+                                                          color: Colors
+                                                              .blue.shade200,
+                                                          width: 1.5,
+                                                        ),
                                                       ),
-                                                      Text(
-                                                        currency.format(
-                                                            int.parse(
-                                                                snapshot.data![
-                                                                        index]
-                                                                    ['jengo'])),
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleLarge!
-                                                            .copyWith(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Colors
-                                                                  .orange
-                                                                  .shade700,
-                                                            ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(6),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .blue
+                                                                      .shade600,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .home_work_rounded,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 14,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 8),
+                                                              Text(
+                                                                "Jengo",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium!
+                                                                    .copyWith(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .blue
+                                                                          .shade700,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Text(
+                                                            "TZS ${currency.format(jengo)}",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleLarge!
+                                                                .copyWith(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .blue
+                                                                      .shade800,
+                                                                  letterSpacing:
+                                                                      0.5,
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),

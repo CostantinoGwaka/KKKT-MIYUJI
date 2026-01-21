@@ -49,6 +49,9 @@ android {
         jvmTarget = '1.8'
     }
 
+    aaptOptions {  
+        cruncherEnabled = false  
+    }
 
     defaultConfig {
         applicationId "com.isofttz.kanisaniapp"
@@ -60,14 +63,35 @@ android {
     }
 
     signingConfigs {
+        // release {
+        //    keyAlias keystoreProperties['keyAlias']
+        //    keyPassword keystoreProperties['keyPassword']
+        //    storeFile file(keystoreProperties['storeFile'])
+        //    storePassword keystoreProperties['storePassword']
+        //     v1SigningEnabled false
+        //     v2SigningEnabled true
+        // }
+        debug {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            def storeFilePath = keystoreProperties['storeFile']
+            if (storeFilePath) {
+                storeFile file(rootProject.file(storeFilePath))
+            } else {
+                println "Warning: storeFile path is missing in key.properties!"
+            }
+            storePassword keystoreProperties['storePassword']
+        }
         release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile file(keystoreProperties['storeFile'])
-           storePassword keystoreProperties['storePassword']
-            v1SigningEnabled false
-            v2SigningEnabled true
-
+            def storeFilePath = keystoreProperties['storeFile']
+            if (storeFilePath) {
+                storeFile file(rootProject.file(storeFilePath))
+            } else {
+                println "Warning: storeFile path is missing in key.properties!"
+            }
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
 
