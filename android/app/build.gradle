@@ -63,14 +63,6 @@ android {
     }
 
     signingConfigs {
-        // release {
-        //    keyAlias keystoreProperties['keyAlias']
-        //    keyPassword keystoreProperties['keyPassword']
-        //    storeFile file(keystoreProperties['storeFile'])
-        //    storePassword keystoreProperties['storePassword']
-        //     v1SigningEnabled false
-        //     v2SigningEnabled true
-        // }
         debug {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
@@ -119,8 +111,8 @@ subprojects {
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation 'com.android.support:multidex:2.0.1'
-    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
-    implementation("com.google.firebase:firebase-analytics")
+//    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
+//    implementation("com.google.firebase:firebase-analytics")
     androidTestImplementation "androidx.test.ext:junit:1.2.1"
     androidTestImplementation "androidx.fragment:fragment-testing:1.8.4"
     androidTestImplementation "androidx.test:core:1.6.1"
